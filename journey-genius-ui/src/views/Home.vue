@@ -6,7 +6,7 @@
         <v-col cols="12" md="10" lg="8" class="text-center">
           <!-- <v-card class="pa-5"> -->
           <h2 class="display-1 font-weight-black">
-            Generate Timeless
+
           </h2>
           <h2 class="display-1 font-weight-black">
             Vacation Itineraries with
@@ -42,17 +42,19 @@
             What Makes Our Application Special
           </h2>
         </v-col>
-        <v-col v-for="(feature, index) in specialFeatures" :key="index" cols="12" md="3">
-          <v-card class="pa-2" elevation="10">
-            <!-- Center-align the icon and text -->
-            <div class="d-flex flex-column align-center">
-              <v-icon class="display-1 mb-2 ">{{ feature.icon }}</v-icon>
-              <h3 class="subtitle-1 text-center">{{ feature.title }}</h3>
-            </div>
-            <p class="body-1 text-center">{{ feature.description }}</p>
-          </v-card>
-        </v-col>
 
+        <v-row justify="center" class="my-5" style="display: flex; flex-wrap: wrap;">
+          <v-col v-for="(feature, index) in specialFeatures" :key="index" cols="12" md="3">
+            <v-card class="pa-2" elevation="10" style="flex: 1;">
+              <!-- Center-align the icon and text -->
+              <div class="d-flex flex-column align-center">
+                <v-icon class="display-1 mb-2 ">{{ feature.icon }}</v-icon>
+                <h3 class="subtitle-1 text-center">{{ feature.title }}</h3>
+              </div>
+              <p class="body-1 text-center description-height2">{{ feature.description }}</p>
+            </v-card>
+          </v-col>
+        </v-row>
       </v-row>
 
       <!-- Featured Destinations -->
@@ -62,14 +64,22 @@
             Featured Destinations
           </h2>
         </v-col>
-        <v-col v-for="(destination, index) in featuredDestinations" :key="index" cols="12" md="4" lg="3">
-          <v-card class="pa-3" elevation="10">
-            <!-- Replace the placeholder content with your destination information -->
-            <h3 class="subtitle-1 text-center mt-2 ">{{ destination.name }}</h3>
-            <p class="body-1 text-center">{{ destination.description }}</p>
-            <v-img :src="destination.image" alt="Destination Image"></v-img>
-          </v-card>
-        </v-col>
+
+        <!-- Featured Destinations -->
+        <v-row justify="center" class="my-5" style="display: flex; flex-wrap: wrap;">
+          <v-col v-for="(destination, index) in featuredDestinations" :key="index" cols="12" md="4" lg="3" xl="3">
+            <v-card class="pa-3" elevation="10" style="flex: 1;">
+              <!-- Replace the placeholder content with your destination information -->
+              <h3 class="subtitle-1 text-center mt-2">{{ destination.name }}</h3>
+              <p class="body-1 text-center description-height">{{ destination.description }}</p>
+              <v-responsive aspect-ratio="16/9">
+                <v-img :src="destination.image" alt="Destination Image" style="border-radius: 5px;"></v-img>
+              </v-responsive>
+            </v-card>
+          </v-col>
+        </v-row>
+
+
       </v-row>
 
       <!-- The Most Optimal Way to Travel Section -->
@@ -83,12 +93,11 @@
 
             <!-- Optimal Route Planning -->
             <v-col cols="12" md="3">
-              <v-card class="pa-3" elevation="10">
+              <v-card class="pa-3" elevation="10" style="flex: 1;">
                 <div class="d-flex flex-column align-center">
-
                   <v-icon class="display-1 mb-2">mdi-directions</v-icon>
                   <h3 class="subtitle-1 text-center">Optimal Route Planning</h3>
-                  <p class="body-1 text-center">
+                  <p class="body-1 text-center description-height3">
                     Our AI algorithms analyze your preferences to craft the most efficient route, saving you time and
                     effort.
                   </p>
@@ -98,11 +107,11 @@
 
             <!-- Personalize Your Adventure -->
             <v-col cols="12" md="6" lg="3">
-              <v-card class="pa-3" elevation="10">
+              <v-card class="pa-3" elevation="10" style="flex: 1;">
                 <div class="d-flex flex-column align-center">
                   <v-icon class="display-1 mb-2">mdi-pencil</v-icon>
                   <h3 class="subtitle-1 text-center">Personalize Your Adventure</h3>
-                  <p class="body-1 text-center">
+                  <p class="body-1 text-center description-height3">
                     Shape your journey by freely adding, editing, or deleting activities from your itinerary.
                   </p>
                 </div>
@@ -111,34 +120,17 @@
 
             <!-- Local Cuisine Recommendations -->
             <v-col cols="12" md="6" lg="3">
-              <v-card class="pa-3" elevation="10">
+              <v-card class="pa-3" elevation="10" style="flex: 1;">
                 <div class="d-flex flex-column align-center">
                   <v-icon class="display-1 mb-2">mdi-food</v-icon>
-                  <h3 class="subtitle-1 text-center">Local Cuisine Recommendations</h3>
-                  <p class="body-1 text-center">
+                  <h3 class="subtitle-1 text-center">Local Cuisine</h3>
+                  <p class="body-1 text-center description-height3">
                     Discover local cuisines and hidden gems recommended by our AI, tailored to your taste buds.
                   </p>
                 </div>
               </v-card>
             </v-col>
           </v-row>
-
-
-        </v-col>
-      </v-row>
-      <!-- All-in-One Location -->
-      <v-row justify="center" class="pa-5 mt-6 custom-card">
-        <v-col cols="12" md="8">
-          <h2 class="headline font-weight-black text-center">
-            All-in-One Location
-          </h2>
-          <p class="body-1 text-center">
-            Say goodbye to the stress of planning and hello to personalized recommendations, efficient itineraries, and
-            seamless dining experiences.
-            Everything you need, from maps to flights to hotels, is conveniently located in one application.
-          </p>
-          <v-row justify="center" class="mt-4">
-        </v-row>
         </v-col>
       </v-row>
 
@@ -155,24 +147,23 @@ import { defineComponent } from 'vue';
 
 
 export default defineComponent({
-  
   data() {
     return {
       featuredDestinations: [
         {
           name: 'New York, New York',
           image: require('@/assets/nyc.jpeg'),
-          description: 'Bustling metropolis known for iconic landmarks, diverse neighborhoods, cultural attractions, and vibrant nightlife.'
+          description: 'Vibrant city, renowned for iconic landmarks, diverse neighborhoods, cultural attractions, and nightlife scene.'
         },
         {
           name: 'Seattle, Washington',
           image: require('@/assets/seattle.jpeg'),
-          description: 'Seattle, the Emerald City, offers a blend of tech innovation, stunning natural beauty, coffee culture, and a thriving arts scene.'
+          description: 'Seattle, the Emerald City, offers a blend of tech innovation, stunning natural beauty, coffee culture, and arts scene.'
         },
         {
           name: 'Honolulu, Hawaii',
           image: require('@/assets/hawaii.jpeg'),
-          description: 'Honolulu, the capital of Hawaii, is a tropical paradise known for its beautiful beaches, rich cultural heritage, and vibrant Pacific cuisine'
+          description: 'Honolulu, the capital of Hawaii, is a tropical paradise known for its beaches, cultural heritage, and Pacific cuisine.'
         },
 
 
@@ -232,5 +223,35 @@ export default defineComponent({
   /* Center the card within the container */
 }
 
+.description-height {
+  height: 100px;
+  /* Set a fixed height for the descriptions */
+  overflow: hidden;
+  /* Hide overflow content if the description is longer */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* Limit the number of lines to show */
+  -webkit-box-orient: vertical;
+}
 
-</style>
+.description-height2 {
+  height: 70px;
+  /* Set a fixed height for the descriptions */
+  overflow: hidden;
+  /* Hide overflow content if the description is longer */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* Limit the number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.description-height3 {
+  height: 80px;
+  /* Set a fixed height for the descriptions */
+  overflow: hidden;
+  /* Hide overflow content if the description is longer */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  /* Limit the number of lines to show */
+  -webkit-box-orient: vertical;
+}</style>
