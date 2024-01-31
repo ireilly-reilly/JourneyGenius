@@ -22,18 +22,18 @@
         </v-row>
 
 
-            <!-- Section with Image and Left Section -->
-            <v-row justify="center" align="stretch" style="display: flex; flex-wrap: wrap; align-items: flex-start;">
+        <!-- Section with Image and Left Section -->
+        <v-row justify="center" align="stretch" style="display: flex; flex-wrap: wrap; align-items: flex-start;">
 
-      <!-- Right Section: Image -->
-      <v-col cols="12" md="4" class="image-container align-self-start">
-        <v-img src="@/assets/sfbridge2.jpeg" alt="San Francisco" class="fill-height"    
-            style="object-fit: cover; width: 100%; max-height: 670px; min-height: 900px;"></v-img>
+            <!-- Right Section: Image -->
+            <v-col cols="12" md="4" class="image-container align-self-start">
+                <v-img src="@/assets/SFBridge.jpeg" alt="San Francisco" class="fill-height align-self-start"
+                    style="object-fit: cover; width: 100%; max-height: 670px; min-height: 900px;"></v-img>
 
 
-      </v-col>
-        <!-- Left Section: Activities, Landmarks, Places to Eat, Shopping Spots, Map, Estimated Costs -->
-        <v-col cols="12" md="8" class="left-section" style="display: flex; flex-direction: column;">
+            </v-col>
+            <!-- Left Section: Activities, Landmarks, Places to Eat, Shopping Spots, Map, Estimated Costs -->
+            <v-col cols="12" md="8" class="left-section" style="display: flex; flex-direction: column;">
 
                 <!-- New Section: Activities, Landmarks, Places to Eat, Shopping Spots -->
                 <div style="margin-bottom: 30; flex: 1;">
@@ -131,7 +131,7 @@
             <br>
 
             <h2 class="section-title" style="text-align: center;">Explore San Francisco - Map and Estimated Costs</h2>
-            <p>
+            <p style="text-align: center;">
                 Explore this interactive map showcasing the locations of your selected points of interest, encompassing your
                 chosen accommodation, transportation options, planned activities, and other areas of interest!
             </p>
@@ -210,6 +210,8 @@ export default {
 .image-container {
     display: flex;
     align-items: flex-start;
+    justify-content: center; /* Align the image at the top when screen is too small */
+    text-align: center; /* Center the content horizontally */
 }
 
 .section-title {
@@ -237,10 +239,6 @@ export default {
     margin-bottom: 4px;
 }
 
-
-
-
-
 /* Custom styles for the Estimated Costs section */
 .estimated-costs {
     margin-top: 30px;
@@ -259,5 +257,6 @@ export default {
 .estimated-costs .section-content h3 {
     font-size: 1.5em;
     margin-bottom: 8px;
-}</style>
+}
+</style>
   
