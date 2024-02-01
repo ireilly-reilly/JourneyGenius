@@ -56,9 +56,11 @@
               class="mb-3"
               style="width: 100%; border-radius: 8px;"
             ></v-img>
+            <router-link to='/GeneratedItinerary'>
             <v-btn color="deep-purple-accent-2" class="mt-3" @click="openItinerary">
               Open Itinerary
             </v-btn>
+          </router-link>
           </v-row>
         </v-col>
       </v-row>
