@@ -41,7 +41,7 @@
 </template>
 
 <script>
-// Import Axios at the top of your script
+//Imports
 import axios from 'axios';
 import Cookies from 'js-cookie';
 export default {
@@ -61,9 +61,9 @@ export default {
     this.checkLoginStatus();
   },
   methods: {
+    //Login Request to flask server
     login() {
-      // Implement your login logic here
-      // Make an AJAX request to Flask application
+      //Make an AJAX request to Flask application
       const url = 'http://localhost:8000/api/LoginUser'; //The localhost port I have Flask running on
 
       // Check if both username and password are provided
@@ -99,7 +99,7 @@ export default {
           console.log('Error status:', error.response.status);
           console.log('Error data:', error.response.data);
 
-          // Handle different status codes and display appropriate messages
+          //Handle different status codes and display appropriate messages
           if (error.response) {
             this.showLoginError = true;
             if (error.response.status === 401) {
@@ -116,23 +116,7 @@ export default {
 
       console.log('Logging in...');
     },
-    logout() {
-      const url = 'http://localhost:8000/api/LogoutUser'; // Update with your Flask app's URL
-
-      // Remove the user token or session ID from the cookie
-      Cookies.remove('login_token', { httpOnly: true });
-
-      // Send a request to the Flask API to handle logout
-      axios.post(url)
-        .then(response => {
-          console.log('Logout successful!', response);
-          this.message = 'Logout successful.';
-        })
-        .catch(error => {
-          console.error('Error logging out', error);
-          this.message = 'Error logging out.';
-        });
-    },
+    //Check login status (mostly for testing purposes on this page)
     async checkLoginStatus() {
       const url = 'http://localhost:8000/api/check_login_status';
 

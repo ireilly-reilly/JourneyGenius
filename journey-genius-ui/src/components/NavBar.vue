@@ -80,7 +80,6 @@ export default {
       const token = Cookies.get('login_token');
       console.log('token from navbar: ', token)
       this.isLoggedIn = true;
-      //this.reloadComponent();
 
       if (!token) {
         console.log('Token not available.');
@@ -89,13 +88,13 @@ export default {
       }
 
     },
-    // reloadComponent() {
-    //   //Manually reload NavBar
-    //   const currentRoute = this.$route;
-    //   this.$router.replace({ name: 'dummy' }).then(() => {
-    //     this.$router.replace(currentRoute);
-    //   });
-    // },
+    reloadComponent() {
+      // Manually reload the component
+      const currentRoute = this.$route;
+      this.$router.replace({ name: 'dummy' }).then(() => {
+        this.$router.replace(currentRoute);
+      });
+    },
     
   },
 };

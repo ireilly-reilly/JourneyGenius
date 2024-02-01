@@ -58,8 +58,8 @@
       };
     },
     methods: {
+      //Register account with flask server database
       register() {
-        // Implement your registration logic here
         // Make an AJAX request to Flask application
         const url = 'http://localhost:8000/api/RegisterUser'; //The localhost port I have Flask running on
   
@@ -70,8 +70,7 @@
           return;
         }
   
-        // Use Axios library for AJAX requests
-        // Make sure to install Axios using npm or yarn before using it
+        //Use Axios library for AJAX requests
         // Send user info to the Flask API
         axios.post(url, { email: this.email, firstname: this.firstname, lastname: this.lastname, password: this.password })
           .then(response => {
@@ -95,12 +94,12 @@
           });
         console.log('Registering...');
       },
+      //Login request sent to flask server
       login() {
-        // Implement your login logic here
-        // Make an AJAX request to Flask application
+        //Make an AJAX request to Flask application
         const url = 'http://localhost:8000/api/LoginUser'; //The localhost port I have Flask running on
 
-        // Check if both username and password are provided
+        //Check if both username and password are provided
         if (!this.email || !this.password) {
           this.loginErrorMessage = 'Email and password are required.';
           this.showLoginError = true;
@@ -112,17 +111,17 @@
 
           .then(response => {
             const token = response.data.access_token;
-            console.log('login token: ', token) //Display token after recieved
+            console.log('login token: ', token) //Display token after recieved to browser console
             //Make cookies expire after 7 days
             const expirationDate = new Date();
             expirationDate.setDate(expirationDate.getDate() + 7);
 
-            //Store the token in a secure manner (e.g., HttpOnly cookie) with expiration date
+            //Store the token with expiration date in the form of a cookie
             Cookies.set('login_token', token, { secure: false, expires: expirationDate });
             //console.log('Login token:', token) //Display token after cookies set
             console.log('User logged in successfully, login token: ', token)
             this.checkLoginStatus();
-            // Redirect to the home page
+            //Redirect to the home page
             this.$router.push({ name: 'Home' });
           
           })
@@ -150,13 +149,14 @@
 
         console.log('Logging in...');
       },
+      //Logout request sent to flask server
       logout() {
         const url = 'http://localhost:8000/api/LogoutUser'; // Update with your Flask app's URL
   
-        // Remove the user token or session ID from the cookie
+        //Remove the user token or session ID from the cookie
         Cookies.remove('login_token', { httpOnly: true });
   
-        // Send a request to the Flask API to handle logout
+        //Send a request to the Flask API to handle logout
         axios.post(url)
           .then(response => {
             console.log('Logout successful!', response);
@@ -167,6 +167,7 @@
             this.message = 'Error logging out.';
           });
       },
+      //Check login status (mostly for testing on this page)
       async checkLoginStatus() {
         const url = 'http://localhost:8000/api/check_login_status';
 
