@@ -53,8 +53,12 @@ export default {
       loginErrorMessage: '',
       registrationErrorMessage: '',
       showLoginError: false,
-      showRegistrationError: false
+      showRegistrationError: false,
+      token:Cookies.get('login_token') || '', // Retrieve token from Cookies
     };
+  },
+  created(){
+    this.checkLoginStatus();
   },
   methods: {
     login() {
@@ -73,20 +77,28 @@ export default {
       axios.post(url, { email: this.email, password: this.password }, { withCredentials: true })
 
         .then(response => {
-          console.log('User logged in successfully!', response);
+          const token = response.data.access_token;
+          console.log('login token: ', token) //Display token after recieved
+          //Make cookies expire after 7 days
+          const expirationDate = new Date();
+          expirationDate.setDate(expirationDate.getDate() + 7);
 
-          // Store the user token or session ID in a secure HTTP-only cookie
-          Cookies.set('login_token', response.data.token, { httpOnly: true });
-          
-          this.message = 'User logged in successfully.';
-
-          this.checkLoginStatus(); //Not sure where to put this yet
+          //Store the token in a secure manner (e.g., HttpOnly cookie) with expiration date
+          Cookies.set('login_token', token, { secure: false, expires: expirationDate });
+          //console.log('Login token:', token) //Display token after cookies set
+          console.log('User logged in successfully, login token: ', token)
+          this.checkLoginStatus();
           // Redirect to the home page
           this.$router.push({ name: 'Home' });
           
         })
         .catch(error => {
           console.error('Error logging in', error);
+
+          console.log('Error response:', error.response);
+          console.log('Error status:', error.response.status);
+          console.log('Error data:', error.response.data);
+
           // Handle different status codes and display appropriate messages
           if (error.response) {
             this.showLoginError = true;
@@ -121,20 +133,29 @@ export default {
           this.message = 'Error logging out.';
         });
     },
-    checkLoginStatus() {
-      const url = 'http://localhost:8000/api/check_login_status'; // Update with your Flask app's URL
+    async checkLoginStatus() {
+      const url = 'http://localhost:8000/api/check_login_status';
 
-      // Send a request to the Flask API to check the login status
-      axios.get(url, { withCredentials: true })
-        .then(response => {
-          console.log('Login status:', response.data.message);
-          this.message = response.data.message;
-        })
-        .catch(error => {
-          console.error('Error checking login status', error);
-          this.message = 'Error checking login status.';
-        });
+      try {
+        if (!this.token) {
+          // Token is not available, handle accordingly
+          this.isLoggedIn = false;
+          console.log('Token not available');
+          return;
+        }
+
+        const response = await axios.get(url, { headers: { Authorization: `Bearer ${this.token}` } });
+        console.log('Response from checkLoginStatus:', response.data);
+
+        this.isLoggedIn = true;
+        response.data.message === 'User is logged in';
+        console.log('User is logged in:', this.isLoggedIn);
+      } catch (error) {
+        console.error('Error checking login status', error);
+        this.isLoggedIn = false;
+      }
     },
+
   }
 };
 </script>

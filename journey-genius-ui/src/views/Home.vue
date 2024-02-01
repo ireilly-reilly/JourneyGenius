@@ -180,6 +180,7 @@ export default defineComponent({
 });
 </script>
 
+
 <style scoped>
 /* Adjust the font size to make it larger */
 .display-1 {
