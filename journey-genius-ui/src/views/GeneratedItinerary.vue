@@ -210,8 +210,11 @@ export default {
 .image-container {
     display: flex;
     align-items: flex-start;
+<<<<<<<<< Temporary merge branch 1
+=========
     justify-content: center; /* Align the image at the top when screen is too small */
     text-align: center; /* Center the content horizontally */
+>>>>>>>>> Temporary merge branch 2
 }
 
 .section-title {
@@ -239,6 +242,13 @@ export default {
     margin-bottom: 4px;
 }
 
+<<<<<<<<< Temporary merge branch 1
+
+
+
+
+=========
+>>>>>>>>> Temporary merge branch 2
 /* Custom styles for the Estimated Costs section */
 .estimated-costs {
     margin-top: 30px;
@@ -257,6 +267,10 @@ export default {
 .estimated-costs .section-content h3 {
     font-size: 1.5em;
     margin-bottom: 8px;
+<<<<<<<<< Temporary merge branch 1
+}</style>
+=========
 }
 </style>
+>>>>>>>>> Temporary merge branch 2
   
