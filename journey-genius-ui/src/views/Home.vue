@@ -223,35 +223,5 @@ export default defineComponent({
   /* Center the card within the container */
 }
 
-.description-height {
-  height: 100px;
-  /* Set a fixed height for the descriptions */
-  overflow: hidden;
-  /* Hide overflow content if the description is longer */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  /* Limit the number of lines to show */
-  -webkit-box-orient: vertical;
-}
 
-.description-height2 {
-  height: 70px;
-  /* Set a fixed height for the descriptions */
-  overflow: hidden;
-  /* Hide overflow content if the description is longer */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  /* Limit the number of lines to show */
-  -webkit-box-orient: vertical;
-}
-
-.description-height3 {
-  height: 80px;
-  /* Set a fixed height for the descriptions */
-  overflow: hidden;
-  /* Hide overflow content if the description is longer */
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  /* Limit the number of lines to show */
-  -webkit-box-orient: vertical;
-}</style>
+</style>
