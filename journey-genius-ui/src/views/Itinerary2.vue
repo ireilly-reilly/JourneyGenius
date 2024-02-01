@@ -66,6 +66,7 @@
         <v-row justify="center" class="mt-4">
             <v-col cols="12" md="8">
                 <h3 class="headline text-deep-purple-accent-2">Housing Options</h3>
+                <br>
                 <v-radio-group v-model="selectedHousingOption">
                     <v-row>
                         <v-col v-for="(option, index) in housingOptions" :key="index" cols="12">
@@ -82,6 +83,7 @@
         <v-row justify="center" class="mt-4">
             <v-col cols="12" md="8">
                 <h3 class="headline text-deep-purple-accent-2">Transportation Options</h3>
+                <br>
                 <v-radio-group v-model="selectedTransportationOption">
                     <v-row>
                         <v-col v-for="(option, index) in transportationOptions" :key="index" cols="12">

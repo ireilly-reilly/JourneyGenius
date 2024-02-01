@@ -109,6 +109,7 @@
 </template>
 
 <script>
+
 import { defineComponent } from 'vue';
 
 export default defineComponent({
@@ -140,24 +141,24 @@ export default defineComponent({
       isDatePickerVisible: false,
       travelDestination: null,
       selectedBudget: null,
+
+      // Validation rule for end date
+      endDateRule: [
+        (v) => !!v || 'End date is required',
+        (v) => this.isEndDateValid(v) || 'End date must be equal or after the start date',
+      ],
     };
   },
   computed: {
     // Computed property for autocomplete suggestions based on user input
     autocompleteCities() {
-      // Check if this.city is null or undefined
       if (this.city == null) {
         return this.allCities;
       }
 
       const lowerCaseInput = this.city.toLowerCase();
       return this.allCities.filter(city => city.toLowerCase().includes(lowerCaseInput));
-      // Filter cities based on user input
-      // return this.allCities.filter(city =>
-      //   city.toLowerCase().includes(this.city.toLowerCase())
-      // );
     },
-
   },
   methods: {
     // Method for handling input change in the city text field
@@ -169,9 +170,6 @@ export default defineComponent({
       this.city = selectedCity;
       this.menu = false;
     },
-
-
-
 
     // Method for displaying the date picker
     showDatePicker() {
@@ -199,8 +197,13 @@ export default defineComponent({
       // For example, you can use Vue Router to navigate to a new page
       this.$router.push('/Itinerary');
     },
+    // Method to check if the end date is valid
+    isEndDateValid(selectedEndDate) {
+      return !this.startDate || selectedEndDate >= this.startDate;
+    },
   },
 });
+
 </script>
 
 
