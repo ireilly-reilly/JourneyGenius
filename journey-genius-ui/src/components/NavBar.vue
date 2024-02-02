@@ -68,6 +68,7 @@ export default {
           console.log('Logout successful!', response);
           this.message = 'Logout successful.';
           this.isLoggedIn = false;
+          this.$router.push({ name: 'LoggingOut' });
         })
         .catch(error => {
           console.error('Error logging out', error);

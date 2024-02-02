@@ -3,6 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+import secrets
+from flask_mail import Mail, Message
+
+#from email_verification import email_verification_bp
 
 #Flask App Initializations
 app = Flask(__name__, static_folder='../journey-genius-ui/dist', static_url_path='')
@@ -14,6 +18,10 @@ bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 CORS(app, supports_credentials=True)
 
+#Register blueprints TODO Refactor into bluprints to make it nicer!
+#app.register_blueprint(auth_bp)#, url_prefix='/auth') <--might add later
+#app.register_blueprint(email_verification_bp)
+
 #Format for 'Users' in database
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -21,6 +29,11 @@ class User(db.Model):
     password = db.Column(db.String(60), nullable=False)
     firstname = db.Column(db.String(40), nullable=False)
     lastname = db.Column(db.String(40), nullable=False)
+    gender = db.Column(db.String(5))
+    age = db.Column(db.String(5))
+    interests = db.Column(db.String(10))
+    accommodations = db.Column(db.String(5))
+    transportation = db.Column(db.String(5))
 
 
 #Route to register new users
@@ -87,6 +100,39 @@ def logout():
     return response
     # print("Checking Login status... User ID in session: ", session.get('user_id'))
     # return jsonify({'message': 'Logout successful'}), 200
+
+
+
+#TODO Refactor into separate blueprint
+#---------------------USER PROFILING METHODS--------------------------
+
+# @app.route('/api/GetUserProfile', methods=['GET'])
+# @jwt_required()
+# def fetchUserData():
+#     print("hello from fetchUserData")
+#     current_user_id = get_jwt_identity()
+# #     #current_user_id = user.id
+# #     print('Current user ID: ', current_user_id)
+#     user = User.query.get(current_user_id)
+
+#     if user:
+# #         #Convert user data to a dictionary and send it as JSON response
+# #         user_data = {
+# #             'firstName': user.firstname,
+# #             'lastName': user.lastname,
+# #             'email': user.email,
+# #             # Add other fields as needed
+# #         }
+# #         return jsonify(user_data), 200
+# #     else:
+# #         print("Current User ID: ", current_user_id)
+# #         print('error')
+# #         return jsonify({'error': 'User not found from fetch data'}), 404
+
+
+
+
+
 
 
 if __name__ == "__main__":

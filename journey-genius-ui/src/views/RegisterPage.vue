@@ -122,7 +122,7 @@
             console.log('User logged in successfully, login token: ', token)
             this.checkLoginStatus();
             //Redirect to the home page
-            this.$router.push({ name: 'Home' });
+            this.$router.push({ name: 'EmailVerification' });
           
           })
           .catch(error => {
