@@ -21,14 +21,17 @@
             </v-col>
         </v-row>
 
+        <br>
+        <h2 class="section-title text-center">Discover San Francisco - Overview</h2>
+
 
         <!-- Section with Image and Left Section -->
         <v-row justify="center" align="stretch" style="display: flex; flex-wrap: wrap; align-items: flex-start;">
 
             <!-- Right Section: Image -->
-            <v-col cols="12" md="4" class="image-container align-self-start">
-                <v-img src="@/assets/SFBridge.jpeg" alt="San Francisco" class="fill-height align-self-start"
-                    style="object-fit: cover; width: 100%; max-height: 670px; min-height: 900px;"></v-img>
+            <v-col cols="12" md="8" class="image-container align-self-start">
+                <v-img src="@/assets/sfbridge2.jpeg" alt="San Francisco" class="fill-height align-self-start"
+                    style="object-fit: cover; width: 100%; "></v-img>
 
 
             </v-col>
@@ -37,8 +40,6 @@
 
                 <!-- New Section: Activities, Landmarks, Places to Eat, Shopping Spots -->
                 <div style="margin-bottom: 30; flex: 1;">
-                    <br>
-                    <h2 class="section-title">Discover San Francisco - Overview</h2>
 
                     <!-- Activities Section -->
                     <div class="section-content">
