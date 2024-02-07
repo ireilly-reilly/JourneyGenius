@@ -14,6 +14,7 @@
               prepend-icon="mdi-lock"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="showPassword = !showPassword"/>
+              <div v-if="RegistrationErrorMessage" class="error-message">{{ RegistrationErrorMessage }}</div>
           </v-card-text>
   
           <v-divider></v-divider>
@@ -49,26 +50,29 @@
       return {
         showPassword: false,
         email: '',
-        password: ''
+        firstname: '',
+        lastname: '',
+        password: '',
+        RegistrationErrorMessage: '',
+        message: ''
       };
     },
     methods: {
+      //Register account with flask server database
       register() {
-        // Implement your registration logic here
         // Make an AJAX request to Flask application
         const url = 'http://localhost:8000/api/RegisterUser'; //The localhost port I have Flask running on
   
         // Check if both username and password are provided
         if (!this.password || !this.firstname || !this.lastname || !this.email) {
-          this.message = 'All text fields are required.';
+          this.RegistrationErrorMessage = 'All fields are required.'
           console.error('All text fields are required.');
           return;
         }
   
-        // Use Axios library for AJAX requests
-        // Make sure to install Axios using npm or yarn before using it
+        //Use Axios library for AJAX requests
         // Send user info to the Flask API
-        axios.post(url, { password: this.password, email: this.email, firstname: this.firstname, lastname: this.lastname })
+        axios.post(url, { email: this.email, firstname: this.firstname, lastname: this.lastname, password: this.password })
           .then(response => {
             console.log('User registered successfully!', response);
             this.message = 'User registered successfully.';
@@ -79,66 +83,80 @@
             if (error.response) {
               if (error.response.status === 400) {
                 console.error('Registration failed: Email already exists.');
-                this.message = 'Registration failed: Email already exists.';
+                this.RegistrationErrorMessage = 'Registration failed: Email already exists.';
               } else {
                 console.error('Registration failed: Server error.');
-                this.message = 'Error registering.';
+                this.RegistrationErrorMessage = 'Registration failed: Server error.';
               }
             } else {
-              this.message = 'Network error or server unreachable.';
+              this.RegistrationErrorMessage = 'Network error or server unreachable.';
             }
           });
         console.log('Registering...');
       },
+      //Login request sent to flask server
       login() {
-        // Implement your login logic here
-        // Make an AJAX request to Flask application
+        //Make an AJAX request to Flask application
         const url = 'http://localhost:8000/api/LoginUser'; //The localhost port I have Flask running on
-  
-        // Check if both username and password are provided
+
+        //Check if both username and password are provided
         if (!this.email || !this.password) {
-          this.message = 'Username and password are required.';
-          console.error('Username and password are required.');
+          this.loginErrorMessage = 'Email and password are required.';
+          this.showLoginError = true;
+          console.error('Email and password are required.');
           return;
         }
-  
+
         axios.post(url, { email: this.email, password: this.password }, { withCredentials: true })
-  
+
           .then(response => {
-            console.log('User logged in successfully!', response);
-  
-            // Store the user token or session ID in a secure HTTP-only cookie
-            Cookies.set('login_token', response.data.token, { httpOnly: true });
-            
-            this.message = 'User logged in successfully.';
-  
-            this.checkLoginStatus(); //Not sure where to put this yet
+            const token = response.data.access_token;
+            console.log('login token: ', token) //Display token after recieved to browser console
+            //Make cookies expire after 7 days
+            const expirationDate = new Date();
+            expirationDate.setDate(expirationDate.getDate() + 7);
+
+            //Store the token with expiration date in the form of a cookie
+            Cookies.set('login_token', token, { secure: false, expires: expirationDate });
+            //console.log('Login token:', token) //Display token after cookies set
+            console.log('User logged in successfully, login token: ', token)
+            this.checkLoginStatus();
+            //Redirect to the home page
+            this.$router.push({ name: 'EmailVerification' });
+          
           })
           .catch(error => {
             console.error('Error logging in', error);
-            // Handle different status codes and display appropriate messages
+
+            console.log('Error response:', error.response);
+            console.log('Error status:', error.response.status);
+            console.log('Error data:', error.response.data);
+
+            //Handle different status codes and display appropriate messages
             if (error.response) {
-              if (error.response.status === 401) {
-                console.error('Login failed: Incorrect username or password.');
-                this.message = 'Incorrect username or password.';
-              } else {
-                console.error('Login failed: Server error.');
-                this.message = 'Error logging in.';
-              }
+              this.showLoginError = true;
+            if (error.response.status === 401) {
+              console.error('Login failed: Incorrect username or password.');
+              this.loginErrorMessage = 'Incorrect username or password.';
             } else {
-              this.message = 'Network error or server unreachable.';
+              console.error('Login failed: Server error.');
+              this.loginErrorMessage = 'Error logging in.';
             }
-          });
-  
+          } else {
+            this.loginErrorMessage = 'Network error or server unreachable.';
+          }
+        });
+
         console.log('Logging in...');
       },
+      //Logout request sent to flask server
       logout() {
         const url = 'http://localhost:8000/api/LogoutUser'; // Update with your Flask app's URL
   
-        // Remove the user token or session ID from the cookie
+        //Remove the user token or session ID from the cookie
         Cookies.remove('login_token', { httpOnly: true });
   
-        // Send a request to the Flask API to handle logout
+        //Send a request to the Flask API to handle logout
         axios.post(url)
           .then(response => {
             console.log('Logout successful!', response);
@@ -149,25 +167,38 @@
             this.message = 'Error logging out.';
           });
       },
-      checkLoginStatus() {
-        const url = 'http://localhost:8000/api/check_login_status'; // Update with your Flask app's URL
-  
-        // Send a request to the Flask API to check the login status
-        axios.get(url, { withCredentials: true })
-          .then(response => {
-            console.log('Login status:', response.data.message);
-            this.message = response.data.message;
-          })
-          .catch(error => {
-            console.error('Error checking login status', error);
-            this.message = 'Error checking login status.';
-          });
+      //Check login status (mostly for testing on this page)
+      async checkLoginStatus() {
+        const url = 'http://localhost:8000/api/check_login_status';
+
+        try {
+          if (!this.token) {
+            //Token is not available, handle accordingly
+            this.isLoggedIn = false;
+            console.log('Token not available');
+            return;
+          }
+
+          const response = await axios.get(url, { headers: { Authorization: `Bearer ${this.token}` } });
+          console.log('Response from checkLoginStatus:', response.data);
+
+          this.isLoggedIn = true;
+          response.data.message === 'User is logged in';
+          console.log('User is logged in:', this.isLoggedIn);
+        } catch (error) {
+          console.error('Error checking login status', error);
+          this.isLoggedIn = false;
+        }
       },
-    }
+    },
   };
   </script>
   
   <style scoped>
   /* Add custom styles if needed */
+  .error-message {
+  color: red;
+  margin-top: 10px;
+}
   </style>
   

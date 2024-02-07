@@ -114,6 +114,8 @@
 
 <script>
 import { defineComponent } from 'vue';
+import axios from 'axios';
+import Cookies from 'js-cookie'
 
 export default defineComponent({
   data() {
@@ -130,8 +132,13 @@ export default defineComponent({
       email: '',
       genderOptions: ['Male', 'Female', 'Other'],
       accommodationPreference: null,
-      transportationPreference: null
+      transportationPreference: null,
+      existingUserData: {},
     };
+  },
+  mounted() {
+    //Fetch existing user data from the backend when the component is mounted
+    //this.fetchExistingUserData();
   },
   methods: {
     toggleInterest(activity) {
@@ -156,6 +163,61 @@ export default defineComponent({
       });
       // Add your logic to save the data (e.g., send it to a server)
       // You can also navigate to another page or show a success message
+    },
+    async checkLoginStatus() {
+      const url = 'http://localhost:8000/api/check_login_status';
+
+      const token = Cookies.get('login_token');
+      console.log('token from navbar: ', token)
+      this.isLoggedIn = true;
+      if (token) {
+        return token;
+      }
+      if (!token) {
+        console.log('Token not available.');
+        this.isLoggedIn = false;
+        return;
+      }
+
+    },
+    // fetchExistingUserData() {
+    //   const token = this.checkLoginStatus();
+    //   console.log("Token from fetch: ", token)
+
+    //   // Make an HTTP GET request to fetch the existing user data
+    //   axios.get('http://localhost:8000/api/GetUserProfile', { headers: { Authorization: `Bearer ${token}` }})
+
+
+
+
+    // //     .then(response => {
+    // //       this.existingUserData = response.data;
+    // //       // Autofill the text fields with the existing user data
+    // //       this.firstName = this.existingUserData.firstName;
+    // //       this.lastName = this.existingUserData.lastName;
+    // //       this.email = this.existingUserData.email;
+    // //       // ... autofill other fields as needed ...
+    // //     })
+    // //     .catch(error => {
+    // //       console.error('Error fetching existing user data from fetchExistingUserData:', error);
+    // //     });
+    // // },
+    getGender(gender) {
+      switch (gender) {
+        case 'Male':
+          return 'M';
+        case 'Female':
+          return 'F';
+        case 'Other':
+          return 'O';
+      }
+    },
+    // Method to send data to the Flask backend
+    sendDataToBackend() {
+      const selectedGender = this.getGender(this.gender);
+
+      // Now you can send the selectedGender to your Flask backend
+      // using an HTTP request (e.g., axios.post or axios.put)
     },
   },
 });

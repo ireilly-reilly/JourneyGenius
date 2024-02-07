@@ -1,5 +1,5 @@
 <template>
-    <nav>
+    <nav :key="isLoggedIn">
       <v-toolbar flat app>
   
         <!-- If we want to utilize the sidebar component -->
@@ -36,67 +36,69 @@
   </template>
   
   <script>
-  // Import Axios at the top of your script
-  import axios from 'axios';
-  import Cookies from 'js-cookie';
-  export default {
-    data() {
-      return {
-        isLoggedIn: false, // Default to not logged in
-        buttons: [
-          { text: 'Home', to: '/' },
-          { text: 'User Profiling', to: '/UserProfiling' },
-          { text: 'Plan Trip', to: '/StartPlanning' },
-          { text: 'Saved Trips', to: '/SavedTrips' },
-        ],
-      };
-    },
-    created() {
-      this.checkLoginStatus();
-    },
-    methods: {
-      logout() {
-        const url = 'http://localhost:8000/api/LogoutUser'; // Update with your Flask app's URL
+import axios from 'axios';
+import Cookies from 'js-cookie';
 
-        // Remove the user token or session ID from the cookie
-        Cookies.remove('login_token', { httpOnly: true });
+export default {
+  data() {
+    return {
+      isLoggedIn: false,
+      buttons: [
+        { text: 'Home', to: '/' },
+        { text: 'User Profiling', to: '/UserProfiling' },
+        { text: 'Plan Trip', to: '/StartPlanning' },
+        { text: 'Saved Trips', to: '/SavedTrips' },
+      ],
+      token: Cookies.get('login_token'),
+    };
+  },
+  mounted() {
+    this.checkLoginStatus();
+  },
+  methods: {
+    // getToken() {
+    //   return Cookies.get('login_token');
+    // },
+    logout() {
+      const url = 'http://localhost:8000/api/LogoutUser';
+      Cookies.remove('login_token');
 
-        // Send a request to the Flask API to handle logout
-        axios.post(url)
-          .then(response => {
-            console.log('Logout successful!', response);
-            this.message = 'Logout successful.';
-            this.isLoggedIn = false;
-            //window.location.reload();
-          })
-          .catch(error => {
-            console.error('Error logging out', error);
-            this.message = 'Error logging out.';
-          });
-        //this.checkLoginStatus()
-      },
-      async checkLoginStatus() {
-        const url = 'http://localhost:8000/api/check_login_status'; // Update with your Flask app's URL
-
-        // Send a request to the Flask API to check the login status
-        axios.get(url, { withCredentials: true })
-          .then(response => {
-            console.log('Login status:', response.data.message);
-            this.message = response.data.message;
-            if (this.message == 'User is logged in'){
-              this.isLoggedIn = true;
-            }
-            else if (this.message == 'User is not logged in'){
-              this.isLoggedIn = false;
-            }
-          })
-          .catch(error => {
-            console.error('Error checking login status', error);
-            this.message = 'Error checking login status.';
-            this.isLoggedIn = false;
-          });
-      },
+      axios.post(url)
+        .then(response => {
+          console.log('Logout successful!', response);
+          this.message = 'Logout successful.';
+          this.isLoggedIn = false;
+          this.$router.push({ name: 'LoggingOut' });
+        })
+        .catch(error => {
+          console.error('Error logging out', error);
+          this.message = 'Error logging out.';
+        });
     },
-  };
-  </script>
+    async checkLoginStatus() {
+      const url = 'http://localhost:8000/api/check_login_status';
+
+      const token = Cookies.get('login_token');
+      console.log('token from navbar: ', token)
+      this.isLoggedIn = true;
+
+      if (!token) {
+        console.log('Token not available.');
+        this.isLoggedIn = false;
+        return;
+      }
+
+    },
+    reloadComponent() {
+      // Manually reload the component
+      const currentRoute = this.$route;
+      this.$router.replace({ name: 'dummy' }).then(() => {
+        this.$router.replace(currentRoute);
+      });
+    },
+    
+  },
+};
+</script>
+  
   
