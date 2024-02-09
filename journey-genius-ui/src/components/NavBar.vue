@@ -1,41 +1,41 @@
 <template>
-    <nav :key="isLoggedIn">
-      <v-toolbar flat app>
-  
-        <!-- If we want to utilize the sidebar component -->
-        <!-- <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
-  
-        <!-- Title -->
-        <v-toolbar-title class="text-uppercase grey--text mr-5">
-          <span class="font-weight-light">Journey</span>
-          <span>Genius</span>
-        </v-toolbar-title>
-  
-        <!-- Buttons that link to other parts of the site -->
-        <div class="d-flex align-center ml-16">
-          <v-btn v-for="button in buttons" :key="button.to" flat color="grey" :to="button.to">
-            {{ button.text }}
-          </v-btn>
-        </div>
-  
-        <v-spacer></v-spacer>
-  
-        <router-link v-if="!isLoggedIn" to="/LoginPage">
-          <v-btn color="grey darken-2" flat>
-            <span style="margin-right: 5px;">Login</span>
-            <v-icon right>mdi-exit-to-app</v-icon>
-          </v-btn>
-        </router-link>
+  <nav :key="isLoggedIn">
+    <v-toolbar flat app>
 
-        <v-btn v-if="isLoggedIn" color="grey darken-2" flat @click="logout">
-          <span style="margin-right: 5px;">Logout</span>
+      <!-- If we want to utilize the sidebar component -->
+      <!-- <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
+
+      <!-- Title -->
+      <v-toolbar-title class="text-uppercase grey--text mr-5">
+        <span class="font-weight-light">Journey</span>
+        <span>Genius</span>
+      </v-toolbar-title>
+
+      <!-- Buttons that link to other parts of the site -->
+      <div class="d-flex align-center ml-16">
+        <v-btn v-for="button in buttons" :key="button.to" flat color="grey" :to="button.to">
+          {{ button.text }}
+        </v-btn>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <router-link v-if="!isLoggedIn" to="/LoginPage">
+        <v-btn color="grey darken-2" flat>
+          <span style="margin-right: 5px;">Login</span>
           <v-icon right>mdi-exit-to-app</v-icon>
         </v-btn>
-      </v-toolbar>
-    </nav>
-  </template>
+      </router-link>
+
+      <v-btn v-if="isLoggedIn" color="grey darken-2" flat @click="logout">
+        <span style="margin-right: 5px;">Logout</span>
+        <v-icon right>mdi-exit-to-app</v-icon>
+      </v-btn>
+    </v-toolbar>
+  </nav>
+</template>
   
-  <script>
+<script>
 import axios from 'axios';
 import Cookies from 'js-cookie';
 
@@ -45,11 +45,10 @@ export default {
       isLoggedIn: false,
       buttons: [
         { text: 'Home', to: '/' },
-        { text: 'User Profiling', to: '/UserProfiling' },
-        { text: 'Plan Trip', to: '/StartPlanning' },
-        { text: 'Saved Trips', to: '/SavedTrips' },
       ],
       token: Cookies.get('login_token'),
+      isPageRefreshed: false, // Flag to track if the page has been refreshed
+
     };
   },
   mounted() {
@@ -73,19 +72,38 @@ export default {
         .catch(error => {
           console.error('Error logging out', error);
           this.message = 'Error logging out.';
-        });
+        })
+      this.buttons = [
+        { text: 'Home', to: '/' },
+      ];
+
     },
+
     async checkLoginStatus() {
       const url = 'http://localhost:8000/api/check_login_status';
 
       const token = Cookies.get('login_token');
       console.log('token from navbar: ', token)
-      this.isLoggedIn = true;
+      // If the token is available, it means the user is logged in
+      if (token) {
+        console.log('User logged in');
+        this.isLoggedIn = true;
 
-      if (!token) {
+        // Update the navigation buttons for logged-in users
+        this.buttons = [
+          { text: 'Home', to: '/' },
+          { text: 'User Profiling', to: '/UserProfiling' },
+          { text: 'Plan Trip', to: '/StartPlanning' },
+          { text: 'Saved Trips', to: '/SavedTrips' }
+        ];
+
+        // Set a flag indicating successful login
+        this.$emit('loginSuccess');
+
+      } else {
+        // If the token is not available, the user is not logged in
         console.log('Token not available.');
         this.isLoggedIn = false;
-        return;
       }
 
     },
@@ -96,7 +114,6 @@ export default {
         this.$router.replace(currentRoute);
       });
     },
-    
   },
 };
 </script>

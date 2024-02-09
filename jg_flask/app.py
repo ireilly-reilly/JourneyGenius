@@ -17,6 +17,8 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 CORS(app, supports_credentials=True)
+# CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
 #Register blueprints TODO Refactor into bluprints to make it nicer!
 #app.register_blueprint(auth_bp)#, url_prefix='/auth') <--might add later
