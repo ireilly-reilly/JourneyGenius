@@ -148,9 +148,13 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
+import os
 
 # Load the data from the CSV file with the correct encoding
-data = pd.read_csv('restaurant_data.csv', encoding='utf-8')
+data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
+
+penis = os.getcwd()
+print(penis)
 
 # Preprocess the "Price Range" column
 # Fill missing values with 0 (unknown)
@@ -191,7 +195,7 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 # Function to get recommendations by text similarity, location, and price range
-def get_recommendations_with_location_and_price(place_name, latitude, longitude, desired_price, cosine_sim=cosine_sim):
+def get_recommendations_with_location_and_price(place_name, Latitude, Longitude, desired_price, cosine_sim=cosine_sim):
     # Get the index of the input place
     idx = data[data['Place'] == place_name].index[0]
 
