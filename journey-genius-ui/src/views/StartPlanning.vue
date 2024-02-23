@@ -111,6 +111,7 @@
 <script>
 
 import { defineComponent } from 'vue';
+import axios from 'axios';
 
 export default defineComponent({
   data() {
@@ -124,10 +125,11 @@ export default defineComponent({
 
       // Data for budget selection
       budgets: [
-        { label: 'Cheap', value: 'cheap', range: '0 - 1000 USD', selected: false },
-        { label: 'Medium', value: 'medium', range: '1000 - 2500 USD', selected: false },
-        { label: 'Expensive', value: 'expensive', range: '2500+ USD', selected: false },
+        { label: 'Cheap', value: 'cheap', range: '0 - 1000 USD', selected: false, priceRange: ['1'] },
+        { label: 'Medium', value: 'medium', range: '1000 - 2500 USD', selected: false, priceRange: ['2'] },
+        { label: 'Expensive', value: 'expensive', range: '2500+ USD', selected: false, priceRange: ['3'] },
       ],
+
 
       // Data for travel companion selection
       travelCompanions: [
@@ -181,10 +183,11 @@ export default defineComponent({
     },
     // Method for selecting a budget
     selectBudget(selectedBudget) {
-      this.budgets.forEach((budget) => {
-        budget.selected = budget === selectedBudget;
-      });
-    },
+    this.$store.commit('setSelectedBudget', selectedBudget);
+    this.budgets.forEach((budget) => {
+      budget.selected = budget === selectedBudget;
+    });
+  },
     // Method for selecting a travel companion
     selectTravelCompanion(selectedCompanion) {
       this.travelCompanions.forEach((companion) => {
@@ -193,9 +196,28 @@ export default defineComponent({
     },
     // Method for generating an itinerary or navigating to another view page
     generateItinerary() {
-      // Add logic for generating the itinerary or route to another view page
-      // For example, you can use Vue Router to navigate to a new page
-      this.$router.push('/Itinerary');
+      // Prepare data to send to the backend
+      const requestData = {
+        place_name: this.city,
+        // latitude: this.latitude, // Assume you have a way to get the latitude from the user input
+        // longitude: this.longitude, // Assume you have a way to get the longitude from the user input
+        latitude: 39.5296,
+        longitude: -119.8138,
+        desired_price_range: 2,
+        // desired_price_range: this.selectedBudget.priceRange, // Assuming selectedBudget has a priceRange property
+      };
+
+      // Send a POST request to the Flask backend
+      axios.post('http://localhost:8000/generate_itinerary', requestData)
+        .then(response => {
+          // Handle the response, e.g., update the UI with the generated itinerary
+          console.log(response.data);
+        })
+        .catch(error => {
+          // Handle errors
+          console.error(error);
+        });
+    
     },
     // Method to check if the end date is valid
     isEndDateValid(selectedEndDate) {

@@ -5,7 +5,7 @@
         <div class="text-center">
           <!-- Other template markup -->
           <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-            <span class="text-center">Logging in the User!</span>
+            <span class="text-center">Login Successful!</span>
           </v-snackbar>
         </div>
       </template>
