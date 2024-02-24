@@ -7,6 +7,7 @@ import 'vuetify/dist/vuetify.min.css';
 //import 'materialize-css/dist/css/materialize.min.css';
 import store from './store/store.js';
 
+
 loadFonts()
 
 createApp(App)

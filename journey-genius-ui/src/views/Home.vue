@@ -22,12 +22,26 @@
             tailored to your interests and budget.
           </h3>
 
-          <!-- "Start Now" -->
+          <!-- "Start Now"
           <router-link to='/StartPlanning'>
             <v-btn rounded="lg" size="large" color="deep-purple-accent-2" class="white--text mt-6">
               Start Planning
             </v-btn>
+          </router-link> -->
+
+          <!-- "Start Planning" button with conditional rendering -->
+          <router-link v-if="isLoggedIn" to="/StartPlanning">
+            <v-btn rounded="lg" size="large" color="deep-purple-accent-2" class="white--text mt-6">
+              Start Planning
+            </v-btn>
           </router-link>
+
+          <router-link v-else to="/LoginPage">
+            <v-btn rounded="lg" size="large" color="deep-purple-accent-2" class="white--text mt-6">
+              Start Planning
+            </v-btn>
+          </router-link>
+
           <!-- </v-card> -->
           <br>
           <br>
@@ -144,11 +158,15 @@
 
 <script>
 import { defineComponent } from 'vue';
+import axios from 'axios'; // Import Axios for making HTTP requests
+import Cookies from 'js-cookie';
 
 
 export default defineComponent({
   data() {
     return {
+      isLoggedIn: false, // Initialize isLoggedIn flag to false
+      hasPageBeenRefreshed: false, // Flag to track if the page has been refreshed
       featuredDestinations: [
         {
           name: 'New York, New York',
@@ -165,8 +183,6 @@ export default defineComponent({
           image: require('@/assets/hawaii.jpeg'),
           description: 'Honolulu, the capital of Hawaii, is a tropical paradise known for its beaches, cultural heritage, and Pacific cuisine.'
         },
-
-
         // Add more featured destinations as needed
       ],
       specialFeatures: [
@@ -176,9 +192,31 @@ export default defineComponent({
         // Add more features as needed
       ],
     }
+  },
+  mounted() {
+    // Call method to check login status when the component is mounted
+    this.checkLoginStatus();
+  },
+  methods: {
+    async checkLoginStatus() {
+      const url = 'http://localhost:8000/api/check_login_status';
+
+      const token = Cookies.get('login_token'); // Use Cookies.get from js-cookie
+      console.log('token from navbar: ', token);
+
+      // Make the request to check login status
+      try {
+        const response = await axios.get(url, { headers: { Authorization: `Bearer ${token}` } });
+        this.isLoggedIn = response.data && response.data.user_id;
+      } catch (error) {
+        console.error('Error checking login status:', error);
+        this.isLoggedIn = false;
+      }
+    }
   }
 });
 </script>
+
 
 
 <style scoped>

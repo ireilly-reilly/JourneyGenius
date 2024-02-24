@@ -4,11 +4,11 @@
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
         <h2 style="font-size: 2.5rem;" class="headline text-deep-purple-accent-2">Your Interests</h2>
-        <p>User profiling is integral to our application for several reasons. 
-          By understanding the unique preferences, interests, budget constraints, 
-          and travel goals of each user, we can tailor the recommendations to 
-          match their individual needs. This personalized approach ensures that 
-          users receive suggestions aligned with their tastes, making their 
+        <p>User profiling is integral to our application for several reasons.
+          By understanding the unique preferences, interests, budget constraints,
+          and travel goals of each user, we can tailor the recommendations to
+          match their individual needs. This personalized approach ensures that
+          users receive suggestions aligned with their tastes, making their
           vacation experience more enjoyable and satisfying.
         </p>
         <br>
@@ -51,7 +51,8 @@
           <h3 class="headline text-deep-purple-accent-2">Interest Activities</h3>
           <v-row justify="center">
             <v-col v-for="activity in interestActivities" :key="activity" cols="4">
-              <v-btn class="interest-btn" stacked="" :color="selectedActivities.includes(activity) ? 'deep-purple' : 'deep-purple-accent-2'"
+              <v-btn class="interest-btn" stacked=""
+                :color="selectedActivities.includes(activity) ? 'deep-purple' : 'deep-purple-accent-2'"
                 @click="toggleInterest(activity)">
                 <v-icon v-if="activity === 'Beaches'">mdi-beach</v-icon>
                 <v-icon v-if="activity === 'City Sightseeing'">mdi-city</v-icon>
@@ -134,11 +135,32 @@ export default defineComponent({
       accommodationPreference: null,
       transportationPreference: null,
       existingUserData: {},
+      savedActivities: [],
     };
   },
   mounted() {
-    //Fetch existing user data from the backend when the component is mounted
-    //this.fetchExistingUserData();
+
+    const token = Cookies.get('login_token');
+      console.log('token from navbar: ', token)
+
+    if (token) {
+        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+    }
+
+    axios.get('/api/get_user_profile')
+        .then(response => {
+            this.firstName = response.data.firstName;
+            this.lastName = response.data.lastName;
+            this.gender = response.data.gender;
+            this.age = response.data.age;
+            this.email = response.data.email;
+            this.accommodationPreference = response.data.accommodationPreference;
+            this.transportationPreference = response.data.transportationPreference;
+            this.selectedActivities = response.data.selectedActivities;
+        })
+        .catch(error => {
+            console.error('Error fetching user profile data:', error);
+        });
   },
   methods: {
     toggleInterest(activity) {
@@ -151,6 +173,27 @@ export default defineComponent({
     },
 
     saveData() {
+    axios.post('/api/save_user_data', {
+        firstName: this.firstName,
+        lastName: this.lastName,
+        gender: this.gender,
+        age: this.age,
+        email: this.email,
+        accommodationPreference: this.accommodationPreference,
+        transportationPreference: this.transportationPreference,
+        selectedActivities: this.selectedActivities
+    })
+    .then(response => {
+        console.log('Data saved successfully:', response.data);
+        // Optionally, show a success message or navigate to another page
+    })
+    .catch(error => {
+        console.error('Error saving user profile data:', error);
+        // Optionally, show an error message to the user
+    });
+
+
+      // Log the form data
       console.log('Data saved:', {
         firstName: this.firstName,
         lastName: this.lastName,
@@ -164,63 +207,90 @@ export default defineComponent({
       // Add your logic to save the data (e.g., send it to a server)
       // You can also navigate to another page or show a success message
     },
-    async checkLoginStatus() {
-      const url = 'http://localhost:8000/api/check_login_status';
 
-      const token = Cookies.get('login_token');
-      console.log('token from navbar: ', token)
-      this.isLoggedIn = true;
-      if (token) {
-        return token;
-      }
-      if (!token) {
-        console.log('Token not available.');
-        this.isLoggedIn = false;
-        return;
-      }
-
-    },
-    // fetchExistingUserData() {
-    //   const token = this.checkLoginStatus();
-    //   console.log("Token from fetch: ", token)
-
-    //   // Make an HTTP GET request to fetch the existing user data
-    //   axios.get('http://localhost:8000/api/GetUserProfile', { headers: { Authorization: `Bearer ${token}` }})
-
-
-
-
-    // //     .then(response => {
-    // //       this.existingUserData = response.data;
-    // //       // Autofill the text fields with the existing user data
-    // //       this.firstName = this.existingUserData.firstName;
-    // //       this.lastName = this.existingUserData.lastName;
-    // //       this.email = this.existingUserData.email;
-    // //       // ... autofill other fields as needed ...
-    // //     })
-    // //     .catch(error => {
-    // //       console.error('Error fetching existing user data from fetchExistingUserData:', error);
-    // //     });
-    // // },
-    getGender(gender) {
-      switch (gender) {
-        case 'Male':
-          return 'M';
-        case 'Female':
-          return 'F';
-        case 'Other':
-          return 'O';
-      }
-    },
-    // Method to send data to the Flask backend
-    sendDataToBackend() {
-      const selectedGender = this.getGender(this.gender);
-
-      // Now you can send the selectedGender to your Flask backend
-      // using an HTTP request (e.g., axios.post or axios.put)
-    },
+    // Add your logic to save the data (e.g., send it to a server)
+    // You can also navigate to another page or show a success message
   },
-});
+  async checkLoginStatus() {
+    const url = 'http://localhost:8000/api/check_login_status';
+
+    const token = Cookies.get('login_token');
+    console.log('token from navbar: ', token)
+    this.isLoggedIn = true;
+    if (token) {
+      return token;
+    }
+    if (!token) {
+      console.log('Token not available.');
+      this.isLoggedIn = false;
+      return;
+    }
+
+  },
+
+
+  fetchExistingUserData() {
+        const token = Cookies.get('login_token');
+        console.log("Token from fetch: ", token)
+
+        // Make an HTTP GET request to fetch the existing user data
+        axios.get('http://localhost:8000/api/get_user_profile', { headers: { Authorization: `Bearer ${token}` }})
+             .then(response => {
+                 this.existingUserData = response.data;
+                 // Autofill the text fields with the existing user data
+                 this.firstName = this.existingUserData.firstName;
+                 this.lastName = this.existingUserData.lastName;
+                 this.email = this.existingUserData.email;
+                 // ... autofill other fields as needed ...
+             })
+             .catch(error => {
+                 console.error('Error fetching existing user data from fetchExistingUserData:', error);
+             });
+    },
+
+
+
+  // fetchExistingUserData() {
+  //   const token = this.checkLoginStatus();
+  //   console.log("Token from fetch: ", token)
+
+  //   // Make an HTTP GET request to fetch the existing user data
+  //   axios.get('http://localhost:8000/api/GetUserProfile', { headers: { Authorization: `Bearer ${token}` }})
+
+
+
+
+  //      .then(response => {
+  //        this.existingUserData = response.data;
+  //        // Autofill the text fields with the existing user data
+  //        this.firstName = this.existingUserData.firstName;
+  //        this.lastName = this.existingUserData.lastName;
+  //        this.email = this.existingUserData.email;
+  //        // ... autofill other fields as needed ...
+  //      })
+  //      .catch(error => {
+  //        console.error('Error fetching existing user data from fetchExistingUserData:', error);
+  //      });
+  //  },
+  getGender(gender) {
+    switch (gender) {
+      case 'Male':
+        return 'M';
+      case 'Female':
+        return 'F';
+      case 'Other':
+        return 'O';
+    }
+  },
+  // Method to send data to the Flask backend
+  sendDataToBackend() {
+    const selectedGender = this.getGender(this.gender);
+
+    // Now you can send the selectedGender to your Flask backend
+    // using an HTTP request (e.g., axios.post or axios.put)
+  },
+},
+);
 </script>
 
 <style scoped>

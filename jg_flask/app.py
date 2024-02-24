@@ -6,6 +6,7 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 import secrets
 from flask_mail import Mail, Message
 
+
 #from email_verification import email_verification_bp
 
 #Flask App Initializations
@@ -17,6 +18,8 @@ db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 CORS(app, supports_credentials=True)
+# CORS(app, resources={r"/api/*": {"origins": "*"}})
+
 
 #Register blueprints TODO Refactor into bluprints to make it nicer!
 #app.register_blueprint(auth_bp)#, url_prefix='/auth') <--might add later
@@ -130,6 +133,51 @@ def logout():
 # #         return jsonify({'error': 'User not found from fetch data'}), 404
 
 
+@app.route('/api/save_user_data', methods=['POST'])
+@jwt_required()  # Ensure the request has a valid JWT token
+def save_user_data():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    data = request.json
+    user.firstname = data.get('firstName')
+    user.lastname = data.get('lastName')
+    user.gender = data.get('gender')
+    user.age = data.get('age')
+    user.email = data.get('email')
+    user.accommodations = data.get('accommodationPreference')
+    user.transportation = data.get('transportationPreference')
+    user.interests = ','.join(data.get('selectedActivities'))
+
+    db.session.commit()
+
+    return jsonify({'message': 'Data saved successfully'}), 200
+
+
+@app.route('/api/get_user_profile', methods=['GET'])
+@jwt_required()  
+def get_user_profile():
+    current_user_id = get_jwt_identity()
+    user = User.query.get(current_user_id)
+
+    if not user:
+        return jsonify({'error': 'User not found'}), 404
+
+    user_data = {
+        'firstName': user.firstname,
+        'lastName': user.lastname,
+        'gender': user.gender,
+        'age': user.age,
+        'email': user.email,
+        'accommodationPreference': user.accommodations,
+        'transportationPreference': user.transportation,
+        'selectedActivities': user.interests.split(',')
+    }
+
+    return jsonify(user_data), 200
 
 
 

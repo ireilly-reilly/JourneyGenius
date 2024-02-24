@@ -1,19 +1,24 @@
 <template>
   <v-app>
     <v-content>
+      <template>
+        <div class="text-center">
+          <!-- Other template markup -->
+          <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+            <span class="text-center">Login Successful!</span>
+          </v-snackbar>
+        </div>
+      </template>
+
       <v-card width="500" class="mx-auto mt-9">
         <v-card-title>Login</v-card-title>
         <v-card-text>
-          <v-text-field v-model="email" label="Email" prepend-icon="mdi-account-circle" :class="{ 'error-outline': showLoginError }"/>
-          <v-text-field 
-            v-model="password"
-            label="Password" 
-            :type="showPassword ? 'text' : 'password'"
-            prepend-icon="mdi-lock"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="showPassword = !showPassword"
-            :class="{ 'error-outline': showLoginError }"/>
-            <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
+          <v-text-field v-model="email" label="Email" prepend-icon="mdi-account-circle"
+            :class="{ 'error-outline': showLoginError }" />
+          <v-text-field v-model="password" label="Password" :type="showPassword ? 'text' : 'password'"
+            prepend-icon="mdi-lock" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword" :class="{ 'error-outline': showLoginError }" />
+          <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -44,6 +49,7 @@
 //Imports
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
 export default {
   data() {
     return {
@@ -54,10 +60,12 @@ export default {
       registrationErrorMessage: '',
       showLoginError: false,
       showRegistrationError: false,
-      token:Cookies.get('login_token') || '', // Retrieve token from Cookies
+      token: Cookies.get('login_token') || '', // Retrieve token from Cookies
+      showSnackbar: false,
+
     };
   },
-  created(){
+  created() {
     this.checkLoginStatus();
   },
   methods: {
@@ -88,9 +96,15 @@ export default {
           //console.log('Login token:', token) //Display token after cookies set
           console.log('User logged in successfully, login token: ', token)
           this.checkLoginStatus();
+
+          this.showSnackbar = true; // Show the Snackbar
+          setTimeout(() => {
+            this.$router.push({ name: 'Home' });
+          }, 3000);
+
           // Redirect to the home page
-          this.$router.push({ name: 'Home' });
-          
+          // this.$router.push({ name: 'Home' });
+
         })
         .catch(error => {
           console.error('Error logging in', error);
@@ -150,6 +164,7 @@ export default {
   color: red;
   margin-top: 10px;
 }
+
 .error-outline {
   border-color: red;
 }
