@@ -12,6 +12,9 @@ import MoreDiningPage from '../views/MoreDiningPage.vue'
 import MoreShoppingPage from '../views/MoreShoppingPage.vue'
 import Itinerary2 from '../views/Itinerary2.vue'
 import GeneratedItinerary from '../views/GeneratedItinerary.vue'
+import GeneratedItinerary2 from '../views/GeneratedItinerary2.vue'
+import LoggingOut from "../views/LoggingOut.vue"
+import EmailVerification from "../views/EmailVerification.vue"
 
 
 const routes = [
@@ -19,6 +22,11 @@ const routes = [
     path: '/',
     name: 'Home',
     component: Home
+  },
+  {
+    path: '/loading',
+    name: 'dummy',
+    //component: NavBar,
   },
   {
     path: '/about',
@@ -87,8 +95,22 @@ const routes = [
     path: '/GeneratedItinerary',
     name: 'GeneratedItinerary',
     component: GeneratedItinerary,
+  },
+  {
+    path: '/GeneratedItinerary2',
+    name: 'GeneratedItinerary2',
+    component: GeneratedItinerary2,
+  },
+  {
+    path: '/LoggingOut',
+    name: 'LoggingOut',
+    component: LoggingOut,
+  },
+  {
+    path: '/EmailVerification',
+    name: 'EmailVerification',
+    component: EmailVerification,
   }
-  
 ]
 
 const router = createRouter({

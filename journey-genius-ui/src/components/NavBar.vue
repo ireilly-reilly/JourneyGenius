@@ -1,102 +1,121 @@
 <template>
-    <nav>
-      <v-toolbar flat app>
-  
-        <!-- If we want to utilize the sidebar component -->
-        <!-- <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
-  
-        <!-- Title -->
-        <v-toolbar-title class="text-uppercase grey--text mr-5">
-          <span class="font-weight-light">Journey</span>
-          <span>Genius</span>
-        </v-toolbar-title>
-  
-        <!-- Buttons that link to other parts of the site -->
-        <div class="d-flex align-center ml-16">
-          <v-btn v-for="button in buttons" :key="button.to" flat color="grey" :to="button.to">
-            {{ button.text }}
-          </v-btn>
-        </div>
-  
-        <v-spacer></v-spacer>
-  
-        <router-link v-if="!isLoggedIn" to="/LoginPage">
-          <v-btn color="grey darken-2" flat>
-            <span style="margin-right: 5px;">Login</span>
-            <v-icon right>mdi-exit-to-app</v-icon>
-          </v-btn>
-        </router-link>
+  <nav :key="isLoggedIn">
+    <v-toolbar flat app>
 
-        <v-btn v-if="isLoggedIn" color="grey darken-2" flat @click="logout">
-          <span style="margin-right: 5px;">Logout</span>
+      <!-- If we want to utilize the sidebar component -->
+      <!-- <v-app-bar-nav-icon variant="text" @click.stop="drawer = !drawer"></v-app-bar-nav-icon> -->
+
+      <!-- Title -->
+      <v-toolbar-title class="text-uppercase grey--text mr-5">
+        <span class="font-weight-light">Journey</span>
+        <span>Genius</span>
+      </v-toolbar-title>
+
+      <!-- Buttons that link to other parts of the site -->
+      <div class="d-flex align-center ml-16">
+        <v-btn v-for="button in buttons" :key="button.to" flat color="grey" :to="button.to">
+          {{ button.text }}
+        </v-btn>
+      </div>
+
+      <v-spacer></v-spacer>
+
+      <router-link v-if="!isLoggedIn" to="/LoginPage">
+        <v-btn color="grey darken-2" flat>
+          <span style="margin-right: 5px;">Login</span>
           <v-icon right>mdi-exit-to-app</v-icon>
         </v-btn>
-      </v-toolbar>
-    </nav>
-  </template>
+      </router-link>
+
+      <v-btn v-if="isLoggedIn" color="grey darken-2" flat @click="logout">
+        <span style="margin-right: 5px;">Logout</span>
+        <v-icon right>mdi-exit-to-app</v-icon>
+      </v-btn>
+    </v-toolbar>
+  </nav>
+</template>
   
-  <script>
-  // Import Axios at the top of your script
-  import axios from 'axios';
-  import Cookies from 'js-cookie';
-  export default {
-    data() {
-      return {
-        isLoggedIn: false, // Default to not logged in
-        buttons: [
+<script>
+import axios from 'axios';
+import Cookies from 'js-cookie';
+
+export default {
+  data() {
+    return {
+      isLoggedIn: false,
+      buttons: [
+        { text: 'Home', to: '/' },
+      ],
+      token: Cookies.get('login_token'),
+      isPageRefreshed: false, // Flag to track if the page has been refreshed
+
+    };
+  },
+  mounted() {
+    this.checkLoginStatus();
+  },
+  methods: {
+    // getToken() {
+    //   return Cookies.get('login_token');
+    // },
+    logout() {
+      const url = 'http://localhost:8000/api/LogoutUser';
+      Cookies.remove('login_token');
+
+      axios.post(url)
+        .then(response => {
+          console.log('Logout successful!', response);
+          this.message = 'Logout successful.';
+          this.isLoggedIn = false;
+          this.$router.push({ name: 'LoggingOut' });
+        })
+        .catch(error => {
+          console.error('Error logging out', error);
+          this.message = 'Error logging out.';
+        })
+      this.buttons = [
+        { text: 'Home', to: '/' },
+      ];
+
+    },
+
+    async checkLoginStatus() {
+      const url = 'http://localhost:8000/api/check_login_status';
+
+      const token = Cookies.get('login_token');
+      console.log('token from navbar: ', token)
+      // If the token is available, it means the user is logged in
+      if (token) {
+        console.log('User logged in');
+        this.isLoggedIn = true;
+
+        // Update the navigation buttons for logged-in users
+        this.buttons = [
           { text: 'Home', to: '/' },
           { text: 'User Profiling', to: '/UserProfiling' },
           { text: 'Plan Trip', to: '/StartPlanning' },
-          { text: 'Saved Trips', to: '/SavedTrips' },
-        ],
-      };
-    },
-    created() {
-      this.checkLoginStatus();
-    },
-    methods: {
-      logout() {
-        const url = 'http://localhost:8000/api/LogoutUser'; // Update with your Flask app's URL
+          { text: 'Saved Trips', to: '/SavedTrips' }
+        ];
 
-        // Remove the user token or session ID from the cookie
-        Cookies.remove('login_token', { httpOnly: true });
+        // Set a flag indicating successful login
+        this.$emit('loginSuccess');
 
-        // Send a request to the Flask API to handle logout
-        axios.post(url)
-          .then(response => {
-            console.log('Logout successful!', response);
-            this.message = 'Logout successful.';
-            this.isLoggedIn = false;
-            //window.location.reload();
-          })
-          .catch(error => {
-            console.error('Error logging out', error);
-            this.message = 'Error logging out.';
-          });
-        //this.checkLoginStatus()
-      },
-      async checkLoginStatus() {
-        const url = 'http://localhost:8000/api/check_login_status'; // Update with your Flask app's URL
+      } else {
+        // If the token is not available, the user is not logged in
+        console.log('Token not available.');
+        this.isLoggedIn = false;
+      }
 
-        // Send a request to the Flask API to check the login status
-        axios.get(url, { withCredentials: true })
-          .then(response => {
-            console.log('Login status:', response.data.message);
-            this.message = response.data.message;
-            if (this.message == 'User is logged in'){
-              this.isLoggedIn = true;
-            }
-            else if (this.message == 'User is not logged in'){
-              this.isLoggedIn = false;
-            }
-          })
-          .catch(error => {
-            console.error('Error checking login status', error);
-            this.message = 'Error checking login status.';
-            this.isLoggedIn = false;
-          });
-      },
     },
-  };
-  </script>
+    reloadComponent() {
+      // Manually reload the component
+      const currentRoute = this.$route;
+      this.$router.replace({ name: 'dummy' }).then(() => {
+        this.$router.replace(currentRoute);
+      });
+    },
+  },
+};
+</script>
+  
   

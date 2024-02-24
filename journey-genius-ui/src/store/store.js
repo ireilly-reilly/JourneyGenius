@@ -1,12 +1,16 @@
-// store.js
+// store/store.js
 import { createStore } from 'vuex';
 
-export default createStore({
-  state: {
-    selectedActivities: [],
-    selectedLandmarks: [],
-    selectedFoods: [],
-    selectedShops: [],
+const store = createStore({
+  state() {
+    return {
+      selectedActivities: [],
+      selectedLandmarks: [],
+      selectedFoods: [],
+      selectedShops: [],
+      isLoggedOn: false, // Global variable for login state
+      selectedBudget: null,
+    };
   },
   mutations: {
     updateSelectedActivities(state, selectedActivities) {
@@ -21,5 +25,19 @@ export default createStore({
     updateSelectedShops(state, selectedShops) {
       state.selectedShops = selectedShops;
     },
+    // Mutation to update the isLoggedOn variable
+    updateIsLoggedOn(state, isLoggedOn) {
+      state.isLoggedOn = isLoggedOn;
+    },
+    setSelectedBudget(state, budget) {
+      state.selectedBudget = budget;
+    },
+  },
+  getters: {
+    selectedBudget(state) {
+      return state.selectedBudget;
+    },
   },
 });
+
+export default store;

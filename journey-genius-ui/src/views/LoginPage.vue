@@ -1,19 +1,24 @@
 <template>
   <v-app>
     <v-content>
+      <template>
+        <div class="text-center">
+          <!-- Other template markup -->
+          <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+            <span class="text-center">Login Successful!</span>
+          </v-snackbar>
+        </div>
+      </template>
+
       <v-card width="500" class="mx-auto mt-9">
         <v-card-title>Login</v-card-title>
         <v-card-text>
-          <v-text-field v-model="email" label="Email" prepend-icon="mdi-account-circle" :class="{ 'error-outline': showLoginError }"/>
-          <v-text-field 
-            v-model="password"
-            label="Password" 
-            :type="showPassword ? 'text' : 'password'"
-            prepend-icon="mdi-lock"
-            :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="showPassword = !showPassword"
-            :class="{ 'error-outline': showLoginError }"/>
-            <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
+          <v-text-field v-model="email" label="Email" prepend-icon="mdi-account-circle"
+            :class="{ 'error-outline': showLoginError }" />
+          <v-text-field v-model="password" label="Password" :type="showPassword ? 'text' : 'password'"
+            prepend-icon="mdi-lock" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+            @click:append="showPassword = !showPassword" :class="{ 'error-outline': showLoginError }" />
+          <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
         </v-card-text>
 
         <v-divider></v-divider>
@@ -41,9 +46,10 @@
 </template>
 
 <script>
-// Import Axios at the top of your script
+//Imports
 import axios from 'axios';
 import Cookies from 'js-cookie';
+
 export default {
   data() {
     return {
@@ -53,13 +59,19 @@ export default {
       loginErrorMessage: '',
       registrationErrorMessage: '',
       showLoginError: false,
-      showRegistrationError: false
+      showRegistrationError: false,
+      token: Cookies.get('login_token') || '', // Retrieve token from Cookies
+      showSnackbar: false,
+
     };
   },
+  created() {
+    this.checkLoginStatus();
+  },
   methods: {
+    //Login Request to flask server
     login() {
-      // Implement your login logic here
-      // Make an AJAX request to Flask application
+      //Make an AJAX request to Flask application
       const url = 'http://localhost:8000/api/LoginUser'; //The localhost port I have Flask running on
 
       // Check if both username and password are provided
@@ -73,21 +85,35 @@ export default {
       axios.post(url, { email: this.email, password: this.password }, { withCredentials: true })
 
         .then(response => {
-          console.log('User logged in successfully!', response);
+          const token = response.data.access_token;
+          console.log('login token: ', token) //Display token after recieved
+          //Make cookies expire after 7 days
+          const expirationDate = new Date();
+          expirationDate.setDate(expirationDate.getDate() + 7);
 
-          // Store the user token or session ID in a secure HTTP-only cookie
-          Cookies.set('login_token', response.data.token, { httpOnly: true });
-          
-          this.message = 'User logged in successfully.';
+          //Store the token in a secure manner (e.g., HttpOnly cookie) with expiration date
+          Cookies.set('login_token', token, { secure: false, expires: expirationDate });
+          //console.log('Login token:', token) //Display token after cookies set
+          console.log('User logged in successfully, login token: ', token)
+          this.checkLoginStatus();
 
-          this.checkLoginStatus(); //Not sure where to put this yet
+          this.showSnackbar = true; // Show the Snackbar
+          setTimeout(() => {
+            this.$router.push({ name: 'Home' });
+          }, 3000);
+
           // Redirect to the home page
-          this.$router.push({ name: 'Home' });
-          
+          // this.$router.push({ name: 'Home' });
+
         })
         .catch(error => {
           console.error('Error logging in', error);
-          // Handle different status codes and display appropriate messages
+
+          console.log('Error response:', error.response);
+          console.log('Error status:', error.response.status);
+          console.log('Error data:', error.response.data);
+
+          //Handle different status codes and display appropriate messages
           if (error.response) {
             this.showLoginError = true;
             if (error.response.status === 401) {
@@ -104,37 +130,30 @@ export default {
 
       console.log('Logging in...');
     },
-    logout() {
-      const url = 'http://localhost:8000/api/LogoutUser'; // Update with your Flask app's URL
+    //Check login status (mostly for testing purposes on this page)
+    async checkLoginStatus() {
+      const url = 'http://localhost:8000/api/check_login_status';
 
-      // Remove the user token or session ID from the cookie
-      Cookies.remove('login_token', { httpOnly: true });
+      try {
+        if (!this.token) {
+          // Token is not available, handle accordingly
+          this.isLoggedIn = false;
+          console.log('Token not available');
+          return;
+        }
 
-      // Send a request to the Flask API to handle logout
-      axios.post(url)
-        .then(response => {
-          console.log('Logout successful!', response);
-          this.message = 'Logout successful.';
-        })
-        .catch(error => {
-          console.error('Error logging out', error);
-          this.message = 'Error logging out.';
-        });
+        const response = await axios.get(url, { headers: { Authorization: `Bearer ${this.token}` } });
+        console.log('Response from checkLoginStatus:', response.data);
+
+        this.isLoggedIn = true;
+        response.data.message === 'User is logged in';
+        console.log('User is logged in:', this.isLoggedIn);
+      } catch (error) {
+        console.error('Error checking login status', error);
+        this.isLoggedIn = false;
+      }
     },
-    checkLoginStatus() {
-      const url = 'http://localhost:8000/api/check_login_status'; // Update with your Flask app's URL
 
-      // Send a request to the Flask API to check the login status
-      axios.get(url, { withCredentials: true })
-        .then(response => {
-          console.log('Login status:', response.data.message);
-          this.message = response.data.message;
-        })
-        .catch(error => {
-          console.error('Error checking login status', error);
-          this.message = 'Error checking login status.';
-        });
-    },
   }
 };
 </script>
@@ -145,6 +164,7 @@ export default {
   color: red;
   margin-top: 10px;
 }
+
 .error-outline {
   border-color: red;
 }

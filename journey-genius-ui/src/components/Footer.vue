@@ -25,12 +25,12 @@
   <script>
   export default {
     data: () => ({
-      links: [
-        { text: 'Home', to: '/' },
-        { text: 'User Profiling', to: '/UserProfiling' },
-        { text: 'Plan Trip', to: '/StartPlanning' },
-        { text: 'Saved Trips', to: '/SavedTrips' },
-      ],
+      // links: [
+      //   { text: 'Home', to: '/' },
+      //   { text: 'User Profiling', to: '/UserProfiling' },
+      //   { text: 'Plan Trip', to: '/StartPlanning' },
+      //   { text: 'Saved Trips', to: '/SavedTrips' },
+      // ],
     }),
   };
   </script>

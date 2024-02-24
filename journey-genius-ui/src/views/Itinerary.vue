@@ -92,7 +92,8 @@
             <hr />
 
             <router-link to="/StartPlanning">
-                <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep" style="min-width: 150px;">
+                <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
+                    style="min-width: 150px;">
                     Previous Step
                 </v-btn>
             </router-link>
@@ -108,13 +109,15 @@
 
 <script>
 import { defineComponent } from 'vue';
+import { useStore } from 'vuex';
+//import Papa from 'papaparse'; // Import PapaParse for parsing CSV
 
 export default defineComponent({
     data() {
         return {
             activities: ['Biking Across the Golden Gate Bridge: Rent a bike and pedal across the iconic Golden Gate Bridge. Once on the other side, explore the trails in the Marin Headlands for stunning views of the bridge and the city.', 'Land\'s End Trail: Hike the Land\'s End Trail for breathtaking views of the Pacific Ocean, the Golden Gate Bridge, and the Marin Headlands. Don\'t miss the historic Sutro Baths and the labyrinth along the way.', 'Kayaking on the Bay: Rent a kayak and paddle around the San Francisco Bay. You can get unique views of the city skyline and might even spot some sea lions near Pier 39.', 'Sailing on the Bay: Charter a sailboat or join a sailing tour to experience the beauty of San Francisco from the water.'], // Add your activities here
             landmarks: ['Golden Gate Park: This expansive park offers a variety of attractions, including the California Academy of Sciences, the de Young Museum, the Japanese Tea Garden, and the San Francisco Botanical Garden.', 'Fisherman\'s Wharf: Enjoy the lively atmosphere at Fisherman\'s Wharf, where you can indulge in seafood, visit Pier 39 with its sea lions, and explore the Muse Mecanique, a vintage arcade.', 'Alcatraz Island: Take a ferry to Alcatraz and explore the infamous former prison. The audio tour provides a fascinating glimpse into the history of this iconic site.', 'Chinatown: Explore the vibrant and historic Chinatown, known for its unique shops, markets, and delicious restaurants.'], // Add your landmarks here
-            foods: ['Tartine Bakery (600 Guerrero St): Famous for its pastries and bread, Tartine is a beloved bakery with a cozy atmosphere.', 'Zuni Café (1658 Market St): A San Francisco classic, Zuni Café offers a seasonal menu with a focus on local, organic ingredients. Their roasted chicken is legendary.', 'Boba Guys (Multiple Locations): Known for their high-quality ingredients and innovative flavors, Boba Guys has multiple locations in San Francisco.', 'Liholiho Yacht Club (871 Sutter St): A unique blend of Hawaiian and Asian flavors in a stylish and lively atmosphere.'], // Add your foods here
+            foods: [], // Initialize as empty array
             shops: ['Union Square: Known as the city\'s premier shopping destination, Union Square is home to flagship stores of major brands such as Macy\'s,Saks Fifth Avenue,Neiman Marcus,and Apple. You\'ll also find a variety of luxury boutiques and department stores in the surrounding area.', 'Westfield San Francisco Centre (865 Market St): This large shopping mall in the heart of downtown features a mix of high-end and mainstream retailers, including Bloomingdale\'s, Nordstrom, and a variety of other shops.', 'Ghirardelli Square (900 North Point St): While primarily known for its chocolate shops, Ghirardelli Square also houses boutique stores, galleries, and restaurants. It\'s a great place to shop while enjoying views of the bay.', 'Valencia Street (Mission District): Valencia Street in the Mission District is known for its hip and eclectic shops, including vintage stores, bookshops, and unique boutiques.'], // Add your shops here
             selectedActivities: [],
             selectedLandmarks: [],
@@ -123,64 +126,46 @@ export default defineComponent({
         };
     },
     methods: {
-  redirectToMoreActivitiesPage() {
-    // Update Vuex state before navigating
-    this.$store.commit('updateSelectedActivities', this.selectedActivities);
-    // Use Vue Router to navigate to the page with more options
-    this.$router.push('/MoreActivitiesPage');
-  },
-  redirectToMoreLandmarksPage() {
-    this.$store.commit('updateSelectedLandmarks', this.selectedLandmarks);
-    this.$router.push('/MoreLandmarksPage');
-  },
-  redirectToMoreDiningPage() {
-    this.$store.commit('updateSelectedFoods', this.selectedFoods);
-    this.$router.push('/MoreDiningPage');
-  },
-  redirectToMoreShoppingPage() {
-    this.$store.commit('updateSelectedShops', this.selectedShops);
-    this.$router.push('/MoreShoppingPage');
-  },
-},
+        redirectToMoreActivitiesPage() {
+            this.$store.commit('updateSelectedActivities', this.selectedActivities);
+            this.$router.push('/MoreActivitiesPage');
+        },
+        redirectToMoreLandmarksPage() {
+            this.$store.commit('updateSelectedLandmarks', this.selectedLandmarks);
+            this.$router.push('/MoreLandmarksPage');
+        },
+        redirectToMoreDiningPage() {
+            this.$store.commit('updateSelectedFoods', this.selectedFoods);
+            this.$router.push('/MoreDiningPage');
+        },
+        redirectToMoreShoppingPage() {
+            this.$store.commit('updateSelectedShops', this.selectedShops);
+            this.$router.push('/MoreShoppingPage');
+        },
+        loadFoodsFromCSV(priceRange) {
+            Papa.parse('/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', {
+                download: true,
+                header: true,
+                complete: (result) => {
+                    const filteredFoods = result.data.filter((row) => row.priceRange === priceRange)
+                        .map((row) => `${row.name} (${row.address}): ${row.description}`);
 
+                    this.foods = filteredFoods;
+                },
+            });
+        },
+    },
     computed: {
-        computed: {
-    selectedActivities: {
-      get() {
-        return this.$store.state.selectedActivities;
-      },
-      set(value) {
-        this.$store.commit('updateSelectedActivities', value);
-      },
+        selectedBudget() {
+            const store = useStore();
+            return store.getters.selectedBudget;
+        },
     },
-    selectedLandmarks: {
-      get() {
-        return this.$store.state.selectedLandmarks;
-      },
-      set(value) {
-        this.$store.commit('updateSelectedLandmarks', value);
-      },
+    watch: {
+        selectedBudget(newValue) {
+            this.loadFoodsFromCSV(newValue);
+        },
     },
-    selectedFoods: {
-      get() {
-        return this.$store.state.selectedFoods;
-      },
-      set(value) {
-        this.$store.commit('updateSelectedFoods', value);
-      },
-    },
-    selectedShops: {
-      get() {
-        return this.$store.state.selectedShops;
-      },
-      set(value) {
-        this.$store.commit('updateSelectedShops', value);
-      },
-    },
-  },
-
-}
-
 });
 </script>
 
