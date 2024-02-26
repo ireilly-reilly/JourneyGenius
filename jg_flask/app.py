@@ -6,6 +6,9 @@ from flask_jwt_extended import JWTManager, create_access_token, jwt_required, ge
 import secrets
 from flask_mail import Mail, Message
 
+#Blueprint imports
+from TFIDF_ML_Recommendations_Blueprint import recommendation_bp
+
 
 #from email_verification import email_verification_bp
 
@@ -22,6 +25,8 @@ CORS(app, supports_credentials=True)
 
 
 #Register blueprints TODO Refactor into bluprints to make it nicer!
+app.register_blueprint(recommendation_bp, url_prefix='/api')
+
 #app.register_blueprint(auth_bp)#, url_prefix='/auth') <--might add later
 #app.register_blueprint(email_verification_bp)
 
