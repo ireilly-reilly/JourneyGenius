@@ -151,7 +151,8 @@ import numpy as np
 # import os
 
 # Load the data from the CSV file with the correct encoding
-data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
+# data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
+data = pd.read_csv('journey-genius-data-scraping/restaurant_data.csv')
 
 # Preprocess the "Price Range" column
 # Fill missing values with 0 (unknown)
@@ -161,10 +162,13 @@ data['Price Range'] = data['Price Range'].fillna(0)
 # Include 'Price Range' as a feature
 data['Types'] = data['Types'].fillna('')
 data['Address'] = data['Address'].fillna('')
-data['Features'] = data['Types'] + ' ' + data['Address'] + ' ' + data['Price Range'].astype(str)
+# data['Place'] = data['Place'].fillna('')
+data['Features'] = data['Types'] + ' ' + data['Address'] + ' ' + data['Price Range'].astype(str) 
+# + data['Place']
 
 # Create a TF-IDF vectorizer to convert text features into numerical vectors
-tfidf_vectorizer = TfidfVectorizer(stop_words=["english", "Mcdonald's", "Starbucks", "Barnes & Noble"])
+# tfidf_vectorizer = TfidfVectorizer(stop_words=["english", "Mcdonald's", "Starbucks", "Barnes & Noble"])
+tfidf_vectorizer = TfidfVectorizer(stop_words=["english"])
 tfidf_matrix = tfidf_vectorizer.fit_transform(data['Features'])
 
 # Compute the cosine similarity between places based on their feature vectors
@@ -222,7 +226,7 @@ def get_recommendations_with_location_and_price(place_name, Latitude, Longitude,
 
 
 # Get recommendations for a place with location, price range, and text-based ranking
-target_place = "Wen's Kitchen"
+target_place = "Shanghai 21"
 target_lat = 39.5296  # Latitude of SF Kitchen
 target_lon = -119.8138  # Longitude of SF Kitchen
 desired_price_range = 2  # Desired price range

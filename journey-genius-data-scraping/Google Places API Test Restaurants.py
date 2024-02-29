@@ -1,6 +1,7 @@
 import googlemaps
 import csv
 import os
+import pandas as pd
 
 # Define the API Key that is being used
 api_key = 'AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y'
@@ -13,7 +14,9 @@ gmaps = googlemaps.Client(key=api_key)
 # location = '37.7749,-122.4194' # San Francisco, California
 # location = '39.530895,-119.814972' # Reno, Nevada
 # location = '39.744137, -104.950050' # Denver, Colorado 
-location = '34.052235, -118.243683' # Los Angeles, California
+# location = '34.052235, -118.243683' # Los Angeles, California
+location = '40.730610, -73.935242' # New York City
+
 radius = 55000 # 55 km radius
 open_now = False # Any location - doesn't need to be open
 type = 'restaurant' # 
@@ -105,4 +108,25 @@ with open('restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file
         if not next_page_token or results_fetched >= desired_result_count:
             break
 
+# GEOCODE SECTION
+
+# Read the existing CSV file into a DataFrame
+restaurantData = 'restaurant_data.csv'
+data = pd.read_csv(restaurantData, encoding='utf-8')
+
+# Define a function to get latitude and longitude from an address
+def get_lat_lng(address):
+    geocode_result = gmaps.geocode(address)
+    if geocode_result:
+        location = geocode_result[0]['geometry']['location']
+        return location['lat'], location['lng']
+    else:
+        return None, None
+
+
+# Apply the function to create new 'Latitude' and 'Longitude' columns
+data['Latitude'], data['Longitude'] = zip(*data['Address'].apply(get_lat_lng))
+
+# Write the updated DataFrame back to the CSV file
+data.to_csv(restaurantData, index=False, encoding='utf-8')
 
