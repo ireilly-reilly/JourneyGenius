@@ -20,9 +20,10 @@
           <h3 class="headline text-deep-purple-accent-2">Where do you want to travel?</h3>
           <br>
 
-          <!-- This was working -->
-          <v-autocomplete v-model="city" :items="autocompleteCities" label="Type a City" @input="onInputChange">
-          </v-autocomplete>
+          <!-- Drop down for cities -->
+          <v-autocomplete v-model="city" :items="autocompleteCities" label="Type a City" @input="onInputChange"></v-autocomplete>
+
+
 
         </v-card>
       </v-col>
@@ -118,7 +119,7 @@ export default defineComponent({
     return {
       // Data for handling city input and autocomplete
       city: '',
-      allCities: ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Seattle'],
+      autocompleteCities: [],
       menu: false,
       startDate: '', // Initialize with an empty string or a default date
       endDate: '',
@@ -151,26 +152,48 @@ export default defineComponent({
       ],
     };
   },
-  computed: {
-    // Computed property for autocomplete suggestions based on user input
-    autocompleteCities() {
-      if (this.city == null) {
-        return this.allCities;
-      }
 
-      const lowerCaseInput = this.city.toLowerCase();
-      return this.allCities.filter(city => city.toLowerCase().includes(lowerCaseInput));
-    },
-  },
   methods: {
     // Method for handling input change in the city text field
-    onInputChange() {
-      this.menu = !!this.city; // Show menu only when there is input
+    async onInputChange(value) {
+      this.city = value;
+      console.log("Input value:", this.city);
+      if (this.city && this.city.length > 2) {
+        try {
+          const response = await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json`, {
+            params: {
+              input: this.city,
+              types: '(cities)',
+              key: 'AIzaSyD_3MdhvzMxjiKkNugKvqz6Z9i9feEZkXQ',
+            },
+          });
+
+          console.log('Autocomplete API response:', response.data);
+
+          this.autocompleteCities = response.data.predictions.map(prediction => prediction.description);
+        } catch (error) {
+          console.error('Error fetching autocomplete data:', error);
+          this.autocompleteCities = []; // Clear autocomplete suggestions on error
+        }
+      } else {
+        this.autocompleteCities = [];
+      }
     },
+
     // Method for selecting a city from the autocomplete suggestions
-    selectCity(selectedCity) {
-      this.city = selectedCity;
-      this.menu = false;
+    async getPlaceDetails(placeId) {
+      const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json`, {
+        params: {
+          place_id: placeId,
+          key: 'AIzaSyD_3MdhvzMxjiKkNugKvqz6Z9i9feEZkXQ',
+        },
+      });
+
+      const location = response.data.result.geometry.location;
+      const latitude = location.lat;
+      const longitude = location.lng;
+
+      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
     },
 
     // Method for displaying the date picker
@@ -183,11 +206,11 @@ export default defineComponent({
     },
     // Method for selecting a budget
     selectBudget(selectedBudget) {
-    this.$store.commit('setSelectedBudget', selectedBudget);
-    this.budgets.forEach((budget) => {
-      budget.selected = budget === selectedBudget;
-    });
-  },
+      this.$store.commit('setSelectedBudget', selectedBudget);
+      this.budgets.forEach((budget) => {
+        budget.selected = budget === selectedBudget;
+      });
+    },
     // Method for selecting a travel companion
     selectTravelCompanion(selectedCompanion) {
       this.travelCompanions.forEach((companion) => {
@@ -198,26 +221,24 @@ export default defineComponent({
     generateItinerary() {
       // Prepare data to send to the backend
       const requestData = {
-        place_name: this.city,
+        //target_place: 'Reno', WE WANT THE USER TO CHOOOSE IN THE FUTURE
         // latitude: this.latitude, // Assume you have a way to get the latitude from the user input
         // longitude: this.longitude, // Assume you have a way to get the longitude from the user input
-        latitude: 39.5296,
-        longitude: -119.8138,
-        desired_price_range: 2,
+        target_lat_str: '39.5296',
+        target_lon_str: '-119.8138',
+        desired_price_range_str: '2'
         // desired_price_range: this.selectedBudget.priceRange, // Assuming selectedBudget has a priceRange property
       };
 
       // Send a POST request to the Flask backend
-      axios.post('http://localhost:8000/generate_itinerary', requestData)
+      axios.post('http://localhost:8000/api/run_ML_model_recommendations', requestData)
         .then(response => {
-          // Handle the response, e.g., update the UI with the generated itinerary
           console.log(response.data);
         })
         .catch(error => {
-          // Handle errors
           console.error(error);
         });
-    
+
     },
     // Method to check if the end date is valid
     isEndDateValid(selectedEndDate) {

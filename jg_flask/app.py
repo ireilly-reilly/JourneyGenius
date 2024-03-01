@@ -8,6 +8,7 @@ from flask_mail import Mail, Message
 
 #Blueprint imports
 from TFIDF_ML_Recommendations_Blueprint import recommendation_bp
+from testRestaurantsPlacesAPI import restaurant_blueprint
 
 
 #from email_verification import email_verification_bp
@@ -20,12 +21,17 @@ app.config['JWT_SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
-CORS(app, supports_credentials=True)
+# CORS(app, resources={r"/api/*": {"origins": "http://localhost:8080"}})
 # CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 
 #Register blueprints TODO Refactor into bluprints to make it nicer!
 app.register_blueprint(recommendation_bp, url_prefix='/api')
+app.register_blueprint(restaurant_blueprint, url_prefix='/restaurant')
+
+
+CORS(app, supports_credentials=True)
+
 
 #app.register_blueprint(auth_bp)#, url_prefix='/auth') <--might add later
 #app.register_blueprint(email_verification_bp)
