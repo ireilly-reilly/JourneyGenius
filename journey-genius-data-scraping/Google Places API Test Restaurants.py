@@ -19,9 +19,9 @@ location = '40.730610, -73.935242' # New York City
 
 radius = 55000 # 55 km radius
 open_now = False # Any location - doesn't need to be open
-type = 'restaurant' # 
-keyword = 'chinese' 
-desired_result_count = 100 # Desired result count here
+type = 'restaurant' 
+keyword = 'mexican' 
+desired_result_count = 1 # Desired result count here
 
 # Create and open a CSV file for writing
 # with open('restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
@@ -32,10 +32,10 @@ desired_result_count = 100 # Desired result count here
 
 
 # Check if the CSV file already exists
-csv_exists = os.path.exists('restaurant_data.csv')
+csv_exists = os.path.exists('journey-genius-data-scraping/restaurant_data.csv')
 
 # Create and open a CSV file for writing
-with open('restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
+with open('journey-genius-data-scraping/restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
     writer = csv.writer(file)
     
     # Only write the header row if the file is empty (or doesn't exist)
@@ -108,25 +108,25 @@ with open('restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file
         if not next_page_token or results_fetched >= desired_result_count:
             break
 
-# GEOCODE SECTION
+# # GEOCODE SECTION
 
-# Read the existing CSV file into a DataFrame
-restaurantData = 'restaurant_data.csv'
-data = pd.read_csv(restaurantData, encoding='utf-8')
+# # Read the existing CSV file into a DataFrame
+# restaurantData = 'restaurant_data.csv'
+# data = pd.read_csv(restaurantData, encoding='utf-8')
 
-# Define a function to get latitude and longitude from an address
-def get_lat_lng(address):
-    geocode_result = gmaps.geocode(address)
-    if geocode_result:
-        location = geocode_result[0]['geometry']['location']
-        return location['lat'], location['lng']
-    else:
-        return None, None
+# # Define a function to get latitude and longitude from an address
+# def get_lat_lng(address):
+#     geocode_result = gmaps.geocode(address)
+#     if geocode_result:
+#         location = geocode_result[0]['geometry']['location']
+#         return location['lat'], location['lng']
+#     else:
+#         return None, None
 
 
-# Apply the function to create new 'Latitude' and 'Longitude' columns
-data['Latitude'], data['Longitude'] = zip(*data['Address'].apply(get_lat_lng))
+# # Apply the function to create new 'Latitude' and 'Longitude' columns
+# data['Latitude'], data['Longitude'] = zip(*data['Address'].apply(get_lat_lng))
 
-# Write the updated DataFrame back to the CSV file
-data.to_csv(restaurantData, index=False, encoding='utf-8')
+# # Write the updated DataFrame back to the CSV file
+# data.to_csv(restaurantData, index=False, encoding='utf-8')
 
