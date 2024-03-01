@@ -64,8 +64,8 @@ def haversine(lat1, lon1, lat2, lon2):
     return distance
 
 # Function to get recommendations by text similarity, location, and price range
-def get_recommendations_with_location_and_price(place_name, input_lat, input_lon, input_price):
-    print(f"Received place_name: {place_name}")
+def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
+    print(f"Received place_name: {target_place}")
     print(f"Received input_lat: {input_lat}")
     print(f"Received input_lon: {input_lon}")
     print(f"Received input_price: {input_price}")
@@ -76,13 +76,13 @@ def get_recommendations_with_location_and_price(place_name, input_lat, input_lon
     print()
 
     # Get the index of the input place
-    idx = data[data['City'] == place_name].index
+    idx = data[data['Place'] == target_place].index
     #print(idx)
     #print(data['Place'].unique())
 
 
     if len(idx) == 0:
-        return {'error': f'Place "{place_name}" not found'}, 404
+        return {'error': f'Place "{target_place}" not found'}, 404
 
     idx = idx[0]  # Get the first index if multiple matches exist
 
@@ -118,7 +118,7 @@ def get_recommendations_with_location_and_price(place_name, input_lat, input_lon
 def recommend():
     try:
         data = request.json
-        target_place = data.get('target_place')
+        target_place = "Lucky Dragon Restaurant" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
