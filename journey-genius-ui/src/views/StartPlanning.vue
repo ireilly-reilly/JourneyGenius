@@ -183,11 +183,11 @@ export default defineComponent({
     },
     // Method for selecting a budget
     selectBudget(selectedBudget) {
-    this.$store.commit('setSelectedBudget', selectedBudget);
-    this.budgets.forEach((budget) => {
-      budget.selected = budget === selectedBudget;
-    });
-  },
+      this.$store.commit('setSelectedBudget', selectedBudget);
+      this.budgets.forEach((budget) => {
+        budget.selected = budget === selectedBudget;
+      });
+    },
     // Method for selecting a travel companion
     selectTravelCompanion(selectedCompanion) {
       this.travelCompanions.forEach((companion) => {
@@ -198,26 +198,24 @@ export default defineComponent({
     generateItinerary() {
       // Prepare data to send to the backend
       const requestData = {
-        place_name: this.city,
+        target_place: 'Reno',
         // latitude: this.latitude, // Assume you have a way to get the latitude from the user input
         // longitude: this.longitude, // Assume you have a way to get the longitude from the user input
-        latitude: 39.5296,
-        longitude: -119.8138,
-        desired_price_range: 2,
+        target_lat_str: '39.5296',
+        target_lon_str: '-119.8138',
+        desired_price_range_str: '2'
         // desired_price_range: this.selectedBudget.priceRange, // Assuming selectedBudget has a priceRange property
       };
 
       // Send a POST request to the Flask backend
-      axios.post('http://localhost:8000/generate_itinerary', requestData)
+      axios.post('http://localhost:8000/api/run_ML_model_recommendations', requestData)
         .then(response => {
-          // Handle the response, e.g., update the UI with the generated itinerary
           console.log(response.data);
         })
         .catch(error => {
-          // Handle errors
           console.error(error);
         });
-    
+
     },
     // Method to check if the end date is valid
     isEndDateValid(selectedEndDate) {

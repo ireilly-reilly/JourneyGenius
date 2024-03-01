@@ -8,7 +8,7 @@
 #Note to Ethan: We will need to add a json request to receive the location or whatever parameters
 #   this function requires
 
-from flask import Flask, jsonify, request, Blueprint
+from flask import Flask, jsonify, request, Blueprint, make_response, Response
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
@@ -18,7 +18,13 @@ import numpy as np
 recommendation_bp = Blueprint('recommendation_bp', __name__)
 
 # Load the data from the CSV file with the correct encoding
-data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
+# Ethan's Filepath
+# data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
+# Kai's Filepath
+data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
+#print(f"Number of rows in data: {len(data)}")
+# Isaac's Filepath
+
 
 # Preprocess the "Price Range" column
 # Fill missing values with 0 (unknown)
@@ -58,16 +64,36 @@ def haversine(lat1, lon1, lat2, lon2):
     return distance
 
 # Function to get recommendations by text similarity, location, and price range
-def get_recommendations_with_location_and_price(place_name, Latitude, Longitude, desired_price, cosine_sim=cosine_sim):
+def get_recommendations_with_location_and_price(place_name, input_lat, input_lon, input_price):
+    print(f"Received place_name: {place_name}")
+    print(f"Received input_lat: {input_lat}")
+    print(f"Received input_lon: {input_lon}")
+    print(f"Received input_price: {input_price}")
+    print("Variables successfully passed by parameter :)")
+    print()
+    #print(data.head())  # Print the first few rows
+    #print(data.info())  # Print column names and data types
+    print()
+
     # Get the index of the input place
-    idx = data[data['Place'] == place_name].index[0]
+    idx = data[data['City'] == place_name].index
+    #print(idx)
+    #print(data['Place'].unique())
+
+
+    if len(idx) == 0:
+        return {'error': f'Place "{place_name}" not found'}, 404
+
+    idx = idx[0]  # Get the first index if multiple matches exist
 
     # Extract the price range of the input place as an integer
     input_price = int(data['Price Range'][idx])
-
+    
     # Extract the latitude and longitude of the input place
     input_lat = data['Latitude'].iloc[idx]
     input_lon = data['Longitude'].iloc[idx]
+    #print(input_lat)
+    #print(input_lon)
 
     # Calculate geographical distances and text-based similarities
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
@@ -83,16 +109,58 @@ def get_recommendations_with_location_and_price(place_name, Latitude, Longitude,
     # Sort places by composite similarity score
     sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
 
-    # Return the top 10 similar places
-    return sorted_places[1:11]  # Exclude the input place
+    # Return the top 10 similar places as a list of dictionaries
+    recommendations = [{'place': place} for place in sorted_places[1:11]]
+    return {'recommendations': recommendations}
 
-#This route returns a JSON of the recommendations created by the model
-@recommendation_bp.route('/run_ML_model_recommendations', methods=['GET'])
+
+@recommendation_bp.route('/run_ML_model_recommendations', methods=['POST'])
 def recommend():
-    target_place = request.args.get('place')
-    target_lat = float(request.args.get('latitude'))
-    target_lon = float(request.args.get('longitude'))
-    desired_price_range = int(request.args.get('price_range'))
+    try:
+        data = request.json
+        target_place = data.get('target_place')
+        target_lat_str = data.get('target_lat_str')
+        target_lon_str = data.get('target_lon_str')
+        desired_price_range_str = data.get('desired_price_range_str')
+        print(target_place)
+        print(target_lat_str)
+        print(target_lon_str)
+        print(desired_price_range_str)
+        print("Values from the frontend is successfully sent over :)")
+        print()
 
-    recommended_places = get_recommendations_with_location_and_price(target_place, target_lat, target_lon, desired_price_range)
-    return jsonify({'recommended_places': recommended_places})
+        # Check if latitude, longitude, and price range are not None
+        if None in (target_lat_str, target_lon_str, desired_price_range_str):
+            return jsonify({'error': 'Latitude, longitude, or price range is missing or invalid'}), 400
+
+        # Convert latitude, longitude, and price range to float and int respectively
+        try:
+            target_lat = float(target_lat_str)
+            target_lon = float(target_lon_str)
+            desired_price_range = int(desired_price_range_str)
+            print(target_lat_str)
+            print(target_lon_str)
+            print(desired_price_range_str)
+            print("Variables successfully converted")
+            print()
+
+        except ValueError as e:
+            print(f"Error converting latitude, longitude, or price range: {e}")
+            return jsonify({'error': 'Invalid parameter values'}), 400
+
+        # Call the recommendation function
+        recommended_places = get_recommendations_with_location_and_price(target_place, target_lat, target_lon, desired_price_range)
+
+        # Extract just the place names from the list of dictionaries
+        place_names = [place['place'] for place in recommended_places['recommendations']]
+
+        # Print the place names
+        print(place_names)
+
+        # Return the recommended places (limited to 10)
+        return jsonify({'recommended_places': place_names[:10]})
+
+    except Exception as e:
+        # Log the exception for debugging purposes
+        print(f"Error processing request: {e}")
+        return jsonify({'error': 'An unexpected error occurred'}), 500
