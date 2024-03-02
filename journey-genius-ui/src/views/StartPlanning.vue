@@ -20,11 +20,11 @@
           <h3 class="headline text-deep-purple-accent-2">Where do you want to travel?</h3>
           <br>
 
-          <!-- Drop down for cities -->
-          <v-autocomplete v-model="city" :items="autocompleteCities" label="Type a City" @input="onInputChange"></v-autocomplete>
-
-
-
+          <vue-google-autocomplete id="map2" ref="toAddress" classname="form-control" placeholder="Enter a City"
+            v-on:placechanged="getAddressData" types="(cities)" country="us" style="width: 100%; max-width: 5000px; height: 50px; background-color: #f5f5f5; padding-left: 15px;">
+          </vue-google-autocomplete> <!-- Drop down for cities -->
+          <br>
+          <br>
         </v-card>
       </v-col>
     </v-row>
@@ -74,7 +74,6 @@
       </v-col>
     </v-row>
 
-
     <!-- Travel Companions selection -->
     <v-row justify="center">
       <v-col cols="12" md="8">
@@ -89,12 +88,13 @@
                 <v-icon v-if="companion.value === 'couple'">mdi-heart</v-icon>
                 <div>{{ companion.label }}</div>
               </v-btn>
+              <br>
             </v-col>
           </v-row>
         </v-card>
       </v-col>
     </v-row>
-
+    
 
     <!-- Generate button -->
     <v-row justify="center">
@@ -113,6 +113,8 @@
 
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import VueGoogleAutocomplete from "vue-google-autocomplete";
+
 
 export default defineComponent({
   data() {
@@ -123,6 +125,7 @@ export default defineComponent({
       menu: false,
       startDate: '', // Initialize with an empty string or a default date
       endDate: '',
+      selectedPlace: null,
 
       // Data for budget selection
       budgets: [
@@ -142,7 +145,7 @@ export default defineComponent({
       // Other data properties
       selectedDate: null,
       isDatePickerVisible: false,
-      travelDestination: null,
+      // travelDestination: null,
       selectedBudget: null,
 
       // Validation rule for end date
@@ -153,32 +156,44 @@ export default defineComponent({
     };
   },
 
+  components: {
+    VueGoogleAutocomplete
+  },
+
   methods: {
-    // Method for handling input change in the city text field
-    async onInputChange(value) {
-      this.city = value;
-      console.log("Input value:", this.city);
-      if (this.city && this.city.length > 2) {
-        try {
-          const response = await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json`, {
-            params: {
-              input: this.city,
-              types: '(cities)',
-              key: 'AIzaSyD_3MdhvzMxjiKkNugKvqz6Z9i9feEZkXQ',
-            },
-          });
-
-          console.log('Autocomplete API response:', response.data);
-
-          this.autocompleteCities = response.data.predictions.map(prediction => prediction.description);
-        } catch (error) {
-          console.error('Error fetching autocomplete data:', error);
-          this.autocompleteCities = []; // Clear autocomplete suggestions on error
-        }
-      } else {
-        this.autocompleteCities = [];
-      }
+    // Google Places API Dropdown
+    getAddressData: function (addressData) {
+      console.log(addressData);
+      this.selectedPlace = addressData.formatted_address;
     },
+
+    // Method for handling input change in the city text field
+    // async onInputChange(event) {
+    //   const value = event.target.value;
+    //   this.city = value;
+    //   console.log("Input value:", this.city);
+    //   if (this.city && this.city.length > 2) {
+    //     try {
+    //       const response = await axios.get(`/api/maps/api/place/autocomplete/json`, {
+    //         params: {
+    //           input: this.city,
+    //           types: '(cities)',
+    //           key: 'AIzaSyD_3MdhvzMxjiKkNugKvqz6Z9i9feEZkXQ',
+    //         },
+    //       });
+
+    //       console.log('Autocomplete API response:', response.data);
+
+    //       this.autocompleteCities = response.data.predictions.map(prediction => prediction.description);
+    //     } catch (error) {
+    //       console.error('Error fetching autocomplete data:', error);
+    //       this.autocompleteCities = []; // Clear autocomplete suggestions on error
+    //     }
+    //   } else {
+    //     this.autocompleteCities = [];
+    //   }
+    // },
+
 
     // Method for selecting a city from the autocomplete suggestions
     async getPlaceDetails(placeId) {
@@ -222,12 +237,13 @@ export default defineComponent({
       // Prepare data to send to the backend
       const requestData = {
         //target_place: 'Reno', WE WANT THE USER TO CHOOOSE IN THE FUTURE
-        // latitude: this.latitude, // Assume you have a way to get the latitude from the user input
-        // longitude: this.longitude, // Assume you have a way to get the longitude from the user input
+
+        // We are getting these coordinates from the testRestaurantsPlacesAPI
         target_lat_str: '39.5296',
         target_lon_str: '-119.8138',
+        // This will be selected from the user interface
+        // Currently not working :(
         desired_price_range_str: '2'
-        // desired_price_range: this.selectedBudget.priceRange, // Assuming selectedBudget has a priceRange property
       };
 
       // Send a POST request to the Flask backend
