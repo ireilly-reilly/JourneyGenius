@@ -143,16 +143,7 @@ export default defineComponent({
             this.$router.push('/MoreShoppingPage');
         },
         loadFoodsFromCSV(priceRange) {
-            Papa.parse('/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', {
-                download: true,
-                header: true,
-                complete: (result) => {
-                    const filteredFoods = result.data.filter((row) => row.priceRange === priceRange)
-                        .map((row) => `${row.name} (${row.address}): ${row.description}`);
-
-                    this.foods = filteredFoods;
-                },
-            });
+            this.foods = recommendedRestaurants;
         },
     },
     computed: {
