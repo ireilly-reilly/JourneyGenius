@@ -32,7 +32,7 @@
                     </v-col>
                 </v-row>
                 <v-col class="d-flex justify-center">
-                    <v-btn @click="redirectToMoreActivitiesPage" color="deep-purple-accent-2">See More Activities</v-btn>
+                    <!-- <v-btn @click="redirectToMoreActivitiesPage" color="deep-purple-accent-2">See More Activities</v-btn> -->
                 </v-col>
             </v-col>
         </v-row>
@@ -48,26 +48,28 @@
                     </v-col>
                 </v-row>
                 <v-col class="d-flex justify-center">
-                    <v-btn @click="redirectToMoreLandmarksPage" color="deep-purple-accent-2">See More Landmarks</v-btn>
+                    <!-- <v-btn @click="redirectToMoreLandmarksPage" color="deep-purple-accent-2">See More Landmarks</v-btn> -->
                 </v-col>
             </v-col>
         </v-row>
 
         <!-- Category: What do You want to Eat? -->
-        <v-row justify="center" class="mt-4">
-            <v-col cols="12" md="8">
-                <h3 class="headline text-deep-purple-accent-2">What do You want to Eat?</h3>
-                <br>
-                <v-row>
-                    <v-col v-for="(food, index) in foods" :key="index" cols="12">
-                        <v-checkbox v-model="selectedFoods[index]" :label="food" class="mb-1"></v-checkbox>
-                    </v-col>
-                </v-row>
-                <v-col class="d-flex justify-center">
-                    <v-btn @click="redirectToMoreDiningPage" color="deep-purple-accent-2">See More Dining Options</v-btn>
-                </v-col>
+        <v-row justify="center" class="mt-4" dense>
+    <v-col cols="12" md="8">
+        <h3 class="headline text-deep-purple-accent-2">What do You want to Eat?</h3>
+        <br>
+        <v-row dense>
+            <v-col v-for="(food, index) in foods" :key="index" cols="12">
+                <v-checkbox v-model="selectedFoods" :value="food"
+                    :label="Array.isArray(food) ? food.join(', ') : food" class="mb-1"></v-checkbox>
             </v-col>
         </v-row>
+        <v-col class="d-flex justify-center">
+            <!-- <v-btn @click="redirectToMoreDiningPage" color="deep-purple-accent-2">See More Dining Options</v-btn> -->
+        </v-col>
+    </v-col>
+</v-row>
+
 
         <!-- Category: Shopping Spots -->
         <v-row justify="center" class="mt-4">
@@ -80,7 +82,7 @@
                     </v-col>
                 </v-row>
                 <v-col class="d-flex justify-center">
-                    <v-btn @click="redirectToMoreShoppingPage" color="deep-purple-accent-2">See More Retail Stores</v-btn>
+                    <!-- <v-btn @click="redirectToMoreShoppingPage" color="deep-purple-accent-2">See More Retail Stores</v-btn> -->
                 </v-col>
             </v-col>
         </v-row>
@@ -110,11 +112,12 @@
 <script>
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
-//import Papa from 'papaparse'; // Import PapaParse for parsing CSV
+import { useRoute } from 'vue-router';
 
 export default defineComponent({
     data() {
         return {
+
             activities: ['Biking Across the Golden Gate Bridge: Rent a bike and pedal across the iconic Golden Gate Bridge. Once on the other side, explore the trails in the Marin Headlands for stunning views of the bridge and the city.', 'Land\'s End Trail: Hike the Land\'s End Trail for breathtaking views of the Pacific Ocean, the Golden Gate Bridge, and the Marin Headlands. Don\'t miss the historic Sutro Baths and the labyrinth along the way.', 'Kayaking on the Bay: Rent a kayak and paddle around the San Francisco Bay. You can get unique views of the city skyline and might even spot some sea lions near Pier 39.', 'Sailing on the Bay: Charter a sailboat or join a sailing tour to experience the beauty of San Francisco from the water.'], // Add your activities here
             landmarks: ['Golden Gate Park: This expansive park offers a variety of attractions, including the California Academy of Sciences, the de Young Museum, the Japanese Tea Garden, and the San Francisco Botanical Garden.', 'Fisherman\'s Wharf: Enjoy the lively atmosphere at Fisherman\'s Wharf, where you can indulge in seafood, visit Pier 39 with its sea lions, and explore the Muse Mecanique, a vintage arcade.', 'Alcatraz Island: Take a ferry to Alcatraz and explore the infamous former prison. The audio tour provides a fascinating glimpse into the history of this iconic site.', 'Chinatown: Explore the vibrant and historic Chinatown, known for its unique shops, markets, and delicious restaurants.'], // Add your landmarks here
             foods: [], // Initialize as empty array
@@ -126,25 +129,29 @@ export default defineComponent({
         };
     },
     methods: {
-        redirectToMoreActivitiesPage() {
-            this.$store.commit('updateSelectedActivities', this.selectedActivities);
-            this.$router.push('/MoreActivitiesPage');
-        },
-        redirectToMoreLandmarksPage() {
-            this.$store.commit('updateSelectedLandmarks', this.selectedLandmarks);
-            this.$router.push('/MoreLandmarksPage');
-        },
-        redirectToMoreDiningPage() {
-            this.$store.commit('updateSelectedFoods', this.selectedFoods);
-            this.$router.push('/MoreDiningPage');
-        },
-        redirectToMoreShoppingPage() {
-            this.$store.commit('updateSelectedShops', this.selectedShops);
-            this.$router.push('/MoreShoppingPage');
-        },
-        loadFoodsFromCSV(priceRange) {
-            this.foods = recommendedRestaurants;
-        },
+
+        // redirectToMoreActivitiesPage() {
+        //     this.$store.commit('updateSelectedActivities', this.selectedActivities);
+        //     this.$router.push('/MoreActivitiesPage');
+        // },
+        // redirectToMoreLandmarksPage() {
+        //     this.$store.commit('updateSelectedLandmarks', this.selectedLandmarks);
+        //     this.$router.push('/MoreLandmarksPage');
+        // },
+        // redirectToMoreDiningPage() {
+        //     this.$store.commit('updateSelectedFoods', this.selectedFoods);
+        //     this.$router.push('/MoreDiningPage');
+        // },
+        // redirectToMoreShoppingPage() {
+        //     this.$store.commit('updateSelectedShops', this.selectedShops);
+        //     this.$router.push('/MoreShoppingPage');
+        // },
+    },
+    mounted() {
+        const data = JSON.parse(this.$route.query.data);
+        if (data && data.recommended_places) {
+            this.foods = data.recommended_places;
+        }
     },
     computed: {
         selectedBudget() {
@@ -152,11 +159,7 @@ export default defineComponent({
             return store.getters.selectedBudget;
         },
     },
-    watch: {
-        selectedBudget(newValue) {
-            this.loadFoodsFromCSV(newValue);
-        },
-    },
+
 });
 </script>
 

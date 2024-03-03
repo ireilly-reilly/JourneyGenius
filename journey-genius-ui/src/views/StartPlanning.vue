@@ -101,9 +101,11 @@
     <v-row justify="center">
       <v-col cols="12" md="8" class="text-center">
         <br>
+        <router-link to="/Itinerary">
         <v-btn class="generate-btn" color="deep-purple-accent-2" @click="generateItinerary">
           Generate
         </v-btn>
+      </router-link>
       </v-col>
     </v-row>
 
@@ -212,13 +214,13 @@ export default defineComponent({
     generateItinerary() {
       // Prepare data to send to the backend
       const requestData = {
-        //target_place: 'Reno', WE WANT THE USER TO CHOOOSE IN THE FUTURE
+        //target_place: 'type of restaurant', WE WANT THE USER TO CHOOOSE IN THE FUTURE
 
         // We are getting these coordinates from the testRestaurantsPlacesAPI
         target_lat_str: this.selectedLat,
         target_lon_str: this.selectedLon,
-        // This will be selected from the user interface
-        // Currently not working :(
+
+        // From user selection
         desired_price_range_str: this.selectedBudget
       };
 
@@ -231,12 +233,11 @@ export default defineComponent({
         })
         .then(response => {
           console.log('run_ML_model_recommendations response:', response.data);
+          this.$router.push({ name: 'Itinerary', query: { data: JSON.stringify(response.data) } });
         })
         .catch(error => {
           console.error(error);
         });
-
-
     },
     // Method to check if the end date is valid
     isEndDateValid(selectedEndDate) {
