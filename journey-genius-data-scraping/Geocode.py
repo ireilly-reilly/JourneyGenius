@@ -5,7 +5,7 @@ import pandas as pd
 gmaps = googlemaps.Client(key='AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y')
 
 # Read the existing CSV file into a DataFrame
-data_path = '/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv'
+data_path = 'journey-genius-data-scraping/activity_data.csv'
 data = pd.read_csv(data_path, encoding='utf-8')
 
 # Define a function to get latitude and longitude from an address

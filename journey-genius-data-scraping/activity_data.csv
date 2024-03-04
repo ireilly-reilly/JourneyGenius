@@ -1,1 +1,48 @@
-Place,Price Range,Types,Address,Postal Code,City,State,Country
+Place,Price Range,Types,Address,Postal Code,City,State,Country,Latitude,Longitude
+Exploratorium,,"tourist_attraction, museum, point_of_interest, establishment",Green Street 94111,94111,San Francisco,California,United States,37.8002712,-122.4030517
+The Walt Disney Family Museum,,"museum, tourist_attraction, point_of_interest, establishment",104 Montgomery Street 94129,94129,San Francisco,California,United States,37.8013992,-122.4587988
+de Young Museum,,"tourist_attraction, museum, point_of_interest, establishment",50 Hagiwara Tea Garden Drive 94118,94118,San Francisco,California,United States,37.7715935,-122.4685617
+California Academy of Sciences,3.0,"tourist_attraction, aquarium, museum, point_of_interest, establishment",55 Music Concourse Drive 94118,94118,San Francisco,California,United States,37.7698299,-122.466104
+Bay Area Discovery Museum,,"tourist_attraction, museum, point_of_interest, establishment",557 McReynolds Road 94965,94965,Sausalito,California,United States,37.830975,-122.50169
+Legion of Honor,,"tourist_attraction, museum, point_of_interest, establishment",100 34th Avenue 94121,94121,San Francisco,California,United States,37.78447790000001,-122.5008906
+Exploratorium,,"tourist_attraction, museum, point_of_interest, establishment",Green Street 94111,94111,San Francisco,California,United States,37.8002712,-122.4030517
+The Walt Disney Family Museum,,"museum, tourist_attraction, point_of_interest, establishment",104 Montgomery Street 94129,94129,San Francisco,California,United States,37.8013992,-122.4587988
+de Young Museum,,"tourist_attraction, museum, point_of_interest, establishment",50 Hagiwara Tea Garden Drive 94118,94118,San Francisco,California,United States,37.7715935,-122.4685617
+California Academy of Sciences,3.0,"aquarium, tourist_attraction, museum, point_of_interest, establishment",55 Music Concourse Drive 94118,94118,San Francisco,California,United States,37.7698299,-122.466104
+Bay Area Discovery Museum,,"tourist_attraction, museum, point_of_interest, establishment",557 McReynolds Road 94965,94965,Sausalito,California,United States,37.830975,-122.50169
+Legion of Honor,,"tourist_attraction, museum, point_of_interest, establishment",100 34th Avenue 94121,94121,San Francisco,California,United States,37.78447790000001,-122.5008906
+San Francisco Museum of Modern Art,,"tourist_attraction, museum, art_gallery, point_of_interest, establishment",151 3rd Street 94103,94103,San Francisco,California,United States,37.7858686,-122.400667
+Asian Art Museum,,"museum, point_of_interest, establishment",200 Larkin Street 94102,94102,San Francisco,California,United States,37.7801637,-122.4161985
+"USS Hornet - Sea, Air and Space Museum",,"museum, point_of_interest, establishment",707 West Hornet Avenue 94501,94501,Alameda,California,United States,37.7727717,-122.3031335
+Oakland Museum of California,,"museum, cafe, park, food, point_of_interest, establishment",1000 Oak Street 94607,94607,Oakland,California,United States,37.7981254,-122.2645611
+Conservatory of Flowers,,"park, museum, point_of_interest, establishment",100 John F Kennedy Drive 94118,94118,San Francisco,California,United States,37.7726187,-122.4602558
+Chabot Space & Science Center,,"tourist_attraction, museum, point_of_interest, establishment",10000 Skyline Boulevard 94619,94619,Oakland,California,United States,37.8187162,-122.1807137
+Lawrence Hall of Science,,"tourist_attraction, museum, store, point_of_interest, establishment",1 Centennial Drive 94720,94720,Berkeley,California,United States,37.8793781,-122.2467773
+Exploratorium,,"tourist_attraction, museum, point_of_interest, establishment",Green Street 94111,94111,San Francisco,California,United States,37.8002712,-122.4030517
+The Walt Disney Family Museum,,"museum, tourist_attraction, point_of_interest, establishment",104 Montgomery Street 94129,94129,San Francisco,California,United States,37.8013992,-122.4587988
+de Young Museum,,"tourist_attraction, museum, point_of_interest, establishment",50 Hagiwara Tea Garden Drive 94118,94118,San Francisco,California,United States,37.7715935,-122.4685617
+California Academy of Sciences,3.0,"tourist_attraction, aquarium, museum, point_of_interest, establishment",55 Music Concourse Drive 94118,94118,San Francisco,California,United States,37.7698299,-122.466104
+Bay Area Discovery Museum,,"tourist_attraction, museum, point_of_interest, establishment",557 McReynolds Road 94965,94965,Sausalito,California,United States,37.830975,-122.50169
+Legion of Honor,,"tourist_attraction, museum, point_of_interest, establishment",100 34th Avenue 94121,94121,San Francisco,California,United States,37.78447790000001,-122.5008906
+San Francisco Museum of Modern Art,,"art_gallery, tourist_attraction, museum, point_of_interest, establishment",151 3rd Street 94103,94103,San Francisco,California,United States,37.7858686,-122.400667
+Asian Art Museum,,"museum, point_of_interest, establishment",200 Larkin Street 94102,94102,San Francisco,California,United States,37.7801637,-122.4161985
+"USS Hornet - Sea, Air and Space Museum",,"museum, point_of_interest, establishment",707 West Hornet Avenue 94501,94501,Alameda,California,United States,37.7727717,-122.3031335
+Oakland Museum of California,,"museum, cafe, park, point_of_interest, food, establishment",1000 Oak Street 94607,94607,Oakland,California,United States,37.7981254,-122.2645611
+Conservatory of Flowers,,"park, museum, point_of_interest, establishment",100 John F Kennedy Drive 94118,94118,San Francisco,California,United States,37.7726187,-122.4602558
+Chabot Space & Science Center,,"tourist_attraction, museum, point_of_interest, establishment",10000 Skyline Boulevard 94619,94619,Oakland,California,United States,37.8187162,-122.1807137
+Lawrence Hall of Science,,"tourist_attraction, museum, point_of_interest, store, establishment",1 Centennial Drive 94720,94720,Berkeley,California,United States,37.8793781,-122.2467773
+Cartoon Art Museum,,"tourist_attraction, museum, point_of_interest, establishment",781 Beach Street 94109,94109,San Francisco,California,United States,37.8062567,-122.4217103
+The Contemporary Jewish Museum,,"tourist_attraction, museum, point_of_interest, establishment",736 Mission Street 94103,94103,San Francisco,California,United States,37.7855925,-122.4035021
+Exploratorium,,"tourist_attraction, museum, point_of_interest, establishment",Green Street 94111,94111,San Francisco,California,United States,37.8002712,-122.4030517
+The Walt Disney Family Museum,,"museum, tourist_attraction, point_of_interest, establishment",104 Montgomery Street 94129,94129,San Francisco,California,United States,37.8013992,-122.4587988
+de Young Museum,,"tourist_attraction, museum, point_of_interest, establishment",50 Hagiwara Tea Garden Drive 94118,94118,San Francisco,California,United States,37.7715935,-122.4685617
+California Academy of Sciences,3.0,"aquarium, tourist_attraction, museum, point_of_interest, establishment",55 Music Concourse Drive 94118,94118,San Francisco,California,United States,37.7698299,-122.466104
+Bay Area Discovery Museum,,"tourist_attraction, museum, point_of_interest, establishment",557 McReynolds Road 94965,94965,Sausalito,California,United States,37.830975,-122.50169
+Legion of Honor,,"tourist_attraction, museum, point_of_interest, establishment",100 34th Avenue 94121,94121,San Francisco,California,United States,37.78447790000001,-122.5008906
+Exploratorium,,"tourist_attraction, museum, point_of_interest, establishment",Green Street 94111,94111,San Francisco,California,United States,37.8002712,-122.4030517
+The Walt Disney Family Museum,,"museum, tourist_attraction, point_of_interest, establishment",104 Montgomery Street 94129,94129,San Francisco,California,United States,37.8013992,-122.4587988
+de Young Museum,,"tourist_attraction, museum, point_of_interest, establishment",50 Hagiwara Tea Garden Drive 94118,94118,San Francisco,California,United States,37.7715935,-122.4685617
+California Academy of Sciences,3.0,"aquarium, tourist_attraction, museum, point_of_interest, establishment",55 Music Concourse Drive 94118,94118,San Francisco,California,United States,37.7698299,-122.466104
+Bay Area Discovery Museum,,"tourist_attraction, museum, point_of_interest, establishment",557 McReynolds Road 94965,94965,Sausalito,California,United States,37.830975,-122.50169
+Legion of Honor,,"tourist_attraction, museum, point_of_interest, establishment",100 34th Avenue 94121,94121,San Francisco,California,United States,37.78447790000001,-122.5008906
+San Francisco Museum of Modern Art,,"tourist_attraction, museum, art_gallery, point_of_interest, establishment",151 3rd Street 94103,94103,San Francisco,California,United States,37.7858686,-122.400667

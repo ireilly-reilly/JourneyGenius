@@ -21,7 +21,7 @@ type = 'museum' #
 desired_result_count = 100 # Desired result count here
 
 # Create and open a CSV file for writing
-# with open('activity_data.csv', mode='a', newline='', encoding='utf-8') as file:
+# with open('journey-genius-data-scraping/activity_data.csv', mode='a', newline='', encoding='utf-8') as file:
 #     writer = csv.writer(file)
 
 #     # Write the header row with column names
@@ -29,10 +29,10 @@ desired_result_count = 100 # Desired result count here
 
 
 # Check if the CSV file already exists
-csv_exists = os.path.exists('activity_data.csv')
+csv_exists = os.path.exists('journey-genius-data-scraping/activity_data.csv')
 
 # Create and open a CSV file for writing
-with open('activity_data.csv', mode='a', newline='', encoding='utf-8') as file:
+with open('journey-genius-data-scraping/activity_data.csv', mode='a', newline='', encoding='utf-8') as file:
     writer = csv.writer(file)
     
     # Only write the header row if the file is empty (or doesn't exist)
