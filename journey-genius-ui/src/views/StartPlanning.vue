@@ -129,6 +129,50 @@
   </v-col>
 </v-row>
 
+<!-- Shopping selection -->
+<v-row justify="center">
+  <v-col cols="12" md="8">
+    <v-card class="pa-4">
+      <h3 class="headline text-deep-purple-accent-2">Select Favorite Shopping Options</h3>
+      <p>Choose your favorite shopping options and spend some money!</p>
+
+      <v-row justify="center">
+        <v-col v-for="shopping in shoppingOptions" :key="shopping.value" cols="4">
+          <v-btn class="companion-btn" :color="shopping.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+            @click="selectShopping(shopping)">
+            <v-icon v-if="shopping.value === 'shopping_mall'">mdi-shopping</v-icon>
+            <v-icon v-if="shopping.value === 'clothing_store'">mdi-tshirt-crew</v-icon>
+            <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon>
+            <v-icon v-if="shopping.value === 'book_store'">mdi-book</v-icon>
+            <div>{{ shopping.label }}</div>
+          </v-btn>
+          <br>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-col>
+</v-row>
+<!-- <v-row>
+    <v-col class="pa-12">
+      <v-slider
+        v-model="selectedOption"
+        :max="Object.keys(shoppingOptions).length - 1"
+        :ticks="shoppingOptions"
+        show-ticks="always"
+        step="1"
+        tick-size="4"
+        thumb-label="always"
+        thumb-size="32"
+        @input="updateSelection"
+        track-color="deep-purple lighten-3"
+      >
+        <template v-slot:thumb-label="{ modelValue }">
+          <v-icon :icon="shopping(modelValue)" theme="dark"></v-icon>
+        </template>
+      </v-slider>
+    </v-col>
+  </v-row> -->
+
 
 
 
@@ -174,6 +218,7 @@ export default defineComponent({
         { label: 'Medium', value: 'medium', range: '1000 - 2500 USD', selected: false, priceRange: ['2'] },
         { label: 'Expensive', value: 'expensive', range: '2500+ USD', selected: false, priceRange: ['3'] },
       ],
+
       activities: [
       { value: 'amusement_park', label: 'Amusement Park', selected: false },
       { value: 'aquarium', label: 'Aquarium', selected: false },
@@ -184,7 +229,6 @@ export default defineComponent({
       // Add more activities as needed
     ],
 
-
       ethnicFoods: [
       { value: 'asian', label: 'Asian', selected: false },
       { value: 'american', label: 'American', selected: false },
@@ -193,6 +237,27 @@ export default defineComponent({
       { value: 'mediterranean', label: 'Mediterranean', selected: false },
       { value: 'vegan', label: 'Vegan', selected: false },
     ],
+
+    shoppingOptions: [
+      { value: 'shopping_mall', label: 'Shopping Mall', selected: false },
+      { value: 'clothing_store', label: 'Clothing Store', selected: false },
+      { value: 'electronics_store', label: 'Electronics Store', selected: false },
+      { value: 'book_store', label: 'Book Store', selected: false },
+      // Add more shopping options as needed
+    ],
+
+    // shoppingOptions: {
+    //   0: 'Shopping Mall',
+    //   1: 'Clothing Store',
+    //   2: 'Electronics Store',
+    //   3: 'Book Store',
+    // },
+    // icons: [
+    //   'mdi-shopping',
+    //   'mdi-tshirt-crew',
+    //   'mdi-cellphone',
+    //   'mdi-book',
+    // ],
       // Other data properties
       selectedDate: null,
       isDatePickerVisible: false,
@@ -255,13 +320,13 @@ export default defineComponent({
   selectActivity(activity) {
     activity.selected = !activity.selected;
   },
+  selectShopping(shopping) {
+    shopping.selected = !shopping.selected;
+  },
+  // shopping(val) {
+  //     return this.icons[val];
+  //   },
 
-    // Method for selecting a travel companion
-    selectTravelCompanion(selectedCompanion) {
-      this.travelCompanions.forEach((companion) => {
-        companion.selected = companion === selectedCompanion;
-      });
-    },
     // Method for generating an itinerary or navigating to another view page
     generateItinerary() {
       // Prepare data to send to the backend
