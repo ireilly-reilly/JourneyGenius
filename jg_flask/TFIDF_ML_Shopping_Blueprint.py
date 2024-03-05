@@ -15,16 +15,18 @@ from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
 
 #Blueprint declaration
-recommendation_bp = Blueprint('recommendation_bp', __name__)
+shoppingRecommendation_bp = Blueprint('shoppingRecommendation_bp', __name__)
 
 # Load the data from the CSV file with the correct encoding
 # Ethan's Filepath
 # data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
-# Kai's Filepath
-data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
-#print(f"Number of rows in data: {len(data)}")
-# Isaac's Filepath
 
+# # Kai's Filepath
+data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
+# #print(f"Number of rows in data: {len(data)}")
+# # Isaac's Filepath
+
+# data = pd.read_csv('JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
 
 # Preprocess the "Price Range" column
 # Fill missing values with 0 (unknown)
@@ -65,11 +67,12 @@ def haversine(lat1, lon1, lat2, lon2):
 
 # Function to get recommendations by text similarity, location, and price range
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
-    print(f"Received place_name: {target_place}")
+
+    print(f"Received target_place: {target_place}")
     print(f"Received input_lat: {input_lat}")
     print(f"Received input_lon: {input_lon}")
     print(f"Received input_price: {input_price}")
-    print("Variables successfully passed by parameter :)")
+    #print("Variables successfully passed by parameter :)")
     print()
     #print(data.head())  # Print the first few rows
     #print(data.info())  # Print column names and data types
@@ -114,7 +117,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     return {'recommendations': recommendations}
 
 
-@recommendation_bp.route('/run_ML_model_recommendations', methods=['POST'])
+@shoppingRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
 def recommend():
     try:
         data = request.json
@@ -122,12 +125,14 @@ def recommend():
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
-        print(target_place)
-        print(target_lat_str)
-        print(target_lon_str)
-        print(desired_price_range_str)
-        print("Values from the frontend is successfully sent over :)")
+        #print(target_place)
+        #print(target_lat_str)
+        #print(target_lon_str)
+        #print(desired_price_range_str)
         print()
+        print("#################### TFIDF - Restaurant Recommendations ####################")
+        print("Values from the frontend is successfully sent over :)")
+        #print()
 
         # Check if latitude, longitude, and price range are not None
         if None in (target_lat_str, target_lon_str, desired_price_range_str):
@@ -138,11 +143,11 @@ def recommend():
             target_lat = float(target_lat_str)
             target_lon = float(target_lon_str)
             desired_price_range = int(desired_price_range_str)
-            print(target_lat_str)
-            print(target_lon_str)
-            print(desired_price_range_str)
-            print("Variables successfully converted")
-            print()
+            #print(target_lat_str)
+            #print(target_lon_str)
+            #print(desired_price_range_str)
+            print("Variables successfully converted from strings to floats and int")
+            #print()
 
         except ValueError as e:
             print(f"Error converting latitude, longitude, or price range: {e}")
@@ -155,7 +160,9 @@ def recommend():
         place_names = [place['place'] for place in recommended_places['recommendations']]
 
         # Print the place names
+        print("Here are the recommended Restaurant Names from the TFIDF Model:")
         print(place_names)
+        print()
 
         # Return the recommended places (limited to 10)
         return jsonify({'recommended_places': place_names[:10]})

@@ -20,11 +20,12 @@
           <h3 class="headline text-deep-purple-accent-2">Where do you want to travel?</h3>
           <br>
 
-          <!-- Drop down for cities -->
-          <v-autocomplete v-model="city" :items="autocompleteCities" label="Type a City" @input="onInputChange"></v-autocomplete>
-
-
-
+          <vue-google-autocomplete id="map2" ref="toAddress" classname="form-control" placeholder="Enter a City"
+            v-on:placechanged="getAddressData" types="(cities)" country="us"
+            style="width: 100%; max-width: 5000px; height: 50px; background-color: #f5f5f5; padding-left: 15px;">
+          </vue-google-autocomplete> <!-- Drop down for cities -->
+          <br>
+          <br>
         </v-card>
       </v-col>
     </v-row>
@@ -74,7 +75,6 @@
       </v-col>
     </v-row>
 
-
     <!-- Travel Companions selection -->
     <v-row justify="center">
       <v-col cols="12" md="8">
@@ -89,6 +89,7 @@
                 <v-icon v-if="companion.value === 'couple'">mdi-heart</v-icon>
                 <div>{{ companion.label }}</div>
               </v-btn>
+              <br>
             </v-col>
           </v-row>
         </v-card>
@@ -100,9 +101,11 @@
     <v-row justify="center">
       <v-col cols="12" md="8" class="text-center">
         <br>
+        <router-link to="/Itinerary">
         <v-btn class="generate-btn" color="deep-purple-accent-2" @click="generateItinerary">
           Generate
         </v-btn>
+      </router-link>
       </v-col>
     </v-row>
 
@@ -113,6 +116,8 @@
 
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import VueGoogleAutocomplete from "vue-google-autocomplete";
+
 
 export default defineComponent({
   data() {
@@ -123,6 +128,10 @@ export default defineComponent({
       menu: false,
       startDate: '', // Initialize with an empty string or a default date
       endDate: '',
+      selectedPlace: null,
+      selectedLat: null,
+      selectedLon: null,
+      selectededBudget: null,
 
       // Data for budget selection
       budgets: [
@@ -142,7 +151,7 @@ export default defineComponent({
       // Other data properties
       selectedDate: null,
       isDatePickerVisible: false,
-      travelDestination: null,
+      // travelDestination: null,
       selectedBudget: null,
 
       // Validation rule for end date
@@ -153,47 +162,22 @@ export default defineComponent({
     };
   },
 
+  components: {
+    VueGoogleAutocomplete
+  },
+
   methods: {
-    // Method for handling input change in the city text field
-    async onInputChange(value) {
-      this.city = value;
-      console.log("Input value:", this.city);
-      if (this.city && this.city.length > 2) {
-        try {
-          const response = await axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json`, {
-            params: {
-              input: this.city,
-              types: '(cities)',
-              key: 'AIzaSyD_3MdhvzMxjiKkNugKvqz6Z9i9feEZkXQ',
-            },
-          });
-
-          console.log('Autocomplete API response:', response.data);
-
-          this.autocompleteCities = response.data.predictions.map(prediction => prediction.description);
-        } catch (error) {
-          console.error('Error fetching autocomplete data:', error);
-          this.autocompleteCities = []; // Clear autocomplete suggestions on error
-        }
-      } else {
-        this.autocompleteCities = [];
-      }
-    },
-
-    // Method for selecting a city from the autocomplete suggestions
-    async getPlaceDetails(placeId) {
-      const response = await axios.get(`https://maps.googleapis.com/maps/api/place/details/json`, {
-        params: {
-          place_id: placeId,
-          key: 'AIzaSyD_3MdhvzMxjiKkNugKvqz6Z9i9feEZkXQ',
-        },
-      });
-
-      const location = response.data.result.geometry.location;
-      const latitude = location.lat;
-      const longitude = location.lng;
-
-      console.log(`Latitude: ${latitude}, Longitude: ${longitude}`);
+    // Google Places API Dropdown
+    getAddressData: function (addressData) {
+      this.city = addressData.locality || addressData.latitude || addressData.longitude || '';
+      this.selectedPlace = {
+        name: this.city,
+        latitude: addressData.latitude,
+        longitude: addressData.longitude,
+      };
+      console.log('Selected Place:', this.selectedPlace);
+      this.selectedLat = addressData.latitude; // Store latitude
+      this.selectedLon = addressData.longitude; // Store longitude
     },
 
     // Method for displaying the date picker
@@ -206,7 +190,16 @@ export default defineComponent({
     },
     // Method for selecting a budget
     selectBudget(selectedBudget) {
-      this.$store.commit('setSelectedBudget', selectedBudget);
+      // Set the selected budget to the corresponding value
+      if (selectedBudget.value === 'cheap') {
+        this.selectedBudget = 1;
+      } else if (selectedBudget.value === 'medium') {
+        this.selectedBudget = 2;
+      } else if (selectedBudget.value === 'expensive') {
+        this.selectedBudget = 3;
+      }
+
+      // Update the selected state for each budget
       this.budgets.forEach((budget) => {
         budget.selected = budget === selectedBudget;
       });
@@ -221,24 +214,43 @@ export default defineComponent({
     generateItinerary() {
       // Prepare data to send to the backend
       const requestData = {
-        //target_place: 'Reno', WE WANT THE USER TO CHOOOSE IN THE FUTURE
-        // latitude: this.latitude, // Assume you have a way to get the latitude from the user input
-        // longitude: this.longitude, // Assume you have a way to get the longitude from the user input
-        target_lat_str: '39.5296',
-        target_lon_str: '-119.8138',
-        desired_price_range_str: '2'
-        // desired_price_range: this.selectedBudget.priceRange, // Assuming selectedBudget has a priceRange property
+        //target_place: 'type of restaurant', WE WANT THE USER TO CHOOOSE IN THE FUTURE
+
+        // We are getting these coordinates from the testRestaurantsPlacesAPI
+        target_lat_str: this.selectedLat,
+        target_lon_str: this.selectedLon,
+
+        // From user selection
+        desired_price_range_str: this.selectedBudget
       };
 
-      // Send a POST request to the Flask backend
-      axios.post('http://localhost:8000/api/run_ML_model_recommendations', requestData)
+      // Make a POST request to scrape_restaurants first
+      axios.post('http://localhost:8000/api/scrape_restaurants', requestData)
         .then(response => {
-          console.log(response.data);
+          console.log('scrape_restaurants response:', response.data);
+          // After the first request is successful, make a POST request to run_ML_model_recommendations
+          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
+        })
+        .then(response => {
+          console.log('run_ML_model_recommendations response:', response.data);
+          this.$router.push({ name: 'Itinerary', query: { restaurantData: JSON.stringify(response.data) } });
+          return axios.post('http://localhost:8000/api/scrape_activities', requestData);
+        })
+        .then(response => {
+          console.log('scrape_activities response', response.data);
+          // this.$router.push({ name: 'Itinerary', query: { activitiesData: JSON.stringify(response.data) } });
+          return axios.post('http://localhost:8000/api/scrape_landmarks', requestData);
+        })
+        .then(response => {
+          console.log('scape_landmarks response', response.data);
+          return axios.post('http://localhost:8000/api/scrape_shopping', requestData);
+        })
+        .then(response => {
+          console.log('scrape_shopping response', response.data);
         })
         .catch(error => {
           console.error(error);
         });
-
     },
     // Method to check if the end date is valid
     isEndDateValid(selectedEndDate) {
