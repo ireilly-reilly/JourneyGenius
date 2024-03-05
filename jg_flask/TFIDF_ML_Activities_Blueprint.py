@@ -15,14 +15,14 @@ from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
 
 #Blueprint declaration
-restaurantRecommendation_bp = Blueprint('restaurantRecommendation_bp', __name__)
+activitiesRecommendation_bp = Blueprint('activitiesRecommendation_bp', __name__)
 
 # Load the data from the CSV file with the correct encoding
 # Ethan's Filepath
 # data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
 
 # # Kai's Filepath
-data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
+data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/activity_data.csv', encoding='utf-8') 
 # #print(f"Number of rows in data: {len(data)}")
 # # Isaac's Filepath
 
@@ -117,7 +117,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     return {'recommendations': recommendations}
 
 
-@restaurantRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
+@activitiesRecommendation_bp.route('/run_ML_model_activity_recommendations', methods=['POST'])
 def recommend():
     try:
         data = request.json
@@ -130,7 +130,7 @@ def recommend():
         #print(target_lon_str)
         #print(desired_price_range_str)
         print()
-        print("#################### TFIDF - Restaurant Recommendations ####################")
+        print("#################### TFIDF - Activity Recommendations ####################")
         print("Values from the frontend is successfully sent over :)")
         #print()
 
@@ -160,12 +160,12 @@ def recommend():
         place_names = [place['place'] for place in recommended_places['recommendations']]
 
         # Print the place names
-        print("Here are the recommended Restaurant Names from the TFIDF Model:")
+        print("Here are the recommended Activities  from the TFIDF Model:")
         print(place_names)
         print()
 
         # Return the recommended places (limited to 10)
-        return jsonify({'recommended_places': place_names[:10]})
+        return jsonify({'recommended_activities': place_names[:10]})
 
     except Exception as e:
         # Log the exception for debugging purposes

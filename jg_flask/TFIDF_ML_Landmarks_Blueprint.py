@@ -15,7 +15,7 @@ from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
 
 #Blueprint declaration
-restaurantRecommendation_bp = Blueprint('restaurantRecommendation_bp', __name__)
+landmarksRecommendation_bp = Blueprint('landmarksRecommendation_bp', __name__)
 
 # Load the data from the CSV file with the correct encoding
 # Ethan's Filepath
@@ -117,7 +117,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     return {'recommendations': recommendations}
 
 
-@restaurantRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
+@landmarksRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
 def recommend():
     try:
         data = request.json

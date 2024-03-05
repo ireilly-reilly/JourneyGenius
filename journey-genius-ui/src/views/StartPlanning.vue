@@ -229,11 +229,24 @@ export default defineComponent({
         .then(response => {
           console.log('scrape_restaurants response:', response.data);
           // After the first request is successful, make a POST request to run_ML_model_recommendations
-          return axios.post('http://localhost:8000/api/run_ML_model_recommendations', requestData);
+          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
         })
         .then(response => {
           console.log('run_ML_model_recommendations response:', response.data);
-          this.$router.push({ name: 'Itinerary', query: { data: JSON.stringify(response.data) } });
+          this.$router.push({ name: 'Itinerary', query: { restaurantData: JSON.stringify(response.data) } });
+          return axios.post('http://localhost:8000/api/scrape_activities', requestData);
+        })
+        .then(response => {
+          console.log('scrape_activities response', response.data);
+          // this.$router.push({ name: 'Itinerary', query: { activitiesData: JSON.stringify(response.data) } });
+          return axios.post('http://localhost:8000/api/scrape_landmarks', requestData);
+        })
+        .then(response => {
+          console.log('scape_landmarks response', response.data);
+          return axios.post('http://localhost:8000/api/scrape_shopping', requestData);
+        })
+        .then(response => {
+          console.log('scrape_shopping response', response.data);
         })
         .catch(error => {
           console.error(error);

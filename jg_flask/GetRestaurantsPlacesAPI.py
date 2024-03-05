@@ -9,7 +9,7 @@ getRestaurant_bp = Blueprint('getRestaurant_bp', __name__)
 def scrape_restaurants():
     # Get the latitude and longitude from the request
     print()
-    print("#################### Restaurants BP #####################")
+    print("#################### Retrieving Restaurant Places  #####################")
     latitude = request.json.get('target_lat_str')
     longitude = request.json.get('target_lon_str')
     # Check if latitude, longitude, and price range are not None
@@ -58,17 +58,17 @@ def scrape_restaurants():
     # Check if the CSV file already exists
     
 
-    csv_exists = os.path.exists('/JourneyGenius/journey-genius-datascraping/restaurant_data.csv')
+    # csv_exists = os.path.exists('/JourneyGenius/journey-genius-datascraping/restaurant_data.csv')
     # try above at some point
 
 
     # Kai's filepath
-    # csv_exists = os.path.exists('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv')
+    csv_exists = os.path.exists('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv')
     # Isaac's filepath
     # Isaac add your filepath here!
 
     # Create and open a CSV file for writing
-    with open('/JourneyGenius/journey-genius-datascraping/restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
+    with open('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         
         # Only write the header row if the file is empty (or doesn't exist)
@@ -128,7 +128,7 @@ def scrape_restaurants():
                 # Write the data to the CSV file
                 writer.writerow([name, price_range, types, address, postal_code, city, state, country, latitude, longitude])
 
-                print("Here is what is saved inside the csv file:")
+                print("Here is what is stored inside the csv file:")
                 print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
                 print()
 

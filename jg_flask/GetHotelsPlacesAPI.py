@@ -72,7 +72,7 @@ def scrape_hotels():
     # Isaac add your filepath here!
 
     # Create and open a CSV file for writing
-    with open('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/hotel_data.csv', mode='a', newline='', encoding='utf-8') as file:
+    with open('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/hotel.csv', mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         
         # Only write the header row if the file is empty (or doesn't exist)

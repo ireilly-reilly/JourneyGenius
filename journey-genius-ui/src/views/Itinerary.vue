@@ -118,10 +118,10 @@ export default defineComponent({
     data() {
         return {
 
-            activities: ['Biking Across the Golden Gate Bridge: Rent a bike and pedal across the iconic Golden Gate Bridge. Once on the other side, explore the trails in the Marin Headlands for stunning views of the bridge and the city.', 'Land\'s End Trail: Hike the Land\'s End Trail for breathtaking views of the Pacific Ocean, the Golden Gate Bridge, and the Marin Headlands. Don\'t miss the historic Sutro Baths and the labyrinth along the way.', 'Kayaking on the Bay: Rent a kayak and paddle around the San Francisco Bay. You can get unique views of the city skyline and might even spot some sea lions near Pier 39.', 'Sailing on the Bay: Charter a sailboat or join a sailing tour to experience the beauty of San Francisco from the water.'], // Add your activities here
-            landmarks: ['Golden Gate Park: This expansive park offers a variety of attractions, including the California Academy of Sciences, the de Young Museum, the Japanese Tea Garden, and the San Francisco Botanical Garden.', 'Fisherman\'s Wharf: Enjoy the lively atmosphere at Fisherman\'s Wharf, where you can indulge in seafood, visit Pier 39 with its sea lions, and explore the Muse Mecanique, a vintage arcade.', 'Alcatraz Island: Take a ferry to Alcatraz and explore the infamous former prison. The audio tour provides a fascinating glimpse into the history of this iconic site.', 'Chinatown: Explore the vibrant and historic Chinatown, known for its unique shops, markets, and delicious restaurants.'], // Add your landmarks here
-            foods: [], // Initialize as empty array
-            shops: ['Union Square: Known as the city\'s premier shopping destination, Union Square is home to flagship stores of major brands such as Macy\'s,Saks Fifth Avenue,Neiman Marcus,and Apple. You\'ll also find a variety of luxury boutiques and department stores in the surrounding area.', 'Westfield San Francisco Centre (865 Market St): This large shopping mall in the heart of downtown features a mix of high-end and mainstream retailers, including Bloomingdale\'s, Nordstrom, and a variety of other shops.', 'Ghirardelli Square (900 North Point St): While primarily known for its chocolate shops, Ghirardelli Square also houses boutique stores, galleries, and restaurants. It\'s a great place to shop while enjoying views of the bay.', 'Valencia Street (Mission District): Valencia Street in the Mission District is known for its hip and eclectic shops, including vintage stores, bookshops, and unique boutiques.'], // Add your shops here
+            activities: [],
+            landmarks: [],
+            foods: [], 
+            shops: [], 
             selectedActivities: [],
             selectedLandmarks: [],
             selectedFoods: [],
@@ -130,28 +130,13 @@ export default defineComponent({
     },
     methods: {
 
-        // redirectToMoreActivitiesPage() {
-        //     this.$store.commit('updateSelectedActivities', this.selectedActivities);
-        //     this.$router.push('/MoreActivitiesPage');
-        // },
-        // redirectToMoreLandmarksPage() {
-        //     this.$store.commit('updateSelectedLandmarks', this.selectedLandmarks);
-        //     this.$router.push('/MoreLandmarksPage');
-        // },
-        // redirectToMoreDiningPage() {
-        //     this.$store.commit('updateSelectedFoods', this.selectedFoods);
-        //     this.$router.push('/MoreDiningPage');
-        // },
-        // redirectToMoreShoppingPage() {
-        //     this.$store.commit('updateSelectedShops', this.selectedShops);
-        //     this.$router.push('/MoreShoppingPage');
-        // },
     },
     mounted() {
-        const data = JSON.parse(this.$route.query.data);
-        if (data && data.recommended_places) {
-            this.foods = data.recommended_places;
+        const restaurantData = JSON.parse(this.$route.query.restaurantData);
+        if (restaurantData && restaurantData.recommended_places) {
+            this.foods = restaurantData.recommended_places;
         }
+        
     },
     computed: {
         selectedBudget() {

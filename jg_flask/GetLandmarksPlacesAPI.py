@@ -12,7 +12,7 @@ getLandMark_bp = Blueprint('getLandmark_bp', __name__)
 def scrape_landmarks():
     # Get the latitude and longitude from the request
     print()
-    print("#################### Landmarks BP #####################")
+    print("#################### Retrieving Landmarks Places #####################")
     latitude = request.json.get('target_lat_str')
     longitude = request.json.get('target_lon_str')
     # Check if latitude, longitude, and price range are not None
@@ -128,7 +128,7 @@ def scrape_landmarks():
                 # Write the data to the CSV file
                 writer.writerow([name, price_range, types, address, postal_code, city, state, country, latitude, longitude])
 
-                print("Here is what is saved inside the csv file:")
+                print("Here is what is stored inside the csv file:")
                 print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
                 print()
 

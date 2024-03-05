@@ -12,7 +12,7 @@ getShopping_bp = Blueprint('getShopping_bp', __name__)
 def scrape_shopping():
     # Get the latitude and longitude from the request
     print()
-    print("#################### Shopping BP #####################")
+    print("#################### Retrieving Shopping Places #####################")
     latitude = request.json.get('target_lat_str')
     longitude = request.json.get('target_lon_str')
     # Check if latitude, longitude, and price range are not None
