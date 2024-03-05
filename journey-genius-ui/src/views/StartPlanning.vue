@@ -75,26 +75,61 @@
       </v-col>
     </v-row>
 
-    <!-- Travel Companions selection -->
-    <v-row justify="center">
-      <v-col cols="12" md="8">
-        <v-card class="pa-4">
-          <h3 class="headline text-deep-purple-accent-2">Who Are Your Travel Companions?</h3>
-          <v-row justify="center">
-            <v-col v-for="companion in travelCompanions" :key="companion.value" cols="4">
-              <v-btn class="companion-btn" :color="companion.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-                @click="selectTravelCompanion(companion)">
-                <v-icon v-if="companion.value === 'solo'">mdi-account</v-icon>
-                <v-icon v-if="companion.value === 'group'">mdi-account-group-outline</v-icon>
-                <v-icon v-if="companion.value === 'couple'">mdi-heart</v-icon>
-                <div>{{ companion.label }}</div>
-              </v-btn>
-              <br>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+
+    <!-- Activities selection -->
+<v-row justify="center">
+  <v-col cols="12" md="8">
+    <v-card class="pa-4">
+      <h3 class="headline text-deep-purple-accent-2">Select Favorite Activities</h3>
+      <p>Choose your favorite activities to customize your experience!</p>
+
+      <v-row justify="center">
+        <v-col v-for="activity in activities" :key="activity.value" cols="4">
+          <v-btn class="companion-btn" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+            @click="selectActivity(activity)">
+            <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
+            <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
+            <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
+            <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
+            <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
+            <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
+            <div>{{ activity.label }}</div>
+          </v-btn>
+          <br>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-col>
+</v-row>
+
+
+ <!-- Ethnic Foods selection -->
+<v-row justify="center">
+  <v-col cols="12" md="8">
+    <v-card class="pa-4">
+      <h3 class="headline text-deep-purple-accent-2">Select Ethnic Foods</h3>
+      <p>Select your favorite types of cuisine and we'll cater to your tastes!</p>
+
+      <v-row justify="center">
+        <v-col v-for="food in ethnicFoods" :key="food.value" cols="4">
+          <v-btn class="companion-btn" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+            @click="selectEthnicFood(food)">
+            <v-icon v-if="food.value === 'asian'">mdi-noodles</v-icon>
+            <v-icon v-if="food.value === 'american'">mdi-hamburger</v-icon>
+            <v-icon v-if="food.value === 'italian'">mdi-pizza</v-icon>
+            <v-icon v-if="food.value === 'mexican'">mdi-taco</v-icon>
+            <v-icon v-if="food.value === 'mediterranean'">mdi-fish</v-icon>
+            <v-icon v-if="food.value === 'vegan'">mdi-leaf</v-icon>
+            <div>{{ food.label }}</div>
+          </v-btn>
+          <br>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-col>
+</v-row>
+
+
 
 
     <!-- Generate button -->
@@ -139,15 +174,25 @@ export default defineComponent({
         { label: 'Medium', value: 'medium', range: '1000 - 2500 USD', selected: false, priceRange: ['2'] },
         { label: 'Expensive', value: 'expensive', range: '2500+ USD', selected: false, priceRange: ['3'] },
       ],
+      activities: [
+      { value: 'amusement_park', label: 'Amusement Park', selected: false },
+      { value: 'aquarium', label: 'Aquarium', selected: false },
+      { value: 'art_gallery', label: 'Art Gallery', selected: false },
+      { value: 'museum', label: 'Museum', selected: false },
+      { value: 'stadium', label: 'Stadium', selected: false },
+      { value: 'zoo', label: 'Zoo', selected: false },
+      // Add more activities as needed
+    ],
 
 
-      // Data for travel companion selection
-      travelCompanions: [
-        { label: 'Solo', value: 'solo', selected: false },
-        { label: 'Group', value: 'group', selected: false },
-        { label: 'Couple', value: 'couple', selected: false },
-      ],
-
+      ethnicFoods: [
+      { value: 'asian', label: 'Asian', selected: false },
+      { value: 'american', label: 'American', selected: false },
+      { value: 'italian', label: 'Italian', selected: false },
+      { value: 'mexican', label: 'Mexican', selected: false },
+      { value: 'mediterranean', label: 'Mediterranean', selected: false },
+      { value: 'vegan', label: 'Vegan', selected: false },
+    ],
       // Other data properties
       selectedDate: null,
       isDatePickerVisible: false,
@@ -204,6 +249,13 @@ export default defineComponent({
         budget.selected = budget === selectedBudget;
       });
     },
+    selectEthnicFood(food) {
+    food.selected = !food.selected;
+  },
+  selectActivity(activity) {
+    activity.selected = !activity.selected;
+  },
+
     // Method for selecting a travel companion
     selectTravelCompanion(selectedCompanion) {
       this.travelCompanions.forEach((companion) => {
@@ -229,11 +281,8 @@ export default defineComponent({
         .then(response => {
           console.log('scrape_restaurants response:', response.data);
           // After the first request is successful, make a POST request to run_ML_model_recommendations
-          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
         })
         .then(response => {
-          console.log('run_ML_model_recommendations response:', response.data);
-          this.$router.push({ name: 'Itinerary', query: { restaurantData: JSON.stringify(response.data) } });
           return axios.post('http://localhost:8000/api/scrape_activities', requestData);
         })
         .then(response => {
@@ -247,6 +296,26 @@ export default defineComponent({
         })
         .then(response => {
           console.log('scrape_shopping response', response.data);
+        })
+        .then(response => {
+          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
+        })
+        .then(response => {
+          console.log('run_ML_model_recommendations restaurant response:', response.data);
+          this.$router.push({ name: 'Itinerary', query: { restaurantData: JSON.stringify(response.data) } });
+          return axios.post('http://localhost:8000/api/run_ML_model_activity_recommendations', requestData);
+        })
+        .then(response => {
+          console.log('run_ML_model_recommendations activities response:', response.data);
+          // this.$router.push({ name: 'Itinerary', query: { activityData: JSON.stringify(response.data) } });
+          return axios.post('http://localhost:8000/api/run_ML_model_landmark_recommendations', requestData);
+        })
+        .then(response => {
+          console.log('run_ML_model_recommendations landmarks response:', response.data);
+          return axios.post('http://localhost:8000/api/run_ML_model_shopping_recommendations', requestData);
+        })
+        .then(response => {
+          console.log('run_ML_model_recommendations shopping response:', response.data);
         })
         .catch(error => {
           console.error(error);

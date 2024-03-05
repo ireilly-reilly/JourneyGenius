@@ -20,12 +20,12 @@ def scrape_restaurants():
     try:
         target_lat = float(latitude)
         target_lon = float(longitude)
-        #print(f"Received input_lat: {target_lat}")
-        #print(f"Received input_lon: {target_lon}")
+        print(f"Received input_lat: {target_lat}")
+        print(f"Received input_lon: {target_lon}")
             
 
     except ValueError as e:
-        print(f"Error converting latitude, longitude, or price range: {e}")
+        #print(f"Error converting latitude, longitude, or price range: {e}")
         return jsonify({'error': 'Invalid parameter values'}), 400
         
 

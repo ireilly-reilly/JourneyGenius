@@ -10,9 +10,12 @@
                     Planned for February 13 - February 15. High budget, traveling with friends.
                 </p>
                 <p style="margin-top: 10px;">
-                    The activities you select will form your final itinerary. You are required to check at least one box in
-                    every category. Once you are content with the activities that have piqued your interest, proceed to the
-                    next step. If you desire more options, simply press the more button, and additional choices will become
+                    The activities you select will form your final itinerary. You are required to check at least one box
+                    in
+                    every category. Once you are content with the activities that have piqued your interest, proceed to
+                    the
+                    next step. If you desire more options, simply press the more button, and additional choices will
+                    become
                     available.
                 </p>
                 <br />
@@ -28,8 +31,10 @@
                 <br>
                 <v-row>
                     <v-col v-for="(activity, index) in activities" :key="index" cols="12">
-                        <v-checkbox v-model="selectedActivities[index]" :label="activity" class="mb-1"></v-checkbox>
-                    </v-col>
+    <v-checkbox v-model="selectedActivities" :value="activity"
+        :label="Array.isArray(activity) ? activity.join(', ') : activity" class="mb-1"></v-checkbox>
+</v-col>
+
                 </v-row>
                 <v-col class="d-flex justify-center">
                     <!-- <v-btn @click="redirectToMoreActivitiesPage" color="deep-purple-accent-2">See More Activities</v-btn> -->
@@ -55,20 +60,20 @@
 
         <!-- Category: What do You want to Eat? -->
         <v-row justify="center" class="mt-4" dense>
-    <v-col cols="12" md="8">
-        <h3 class="headline text-deep-purple-accent-2">What do You want to Eat?</h3>
-        <br>
-        <v-row dense>
-            <v-col v-for="(food, index) in foods" :key="index" cols="12">
-                <v-checkbox v-model="selectedFoods" :value="food"
-                    :label="Array.isArray(food) ? food.join(', ') : food" class="mb-1"></v-checkbox>
+            <v-col cols="12" md="8">
+                <h3 class="headline text-deep-purple-accent-2">What do You want to Eat?</h3>
+                <br>
+                <v-row dense>
+                    <v-col v-for="(food, index) in foods" :key="index" cols="12">
+                        <v-checkbox v-model="selectedFoods" :value="food"
+                            :label="Array.isArray(food) ? food.join(', ') : food" class="mb-1"></v-checkbox>
+                    </v-col>
+                </v-row>
+                <v-col class="d-flex justify-center">
+                    <!-- <v-btn @click="redirectToMoreDiningPage" color="deep-purple-accent-2">See More Dining Options</v-btn> -->
+                </v-col>
             </v-col>
         </v-row>
-        <v-col class="d-flex justify-center">
-            <!-- <v-btn @click="redirectToMoreDiningPage" color="deep-purple-accent-2">See More Dining Options</v-btn> -->
-        </v-col>
-    </v-col>
-</v-row>
 
 
         <!-- Category: Shopping Spots -->
@@ -120,8 +125,8 @@ export default defineComponent({
 
             activities: [],
             landmarks: [],
-            foods: [], 
-            shops: [], 
+            foods: [],
+            shops: [],
             selectedActivities: [],
             selectedLandmarks: [],
             selectedFoods: [],
@@ -136,8 +141,13 @@ export default defineComponent({
         if (restaurantData && restaurantData.recommended_places) {
             this.foods = restaurantData.recommended_places;
         }
-        
+
+        // const activityData = JSON.parse(this.$route.query.activityData);
+        // if (activityData && activityData.recommended_activities) {
+        //     this.activities = activityData.recommended_activities;
+        // }
     },
+
     computed: {
         selectedBudget() {
             const store = useStore();

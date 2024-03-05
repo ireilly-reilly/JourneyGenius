@@ -11,8 +11,8 @@ getActivity_bp = Blueprint('getActivity_bp', __name__)
 @getActivity_bp.route('/scrape_activities', methods=['POST'])
 def scrape_activities():
     # Get the latitude and longitude from the request
-    print()
-    print("#################### Retrieving Activities Places #####################")
+    #print()
+    #print("#################### Retrieving Activities Places #####################")
     latitude = request.json.get('target_lat_str')
     longitude = request.json.get('target_lon_str')
     # Check if latitude, longitude, and price range are not None
@@ -35,7 +35,7 @@ def scrape_activities():
     
     # Rest of your code
     location = f'{target_lat}, {target_lon}'  # Use the latitude and longitude in the location variable
-    print("Received coordinates in test activities API " + location)
+    #print("Received coordinates in test activities API " + location)
 
     # Define the API Key that is being used
     api_key = 'AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y'
@@ -49,7 +49,7 @@ def scrape_activities():
     open_now = False # Any location - doesn't need to be open
 
 
-    type = 'museum' 
+    type = 'stadium' 
     # Can use 'amusement_park', 'aquarium', 'art_gallery', 'museum', 'stadium', 'zoo', and 'park' tho i'm saving park for landmark
 
 
@@ -132,9 +132,9 @@ def scrape_activities():
                 # Write the data to the CSV file
                 writer.writerow([name, price_range, types, address, postal_code, city, state, country, latitude, longitude])
 
-                print("Here is what is stored inside the csv file:")
-                print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
-                print()
+                #print("Here is what is stored inside the csv file:")
+                #print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
+                #print()
 
                 # Increment the results fetched counter
                 results_fetched += 1
