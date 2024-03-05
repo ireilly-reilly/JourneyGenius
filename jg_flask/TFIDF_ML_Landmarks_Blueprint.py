@@ -22,7 +22,7 @@ landmarksRecommendation_bp = Blueprint('landmarksRecommendation_bp', __name__)
 # data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
 
 # # Kai's Filepath
-data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
+data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/landmark_data.csv', encoding='utf-8') 
 # #print(f"Number of rows in data: {len(data)}")
 # # Isaac's Filepath
 
@@ -117,11 +117,11 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     return {'recommendations': recommendations}
 
 
-@landmarksRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
+@landmarksRecommendation_bp.route('/run_ML_model_landmark_recommendations', methods=['POST'])
 def recommend():
     try:
         data = request.json
-        target_place = "Lucky Dragon Restaurant" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = "Donner Memorial State Park" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
@@ -130,7 +130,7 @@ def recommend():
         #print(target_lon_str)
         #print(desired_price_range_str)
         print()
-        print("#################### TFIDF - Restaurant Recommendations ####################")
+        print("#################### TFIDF - Landmark Recommendations ####################")
         print("Values from the frontend is successfully sent over :)")
         #print()
 
@@ -160,7 +160,7 @@ def recommend():
         place_names = [place['place'] for place in recommended_places['recommendations']]
 
         # Print the place names
-        print("Here are the recommended Restaurant Names from the TFIDF Model:")
+        print("Here are the recommended Landmark Names from the TFIDF Model:")
         print(place_names)
         print()
 
