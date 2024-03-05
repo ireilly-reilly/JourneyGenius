@@ -20,11 +20,15 @@ restaurantRecommendation_bp = Blueprint('restaurantRecommendation_bp', __name__)
 # Load the data from the CSV file with the correct encoding
 # Ethan's Filepath
 # data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
-# Kai's Filepath
-data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
-#print(f"Number of rows in data: {len(data)}")
-# Isaac's Filepath
 
+
+########################################## FUCK THE INDIVIDUAL FILE PATHS, WE GO UNIVERSAL, RELATIVE FILE PATHS ####################################################################################
+# # Kai's Filepath
+# data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
+# #print(f"Number of rows in data: {len(data)}")
+# # Isaac's Filepath
+
+data = pd.read_csv('journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
 
 # Preprocess the "Price Range" column
 # Fill missing values with 0 (unknown)

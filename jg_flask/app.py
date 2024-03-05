@@ -9,6 +9,10 @@ from flask_mail import Mail, Message
 #Blueprint imports
 from TFIDF_ML_Restaurants_Blueprint import restaurantRecommendation_bp
 from GetRestaurantsPlacesAPI import getRestaurant_bp
+from GetActivitiesPlacesAPI import getActivity_bp
+from GetLandmarksPlacesAPI import getLandMark_bp
+from GetShoppingPlacesAPI import getShopping_bp
+from GetHotelsPlacesAPI import getHotels_bp
 
 
 #from email_verification import email_verification_bp

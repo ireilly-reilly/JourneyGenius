@@ -51,13 +51,24 @@ def scrape_restaurants():
     desired_result_count = 1 # Desired result count here
 
     # Check if the CSV file already exists
+
+
+    ############# I RECOMMEND PUTTING THE RELATIVE PATH IN FOR LOCATING THE CSV (E.G. /JourneyGenius/journey-genius-datascraping/activity....) - Ethan
+
+    # Check if the CSV file already exists
+    
+
+    csv_exists = os.path.exists('/JourneyGenius/journey-genius-datascraping/restaurant_data.csv')
+    # try above at some point
+
+
     # Kai's filepath
-    csv_exists = os.path.exists('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv')
+    # csv_exists = os.path.exists('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv')
     # Isaac's filepath
     # Isaac add your filepath here!
 
     # Create and open a CSV file for writing
-    with open('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
+    with open('/JourneyGenius/journey-genius-datascraping/restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         
         # Only write the header row if the file is empty (or doesn't exist)

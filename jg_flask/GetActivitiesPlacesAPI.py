@@ -51,7 +51,7 @@ def scrape_activities():
 
     type = 'museum' 
     # Can use 'amusement_park', 'aquarium', 'art_gallery', 'museum', 'stadium', 'zoo', and 'park' tho i'm saving park for landmark
-    
+
 
     ############################################## We can change this keyword in the future ##############################################
     # keyword = 'mexican' 
