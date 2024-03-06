@@ -13,6 +13,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
+import os
 
 #Blueprint declaration
 shoppingRecommendation_bp = Blueprint('shoppingRecommendation_bp', __name__)
@@ -22,7 +23,11 @@ shoppingRecommendation_bp = Blueprint('shoppingRecommendation_bp', __name__)
 # data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
 
 # # Kai's Filepath
-data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/shopping_data.csv', encoding='utf-8') 
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
+shopping_csv_file_path = os.path.join(CSV_FOLDER, 'shopping_data.csv')
+
+data = pd.read_csv(shopping_csv_file_path, encoding='utf-8') 
 # #print(f"Number of rows in data: {len(data)}")
 # # Isaac's Filepath
 

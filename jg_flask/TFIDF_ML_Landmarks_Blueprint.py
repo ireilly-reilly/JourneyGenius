@@ -13,6 +13,7 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
+import os
 
 #Blueprint declaration
 landmarksRecommendation_bp = Blueprint('landmarksRecommendation_bp', __name__)
@@ -21,10 +22,13 @@ landmarksRecommendation_bp = Blueprint('landmarksRecommendation_bp', __name__)
 # Ethan's Filepath
 # data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
 
-# # Kai's Filepath
-data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/landmark_data.csv', encoding='utf-8') 
+#Dynamic filepath
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
+landmark_csv_file_path = os.path.join(CSV_FOLDER, 'landmark_data.csv')
+
+data = pd.read_csv(landmark_csv_file_path, encoding='utf-8') 
 # #print(f"Number of rows in data: {len(data)}")
-# # Isaac's Filepath
 
 # data = pd.read_csv('JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
 

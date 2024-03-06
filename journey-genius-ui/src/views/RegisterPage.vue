@@ -58,11 +58,37 @@
       };
     },
     methods: {
+      //Checks to see if the email address is valid
+      isValidEmail(email) {
+        // Regular expression for basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return emailRegex.test(email);
+      },
+
+      //Checks to see if password has at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.
+      isValidPassword(password) {
+        // Regular expression for password validation
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+        return passwordRegex.test(password);
+      },
+
       //Register account with flask server database
       register() {
         // Make an AJAX request to Flask application
         const url = 'http://localhost:8000/api/RegisterUser'; //The localhost port I have Flask running on
   
+        //Checks for valid email address format
+        if (!this.isValidEmail(this.email)) {
+          this.RegistrationErrorMessage = 'Please enter a valid email address.';
+          return;
+        }
+
+        //Validate password format
+        if (!this.isValidPassword(this.password)) {
+          this.RegistrationErrorMessage = 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.';
+          return;
+        }
+
         // Check if both username and password are provided
         if (!this.password || !this.firstname || !this.lastname || !this.email) {
           this.RegistrationErrorMessage = 'All fields are required.'

@@ -63,12 +63,18 @@ def scrape_restaurants():
 
 
     # Kai's filepath
-    csv_exists = os.path.exists('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv')
+    #csv_exists = os.path.exists('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv')
     # Isaac's filepath
     # Isaac add your filepath here!
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
+    restaurant_csv_file_path = os.path.join(CSV_FOLDER, 'restaurant_data.csv')
+    
+    csv_exists = os.path.exists(restaurant_csv_file_path)
 
     # Create and open a CSV file for writing
-    with open('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
+    #with open('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
+    with open(restaurant_csv_file_path, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         
         # Only write the header row if the file is empty (or doesn't exist)
