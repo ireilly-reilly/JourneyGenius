@@ -10,18 +10,18 @@ gmaps = googlemaps.Client(key=api_key)
 
 # Define initial search parameters
 # location = '47.620564,-122.350616' # Seattle, Washington
-location = '37.7749,-122.4194' # San Francisco, California
-# location = '39.530895,-119.814972' # Reno, Nevada
+# location = '37.7749,-122.4194' # San Francisco, California
+location = '39.530895,-119.814972' # Reno, Nevada
 # location = '39.744137, -104.950050' # Denver, Colorado 
 # location = '34.052235, -118.243683' # Los Angeles, California
 radius = 55000 # 55 km radius
 open_now = False # Any location - doesn't need to be open
-type = 'park' # 
+type = 'hotel' # 
 # keyword = 'chinese' 
-desired_result_count = 100 # Desired result count here
+desired_result_count = 50 # Desired result count here
 
 # Create and open a CSV file for writing
-# with open('journey-genius-data-scraping/landmark_data.csv', mode='a', newline='', encoding='utf-8') as file:
+# with open('journey-genius-data-scraping/hotel_data.csv', mode='a', newline='', encoding='utf-8') as file:
 #     writer = csv.writer(file)
 
 #     # Write the header row with column names
@@ -29,10 +29,10 @@ desired_result_count = 100 # Desired result count here
 
 
 # Check if the CSV file already exists
-csv_exists = os.path.exists('journey-genius-data-scraping/landmark_data.csv')
+csv_exists = os.path.exists('journey-genius-data-scraping/hotel_data.csv')
 
 # Create and open a CSV file for writing
-with open('journey-genius-data-scraping/landmark_data.csv', mode='a', newline='', encoding='utf-8') as file:
+with open('journey-genius-data-scraping/hotel_data.csv', mode='a', newline='', encoding='utf-8') as file:
     writer = csv.writer(file)
     
     # Only write the header row if the file is empty (or doesn't exist)

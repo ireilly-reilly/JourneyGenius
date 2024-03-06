@@ -196,12 +196,9 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 # Function to get recommendations by text similarity, location, and price range
-def get_recommendations_with_location_and_price(place_name, Latitude, Longitude, desired_price, cosine_sim=cosine_sim):
+def get_recommendations_with_location_and_price(place_name, Latitude, Longitude, cosine_sim=cosine_sim):
     # Get the index of the input place
     idx = data[data['Place'] == place_name].index[0]
-
-    # Extract the price range of the input place as an integer
-    input_price = int(data['Price Range'][idx])
 
     # Extract the latitude and longitude of the input place
     input_lat = data['Latitude'].iloc[idx]
@@ -211,12 +208,9 @@ def get_recommendations_with_location_and_price(place_name, Latitude, Longitude,
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
     text_similarities = cosine_sim[idx]
 
-    # Calculate price differences
-    price_differences = [abs(input_price - price) for price in data['Price Range']]
-
     # Combine text similarity, geographical distance, and price difference into a composite score
-    composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
-                        for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+    composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) 
+                        for text_sim, dist, price_diff in zip(text_similarities, distances)]
 
     # Sort places by composite similarity score
     sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
@@ -227,12 +221,12 @@ def get_recommendations_with_location_and_price(place_name, Latitude, Longitude,
 
 # Get recommendations for a place with location, price range, and text-based ranking
 # target_place = "Shanghai 21"
-# target_place = "Sparks Marina Park"
+target_place = "Sparks Marina Park"
 
 target_lat = 39.5296  # Latitude of SF Kitchen
 target_lon = -119.8138  # Longitude of SF Kitchen
-desired_price_range = 2  # Desired price range
-recommended_places = get_recommendations_with_location_and_price(target_place, target_lat, target_lon, desired_price_range)
+# desired_price_range = 2  # Desired price range
+recommended_places = get_recommendations_with_location_and_price(target_place, target_lat, target_lon)
 print(recommended_places)
 
 
