@@ -10,8 +10,8 @@ gmaps = googlemaps.Client(key=api_key)
 
 # Define initial search parameters
 # location = '47.620564,-122.350616' # Seattle, Washington
-# location = '37.7749,-122.4194' # San Francisco, California
-location = '39.530895,-119.814972' # Reno, Nevada
+location = '37.7749,-122.4194' # San Francisco, California
+# location = '39.530895,-119.814972' # Reno, Nevada
 # location = '39.744137, -104.950050' # Denver, Colorado 
 # location = '34.052235, -118.243683' # Los Angeles, California
 radius = 55000 # 55 km radius
@@ -31,6 +31,16 @@ desired_result_count = 50 # Desired result count here
 # Check if the CSV file already exists
 csv_exists = os.path.exists('journey-genius-data-scraping/hotel_data.csv')
 
+# Load existing processed place IDs from a file or database
+processed_place_ids = set()
+if csv_exists:
+    with open('journey-genius-data-scraping/hotel_data.csv', mode='r', newline='', encoding='utf-8') as file:
+        reader = csv.reader(file)
+        next(reader)  # Skip header row
+        for row in reader:
+            place_id = row[0]  # Assuming place ID is the first column
+            processed_place_ids.add(place_id)
+
 # Create and open a CSV file for writing
 with open('journey-genius-data-scraping/hotel_data.csv', mode='a', newline='', encoding='utf-8') as file:
     writer = csv.writer(file)
@@ -42,10 +52,7 @@ with open('journey-genius-data-scraping/hotel_data.csv', mode='a', newline='', e
     next_page_token = None
 
     # Initialize a variable to keep track of the results fetched
-    results_fetched = 0
-
-    # Initialize a set to store processed place IDs
-    processed_place_ids = set()
+    results_fetched = 1
 
     # Use a loop to fetch multiple pages of results
     while results_fetched < desired_result_count:
@@ -59,13 +66,9 @@ with open('journey-genius-data-scraping/hotel_data.csv', mode='a', newline='', e
             page_token=next_page_token  # Include the next_page_token
         )
 
-        # Initialize a set to store processed place IDs
-        processed_place_ids = set()
-
         # Loop through each place in the results
         for place in places_result['results']:
             my_place_id = place['place_id']
-
 
             # Check if the place ID has already been processed
             if my_place_id in processed_place_ids:
@@ -75,11 +78,10 @@ with open('journey-genius-data-scraping/hotel_data.csv', mode='a', newline='', e
             processed_place_ids.add(my_place_id)
 
             # Make a request for details
-            place_details = gmaps.place(place_id=my_place_id, fields=['name', 'type', 'price_level', 'address_component'])
+            place_details = gmaps.place(place_id=my_place_id, fields=['name', 'type', 'address_component'])
 
             # Extract and format the data
             name = place_details['result']['name']
-            price_range = place_details['result'].get('price_level', '')  # Check if 'price_level' exists
             types = ', '.join(place_details['result']['types'])
             address_components = place_details['result'].get('address_components', [])  # Check if 'address_components' exists
             address = ' '.join([component['long_name'] for component in address_components if 'street_number' in component['types'] or 'route' in component['types']])
@@ -89,7 +91,7 @@ with open('journey-genius-data-scraping/hotel_data.csv', mode='a', newline='', e
             country = next((component['long_name'] for component in address_components if 'country' in component['types']), '')
 
             # Write the data to the CSV file
-            writer.writerow([name, price_range, types, f"{address} {postal_code}", postal_code, city, state, country])
+            writer.writerow([name, types, f"{address} {postal_code}", postal_code, city, state, country])
 
             # Increment the results fetched counter
             results_fetched += 1

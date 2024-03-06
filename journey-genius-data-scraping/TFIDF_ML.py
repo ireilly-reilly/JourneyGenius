@@ -227,7 +227,7 @@ def get_recommendations_with_location_and_price(place_name, Latitude, Longitude,
 
 # Get recommendations for a place with location, price range, and text-based ranking
 # target_place = "Shanghai 21"
-# target_place = "Sparks Marina Park"
+target_place = "Sparks Marina Park"
 
 target_lat = 39.5296  # Latitude of SF Kitchen
 target_lon = -119.8138  # Longitude of SF Kitchen

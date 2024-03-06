@@ -59,9 +59,6 @@ with open('journey-genius-data-scraping/shopping_data.csv', mode='a', newline=''
             page_token=next_page_token  # Include the next_page_token
         )
 
-        # Initialize a set to store processed place IDs
-        processed_place_ids = set()
-
         # Loop through each place in the results
         for place in places_result['results']:
             my_place_id = place['place_id']
