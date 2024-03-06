@@ -20,10 +20,12 @@
           <h3 class="headline text-deep-purple-accent-2">Where do you want to travel?</h3>
           <br>
 
-          <!-- This was working -->
-          <v-autocomplete v-model="city" :items="autocompleteCities" label="Type a City" @input="onInputChange">
-          </v-autocomplete>
-
+          <vue-google-autocomplete id="map2" ref="toAddress" classname="form-control" placeholder="Enter a City"
+            v-on:placechanged="getAddressData" types="(cities)" country="us"
+            style="width: 100%; max-width: 5000px; height: 50px; background-color: #f5f5f5; padding-left: 15px;">
+          </vue-google-autocomplete> <!-- Drop down for cities -->
+          <br>
+          <br>
         </v-card>
       </v-col>
     </v-row>
@@ -74,34 +76,115 @@
     </v-row>
 
 
-    <!-- Travel Companions selection -->
-    <v-row justify="center">
-      <v-col cols="12" md="8">
-        <v-card class="pa-4">
-          <h3 class="headline text-deep-purple-accent-2">Who Are Your Travel Companions?</h3>
-          <v-row justify="center">
-            <v-col v-for="companion in travelCompanions" :key="companion.value" cols="4">
-              <v-btn class="companion-btn" :color="companion.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-                @click="selectTravelCompanion(companion)">
-                <v-icon v-if="companion.value === 'solo'">mdi-account</v-icon>
-                <v-icon v-if="companion.value === 'group'">mdi-account-group-outline</v-icon>
-                <v-icon v-if="companion.value === 'couple'">mdi-heart</v-icon>
-                <div>{{ companion.label }}</div>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+    <!-- Activities selection -->
+<v-row justify="center">
+  <v-col cols="12" md="8">
+    <v-card class="pa-4">
+      <h3 class="headline text-deep-purple-accent-2">Select Favorite Activities</h3>
+      <p>Choose your favorite activities to customize your experience!</p>
+
+      <v-row justify="center">
+        <v-col v-for="activity in activities" :key="activity.value" cols="4">
+          <v-btn class="companion-btn" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+            @click="selectActivity(activity)">
+            <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
+            <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
+            <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
+            <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
+            <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
+            <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
+            <div>{{ activity.label }}</div>
+          </v-btn>
+          <br>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-col>
+</v-row>
+
+
+ <!-- Ethnic Foods selection -->
+<v-row justify="center">
+  <v-col cols="12" md="8">
+    <v-card class="pa-4">
+      <h3 class="headline text-deep-purple-accent-2">Select Ethnic Foods</h3>
+      <p>Select your favorite types of cuisine and we'll cater to your tastes!</p>
+
+      <v-row justify="center">
+        <v-col v-for="food in ethnicFoods" :key="food.value" cols="4">
+          <v-btn class="companion-btn" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+            @click="selectEthnicFood(food)">
+            <v-icon v-if="food.value === 'asian'">mdi-noodles</v-icon>
+            <v-icon v-if="food.value === 'american'">mdi-hamburger</v-icon>
+            <v-icon v-if="food.value === 'italian'">mdi-pizza</v-icon>
+            <v-icon v-if="food.value === 'mexican'">mdi-taco</v-icon>
+            <v-icon v-if="food.value === 'mediterranean'">mdi-fish</v-icon>
+            <v-icon v-if="food.value === 'vegan'">mdi-leaf</v-icon>
+            <div>{{ food.label }}</div>
+          </v-btn>
+          <br>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-col>
+</v-row>
+
+<!-- Shopping selection -->
+<v-row justify="center">
+  <v-col cols="12" md="8">
+    <v-card class="pa-4">
+      <h3 class="headline text-deep-purple-accent-2">Select Favorite Shopping Options</h3>
+      <p>Choose your favorite shopping options and spend some money!</p>
+
+      <v-row justify="center">
+        <v-col v-for="shopping in shoppingOptions" :key="shopping.value" cols="4">
+          <v-btn class="companion-btn" :color="shopping.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+            @click="selectShopping(shopping)">
+            <v-icon v-if="shopping.value === 'shopping_mall'">mdi-shopping</v-icon>
+            <v-icon v-if="shopping.value === 'clothing_store'">mdi-tshirt-crew</v-icon>
+            <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon>
+            <v-icon v-if="shopping.value === 'book_store'">mdi-book</v-icon>
+            <div>{{ shopping.label }}</div>
+          </v-btn>
+          <br>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-col>
+</v-row>
+<!-- <v-row>
+    <v-col class="pa-12">
+      <v-slider
+        v-model="selectedOption"
+        :max="Object.keys(shoppingOptions).length - 1"
+        :ticks="shoppingOptions"
+        show-ticks="always"
+        step="1"
+        tick-size="4"
+        thumb-label="always"
+        thumb-size="32"
+        @input="updateSelection"
+        track-color="deep-purple lighten-3"
+      >
+        <template v-slot:thumb-label="{ modelValue }">
+          <v-icon :icon="shopping(modelValue)" theme="dark"></v-icon>
+        </template>
+      </v-slider>
+    </v-col>
+  </v-row> -->
+
+
 
 
     <!-- Generate button -->
     <v-row justify="center">
       <v-col cols="12" md="8" class="text-center">
         <br>
+        <router-link to="/Itinerary">
         <v-btn class="generate-btn" color="deep-purple-accent-2" @click="generateItinerary">
           Generate
         </v-btn>
+      </router-link>
       </v-col>
     </v-row>
 
@@ -112,16 +195,22 @@
 
 import { defineComponent } from 'vue';
 import axios from 'axios';
+import VueGoogleAutocomplete from "vue-google-autocomplete";
+
 
 export default defineComponent({
   data() {
     return {
       // Data for handling city input and autocomplete
       city: '',
-      allCities: ['New York', 'Los Angeles', 'Chicago', 'San Francisco', 'Seattle'],
+      autocompleteCities: [],
       menu: false,
       startDate: '', // Initialize with an empty string or a default date
       endDate: '',
+      selectedPlace: null,
+      selectedLat: null,
+      selectedLon: null,
+      selectededBudget: null,
 
       // Data for budget selection
       budgets: [
@@ -130,18 +219,49 @@ export default defineComponent({
         { label: 'Expensive', value: 'expensive', range: '2500+ USD', selected: false, priceRange: ['3'] },
       ],
 
+      activities: [
+      { value: 'amusement_park', label: 'Amusement Park', selected: false },
+      { value: 'aquarium', label: 'Aquarium', selected: false },
+      { value: 'art_gallery', label: 'Art Gallery', selected: false },
+      { value: 'museum', label: 'Museum', selected: false },
+      { value: 'stadium', label: 'Stadium', selected: false },
+      { value: 'zoo', label: 'Zoo', selected: false },
+      // Add more activities as needed
+    ],
 
-      // Data for travel companion selection
-      travelCompanions: [
-        { label: 'Solo', value: 'solo', selected: false },
-        { label: 'Group', value: 'group', selected: false },
-        { label: 'Couple', value: 'couple', selected: false },
-      ],
+      ethnicFoods: [
+      { value: 'asian', label: 'Asian', selected: false },
+      { value: 'american', label: 'American', selected: false },
+      { value: 'italian', label: 'Italian', selected: false },
+      { value: 'mexican', label: 'Mexican', selected: false },
+      { value: 'mediterranean', label: 'Mediterranean', selected: false },
+      { value: 'vegan', label: 'Vegan', selected: false },
+    ],
 
+    shoppingOptions: [
+      { value: 'shopping_mall', label: 'Shopping Mall', selected: false },
+      { value: 'clothing_store', label: 'Clothing Store', selected: false },
+      { value: 'electronics_store', label: 'Electronics Store', selected: false },
+      { value: 'book_store', label: 'Book Store', selected: false },
+      // Add more shopping options as needed
+    ],
+
+    // shoppingOptions: {
+    //   0: 'Shopping Mall',
+    //   1: 'Clothing Store',
+    //   2: 'Electronics Store',
+    //   3: 'Book Store',
+    // },
+    // icons: [
+    //   'mdi-shopping',
+    //   'mdi-tshirt-crew',
+    //   'mdi-cellphone',
+    //   'mdi-book',
+    // ],
       // Other data properties
       selectedDate: null,
       isDatePickerVisible: false,
-      travelDestination: null,
+      // travelDestination: null,
       selectedBudget: null,
 
       // Validation rule for end date
@@ -151,26 +271,23 @@ export default defineComponent({
       ],
     };
   },
-  computed: {
-    // Computed property for autocomplete suggestions based on user input
-    autocompleteCities() {
-      if (this.city == null) {
-        return this.allCities;
-      }
 
-      const lowerCaseInput = this.city.toLowerCase();
-      return this.allCities.filter(city => city.toLowerCase().includes(lowerCaseInput));
-    },
+  components: {
+    VueGoogleAutocomplete
   },
+
   methods: {
-    // Method for handling input change in the city text field
-    onInputChange() {
-      this.menu = !!this.city; // Show menu only when there is input
-    },
-    // Method for selecting a city from the autocomplete suggestions
-    selectCity(selectedCity) {
-      this.city = selectedCity;
-      this.menu = false;
+    // Google Places API Dropdown
+    getAddressData: function (addressData) {
+      this.city = addressData.locality || addressData.latitude || addressData.longitude || '';
+      this.selectedPlace = {
+        name: this.city,
+        latitude: addressData.latitude,
+        longitude: addressData.longitude,
+      };
+      console.log('Selected Place:', this.selectedPlace);
+      this.selectedLat = addressData.latitude; // Store latitude
+      this.selectedLon = addressData.longitude; // Store longitude
     },
 
     // Method for displaying the date picker
@@ -183,41 +300,91 @@ export default defineComponent({
     },
     // Method for selecting a budget
     selectBudget(selectedBudget) {
-    this.$store.commit('setSelectedBudget', selectedBudget);
-    this.budgets.forEach((budget) => {
-      budget.selected = budget === selectedBudget;
-    });
-  },
-    // Method for selecting a travel companion
-    selectTravelCompanion(selectedCompanion) {
-      this.travelCompanions.forEach((companion) => {
-        companion.selected = companion === selectedCompanion;
+      // Set the selected budget to the corresponding value
+      if (selectedBudget.value === 'cheap') {
+        this.selectedBudget = 1;
+      } else if (selectedBudget.value === 'medium') {
+        this.selectedBudget = 2;
+      } else if (selectedBudget.value === 'expensive') {
+        this.selectedBudget = 3;
+      }
+
+      // Update the selected state for each budget
+      this.budgets.forEach((budget) => {
+        budget.selected = budget === selectedBudget;
       });
     },
+    selectEthnicFood(food) {
+    food.selected = !food.selected;
+  },
+  selectActivity(activity) {
+    activity.selected = !activity.selected;
+  },
+  selectShopping(shopping) {
+    shopping.selected = !shopping.selected;
+  },
+  // shopping(val) {
+  //     return this.icons[val];
+  //   },
+
     // Method for generating an itinerary or navigating to another view page
     generateItinerary() {
       // Prepare data to send to the backend
       const requestData = {
-        place_name: this.city,
-        // latitude: this.latitude, // Assume you have a way to get the latitude from the user input
-        // longitude: this.longitude, // Assume you have a way to get the longitude from the user input
-        latitude: 39.5296,
-        longitude: -119.8138,
-        desired_price_range: 2,
-        // desired_price_range: this.selectedBudget.priceRange, // Assuming selectedBudget has a priceRange property
+        //target_place: 'type of restaurant', WE WANT THE USER TO CHOOOSE IN THE FUTURE
+
+        // We are getting these coordinates from the testRestaurantsPlacesAPI
+        target_lat_str: this.selectedLat,
+        target_lon_str: this.selectedLon,
+
+        // From user selection
+        desired_price_range_str: this.selectedBudget
       };
 
-      // Send a POST request to the Flask backend
-      axios.post('http://localhost:8000/generate_itinerary', requestData)
+      // Make a POST request to scrape_restaurants first
+      axios.post('http://localhost:8000/api/scrape_restaurants', requestData)
         .then(response => {
-          // Handle the response, e.g., update the UI with the generated itinerary
-          console.log(response.data);
+          console.log('scrape_restaurants response:', response.data);
+          // After the first request is successful, make a POST request to run_ML_model_recommendations
+        })
+        .then(response => {
+          return axios.post('http://localhost:8000/api/scrape_activities', requestData);
+        })
+        .then(response => {
+          console.log('scrape_activities response', response.data);
+          // this.$router.push({ name: 'Itinerary', query: { activitiesData: JSON.stringify(response.data) } });
+          return axios.post('http://localhost:8000/api/scrape_landmarks', requestData);
+        })
+        .then(response => {
+          console.log('scape_landmarks response', response.data);
+          return axios.post('http://localhost:8000/api/scrape_shopping', requestData);
+        })
+        .then(response => {
+          console.log('scrape_shopping response', response.data);
+        })
+        .then(response => {
+          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
+        })
+        .then(response => {
+          console.log('run_ML_model_recommendations restaurant response:', response.data);
+          this.$router.push({ name: 'Itinerary', query: { restaurantData: JSON.stringify(response.data) } });
+          return axios.post('http://localhost:8000/api/run_ML_model_activity_recommendations', requestData);
+        })
+        .then(response => {
+          console.log('run_ML_model_recommendations activities response:', response.data);
+          // this.$router.push({ name: 'Itinerary', query: { activityData: JSON.stringify(response.data) } });
+          return axios.post('http://localhost:8000/api/run_ML_model_landmark_recommendations', requestData);
+        })
+        .then(response => {
+          console.log('run_ML_model_recommendations landmarks response:', response.data);
+          return axios.post('http://localhost:8000/api/run_ML_model_shopping_recommendations', requestData);
+        })
+        .then(response => {
+          console.log('run_ML_model_recommendations shopping response:', response.data);
         })
         .catch(error => {
-          // Handle errors
           console.error(error);
         });
-    
     },
     // Method to check if the end date is valid
     isEndDateValid(selectedEndDate) {
