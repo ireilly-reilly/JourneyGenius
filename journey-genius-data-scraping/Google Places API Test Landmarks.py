@@ -10,10 +10,10 @@ gmaps = googlemaps.Client(key=api_key)
 
 # Define initial search parameters
 # location = '47.620564,-122.350616' # Seattle, Washington
-location = '37.7749,-122.4194' # San Francisco, California
+# location = '37.7749,-122.4194' # San Francisco, California
 # location = '39.530895,-119.814972' # Reno, Nevada
 # location = '39.744137, -104.950050' # Denver, Colorado 
-# location = '34.052235, -118.243683' # Los Angeles, California
+location = '34.052235, -118.243683' # Los Angeles, California
 radius = 55000 # 55 km radius
 open_now = False # Any location - doesn't need to be open
 type = 'park' # 
