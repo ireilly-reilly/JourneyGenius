@@ -15,7 +15,7 @@ class TestFlaskRoutes(unittest.TestCase):
         #Mock data for recommendation
         data = {'target_lat_str': '40.730610', 'target_lon_str': '-73.935242', 'desired_price_range_str': '2'}
 
-        response = self.client.post('/run_ML_model_recommendations', json=data)#Send request to /run_ML_model_recommendations route in TFIDF file
+        response = self.client.post('/run_ML_model_restaurant_recommendations', json=data)#Send request to /run_ML_model_recommendations route in TFIDF file
         self.assertEqual(response.status_code, 200)#Status code 200 means response request received correctly
         self.assertIn(b"recommended_places", response.data) #Checking if response from TFIDF contains "recommended_places", will check for data below
 
