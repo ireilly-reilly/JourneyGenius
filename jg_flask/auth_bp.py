@@ -4,15 +4,11 @@
 # from flask_jwt_extended import create_access_token, jwt_required, get_jwt_identity
 # from flask_bcrypt import Bcrypt
 
-
-# auth_bp = Blueprint('auth', __name__)
-# bcrypt = Bcrypt()
-
-
 # from app import db
 # from app import User  #Import the User model
 
-
+# auth_bp = Blueprint('auth', __name__)
+# bcrypt = Bcrypt()
 
 # @auth_bp.route('/api/RegisterUser', methods=['POST'])
 # def RegisterUser():
