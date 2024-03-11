@@ -79,102 +79,8 @@
     </v-row>
 
 
-    <!-- Activities selection -->
-    <v-row justify="center">
-      <v-col cols="12" md="8">
-        <v-card class="pa-4">
-          <h3 class="headline text-deep-purple-accent-2">Select Favorite Activities</h3>
-          <p>Choose your favorite activities to customize your experience!</p>
 
-          <v-row justify="center">
-            <v-col v-for="activity in activities" :key="activity.value" cols="4">
-              <v-btn class="companion-btn" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-                @click="selectActivity(activity)">
-                <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
-                <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
-                <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
-                <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
-                <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
-                <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
-                <div>{{ activity.label }}</div>
-              </v-btn>
-              <br>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-
-
-    <!-- Ethnic Foods selection -->
-    <v-row justify="center">
-      <v-col cols="12" md="8">
-        <v-card class="pa-4">
-          <h3 class="headline text-deep-purple-accent-2">Select Ethnic Foods</h3>
-          <p>Select your favorite types of cuisine and we'll cater to your tastes!</p>
-
-          <v-row justify="center">
-            <v-col v-for="food in ethnicFoods" :key="food.value" cols="4">
-              <v-btn class="companion-btn" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-                @click="selectEthnicFood(food)">
-                <v-icon v-if="food.value === 'asian'">mdi-noodles</v-icon>
-                <v-icon v-if="food.value === 'american'">mdi-hamburger</v-icon>
-                <v-icon v-if="food.value === 'italian'">mdi-pizza</v-icon>
-                <v-icon v-if="food.value === 'mexican'">mdi-taco</v-icon>
-                <v-icon v-if="food.value === 'mediterranean'">mdi-fish</v-icon>
-                <v-icon v-if="food.value === 'vegan'">mdi-leaf</v-icon>
-                <div>{{ food.label }}</div>
-              </v-btn>
-              <br>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-
-    <!-- Shopping selection -->
-    <v-row justify="center">
-      <v-col cols="12" md="8">
-        <v-card class="pa-4">
-          <h3 class="headline text-deep-purple-accent-2">Select Favorite Shopping Options</h3>
-          <p>Choose your favorite shopping options and spend some money!</p>
-
-          <v-row justify="center">
-            <v-col v-for="shopping in shoppingOptions" :key="shopping.value" cols="4">
-              <v-btn class="companion-btn" :color="shopping.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-                @click="selectShopping(shopping)">
-                <v-icon v-if="shopping.value === 'shopping_mall'">mdi-shopping</v-icon>
-                <v-icon v-if="shopping.value === 'clothing_store'">mdi-tshirt-crew</v-icon>
-                <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon>
-                <v-icon v-if="shopping.value === 'book_store'">mdi-book</v-icon>
-                <div>{{ shopping.label }}</div>
-              </v-btn>
-              <br>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
-    <!-- <v-row>
-    <v-col class="pa-12">
-      <v-slider
-        v-model="selectedOption"
-        :max="Object.keys(shoppingOptions).length - 1"
-        :ticks="shoppingOptions"
-        show-ticks="always"
-        step="1"
-        tick-size="4"
-        thumb-label="always"
-        thumb-size="32"
-        @input="updateSelection"
-        track-color="deep-purple lighten-3"
-      >
-        <template v-slot:thumb-label="{ modelValue }">
-          <v-icon :icon="shopping(modelValue)" theme="dark"></v-icon>
-        </template>
-</v-slider>
-</v-col>
-</v-row> -->
+    
 
 
 
@@ -226,38 +132,11 @@ export default defineComponent({
       hotelData: [],
 
 
-      // Data for budget selection
-      budgets: [
+        // Data for budget selection
+        budgets: [
         { label: 'Cheap', value: 'cheap', range: '0 - 1000 USD', selected: false, priceRange: ['1'] },
         { label: 'Medium', value: 'medium', range: '1000 - 2500 USD', selected: false, priceRange: ['2'] },
         { label: 'Expensive', value: 'expensive', range: '2500+ USD', selected: false, priceRange: ['3'] },
-      ],
-
-      activities: [
-        { value: 'amusement_park', label: 'Amusement Park', selected: false },
-        { value: 'aquarium', label: 'Aquarium', selected: false },
-        { value: 'art_gallery', label: 'Art Gallery', selected: false },
-        { value: 'museum', label: 'Museum', selected: false },
-        { value: 'stadium', label: 'Stadium', selected: false },
-        { value: 'zoo', label: 'Zoo', selected: false },
-        // Add more activities as needed
-      ],
-
-      ethnicFoods: [
-        { value: 'asian', label: 'Asian', selected: false },
-        { value: 'american', label: 'American', selected: false },
-        { value: 'italian', label: 'Italian', selected: false },
-        { value: 'mexican', label: 'Mexican', selected: false },
-        { value: 'mediterranean', label: 'Mediterranean', selected: false },
-        { value: 'vegan', label: 'Vegan', selected: false },
-      ],
-
-      shoppingOptions: [
-        { value: 'shopping_mall', label: 'Shopping Mall', selected: false },
-        { value: 'clothing_store', label: 'Clothing Store', selected: false },
-        { value: 'electronics_store', label: 'Electronics Store', selected: false },
-        { value: 'book_store', label: 'Book Store', selected: false },
-        // Add more shopping options as needed
       ],
 
       // Other data properties
