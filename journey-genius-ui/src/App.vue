@@ -11,10 +11,12 @@
 <script>
 import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
+import LoadingScreen from '@/components/LoadingScreen';
+
 
 export default {
   name: 'App',
-  components: { NavBar, Footer },
+  components: { NavBar, Footer, LoadingScreen },
   data: () => ({
     
   }),

@@ -8,8 +8,8 @@ getRestaurant_bp = Blueprint('getRestaurant_bp', __name__)
 @getRestaurant_bp.route('/scrape_restaurants', methods=['POST'])
 def scrape_restaurants():
     # Get the latitude and longitude from the request
-    print()
-    print("#################### Retrieving Restaurant Places  #####################")
+    #print()
+    #print("#################### Retrieving Restaurant Places  #####################")
     latitude = request.json.get('target_lat_str')
     longitude = request.json.get('target_lon_str')
     # Check if latitude, longitude, and price range are not None
@@ -20,8 +20,8 @@ def scrape_restaurants():
     try:
         target_lat = float(latitude)
         target_lon = float(longitude)
-        print(f"Received input_lat: {target_lat}")
-        print(f"Received input_lon: {target_lon}")
+        #print(f"Received input_lat: {target_lat}")
+        #print(f"Received input_lon: {target_lon}")
             
 
     except ValueError as e:
@@ -32,7 +32,7 @@ def scrape_restaurants():
     
     # Rest of your code
     location = f'{target_lat}, {target_lon}'  # Use the latitude and longitude in the location variable
-    print("Received coordinates in test restaurants API " + location)
+    #print("Received coordinates in test restaurants API " + location)
 
     # Define the API Key that is being used
     api_key = 'AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y'
@@ -134,9 +134,9 @@ def scrape_restaurants():
                 # Write the data to the CSV file
                 writer.writerow([name, price_range, types, address, postal_code, city, state, country, latitude, longitude])
 
-                print("Here is what is stored inside the csv file:")
-                print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
-                print()
+                #print("Here is what is stored inside the csv file:")
+                #print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
+                #print()
 
                 # Increment the results fetched counter
                 results_fetched += 1

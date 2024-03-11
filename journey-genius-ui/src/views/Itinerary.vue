@@ -14,9 +14,7 @@
                     in
                     every category. Once you are content with the activities that have piqued your interest, proceed to
                     the
-                    next step. If you desire more options, simply press the more button, and additional choices will
-                    become
-                    available.
+                    next step.
                 </p>
                 <br />
                 <hr />
@@ -29,11 +27,11 @@
             <v-col cols="12" md="8">
                 <h3 class="headline text-deep-purple-accent-2">Choose the Activities that Peak Your Interest</h3>
                 <br>
-                <v-row>
+                <v-row dense>
                     <v-col v-for="(activity, index) in activities" :key="index" cols="12">
-    <v-checkbox v-model="selectedActivities" :value="activity"
-        :label="Array.isArray(activity) ? activity.join(', ') : activity" class="mb-1"></v-checkbox>
-</v-col>
+                        <v-checkbox v-model="selectedActivities" :value="activity"
+                            :label="Array.isArray(activity) ? activity.join(', ') : activity" class="mb-1"></v-checkbox>
+                    </v-col>
 
                 </v-row>
                 <v-col class="d-flex justify-center">
@@ -47,9 +45,10 @@
             <v-col cols="12" md="8">
                 <h3 class="headline text-deep-purple-accent-2">Iconic Landmarks and Photo Opportunities</h3>
                 <br>
-                <v-row>
+                <v-row dense>
                     <v-col v-for="(landmark, index) in landmarks" :key="index" cols="12">
-                        <v-checkbox v-model="selectedLandmarks[index]" :label="landmark" class="mb-1"></v-checkbox>
+                        <v-checkbox v-model="selectedLandmarks" :value="landmark"
+                            :label="Array.isArray(landmark) ? landmark.join(', ') : landmark" class="mb-1"></v-checkbox>
                     </v-col>
                 </v-row>
                 <v-col class="d-flex justify-center">
@@ -81,9 +80,10 @@
             <v-col cols="12" md="8">
                 <h3 class="headline text-deep-purple-accent-2">Shopping Spots</h3>
                 <br>
-                <v-row>
+                <v-row dense>
                     <v-col v-for="(shop, index) in shops" :key="index" cols="12">
-                        <v-checkbox v-model="selectedShops[index]" :label="shop" class="mb-1"></v-checkbox>
+                        <v-checkbox v-model="selectedShops" :value="shop"
+                            :label="Array.isArray(shop) ? shop.join(', ') : shop" class="mb-1"></v-checkbox>
                     </v-col>
                 </v-row>
                 <v-col class="d-flex justify-center">
@@ -137,15 +137,52 @@ export default defineComponent({
 
     },
     mounted() {
+        // const restaurantData = JSON.parse(this.$route.query.restaurantData);
+        // if (restaurantData && restaurantData.recommended_places) {
+        //     this.foods = restaurantData.recommended_places;
+        // }
+
+        // Parse the JSON strings into objects
+        // Check if the query parameters are defined before parsing
+        //const restaurantData = this.$route.query.restaurantData ? JSON.parse(this.$route.query.restaurantData) : null;
+        // const activityData = this.$route.query.activityData ? JSON.parse(this.$route.query.activityData) : null;
+        // const landmarkData = this.$route.query.landmarkData ? JSON.parse(this.$route.query.landmarkData) : null;
+        // const shoppingData = this.$route.query.shoppingData ? JSON.parse(this.$route.query.shoppingData) : null;
+
+        // Now you can use these variables in your component
+        //this.foods = restaurantData;
+        // this.activities = activityData;
+        // this.landmarks = landmarkData;
+        // this.shops = shoppingData;
+        // console.log(restaurantData);
+        // console.log(landmarkData);
+        // console.log(shoppingData);
+
+
+        const activityData = JSON.parse(this.$route.query.activityData);
+        // console.log(activityData)
+        if (activityData && activityData.recommended_places) {
+            this.activities = activityData.recommended_places;
+        }
+
+        const landmarkData = JSON.parse(this.$route.query.landmarkData);
+        // console.log(landmarkData)
+        if (landmarkData && landmarkData.recommended_places) {
+            this.landmarks = landmarkData.recommended_places;
+        }
+
         const restaurantData = JSON.parse(this.$route.query.restaurantData);
+        // console.log(restaurantData)
         if (restaurantData && restaurantData.recommended_places) {
             this.foods = restaurantData.recommended_places;
         }
 
-        // const activityData = JSON.parse(this.$route.query.activityData);
-        // if (activityData && activityData.recommended_activities) {
-        //     this.activities = activityData.recommended_activities;
-        // }
+        const shoppingData = JSON.parse(this.$route.query.shoppingData);
+        // console.log(shoppingData)
+        if (shoppingData && shoppingData.recommended_places) {
+            this.shops = shoppingData.recommended_places;
+        }
+
     },
 
     computed: {

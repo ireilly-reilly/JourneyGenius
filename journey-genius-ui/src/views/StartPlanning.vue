@@ -1,5 +1,8 @@
 <template>
   <v-container>
+    <!-- Loading screen overlay -->
+    <LoadingScreen v-if="isLoading" />
+
     <!-- Header -->
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
@@ -77,82 +80,82 @@
 
 
     <!-- Activities selection -->
-<v-row justify="center">
-  <v-col cols="12" md="8">
-    <v-card class="pa-4">
-      <h3 class="headline text-deep-purple-accent-2">Select Favorite Activities</h3>
-      <p>Choose your favorite activities to customize your experience!</p>
+    <v-row justify="center">
+      <v-col cols="12" md="8">
+        <v-card class="pa-4">
+          <h3 class="headline text-deep-purple-accent-2">Select Favorite Activities</h3>
+          <p>Choose your favorite activities to customize your experience!</p>
 
-      <v-row justify="center">
-        <v-col v-for="activity in activities" :key="activity.value" cols="4">
-          <v-btn class="companion-btn" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-            @click="selectActivity(activity)">
-            <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
-            <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
-            <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
-            <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
-            <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
-            <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
-            <div>{{ activity.label }}</div>
-          </v-btn>
-          <br>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-col>
-</v-row>
+          <v-row justify="center">
+            <v-col v-for="activity in activities" :key="activity.value" cols="4">
+              <v-btn class="companion-btn" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+                @click="selectActivity(activity)">
+                <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
+                <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
+                <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
+                <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
+                <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
+                <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
+                <div>{{ activity.label }}</div>
+              </v-btn>
+              <br>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
 
 
- <!-- Ethnic Foods selection -->
-<v-row justify="center">
-  <v-col cols="12" md="8">
-    <v-card class="pa-4">
-      <h3 class="headline text-deep-purple-accent-2">Select Ethnic Foods</h3>
-      <p>Select your favorite types of cuisine and we'll cater to your tastes!</p>
+    <!-- Ethnic Foods selection -->
+    <v-row justify="center">
+      <v-col cols="12" md="8">
+        <v-card class="pa-4">
+          <h3 class="headline text-deep-purple-accent-2">Select Ethnic Foods</h3>
+          <p>Select your favorite types of cuisine and we'll cater to your tastes!</p>
 
-      <v-row justify="center">
-        <v-col v-for="food in ethnicFoods" :key="food.value" cols="4">
-          <v-btn class="companion-btn" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-            @click="selectEthnicFood(food)">
-            <v-icon v-if="food.value === 'asian'">mdi-noodles</v-icon>
-            <v-icon v-if="food.value === 'american'">mdi-hamburger</v-icon>
-            <v-icon v-if="food.value === 'italian'">mdi-pizza</v-icon>
-            <v-icon v-if="food.value === 'mexican'">mdi-taco</v-icon>
-            <v-icon v-if="food.value === 'mediterranean'">mdi-fish</v-icon>
-            <v-icon v-if="food.value === 'vegan'">mdi-leaf</v-icon>
-            <div>{{ food.label }}</div>
-          </v-btn>
-          <br>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-col>
-</v-row>
+          <v-row justify="center">
+            <v-col v-for="food in ethnicFoods" :key="food.value" cols="4">
+              <v-btn class="companion-btn" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+                @click="selectEthnicFood(food)">
+                <v-icon v-if="food.value === 'asian'">mdi-noodles</v-icon>
+                <v-icon v-if="food.value === 'american'">mdi-hamburger</v-icon>
+                <v-icon v-if="food.value === 'italian'">mdi-pizza</v-icon>
+                <v-icon v-if="food.value === 'mexican'">mdi-taco</v-icon>
+                <v-icon v-if="food.value === 'mediterranean'">mdi-fish</v-icon>
+                <v-icon v-if="food.value === 'vegan'">mdi-leaf</v-icon>
+                <div>{{ food.label }}</div>
+              </v-btn>
+              <br>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
 
-<!-- Shopping selection -->
-<v-row justify="center">
-  <v-col cols="12" md="8">
-    <v-card class="pa-4">
-      <h3 class="headline text-deep-purple-accent-2">Select Favorite Shopping Options</h3>
-      <p>Choose your favorite shopping options and spend some money!</p>
+    <!-- Shopping selection -->
+    <v-row justify="center">
+      <v-col cols="12" md="8">
+        <v-card class="pa-4">
+          <h3 class="headline text-deep-purple-accent-2">Select Favorite Shopping Options</h3>
+          <p>Choose your favorite shopping options and spend some money!</p>
 
-      <v-row justify="center">
-        <v-col v-for="shopping in shoppingOptions" :key="shopping.value" cols="4">
-          <v-btn class="companion-btn" :color="shopping.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-            @click="selectShopping(shopping)">
-            <v-icon v-if="shopping.value === 'shopping_mall'">mdi-shopping</v-icon>
-            <v-icon v-if="shopping.value === 'clothing_store'">mdi-tshirt-crew</v-icon>
-            <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon>
-            <v-icon v-if="shopping.value === 'book_store'">mdi-book</v-icon>
-            <div>{{ shopping.label }}</div>
-          </v-btn>
-          <br>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-col>
-</v-row>
-<!-- <v-row>
+          <v-row justify="center">
+            <v-col v-for="shopping in shoppingOptions" :key="shopping.value" cols="4">
+              <v-btn class="companion-btn" :color="shopping.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+                @click="selectShopping(shopping)">
+                <v-icon v-if="shopping.value === 'shopping_mall'">mdi-shopping</v-icon>
+                <v-icon v-if="shopping.value === 'clothing_store'">mdi-tshirt-crew</v-icon>
+                <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon>
+                <v-icon v-if="shopping.value === 'book_store'">mdi-book</v-icon>
+                <div>{{ shopping.label }}</div>
+              </v-btn>
+              <br>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <!-- <v-row>
     <v-col class="pa-12">
       <v-slider
         v-model="selectedOption"
@@ -169,9 +172,9 @@
         <template v-slot:thumb-label="{ modelValue }">
           <v-icon :icon="shopping(modelValue)" theme="dark"></v-icon>
         </template>
-      </v-slider>
-    </v-col>
-  </v-row> -->
+</v-slider>
+</v-col>
+</v-row> -->
 
 
 
@@ -180,11 +183,11 @@
     <v-row justify="center">
       <v-col cols="12" md="8" class="text-center">
         <br>
-        <router-link to="/Itinerary">
+        <!-- <router-link to="/Itinerary"> -->
         <v-btn class="generate-btn" color="deep-purple-accent-2" @click="generateItinerary">
           Generate
         </v-btn>
-      </router-link>
+        <!-- </router-link> -->
       </v-col>
     </v-row>
 
@@ -196,6 +199,8 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import VueGoogleAutocomplete from "vue-google-autocomplete";
+import LoadingScreen from '@/components/LoadingScreen.vue';
+
 
 
 export default defineComponent({
@@ -212,6 +217,14 @@ export default defineComponent({
       selectedLon: null,
       selectededBudget: null,
 
+      // Variables used after the generation process
+      isLoading: false,
+      restaurantData: [],
+      activityData: [],
+      landmarkData: [],
+      shoppingData: [],
+
+
       // Data for budget selection
       budgets: [
         { label: 'Cheap', value: 'cheap', range: '0 - 1000 USD', selected: false, priceRange: ['1'] },
@@ -220,44 +233,32 @@ export default defineComponent({
       ],
 
       activities: [
-      { value: 'amusement_park', label: 'Amusement Park', selected: false },
-      { value: 'aquarium', label: 'Aquarium', selected: false },
-      { value: 'art_gallery', label: 'Art Gallery', selected: false },
-      { value: 'museum', label: 'Museum', selected: false },
-      { value: 'stadium', label: 'Stadium', selected: false },
-      { value: 'zoo', label: 'Zoo', selected: false },
-      // Add more activities as needed
-    ],
+        { value: 'amusement_park', label: 'Amusement Park', selected: false },
+        { value: 'aquarium', label: 'Aquarium', selected: false },
+        { value: 'art_gallery', label: 'Art Gallery', selected: false },
+        { value: 'museum', label: 'Museum', selected: false },
+        { value: 'stadium', label: 'Stadium', selected: false },
+        { value: 'zoo', label: 'Zoo', selected: false },
+        // Add more activities as needed
+      ],
 
       ethnicFoods: [
-      { value: 'asian', label: 'Asian', selected: false },
-      { value: 'american', label: 'American', selected: false },
-      { value: 'italian', label: 'Italian', selected: false },
-      { value: 'mexican', label: 'Mexican', selected: false },
-      { value: 'mediterranean', label: 'Mediterranean', selected: false },
-      { value: 'vegan', label: 'Vegan', selected: false },
-    ],
+        { value: 'asian', label: 'Asian', selected: false },
+        { value: 'american', label: 'American', selected: false },
+        { value: 'italian', label: 'Italian', selected: false },
+        { value: 'mexican', label: 'Mexican', selected: false },
+        { value: 'mediterranean', label: 'Mediterranean', selected: false },
+        { value: 'vegan', label: 'Vegan', selected: false },
+      ],
 
-    shoppingOptions: [
-      { value: 'shopping_mall', label: 'Shopping Mall', selected: false },
-      { value: 'clothing_store', label: 'Clothing Store', selected: false },
-      { value: 'electronics_store', label: 'Electronics Store', selected: false },
-      { value: 'book_store', label: 'Book Store', selected: false },
-      // Add more shopping options as needed
-    ],
+      shoppingOptions: [
+        { value: 'shopping_mall', label: 'Shopping Mall', selected: false },
+        { value: 'clothing_store', label: 'Clothing Store', selected: false },
+        { value: 'electronics_store', label: 'Electronics Store', selected: false },
+        { value: 'book_store', label: 'Book Store', selected: false },
+        // Add more shopping options as needed
+      ],
 
-    // shoppingOptions: {
-    //   0: 'Shopping Mall',
-    //   1: 'Clothing Store',
-    //   2: 'Electronics Store',
-    //   3: 'Book Store',
-    // },
-    // icons: [
-    //   'mdi-shopping',
-    //   'mdi-tshirt-crew',
-    //   'mdi-cellphone',
-    //   'mdi-book',
-    // ],
       // Other data properties
       selectedDate: null,
       isDatePickerVisible: false,
@@ -273,7 +274,8 @@ export default defineComponent({
   },
 
   components: {
-    VueGoogleAutocomplete
+    VueGoogleAutocomplete,
+    LoadingScreen,
   },
 
   methods: {
@@ -315,44 +317,36 @@ export default defineComponent({
       });
     },
     selectEthnicFood(food) {
-    food.selected = !food.selected;
-  },
-  selectActivity(activity) {
-    activity.selected = !activity.selected;
-  },
-  selectShopping(shopping) {
-    shopping.selected = !shopping.selected;
-  },
-  // shopping(val) {
-  //     return this.icons[val];
-  //   },
+      food.selected = !food.selected;
+    },
+    selectActivity(activity) {
+      activity.selected = !activity.selected;
+    },
+    selectShopping(shopping) {
+      shopping.selected = !shopping.selected;
+    },
+    // shopping(val) {
+    //     return this.icons[val];
+    //   },
 
     // Method for generating an itinerary or navigating to another view page
     generateItinerary() {
-      // Prepare data to send to the backend
-      const requestData = {
-        //target_place: 'type of restaurant', WE WANT THE USER TO CHOOOSE IN THE FUTURE
+      // Show loading screen overlay
+      this.isLoading = true;
 
-        // We are getting these coordinates from the testRestaurantsPlacesAPI
+      const requestData = {
         target_lat_str: this.selectedLat,
         target_lon_str: this.selectedLon,
-
-        // From user selection
         desired_price_range_str: this.selectedBudget
       };
 
-      // Make a POST request to scrape_restaurants first
       axios.post('http://localhost:8000/api/scrape_restaurants', requestData)
         .then(response => {
           console.log('scrape_restaurants response:', response.data);
-          // After the first request is successful, make a POST request to run_ML_model_recommendations
-        })
-        .then(response => {
           return axios.post('http://localhost:8000/api/scrape_activities', requestData);
         })
         .then(response => {
           console.log('scrape_activities response', response.data);
-          // this.$router.push({ name: 'Itinerary', query: { activitiesData: JSON.stringify(response.data) } });
           return axios.post('http://localhost:8000/api/scrape_landmarks', requestData);
         })
         .then(response => {
@@ -361,31 +355,46 @@ export default defineComponent({
         })
         .then(response => {
           console.log('scrape_shopping response', response.data);
-        })
-        .then(response => {
           return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
         })
         .then(response => {
+          this.restaurantData = response.data;
           console.log('run_ML_model_recommendations restaurant response:', response.data);
-          this.$router.push({ name: 'Itinerary', query: { restaurantData: JSON.stringify(response.data) } });
           return axios.post('http://localhost:8000/api/run_ML_model_activity_recommendations', requestData);
         })
         .then(response => {
+          this.activityData = response.data;
           console.log('run_ML_model_recommendations activities response:', response.data);
-          // this.$router.push({ name: 'Itinerary', query: { activityData: JSON.stringify(response.data) } });
           return axios.post('http://localhost:8000/api/run_ML_model_landmark_recommendations', requestData);
         })
         .then(response => {
+          this.landmarkData = response.data;
           console.log('run_ML_model_recommendations landmarks response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_shopping_recommendations', requestData);
         })
         .then(response => {
+          this.shoppingData = response.data;
           console.log('run_ML_model_recommendations shopping response:', response.data);
         })
+        .then(() => {
+          this.isLoading = false;
+          this.$router.push({
+            name: 'Itinerary',
+            query: {
+              restaurantData: JSON.stringify(this.restaurantData),
+              activityData: JSON.stringify(this.activityData),
+              landmarkData: JSON.stringify(this.landmarkData),
+              shoppingData: JSON.stringify(this.shoppingData)
+            }
+          });
+        })
         .catch(error => {
+          // Hide loading screen overlay on error
+          this.isLoading = false;
           console.error(error);
         });
     },
+
     // Method to check if the end date is valid
     isEndDateValid(selectedEndDate) {
       return !this.startDate || selectedEndDate >= this.startDate;
