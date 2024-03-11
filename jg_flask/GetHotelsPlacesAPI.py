@@ -11,8 +11,8 @@ getHotels_bp = Blueprint('getHotels_bp', __name__)
 @getHotels_bp.route('/scrape_hotels', methods=['POST'])
 def scrape_hotels():
     # Get the latitude and longitude from the request
-    print()
-    print("#################### Hotels BP #####################")
+    #print()
+    #print("#################### Hotels BP #####################")
     latitude = request.json.get('target_lat_str')
     longitude = request.json.get('target_lon_str')
     # Check if latitude, longitude, and price range are not None
@@ -35,7 +35,7 @@ def scrape_hotels():
     
     # Rest of your code
     location = f'{target_lat}, {target_lon}'  # Use the latitude and longitude in the location variable
-    print("Received coordinates in test Hotels API " + location)
+    #print("Received coordinates in test Hotels API " + location)
 
     # Define the API Key that is being used
     api_key = 'AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y'
@@ -53,7 +53,7 @@ def scrape_hotels():
 
     ############################################## We can change this keyword in the future ##############################################
     # keyword = 'mexican' 
-    desired_result_count = 15 # Desired result count here
+    desired_result_count = 1 # Desired result count here
 
 
 
@@ -66,13 +66,15 @@ def scrape_hotels():
     # try above at some point
 
 
-    # Kai's filepath
-    csv_exists = os.path.exists('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/hotel_data.csv')
-    # Isaac's filepath
-    # Isaac add your filepath here!
+    #Dynamic Filepath
+    BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+    CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
+    activities_csv_file_path = os.path.join(CSV_FOLDER, 'hotel_data.csv')
+
+    csv_exists = os.path.exists(activities_csv_file_path)
 
     # Create and open a CSV file for writing
-    with open('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/hotel.csv', mode='a', newline='', encoding='utf-8') as file:
+    with open(activities_csv_file_path, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         
         # Only write the header row if the file is empty (or doesn't exist)
@@ -132,9 +134,9 @@ def scrape_hotels():
                 # Write the data to the CSV file
                 writer.writerow([name, price_range, types, address, postal_code, city, state, country, latitude, longitude])
 
-                print("Here is what is saved inside the csv file:")
-                print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
-                print()
+                #print("Here is what is saved inside the csv file:")
+                #print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
+                #print()
 
                 # Increment the results fetched counter
                 results_fetched += 1

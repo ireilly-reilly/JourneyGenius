@@ -223,6 +223,7 @@ export default defineComponent({
       activityData: [],
       landmarkData: [],
       shoppingData: [],
+      hotelData: [],
 
 
       // Data for budget selection
@@ -355,6 +356,10 @@ export default defineComponent({
         })
         .then(response => {
           console.log('scrape_shopping response', response.data);
+          return axios.post('http://localhost:8000/api/scrape_hotels', requestData);
+        })
+        .then(response => {
+          console.log('scrape_hotels response', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
         })
         .then(response => {
@@ -375,7 +380,13 @@ export default defineComponent({
         .then(response => {
           this.shoppingData = response.data;
           console.log('run_ML_model_recommendations shopping response:', response.data);
+          return axios.post('http://localhost:8000/api/run_ML_model_hotel_recommendations', requestData)
         })
+        .then(response => {
+          this.hotelData = response.data;
+          console.log('run_ML_model_recommendations hotels response:', response.data);
+        })
+      
         .then(() => {
           this.isLoading = false;
           this.$router.push({

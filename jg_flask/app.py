@@ -15,7 +15,8 @@ from TFIDF_ML_Landmarks_Blueprint import landmarksRecommendation_bp
 from GetLandmarksPlacesAPI import getLandMark_bp
 from TFIDF_ML_Shopping_Blueprint import shoppingRecommendation_bp
 from GetShoppingPlacesAPI import getShopping_bp
-#from GetHotelsPlacesAPI import getHotels_bp
+from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
+from GetHotelsPlacesAPI import getHotels_bp
 
 
 #from email_verification import email_verification_bp
@@ -41,7 +42,9 @@ app.register_blueprint(landmarksRecommendation_bp, url_prefix='/api')
 app.register_blueprint(getLandMark_bp, url_prefix='/api')
 app.register_blueprint(shoppingRecommendation_bp, url_prefix='/api')
 app.register_blueprint(getShopping_bp, url_prefix='/api')
-#app.register_blueprint(getHotels_bp, url_prefix='/api')
+app.register_blueprint(getHotels_bp, url_prefix='/api')
+app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
+
 
 
 CORS(app, supports_credentials=True)
