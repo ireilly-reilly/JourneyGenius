@@ -35,24 +35,60 @@
 
     <!-- Date input components -->
     <v-row justify="center">
-      <v-col cols="12" md="8">
-        <v-card class="pa-4 mb-4">
-          <h3 class="headline text-deep-purple-accent-2">How Long Is Your Trip?</h3>
-          <br>
-          <v-row>
-            <!-- Start Date -->
-            <v-col cols="6">
-              <v-text-field v-model="startDate" label="Start Date" type="date" @input="updateStartDate"></v-text-field>
-            </v-col>
+  <v-col cols="12" md="8">
+    <v-card class="pa-4 mb-4">
+      <h3 class="headline text-deep-purple-accent-2">How Long Is Your Trip?</h3>
+      <br>
+      <v-row>
+        <v-col cols="12" sm="6">
+          <v-text-field
+            v-model="formattedStartDate"
+            label="Start Date"
+            @click="isStartDatePickerVisible = true"
+            readonly
+            hide-details
+          ></v-text-field>
+          <v-date-picker
+            v-model="startDate"
+            @input="isStartDatePickerVisible = false"
+            :max="endDate"
+            v-if="isStartDatePickerVisible"
+            no-title
+            hide-details
+            color="deep-purple-accent-2"
+            scrollable
+            hide-header=""
+            style="width: 1000px; max-width: 100%;"
 
-            <!-- End Date -->
-            <v-col cols="6">
-              <v-text-field v-model="endDate" label="End Date" type="date" @input="updateEndDate"></v-text-field>
-            </v-col>
-          </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+          ></v-date-picker>
+        </v-col>
+        <v-col cols="12" sm="6">
+          <v-text-field
+            v-model="formattedEndDate"
+            label="End Date"
+            @click="isEndDatePickerVisible = true"
+            readonly
+            hide-details
+          ></v-text-field>
+          <v-date-picker
+            v-model="endDate"
+            @input="isEndDatePickerVisible = false"
+            :min="startDate"
+            v-if="isEndDatePickerVisible"
+            color="deep-purple-accent-2"
+            scrollable
+            hide-header=""
+            style="width: 1000px; max-width: 100%;"
+
+          ></v-date-picker>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-col>
+</v-row>
+
+
+
 
 
     <!-- Budget selection -->
@@ -77,13 +113,6 @@
         </v-card>
       </v-col>
     </v-row>
-
-
-
-    
-
-
-
 
     <!-- Generate button -->
     <v-row justify="center">
@@ -115,9 +144,12 @@ export default defineComponent({
       // Data for handling city input and autocomplete
       city: '',
       autocompleteCities: [],
-      menu: false,
-      startDate: '', // Initialize with an empty string or a default date
-      endDate: '',
+
+      startDate: null,
+      endDate: null,
+      isStartDatePickerVisible: false,
+      isEndDatePickerVisible: false,
+
       selectedPlace: null,
       selectedLat: null,
       selectedLon: null,
@@ -132,15 +164,14 @@ export default defineComponent({
       hotelData: [],
 
 
-        // Data for budget selection
-        budgets: [
+      // Data for budget selection
+      budgets: [
         { label: 'Cheap', value: 'cheap', range: '0 - 1000 USD', selected: false, priceRange: ['1'] },
         { label: 'Medium', value: 'medium', range: '1000 - 2500 USD', selected: false, priceRange: ['2'] },
         { label: 'Expensive', value: 'expensive', range: '2500+ USD', selected: false, priceRange: ['3'] },
       ],
 
       // Other data properties
-      selectedDate: null,
       isDatePickerVisible: false,
       // travelDestination: null,
       selectedBudget: null,
@@ -150,12 +181,34 @@ export default defineComponent({
         (v) => !!v || 'End date is required',
         (v) => this.isEndDateValid(v) || 'End date must be equal or after the start date',
       ],
+
     };
+  },
+  watch: {
+    startDate() {
+      if (this.endDate && this.startDate > this.endDate) {
+        this.endDate = null;
+      }
+    },
+    endDate() {
+      if (this.startDate && this.startDate > this.endDate) {
+        this.startDate = null;
+      }
+    },
   },
 
   components: {
     VueGoogleAutocomplete,
     LoadingScreen,
+  },
+
+  computed: {
+    formattedStartDate() {
+      return this.startDate ? this.formatDate(this.startDate) : '';
+    },
+    formattedEndDate() {
+      return this.endDate ? this.formatDate(this.endDate) : '';
+    },
   },
 
   methods: {
@@ -180,6 +233,17 @@ export default defineComponent({
     hideDatePicker() {
       this.isDatePickerVisible = false;
     },
+
+    // Method to check if the end date is valid
+    isEndDateValid(selectedEndDate) {
+      return !this.startDate || selectedEndDate >= this.startDate;
+    },
+
+    formatDate(date) {
+      // Custom date formatting logic
+      return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+    },
+
     // Method for selecting a budget
     selectBudget(selectedBudget) {
       // Set the selected budget to the corresponding value
@@ -196,18 +260,7 @@ export default defineComponent({
         budget.selected = budget === selectedBudget;
       });
     },
-    selectEthnicFood(food) {
-      food.selected = !food.selected;
-    },
-    selectActivity(activity) {
-      activity.selected = !activity.selected;
-    },
-    selectShopping(shopping) {
-      shopping.selected = !shopping.selected;
-    },
-    // shopping(val) {
-    //     return this.icons[val];
-    //   },
+
 
     // Method for generating an itinerary or navigating to another view page
     generateItinerary() {
@@ -265,7 +318,7 @@ export default defineComponent({
           this.hotelData = response.data;
           console.log('run_ML_model_recommendations hotels response:', response.data);
         })
-      
+
         .then(() => {
           this.isLoading = false;
           this.$router.push({
@@ -285,10 +338,7 @@ export default defineComponent({
         });
     },
 
-    // Method to check if the end date is valid
-    isEndDateValid(selectedEndDate) {
-      return !this.startDate || selectedEndDate >= this.startDate;
-    },
+
   },
 });
 
@@ -304,5 +354,9 @@ export default defineComponent({
 .budget-btn {
   width: 100%;
   margin-top: 8px;
+}
+
+.v-date-picker-header {
+  display: none
 }
 </style>

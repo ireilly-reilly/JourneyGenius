@@ -151,7 +151,7 @@ def recommend():
             desired_price_range = int(desired_price_range_str)
             #print(target_lat_str)
             #print(target_lon_str)
-            #print(desired_price_range_str)
+            print(desired_price_range_str)
             #print("Variables successfully converted from strings to floats and int")
             #print()
 
