@@ -63,6 +63,7 @@ export default {
       token: Cookies.get('login_token') || '', // Retrieve token from Cookies
       showSnackbar: false,
 
+      
     };
   },
   created() {

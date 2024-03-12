@@ -22,13 +22,13 @@
         <v-card class="pa-4 mb-4">
           <h3 class="headline text-deep-purple-accent-2">Where do you want to travel?</h3>
           <br>
-
           <vue-google-autocomplete id="map2" ref="toAddress" classname="form-control" placeholder="Enter a City"
             v-on:placechanged="getAddressData" types="(cities)" country="us"
             style="width: 100%; max-width: 5000px; height: 50px; background-color: #f5f5f5; padding-left: 15px;">
           </vue-google-autocomplete> <!-- Drop down for cities -->
-          <br>
-          <br>
+          <div v-if="showCityError" class="error-message3">{{ cityErrorMessage }}</div>
+          <!-- <br>
+          <br> -->
         </v-card>
       </v-col>
     </v-row>
@@ -42,26 +42,23 @@
           <v-row>
             <v-col cols="12" sm="6">
               <v-text-field v-model="formattedStartDate" label="Start Date" @click="isStartDatePickerVisible = true"
-                readonly hide-details></v-text-field>
+                readonly hide-details ref="startDate"></v-text-field>
               <v-date-picker v-model="startDate" @input="isStartDatePickerVisible = false" :max="endDate"
                 v-if="isStartDatePickerVisible" no-title hide-details color="deep-purple-accent-2" scrollable
                 hide-header="" style="width: 1000px; max-width: 100%;"></v-date-picker>
             </v-col>
             <v-col cols="12" sm="6">
               <v-text-field v-model="formattedEndDate" label="End Date" @click="isEndDatePickerVisible = true" readonly
-                hide-details></v-text-field>
+                hide-details ref="endDate"></v-text-field>
               <v-date-picker v-model="endDate" @input="isEndDatePickerVisible = false" :min="startDate"
                 v-if="isEndDatePickerVisible" color="deep-purple-accent-2" scrollable hide-header=""
                 style="width: 1000px; max-width: 100%;"></v-date-picker>
             </v-col>
+            <div v-if="showDateError" class="error-message">{{ datesErrorMessage }}</div>
           </v-row>
         </v-card>
       </v-col>
     </v-row>
-
-
-
-
 
     <!-- Budget selection -->
     <v-row justify="center">
@@ -82,6 +79,8 @@
               </v-btn>
             </v-col>
           </v-row>
+          <div v-if="showBudgetError" class="error-message2">{{ budgetErrorMessage }}</div>
+
         </v-card>
       </v-col>
     </v-row>
@@ -138,6 +137,19 @@ export default defineComponent({
       budgetData: [],
       startDateData: [],
       endDateData: [],
+
+      isPlaceValid: false,
+      isStartDateValid: false,
+      isEndDateValid: false,
+      isBudgetValid: false,
+
+      // loginErrorMessage: ,
+      datesErrorMessage: "",
+      showDateError: false,
+      budgetErrorMessage: "",
+      showBudgetError: false,
+      cityErrorMessage: "",
+      showCityError: false,
 
       // Data for budget selection
       budgets: [
@@ -242,8 +254,47 @@ export default defineComponent({
 
     // Method for generating an itinerary or navigating to another view page
     generateItinerary() {
-      
+      let isValid = true; // Assume input is valid unless proven otherwise
 
+      if (!this.startDate || !this.endDate) {
+        this.datesErrorMessage = "Both the start date and end date are required.";
+        this.showDateError = true;
+        isValid = false;
+      } else {
+        this.showDateError = false;
+      }
+
+      if (this.selectedBudget !== 1 && this.selectedBudget !== 2 && this.selectedBudget !== 3) {
+        this.budgetErrorMessage = "The budget for your trip is required.";
+        this.showBudgetError = true;
+        isValid = false;
+      } else {
+        this.showBudgetError = false;
+      }
+
+      if (!this.selectedPlace || (!this.selectedPlace && (!this.selectedLat || !this.selectedLon))) {
+        this.cityErrorMessage = 'Please select a valid city.';
+        this.showCityError = true;
+        isValid = false;
+      } else {
+        this.showCityError = false; 
+      }
+
+      if (!isValid) {
+        return; // Exit the method if input is not valid
+      }
+
+      // Validate required fields
+      // this.isPlaceValid = !!this.selectedPlace;
+      // this.isStartDateValid = !!this.startDate;
+      // this.isEndDateValid = !!this.endDate;
+      // this.isBudgetValid = !!this.selectedBudget;
+
+      // // Exit the method if any required field is missing
+      // if (!this.isPlaceValid || !this.isStartDateValid || !this.isEndDateValid || !this.isBudgetValid) {
+      //   console.log("Sections aren't all filled out!")
+      //   return;
+      // }
 
       // Show loading screen overlay
       this.isLoading = true;
@@ -344,5 +395,29 @@ export default defineComponent({
 
 .v-date-picker-header {
   display: none
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+  padding-left: 12px;
+  margin-bottom: 10px;
+}
+
+.error-message2 {
+  color: red;
+  margin-top: 10px;
+  margin-left: 1px;
+
+}
+
+.error-message3 {
+  color: red;
+  margin-top: 15px;
+  margin-left: 1px;
+}
+
+.error-outline {
+  border-color: red;
 }
 </style>

@@ -101,13 +101,13 @@
             <router-link to="/StartPlanning">
                 <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
                     style="min-width: 150px;">
-                    Previous Step
+                    Restart
                 </v-btn>
             </router-link>
 
-            <router-link to="/Itinerary2">
+            <router-link to="/GeneratedItinerary">
                 <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" style="min-width: 150px;">
-                    Next Step
+                    Generate
                 </v-btn>
             </router-link>
         </v-col>
