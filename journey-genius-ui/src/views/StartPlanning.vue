@@ -35,57 +35,29 @@
 
     <!-- Date input components -->
     <v-row justify="center">
-  <v-col cols="12" md="8">
-    <v-card class="pa-4 mb-4">
-      <h3 class="headline text-deep-purple-accent-2">How Long Is Your Trip?</h3>
-      <br>
-      <v-row>
-        <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="formattedStartDate"
-            label="Start Date"
-            @click="isStartDatePickerVisible = true"
-            readonly
-            hide-details
-          ></v-text-field>
-          <v-date-picker
-            v-model="startDate"
-            @input="isStartDatePickerVisible = false"
-            :max="endDate"
-            v-if="isStartDatePickerVisible"
-            no-title
-            hide-details
-            color="deep-purple-accent-2"
-            scrollable
-            hide-header=""
-            style="width: 1000px; max-width: 100%;"
-
-          ></v-date-picker>
-        </v-col>
-        <v-col cols="12" sm="6">
-          <v-text-field
-            v-model="formattedEndDate"
-            label="End Date"
-            @click="isEndDatePickerVisible = true"
-            readonly
-            hide-details
-          ></v-text-field>
-          <v-date-picker
-            v-model="endDate"
-            @input="isEndDatePickerVisible = false"
-            :min="startDate"
-            v-if="isEndDatePickerVisible"
-            color="deep-purple-accent-2"
-            scrollable
-            hide-header=""
-            style="width: 1000px; max-width: 100%;"
-
-          ></v-date-picker>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-col>
-</v-row>
+      <v-col cols="12" md="8">
+        <v-card class="pa-4 mb-4">
+          <h3 class="headline text-deep-purple-accent-2">How Long Is Your Trip?</h3>
+          <br>
+          <v-row>
+            <v-col cols="12" sm="6">
+              <v-text-field v-model="formattedStartDate" label="Start Date" @click="isStartDatePickerVisible = true"
+                readonly hide-details></v-text-field>
+              <v-date-picker v-model="startDate" @input="isStartDatePickerVisible = false" :max="endDate"
+                v-if="isStartDatePickerVisible" no-title hide-details color="deep-purple-accent-2" scrollable
+                hide-header="" style="width: 1000px; max-width: 100%;"></v-date-picker>
+            </v-col>
+            <v-col cols="12" sm="6">
+              <v-text-field v-model="formattedEndDate" label="End Date" @click="isEndDatePickerVisible = true" readonly
+                hide-details></v-text-field>
+              <v-date-picker v-model="endDate" @input="isEndDatePickerVisible = false" :min="startDate"
+                v-if="isEndDatePickerVisible" color="deep-purple-accent-2" scrollable hide-header=""
+                style="width: 1000px; max-width: 100%;"></v-date-picker>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
 
 
 
@@ -162,7 +134,10 @@ export default defineComponent({
       landmarkData: [],
       shoppingData: [],
       hotelData: [],
-
+      cityData: [],
+      budgetData: [],
+      startDateData: [],
+      endDateData: [],
 
       // Data for budget selection
       budgets: [
@@ -241,7 +216,10 @@ export default defineComponent({
 
     formatDate(date) {
       // Custom date formatting logic
-      return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+      // return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString(undefined, options);
     },
 
     // Method for selecting a budget
@@ -264,6 +242,9 @@ export default defineComponent({
 
     // Method for generating an itinerary or navigating to another view page
     generateItinerary() {
+      
+
+
       // Show loading screen overlay
       this.isLoading = true;
 
@@ -327,7 +308,12 @@ export default defineComponent({
               restaurantData: JSON.stringify(this.restaurantData),
               activityData: JSON.stringify(this.activityData),
               landmarkData: JSON.stringify(this.landmarkData),
-              shoppingData: JSON.stringify(this.shoppingData)
+              shoppingData: JSON.stringify(this.shoppingData),
+              cityData: JSON.stringify(this.selectedPlace.name),
+              budgetData: JSON.stringify(this.selectedBudget),
+              startDateData: JSON.stringify(this.formattedStartDate),
+              endDateData: JSON.stringify(this.formattedEndDate),
+
             }
           });
         })

@@ -4,11 +4,11 @@
         <v-row justify="center" class="mt-4">
             <v-col cols="12" md="8" class="text-center">
                 <h2 style="font-size: 2.5rem;" class="headline text-deep-purple-accent-2">
-                    Plan Your Next Adventure
+                    Plan Your Next Adventure in {{ cityData }}
                 </h2>
-                <p style="font-size: 0.75rem;" class="headline text-deep-purple-accent-2">
-                    Planned for February 13 - February 15. High budget, traveling with friends.
-                </p>
+                <h1 style="font-size: 1rem;" class="headline text-deep-purple-accent-2">
+                    Planned for {{ combinedDates }} with a {{ budgetString }} budget trip.
+                </h1>
                 <p style="margin-top: 10px;">
                     The activities you select will form your final itinerary. You are required to check at least one box
                     in
@@ -122,7 +122,6 @@ import { useRoute } from 'vue-router';
 export default defineComponent({
     data() {
         return {
-
             activities: [],
             landmarks: [],
             foods: [],
@@ -131,34 +130,19 @@ export default defineComponent({
             selectedLandmarks: [],
             selectedFoods: [],
             selectedShops: [],
+            cityData: [],
+            startDateData: [],
+            endDateData: [],
+            budgetData: [],
         };
     },
     methods: {
-
+        formatDate(date) {
+            const options = { month: 'long', day: 'numeric', year: 'numeric' };
+            return new Date(date).toLocaleDateString('en-US', options);
+        },
     },
     mounted() {
-        // const restaurantData = JSON.parse(this.$route.query.restaurantData);
-        // if (restaurantData && restaurantData.recommended_places) {
-        //     this.foods = restaurantData.recommended_places;
-        // }
-
-        // Parse the JSON strings into objects
-        // Check if the query parameters are defined before parsing
-        //const restaurantData = this.$route.query.restaurantData ? JSON.parse(this.$route.query.restaurantData) : null;
-        // const activityData = this.$route.query.activityData ? JSON.parse(this.$route.query.activityData) : null;
-        // const landmarkData = this.$route.query.landmarkData ? JSON.parse(this.$route.query.landmarkData) : null;
-        // const shoppingData = this.$route.query.shoppingData ? JSON.parse(this.$route.query.shoppingData) : null;
-
-        // Now you can use these variables in your component
-        //this.foods = restaurantData;
-        // this.activities = activityData;
-        // this.landmarks = landmarkData;
-        // this.shops = shoppingData;
-        // console.log(restaurantData);
-        // console.log(landmarkData);
-        // console.log(shoppingData);
-
-
         const activityData = JSON.parse(this.$route.query.activityData);
         // console.log(activityData)
         if (activityData && activityData.recommended_places) {
@@ -183,6 +167,21 @@ export default defineComponent({
             this.shops = shoppingData.recommended_places;
         }
 
+        const cityData = JSON.parse(this.$route.query.cityData);
+        console.log(cityData);
+        this.cityData = cityData; // Assign cityData to the component's property
+
+        const budgetData = JSON.parse(this.$route.query.budgetData);
+        console.log(budgetData)
+        this.budgetData = budgetData;
+
+        const startDateData = JSON.parse(this.$route.query.startDateData);
+        console.log(startDateData)
+        this.startDateData = startDateData;
+
+        const endDateData = JSON.parse(this.$route.query.endDateData);
+        console.log(endDateData)
+        this.endDateData = endDateData;
     },
 
     computed: {
@@ -190,6 +189,26 @@ export default defineComponent({
             const store = useStore();
             return store.getters.selectedBudget;
         },
+        budgetString() {
+            if (this.budgetData === 1) {
+                return "cheap";
+            } else if (this.budgetData === 2) {
+                return "medium";
+            } else if (this.budgetData === 3) {
+                return "expensive";
+            } else {
+                return "Unknown";
+            }
+        },
+        combinedDates() {
+            if (this.startDateData && this.endDateData) {
+                const startDateFormat = this.formatDate(this.startDateData);
+                const endDateFormat = this.formatDate(this.endDateData);
+                return `${startDateFormat} - ${endDateFormat}`;
+            }
+            return '';
+        }
+
     },
 
 });
