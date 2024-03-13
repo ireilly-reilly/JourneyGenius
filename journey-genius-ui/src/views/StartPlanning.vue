@@ -115,6 +115,7 @@ export default defineComponent({
       // Data for handling city input and autocomplete
       city: '',
       autocompleteCities: [],
+      state: '',
 
       startDate: null,
       endDate: null,
@@ -202,8 +203,10 @@ export default defineComponent({
     // Google Places API Dropdown
     getAddressData: function (addressData) {
       this.city = addressData.locality || addressData.latitude || addressData.longitude || '';
+      this.state = addressData.administrative_area_level_1 || ''; // Store state information
       this.selectedPlace = {
         name: this.city,
+        state: this.state,
         latitude: addressData.latitude,
         longitude: addressData.longitude,
       };
@@ -284,18 +287,6 @@ export default defineComponent({
         return; // Exit the method if input is not valid
       }
 
-      // Validate required fields
-      // this.isPlaceValid = !!this.selectedPlace;
-      // this.isStartDateValid = !!this.startDate;
-      // this.isEndDateValid = !!this.endDate;
-      // this.isBudgetValid = !!this.selectedBudget;
-
-      // // Exit the method if any required field is missing
-      // if (!this.isPlaceValid || !this.isStartDateValid || !this.isEndDateValid || !this.isBudgetValid) {
-      //   console.log("Sections aren't all filled out!")
-      //   return;
-      // }
-
       // Show loading screen overlay
       this.isLoading = true;
 
@@ -364,7 +355,7 @@ export default defineComponent({
               budgetData: JSON.stringify(this.selectedBudget),
               startDateData: JSON.stringify(this.formattedStartDate),
               endDateData: JSON.stringify(this.formattedEndDate),
-
+              stateData: JSON.stringify(this.state),
             }
           });
         })
