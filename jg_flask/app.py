@@ -4,7 +4,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import secrets
-from flask_mail import Mail, Message
+
 
 #Blueprint imports
 from TFIDF_ML_Restaurants_Blueprint import restaurantRecommendation_bp
@@ -22,7 +22,7 @@ from GetShoppingPlacesAPI import getShopping_bp
 
 #Flask App Initializations
 app = Flask(__name__, static_folder='../journey-genius-ui/dist', static_url_path='')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///useraccounts.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://JourneyGenius:WanderDeezNutz@localhost/useraccounts'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
@@ -62,6 +62,9 @@ class User(db.Model):
     interests = db.Column(db.String(10))
     accommodations = db.Column(db.String(5))
     transportation = db.Column(db.String(5))
+
+# Create the database tables (including the User table)
+# db.create_all()
 
 
 #Route to register new users
