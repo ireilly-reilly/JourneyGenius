@@ -351,6 +351,7 @@ export default defineComponent({
               activityData: JSON.stringify(this.activityData),
               landmarkData: JSON.stringify(this.landmarkData),
               shoppingData: JSON.stringify(this.shoppingData),
+              hotelData: JSON.stringify(this.hotelData),
               cityData: JSON.stringify(this.selectedPlace.name),
               budgetData: JSON.stringify(this.selectedBudget),
               startDateData: JSON.stringify(this.formattedStartDate),

@@ -35,8 +35,8 @@
                     <br>
                     <v-row dense>
                         <v-col v-for="(activity, index) in activities" :key="index" cols="12">
-                            <v-checkbox v-model="selectedActivities" :value="activity"
-                                :label="Array.isArray(activity) ? activity.join(', ') : activity"
+                            <v-checkbox v-model="selectedActivities" @change="updateSelectedActivities"
+                                :value="activity" :label="Array.isArray(activity) ? activity.join(', ') : activity"
                                 class="mb-1"></v-checkbox>
                         </v-col>
 
@@ -54,7 +54,7 @@
                     <br>
                     <v-row dense>
                         <v-col v-for="(landmark, index) in landmarks" :key="index" cols="12">
-                            <v-checkbox v-model="selectedLandmarks" :value="landmark"
+                            <v-checkbox v-model="selectedLandmarks" @change="updateSelectedLandmarks" :value="landmark"
                                 :label="Array.isArray(landmark) ? landmark.join(', ') : landmark"
                                 class="mb-1"></v-checkbox>
                         </v-col>
@@ -68,11 +68,11 @@
             <!-- Category: What do You want to Eat? -->
             <v-row justify="center" class="mt-4" dense>
                 <v-col cols="12" md="8">
-                    <h2 class="headline text-deep-purple-accent-2">What do You want to Eat?</h2>
+                    <h2 class="headline text-deep-purple-accent-2">What Do You Want to Eat?</h2>
                     <br>
                     <v-row dense>
                         <v-col v-for="(food, index) in foods" :key="index" cols="12">
-                            <v-checkbox v-model="selectedFoods" :value="food"
+                            <v-checkbox v-model="selectedFoods" @change="updateSelectedFoods" :value="food"
                                 :label="Array.isArray(food) ? food.join(', ') : food" class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
@@ -90,8 +90,25 @@
                     <br>
                     <v-row dense>
                         <v-col v-for="(shop, index) in shops" :key="index" cols="12">
-                            <v-checkbox v-model="selectedShops" :value="shop"
+                            <v-checkbox v-model="selectedShops" @change="updateSelectedShops" :value="shop"
                                 :label="Array.isArray(shop) ? shop.join(', ') : shop" class="mb-1"></v-checkbox>
+                        </v-col>
+                    </v-row>
+                    <v-col class="d-flex justify-center">
+                        <!-- <v-btn @click="redirectToMoreShoppingPage" color="deep-purple-accent-2">See More Retail Stores</v-btn> -->
+                    </v-col>
+                </v-col>
+            </v-row>
+
+            <!-- Category: Hotel Spots -->
+            <v-row justify="center" class="mt-4">
+                <v-col cols="12" md="8">
+                    <h2 class="headline text-deep-purple-accent-2">Where Will You Be Staying?</h2>
+                    <br>
+                    <v-row dense>
+                        <v-col v-for="(hotel, index) in hotels" :key="index" cols="12">
+                            <v-checkbox v-model="selectedHotels" @change="updateSelectedHotels" :value="hotel"
+                                :label="Array.isArray(hotel) ? hotel.join(', ') : hotel" class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
@@ -140,18 +157,28 @@
 import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
+import { mapState, mapMutations } from 'vuex';
+
+
+
 
 export default defineComponent({
     data() {
+
+
+
+
         return {
             activities: [],
             landmarks: [],
             foods: [],
             shops: [],
+            hotels: [],
             selectedActivities: [],
             selectedLandmarks: [],
             selectedFoods: [],
             selectedShops: [],
+            selectedHotels: [],
 
             cityData: [],
             startDateData: [],
@@ -215,6 +242,7 @@ export default defineComponent({
             dialogVisible: false,
         };
     },
+
     methods: {
         formatDate(date) {
             const options = { month: 'long', day: 'numeric', year: 'numeric' };
@@ -231,26 +259,35 @@ export default defineComponent({
 
         // Function to update the Vuex store with selected activities
         updateSelectedActivities() {
-            const store = useStore();
-            store.dispatch('updateActivities', this.selectedActivities);
+            // console.log('Selected activities:', this.selectedActivities);
+            this.$store.commit('updateActivities', this.selectedActivities);
+            console.log("Activities stored in Vuex: " + this.$store.state.activities); // Log the activities stored in Vuex
+
         },
         // Function to update the Vuex store with selected landmarks
         updateSelectedLandmarks() {
-            const store = useStore();
-            store.dispatch('updateLandmarks', this.selectedLandmarks);
+            this.$store.commit('updateLandmarks', this.selectedLandmarks);
+            console.log("Landmarks stored in Vuex: " + this.$store.state.landmarks); // Log the landmarks stored in Vuex
         },
         // Function to update the Vuex store with selected foods
         updateSelectedFoods() {
-            const store = useStore();
-            store.dispatch('updateFoods', this.selectedFoods);
+            this.$store.commit('updateFoods', this.selectedFoods);
+            console.log("Restaurants stored in Vuex: " + this.$store.state.foods); // Log the landmarks stored in Vuex
+
         },
         // Function to update the Vuex store with selected shops
         updateSelectedShops() {
-            const store = useStore();
-            store.dispatch('updateShops', this.selectedShops);
+            this.$store.commit('updateShops', this.selectedShops);
+            console.log("Shopping Spots stored in Vuex: " + this.$store.state.shops); // Log the landmarks stored in Vuex
         },
+        updateSelectedHotels() {
+            this.$store.commit('updateHotels', this.selectedHotels);
+            console.log("Hotels stored in Vuex: " + this.$store.state.hotels); // Log the landmarks stored in Vuex
+        },
+
     },
     mounted() {
+        // Pulls information from the previous page.
         const activityData = JSON.parse(this.$route.query.activityData);
         // console.log(activityData)
         if (activityData && activityData.recommended_places) {
@@ -273,6 +310,12 @@ export default defineComponent({
         // console.log(shoppingData)
         if (shoppingData && shoppingData.recommended_places) {
             this.shops = shoppingData.recommended_places;
+        }
+
+        const hotelData = JSON.parse(this.$route.query.hotelData);
+        // console.log(hotelData)
+        if (hotelData && hotelData.recommended_places) {
+            this.hotels = hotelData.recommended_places;
         }
 
         const cityData = JSON.parse(this.$route.query.cityData);
@@ -301,23 +344,41 @@ export default defineComponent({
 
 
         // Testing
-        console.log("City stored in Vuex: " + this.$store.state.city); // Log the city stored in Vuex
-        console.log("State stored in Vuex: " +this.$store.state.state); // Log the state stored in Vuex
-        console.log("Dates stored in Vuex: " +this.$store.state.dates); // Log the dates stored in Vuex
-        console.log("Budget stored in Vuex: " +this.$store.state.budget); // Log the budget stored in Vuex
-        console.log("Activities stored in Vuex: " +this.$store.state.activities); // Log the activities stored in Vuex
-        console.log("Landmarks stored in Vuex: " +this.$store.state.landmarks); // Log the landmarks stored in Vuex
-        console.log("Shopping stored in Vuex: " +this.$store.state.shopping); // Log the shopping spots stored in Vuex
-        console.log("Dining stored in Vuex: " +this.$store.state.dining); // Log the dining options stored in Vuex
+        console.log("Before - City stored in Vuex: " + this.$store.state.city); // Log the city stored in Vuex
+        console.log("Before - State stored in Vuex: " + this.$store.state.state); // Log the state stored in Vuex
+        console.log("Before - Dates stored in Vuex: " + this.$store.state.dates); // Log the dates stored in Vuex
+        console.log("Before - Budget stored in Vuex: " + this.$store.state.budget); // Log the budget stored in Vuex
+        console.log("Before - Activities stored in Vuex: " + this.$store.state.activities); // Log the activities stored in Vuex
+        console.log("Before - Landmarks stored in Vuex: " + this.$store.state.landmarks); // Log the landmarks stored in Vuex
+        console.log("Before - Shopping stored in Vuex: " + this.$store.state.shops); // Log the shopping spots stored in Vuex
+        console.log("Before - Dining stored in Vuex: " + this.$store.state.foods); // Log the dining options stored in Vuex
+        console.log("Before - Hotels stored in Vuex: " + this.$store.state.hotels); // Log the dining options stored in Vuex
     },
 
+    // mutations: {
+    //     updateActivities(state, activities) {
+    //         console.log('Updating activities in Vuex:', activities);
+    //         state.activities = activities;
+    //     },
+    //     // Other mutations...
+    // },
+
     computed: {
-        selectedBudget() {
-            const store = useStore();
-            return store.getters.selectedBudget;
-        },
+        // selectedActivities() {
+        //     return this.$store.state.activities;
+        // },
+        // selectedBudget() {
+        //     const store = useStore();
+        //     return store.getters.selectedBudget;
+        // },
+
+        // ...mapState({
+        //     selectedActivities: state => state.selectedActivities
+        // }),
+
         budgetString() {
             if (this.budgetData === 1) {
+                this.$store.commit('updateBudget', "cheap");
                 return "cheap";
             } else if (this.budgetData === 2) {
                 return "medium";
