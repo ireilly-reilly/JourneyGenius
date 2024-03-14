@@ -4,6 +4,7 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import secrets
+import os
 
 
 #Blueprint imports
@@ -20,9 +21,15 @@ from GetShoppingPlacesAPI import getShopping_bp
 
 #from email_verification import email_verification_bp
 
+#Get database information securely
+DB_HOST = os.environ.get("DB_HOST")
+DB_USER = os.environ.get("DB_USER")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DB_NAME = os.environ.get("DB_NAME")
+
 #Flask App Initializations
 app = Flask(__name__, static_folder='../journey-genius-ui/dist', static_url_path='')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://JourneyGenius:WanderDeezNutz@localhost/useraccounts'
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
