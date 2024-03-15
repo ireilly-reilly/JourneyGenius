@@ -4,7 +4,8 @@ from flask_cors import CORS
 from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import secrets
-from flask_mail import Mail, Message
+import os
+
 
 #Blueprint imports
 from TFIDF_ML_Restaurants_Blueprint import restaurantRecommendation_bp
@@ -21,9 +22,15 @@ from GetHotelsPlacesAPI import getHotels_bp
 
 #from email_verification import email_verification_bp
 
+#Get database information securely
+DB_HOST = os.environ.get("DB_HOST")
+DB_USER = os.environ.get("DB_USER")
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
+DB_NAME = os.environ.get("DB_NAME")
+
 #Flask App Initializations
 app = Flask(__name__, static_folder='../journey-genius-ui/dist', static_url_path='')
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///useraccounts.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
@@ -65,6 +72,9 @@ class User(db.Model):
     interests = db.Column(db.String(10))
     accommodations = db.Column(db.String(5))
     transportation = db.Column(db.String(5))
+
+# Create the database tables (including the User table)
+# db.create_all()
 
 
 #Route to register new users
