@@ -16,7 +16,8 @@
           </v-btn>
         </router-link>
         <v-col class="text-center mt-4" cols="12">
-          {{ new Date().getFullYear() }} — <strong>Vuetify</strong>
+          {{ new Date().getFullYear() }} — <strong>Journey Genius</strong>
+          <!-- <strong>Journey Genius - It's not about the destination, it's about the journey.</strong> -->
         </v-col>
       </v-row>
     </v-footer>

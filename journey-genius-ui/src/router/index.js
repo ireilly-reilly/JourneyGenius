@@ -16,12 +16,26 @@ import GeneratedItinerary2 from '../views/GeneratedItinerary2.vue'
 import LoggingOut from "../views/LoggingOut.vue"
 import EmailVerification from "../views/EmailVerification.vue"
 
+import SuperuserPassword from '../views/SuperuserPassword.vue'
+import SuperuserLogin from '../views/SuperuserLogin.vue'
+import SuperuserDashboard from '../views/SuperuserDashboard.vue'
+import SuperuserAccounts from '../views/SuperuserAccounts.vue'
+import SuperuserAccountDetails from '../views/SuperuserAccountDetails.vue'
+import SuperuserAnalytics from '../views/SuperuserAnalytics.vue'
+
+import DefaultLayout from '@/layouts/DefaultLayout.vue'
+import SuperuserLayout from '@/layouts/SuperuserLayout.vue'
+
+
+
 
 const routes = [
   {
     path: '/',
+    layout: DefaultLayout,
     name: 'Home',
-    component: Home
+    component: Home,
+    // meta: { layout: 'DefaultLayout' }, // Use DefaultLayout for this route
   },
   {
     path: '/loading',
@@ -110,7 +124,49 @@ const routes = [
     path: '/EmailVerification',
     name: 'EmailVerification',
     component: EmailVerification,
-  }
+  },
+  {
+    path: '/SuperuserPassword',
+    // layout: SuperuserLayout,
+    name: 'SuperuserPassword',
+    component: SuperuserPassword,
+    meta: { requiresSuperuser: true } 
+  }, // Superuser page  }
+  {
+    path: '/SuperuserLogin',
+    // layout: SuperuserLayout,
+    name: 'SuperuserLogin',
+    component: SuperuserLogin,
+    meta: { requiresSuperuser: true } 
+  },
+  {
+    path: '/SuperuserDashboard',
+    // layout: SuperuserLayout,
+    name: 'SuperuserDashboard',
+    component: SuperuserDashboard,
+    meta: { requiresSuperuser: true } 
+  },
+  {
+    path: '/SuperuserAccounts',
+    // layout: SuperuserLayout,
+    name: 'SuperuserAccounts',
+    component: SuperuserAccounts,
+    meta: { requiresSuperuser: true } 
+  },
+  {
+    path: '/SuperuserAccountDetails',
+    // layout: SuperuserLayout,
+    name: 'SuperuserAccountDetails',
+    component: SuperuserAccountDetails,
+    meta: { requiresSuperuser: true } 
+  },
+  {
+    path: '/SuperuserAnalytics',
+    // layout: SuperuserLayout,
+    name: 'SuperuserAnalytics',
+    component: SuperuserAnalytics,
+    meta: { requiresSuperuser: true } 
+  },
 ]
 
 const router = createRouter({
