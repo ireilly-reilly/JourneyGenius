@@ -137,15 +137,7 @@ export default {
             isLoading: false,
             errorMessage: '',
 
-            housingOptions: [
-                { name: 'Hotel', photo: 'path/to/hotel-photo.jpg' },
-                { name: 'Airbnb', photo: 'path/to/airbnb-photo.jpg' },
-                { name: 'Boutique Inns', photo: 'path/to/boutique-inns-photo.jpg' },
-                { name: 'Bed and Breakfasts', photo: 'path/to/bed-and-breakfasts-photo.jpg' },
-                { name: 'I will be handling my accommodation independently', photo: 'path/to/independent-photo.jpg' },
-
-                // Add more housing options as needed
-            ],
+            housingOptions: [],
 
             selectedHousingOption: null,
             handleAccommodationIndependently: false,

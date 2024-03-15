@@ -1,5 +1,8 @@
 <template>
   <v-container>
+    <!-- Loading screen overlay -->
+    <LoadingScreen v-if="isLoading" />
+
     <!-- Header -->
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
@@ -19,13 +22,13 @@
         <v-card class="pa-4 mb-4">
           <h3 class="headline text-deep-purple-accent-2">Where do you want to travel?</h3>
           <br>
-
           <vue-google-autocomplete id="map2" ref="toAddress" classname="form-control" placeholder="Enter a City"
             v-on:placechanged="getAddressData" types="(cities)" country="us"
             style="width: 100%; max-width: 5000px; height: 50px; background-color: #f5f5f5; padding-left: 15px;">
           </vue-google-autocomplete> <!-- Drop down for cities -->
-          <br>
-          <br>
+          <div v-if="showCityError" class="error-message3">{{ cityErrorMessage }}</div>
+          <!-- <br>
+          <br> -->
         </v-card>
       </v-col>
     </v-row>
@@ -37,20 +40,25 @@
           <h3 class="headline text-deep-purple-accent-2">How Long Is Your Trip?</h3>
           <br>
           <v-row>
-            <!-- Start Date -->
-            <v-col cols="6">
-              <v-text-field v-model="startDate" label="Start Date" type="date" @input="updateStartDate"></v-text-field>
+            <v-col cols="12" sm="6">
+              <v-text-field v-model="formattedStartDate" label="Start Date" @click="isStartDatePickerVisible = true"
+                readonly hide-details ref="startDate"></v-text-field>
+              <v-date-picker v-model="startDate" @input="isStartDatePickerVisible = false" :max="endDate"
+                v-if="isStartDatePickerVisible" no-title hide-details color="deep-purple-accent-2" scrollable
+                hide-header="" style="width: 1000px; max-width: 100%;"></v-date-picker>
             </v-col>
-
-            <!-- End Date -->
-            <v-col cols="6">
-              <v-text-field v-model="endDate" label="End Date" type="date" @input="updateEndDate"></v-text-field>
+            <v-col cols="12" sm="6">
+              <v-text-field v-model="formattedEndDate" label="End Date" @click="isEndDatePickerVisible = true" readonly
+                hide-details ref="endDate"></v-text-field>
+              <v-date-picker v-model="endDate" @input="isEndDatePickerVisible = false" :min="startDate"
+                v-if="isEndDatePickerVisible" color="deep-purple-accent-2" scrollable hide-header=""
+                style="width: 1000px; max-width: 100%;"></v-date-picker>
             </v-col>
+            <div v-if="showDateError" class="error-message">{{ datesErrorMessage }}</div>
           </v-row>
         </v-card>
       </v-col>
     </v-row>
-
 
     <!-- Budget selection -->
     <v-row justify="center">
@@ -71,120 +79,21 @@
               </v-btn>
             </v-col>
           </v-row>
+          <div v-if="showBudgetError" class="error-message2">{{ budgetErrorMessage }}</div>
+
         </v-card>
       </v-col>
     </v-row>
-
-
-    <!-- Activities selection -->
-<v-row justify="center">
-  <v-col cols="12" md="8">
-    <v-card class="pa-4">
-      <h3 class="headline text-deep-purple-accent-2">Select Favorite Activities</h3>
-      <p>Choose your favorite activities to customize your experience!</p>
-
-      <v-row justify="center">
-        <v-col v-for="activity in activities" :key="activity.value" cols="4">
-          <v-btn class="companion-btn" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-            @click="selectActivity(activity)">
-            <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
-            <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
-            <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
-            <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
-            <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
-            <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
-            <div>{{ activity.label }}</div>
-          </v-btn>
-          <br>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-col>
-</v-row>
-
-
- <!-- Ethnic Foods selection -->
-<v-row justify="center">
-  <v-col cols="12" md="8">
-    <v-card class="pa-4">
-      <h3 class="headline text-deep-purple-accent-2">Select Ethnic Foods</h3>
-      <p>Select your favorite types of cuisine and we'll cater to your tastes!</p>
-
-      <v-row justify="center">
-        <v-col v-for="food in ethnicFoods" :key="food.value" cols="4">
-          <v-btn class="companion-btn" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-            @click="selectEthnicFood(food)">
-            <v-icon v-if="food.value === 'asian'">mdi-noodles</v-icon>
-            <v-icon v-if="food.value === 'american'">mdi-hamburger</v-icon>
-            <v-icon v-if="food.value === 'italian'">mdi-pizza</v-icon>
-            <v-icon v-if="food.value === 'mexican'">mdi-taco</v-icon>
-            <v-icon v-if="food.value === 'mediterranean'">mdi-fish</v-icon>
-            <v-icon v-if="food.value === 'vegan'">mdi-leaf</v-icon>
-            <div>{{ food.label }}</div>
-          </v-btn>
-          <br>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-col>
-</v-row>
-
-<!-- Shopping selection -->
-<v-row justify="center">
-  <v-col cols="12" md="8">
-    <v-card class="pa-4">
-      <h3 class="headline text-deep-purple-accent-2">Select Favorite Shopping Options</h3>
-      <p>Choose your favorite shopping options and spend some money!</p>
-
-      <v-row justify="center">
-        <v-col v-for="shopping in shoppingOptions" :key="shopping.value" cols="4">
-          <v-btn class="companion-btn" :color="shopping.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-            @click="selectShopping(shopping)">
-            <v-icon v-if="shopping.value === 'shopping_mall'">mdi-shopping</v-icon>
-            <v-icon v-if="shopping.value === 'clothing_store'">mdi-tshirt-crew</v-icon>
-            <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon>
-            <v-icon v-if="shopping.value === 'book_store'">mdi-book</v-icon>
-            <div>{{ shopping.label }}</div>
-          </v-btn>
-          <br>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-col>
-</v-row>
-<!-- <v-row>
-    <v-col class="pa-12">
-      <v-slider
-        v-model="selectedOption"
-        :max="Object.keys(shoppingOptions).length - 1"
-        :ticks="shoppingOptions"
-        show-ticks="always"
-        step="1"
-        tick-size="4"
-        thumb-label="always"
-        thumb-size="32"
-        @input="updateSelection"
-        track-color="deep-purple lighten-3"
-      >
-        <template v-slot:thumb-label="{ modelValue }">
-          <v-icon :icon="shopping(modelValue)" theme="dark"></v-icon>
-        </template>
-      </v-slider>
-    </v-col>
-  </v-row> -->
-
-
-
 
     <!-- Generate button -->
     <v-row justify="center">
       <v-col cols="12" md="8" class="text-center">
         <br>
-        <router-link to="/Itinerary">
+        <!-- <router-link to="/Itinerary"> -->
         <v-btn class="generate-btn" color="deep-purple-accent-2" @click="generateItinerary">
           Generate
         </v-btn>
-      </router-link>
+        <!-- </router-link> -->
       </v-col>
     </v-row>
 
@@ -196,6 +105,8 @@
 import { defineComponent } from 'vue';
 import axios from 'axios';
 import VueGoogleAutocomplete from "vue-google-autocomplete";
+import LoadingScreen from '@/components/LoadingScreen.vue';
+
 
 
 export default defineComponent({
@@ -204,13 +115,42 @@ export default defineComponent({
       // Data for handling city input and autocomplete
       city: '',
       autocompleteCities: [],
-      menu: false,
-      startDate: '', // Initialize with an empty string or a default date
-      endDate: '',
+      state: '',
+
+      startDate: null,
+      endDate: null,
+      isStartDatePickerVisible: false,
+      isEndDatePickerVisible: false,
+
       selectedPlace: null,
       selectedLat: null,
       selectedLon: null,
       selectededBudget: null,
+
+      // Variables used after the generation process
+      isLoading: false,
+      restaurantData: [],
+      activityData: [],
+      landmarkData: [],
+      shoppingData: [],
+      hotelData: [],
+      cityData: [],
+      budgetData: [],
+      startDateData: [],
+      endDateData: [],
+
+      isPlaceValid: false,
+      isStartDateValid: false,
+      isEndDateValid: false,
+      isBudgetValid: false,
+
+      // loginErrorMessage: ,
+      datesErrorMessage: "",
+      showDateError: false,
+      budgetErrorMessage: "",
+      showBudgetError: false,
+      cityErrorMessage: "",
+      showCityError: false,
 
       // Data for budget selection
       budgets: [
@@ -219,47 +159,7 @@ export default defineComponent({
         { label: 'Expensive', value: 'expensive', range: '2500+ USD', selected: false, priceRange: ['3'] },
       ],
 
-      activities: [
-      { value: 'amusement_park', label: 'Amusement Park', selected: false },
-      { value: 'aquarium', label: 'Aquarium', selected: false },
-      { value: 'art_gallery', label: 'Art Gallery', selected: false },
-      { value: 'museum', label: 'Museum', selected: false },
-      { value: 'stadium', label: 'Stadium', selected: false },
-      { value: 'zoo', label: 'Zoo', selected: false },
-      // Add more activities as needed
-    ],
-
-      ethnicFoods: [
-      { value: 'asian', label: 'Asian', selected: false },
-      { value: 'american', label: 'American', selected: false },
-      { value: 'italian', label: 'Italian', selected: false },
-      { value: 'mexican', label: 'Mexican', selected: false },
-      { value: 'mediterranean', label: 'Mediterranean', selected: false },
-      { value: 'vegan', label: 'Vegan', selected: false },
-    ],
-
-    shoppingOptions: [
-      { value: 'shopping_mall', label: 'Shopping Mall', selected: false },
-      { value: 'clothing_store', label: 'Clothing Store', selected: false },
-      { value: 'electronics_store', label: 'Electronics Store', selected: false },
-      { value: 'book_store', label: 'Book Store', selected: false },
-      // Add more shopping options as needed
-    ],
-
-    // shoppingOptions: {
-    //   0: 'Shopping Mall',
-    //   1: 'Clothing Store',
-    //   2: 'Electronics Store',
-    //   3: 'Book Store',
-    // },
-    // icons: [
-    //   'mdi-shopping',
-    //   'mdi-tshirt-crew',
-    //   'mdi-cellphone',
-    //   'mdi-book',
-    // ],
       // Other data properties
-      selectedDate: null,
       isDatePickerVisible: false,
       // travelDestination: null,
       selectedBudget: null,
@@ -269,19 +169,44 @@ export default defineComponent({
         (v) => !!v || 'End date is required',
         (v) => this.isEndDateValid(v) || 'End date must be equal or after the start date',
       ],
+
     };
+  },
+  watch: {
+    startDate() {
+      if (this.endDate && this.startDate > this.endDate) {
+        this.endDate = null;
+      }
+    },
+    endDate() {
+      if (this.startDate && this.startDate > this.endDate) {
+        this.startDate = null;
+      }
+    },
   },
 
   components: {
-    VueGoogleAutocomplete
+    VueGoogleAutocomplete,
+    LoadingScreen,
+  },
+
+  computed: {
+    formattedStartDate() {
+      return this.startDate ? this.formatDate(this.startDate) : '';
+    },
+    formattedEndDate() {
+      return this.endDate ? this.formatDate(this.endDate) : '';
+    },
   },
 
   methods: {
     // Google Places API Dropdown
     getAddressData: function (addressData) {
       this.city = addressData.locality || addressData.latitude || addressData.longitude || '';
+      this.state = addressData.administrative_area_level_1 || ''; // Store state information
       this.selectedPlace = {
         name: this.city,
+        state: this.state,
         latitude: addressData.latitude,
         longitude: addressData.longitude,
       };
@@ -298,6 +223,20 @@ export default defineComponent({
     hideDatePicker() {
       this.isDatePickerVisible = false;
     },
+
+    // Method to check if the end date is valid
+    isEndDateValid(selectedEndDate) {
+      return !this.startDate || selectedEndDate >= this.startDate;
+    },
+
+    formatDate(date) {
+      // Custom date formatting logic
+      // return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString(undefined, options);
+    },
+
     // Method for selecting a budget
     selectBudget(selectedBudget) {
       // Set the selected budget to the corresponding value
@@ -314,45 +253,56 @@ export default defineComponent({
         budget.selected = budget === selectedBudget;
       });
     },
-    selectEthnicFood(food) {
-    food.selected = !food.selected;
-  },
-  selectActivity(activity) {
-    activity.selected = !activity.selected;
-  },
-  selectShopping(shopping) {
-    shopping.selected = !shopping.selected;
-  },
-  // shopping(val) {
-  //     return this.icons[val];
-  //   },
+
 
     // Method for generating an itinerary or navigating to another view page
     generateItinerary() {
-      // Prepare data to send to the backend
-      const requestData = {
-        //target_place: 'type of restaurant', WE WANT THE USER TO CHOOOSE IN THE FUTURE
+      let isValid = true; // Assume input is valid unless proven otherwise
 
-        // We are getting these coordinates from the testRestaurantsPlacesAPI
+      if (!this.startDate || !this.endDate) {
+        this.datesErrorMessage = "Both the start date and end date are required.";
+        this.showDateError = true;
+        isValid = false;
+      } else {
+        this.showDateError = false;
+      }
+
+      if (this.selectedBudget !== 1 && this.selectedBudget !== 2 && this.selectedBudget !== 3) {
+        this.budgetErrorMessage = "The budget for your trip is required.";
+        this.showBudgetError = true;
+        isValid = false;
+      } else {
+        this.showBudgetError = false;
+      }
+
+      if (!this.selectedPlace || (!this.selectedPlace && (!this.selectedLat || !this.selectedLon))) {
+        this.cityErrorMessage = 'Please select a valid city.';
+        this.showCityError = true;
+        isValid = false;
+      } else {
+        this.showCityError = false; 
+      }
+
+      if (!isValid) {
+        return; // Exit the method if input is not valid
+      }
+
+      // Show loading screen overlay
+      this.isLoading = true;
+
+      const requestData = {
         target_lat_str: this.selectedLat,
         target_lon_str: this.selectedLon,
-
-        // From user selection
         desired_price_range_str: this.selectedBudget
       };
 
-      // Make a POST request to scrape_restaurants first
       axios.post('http://localhost:8000/api/scrape_restaurants', requestData)
         .then(response => {
           console.log('scrape_restaurants response:', response.data);
-          // After the first request is successful, make a POST request to run_ML_model_recommendations
-        })
-        .then(response => {
           return axios.post('http://localhost:8000/api/scrape_activities', requestData);
         })
         .then(response => {
           console.log('scrape_activities response', response.data);
-          // this.$router.push({ name: 'Itinerary', query: { activitiesData: JSON.stringify(response.data) } });
           return axios.post('http://localhost:8000/api/scrape_landmarks', requestData);
         })
         .then(response => {
@@ -361,35 +311,63 @@ export default defineComponent({
         })
         .then(response => {
           console.log('scrape_shopping response', response.data);
+          return axios.post('http://localhost:8000/api/scrape_hotels', requestData);
         })
         .then(response => {
+          console.log('scrape_hotels response', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
         })
         .then(response => {
+          this.restaurantData = response.data;
           console.log('run_ML_model_recommendations restaurant response:', response.data);
-          this.$router.push({ name: 'Itinerary', query: { restaurantData: JSON.stringify(response.data) } });
           return axios.post('http://localhost:8000/api/run_ML_model_activity_recommendations', requestData);
         })
         .then(response => {
+          this.activityData = response.data;
           console.log('run_ML_model_recommendations activities response:', response.data);
-          // this.$router.push({ name: 'Itinerary', query: { activityData: JSON.stringify(response.data) } });
           return axios.post('http://localhost:8000/api/run_ML_model_landmark_recommendations', requestData);
         })
         .then(response => {
+          this.landmarkData = response.data;
           console.log('run_ML_model_recommendations landmarks response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_shopping_recommendations', requestData);
         })
         .then(response => {
+          this.shoppingData = response.data;
           console.log('run_ML_model_recommendations shopping response:', response.data);
+          return axios.post('http://localhost:8000/api/run_ML_model_hotel_recommendations', requestData)
+        })
+        .then(response => {
+          this.hotelData = response.data;
+          console.log('run_ML_model_recommendations hotels response:', response.data);
+        })
+
+        .then(() => {
+          this.isLoading = false;
+          this.$router.push({
+            name: 'Itinerary',
+            query: {
+              restaurantData: JSON.stringify(this.restaurantData),
+              activityData: JSON.stringify(this.activityData),
+              landmarkData: JSON.stringify(this.landmarkData),
+              shoppingData: JSON.stringify(this.shoppingData),
+              hotelData: JSON.stringify(this.hotelData),
+              cityData: JSON.stringify(this.selectedPlace.name),
+              budgetData: JSON.stringify(this.selectedBudget),
+              startDateData: JSON.stringify(this.formattedStartDate),
+              endDateData: JSON.stringify(this.formattedEndDate),
+              stateData: JSON.stringify(this.state),
+            }
+          });
         })
         .catch(error => {
+          // Hide loading screen overlay on error
+          this.isLoading = false;
           console.error(error);
         });
     },
-    // Method to check if the end date is valid
-    isEndDateValid(selectedEndDate) {
-      return !this.startDate || selectedEndDate >= this.startDate;
-    },
+
+
   },
 });
 
@@ -405,5 +383,33 @@ export default defineComponent({
 .budget-btn {
   width: 100%;
   margin-top: 8px;
+}
+
+.v-date-picker-header {
+  display: none
+}
+
+.error-message {
+  color: red;
+  margin-top: 5px;
+  padding-left: 12px;
+  margin-bottom: 10px;
+}
+
+.error-message2 {
+  color: red;
+  margin-top: 10px;
+  margin-left: 1px;
+
+}
+
+.error-message3 {
+  color: red;
+  margin-top: 15px;
+  margin-left: 1px;
+}
+
+.error-outline {
+  border-color: red;
 }
 </style>

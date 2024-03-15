@@ -193,13 +193,6 @@
 <script>
 export default {
     name: 'SanFranciscoPage',
-
-
-    mounted() {
-    // Accessing the hotels variable from the Vuex store
-    const hotels = this.$store.state.hotels;
-    console.log('Hotels:', hotels);
-  },
 };
 </script>
   

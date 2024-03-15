@@ -29,12 +29,12 @@
               <v-col cols="12" md="6">
                 <v-text-field v-model="lastName" label="Last Name"></v-text-field>
               </v-col>
-              <v-col cols="12" md="6">
+              <!-- <v-col cols="12" md="6">
                 <v-select v-model="gender" label="Gender" :items="genderOptions"></v-select>
               </v-col>
               <v-col cols="12" md="6">
                 <v-text-field v-model="age" label="Age" type="number"></v-text-field>
-              </v-col>
+              </v-col> -->
               <v-col cols="12">
                 <v-text-field v-model="email" label="Email"></v-text-field>
               </v-col>
@@ -44,26 +44,77 @@
       </v-col>
     </v-row>
 
-    <!-- Interest Activities Section -->
-    <v-row justify="center" class="mt-4">
+    <!-- Activities selection -->
+    <v-row justify="center">
       <v-col cols="12" md="8">
         <v-card class="pa-4">
-          <h3 class="headline text-deep-purple-accent-2">Interest Activities</h3>
+          <h3 class="headline text-deep-purple-accent-2">Select Favorite Activities</h3>
+          <p>Choose your favorite activities to customize your experience!</p>
+
           <v-row justify="center">
-            <v-col v-for="activity in interestActivities" :key="activity" cols="4">
-              <v-btn class="interest-btn" stacked=""
-                :color="selectedActivities.includes(activity) ? 'deep-purple' : 'deep-purple-accent-2'"
-                @click="toggleInterest(activity)">
-                <v-icon v-if="activity === 'Beaches'">mdi-beach</v-icon>
-                <v-icon v-if="activity === 'City Sightseeing'">mdi-city</v-icon>
-                <v-icon v-if="activity === 'Outdoor Adventures'">mdi-image-filter-hdr</v-icon>
-                <v-icon v-if="activity === 'Festival/Events'">mdi-party-popper</v-icon>
-                <v-icon v-if="activity === 'Food Exploration'">mdi-food</v-icon>
-                <v-icon v-if="activity === 'Nightlife'">mdi-glass-cocktail</v-icon>
-                <v-icon v-if="activity === 'Shopping'">mdi-shopping</v-icon>
-                <v-icon v-if="activity === 'Spa Wellness'">mdi-spa</v-icon>
-                {{ activity }}
+            <v-col v-for="activity in activities" :key="activity.value" cols="4">
+              <v-btn class="companion-btn" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+                @click="selectActivity(activity)">
+                <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
+                <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
+                <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
+                <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
+                <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
+                <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
+                <div>{{ activity.label }}</div>
               </v-btn>
+              <br>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+
+
+    <!-- Ethnic Foods selection -->
+    <v-row justify="center">
+      <v-col cols="12" md="8">
+        <v-card class="pa-4">
+          <h3 class="headline text-deep-purple-accent-2">Select Ethnic Foods</h3>
+          <p>Select your favorite types of cuisine and we'll cater to your tastes!</p>
+
+          <v-row justify="center">
+            <v-col v-for="food in ethnicFoods" :key="food.value" cols="4">
+              <v-btn class="companion-btn" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+                @click="selectEthnicFood(food)">
+                <v-icon v-if="food.value === 'asian'">mdi-noodles</v-icon>
+                <v-icon v-if="food.value === 'american'">mdi-hamburger</v-icon>
+                <v-icon v-if="food.value === 'italian'">mdi-pizza</v-icon>
+                <v-icon v-if="food.value === 'mexican'">mdi-taco</v-icon>
+                <v-icon v-if="food.value === 'mediterranean'">mdi-fish</v-icon>
+                <v-icon v-if="food.value === 'vegan'">mdi-leaf</v-icon>
+                <div>{{ food.label }}</div>
+              </v-btn>
+              <br>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <!-- Shopping selection -->
+    <v-row justify="center">
+      <v-col cols="12" md="8">
+        <v-card class="pa-4">
+          <h3 class="headline text-deep-purple-accent-2">Select Favorite Shopping Options</h3>
+          <p>Choose your favorite shopping options and spend some money!</p>
+
+          <v-row justify="center">
+            <v-col v-for="shopping in shoppingOptions" :key="shopping.value" cols="4">
+              <v-btn class="companion-btn" :color="shopping.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+                @click="selectShopping(shopping)">
+                <v-icon v-if="shopping.value === 'shopping_mall'">mdi-shopping</v-icon>
+                <v-icon v-if="shopping.value === 'clothing_store'">mdi-tshirt-crew</v-icon>
+                <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon>
+                <v-icon v-if="shopping.value === 'book_store'">mdi-book</v-icon>
+                <div>{{ shopping.label }}</div>
+              </v-btn>
+              <br>
             </v-col>
           </v-row>
         </v-card>
@@ -87,7 +138,7 @@
     </v-row>
 
     <!-- Transportation Preferences Section -->
-    <v-row justify="center" class="mt-4">
+    <!-- <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8">
         <v-card class="pa-4">
           <h3 class="headline text-deep-purple-accent-2">Transportation Preferences</h3>
@@ -100,7 +151,7 @@
           </v-form>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
   </v-container>
 
   <!-- Save button -->
@@ -121,10 +172,7 @@ import Cookies from 'js-cookie'
 export default defineComponent({
   data() {
     return {
-      interestActivities: [
-        'Beaches', 'City Sightseeing', 'Outdoor Adventures', 'Festival/Events',
-        'Food Exploration', 'Nightlife', 'Shopping', 'Spa Wellness'
-      ],
+      
       selectedActivities: [],
       firstName: '',
       lastName: '',
@@ -136,6 +184,33 @@ export default defineComponent({
       transportationPreference: null,
       existingUserData: {},
       savedActivities: [],
+
+      activities: [
+        { value: 'amusement_park', label: 'Amusement Park', selected: false },
+        { value: 'aquarium', label: 'Aquarium', selected: false },
+        { value: 'art_gallery', label: 'Art Gallery', selected: false },
+        { value: 'museum', label: 'Museum', selected: false },
+        { value: 'stadium', label: 'Stadium', selected: false },
+        { value: 'zoo', label: 'Zoo', selected: false },
+        // Add more activities as needed
+      ],
+
+      ethnicFoods: [
+        { value: 'asian', label: 'Asian', selected: false },
+        { value: 'american', label: 'American', selected: false },
+        { value: 'italian', label: 'Italian', selected: false },
+        { value: 'mexican', label: 'Mexican', selected: false },
+        { value: 'mediterranean', label: 'Mediterranean', selected: false },
+        { value: 'vegan', label: 'Vegan', selected: false },
+      ],
+
+      shoppingOptions: [
+        { value: 'shopping_mall', label: 'Shopping Mall', selected: false },
+        { value: 'clothing_store', label: 'Clothing Store', selected: false },
+        { value: 'electronics_store', label: 'Electronics Store', selected: false },
+        { value: 'book_store', label: 'Book Store', selected: false },
+        // Add more shopping options as needed
+      ],
     };
   },
   mounted() {

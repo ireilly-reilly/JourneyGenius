@@ -16,21 +16,19 @@ import numpy as np
 import os
 
 #Blueprint declaration
-restaurantRecommendation_bp = Blueprint('restaurantRecommendation_bp', __name__)
+hotelsRecommendation_bp = Blueprint('hotelsRecommendation_bp', __name__)
 
 # Load the data from the CSV file with the correct encoding
 # Ethan's Filepath
 # data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
 
-# # Kai's Filepath
-#data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
-# #print(f"Number of rows in data: {len(data)}")
-# # Isaac's Filepath
+#Dynamic filepath
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
-restaurant_csv_file_path = os.path.join(CSV_FOLDER, 'restaurant_data.csv')
+landmark_csv_file_path = os.path.join(CSV_FOLDER, 'hotel_data.csv')
 
-data = pd.read_csv(restaurant_csv_file_path)
+data = pd.read_csv(landmark_csv_file_path, encoding='utf-8') 
+# #print(f"Number of rows in data: {len(data)}")
 
 # data = pd.read_csv('JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
 
@@ -123,11 +121,11 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     return {'recommendations': recommendations}
 
 
-@restaurantRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
+@hotelsRecommendation_bp.route('/run_ML_model_hotel_recommendations', methods=['POST'])
 def recommend():
     try:
         data = request.json
-        target_place = "Lucky Dragon Restaurant" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = 'Holiday Inn Express & Suites Jackson, an IHG Hotel' #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
@@ -136,7 +134,7 @@ def recommend():
         #print(target_lon_str)
         #print(desired_price_range_str)
         #print()
-        #print("#################### TFIDF - Restaurant Recommendations ####################")
+        #print("#################### TFIDF - Hotel Recommendations ####################")
         #print("Values from the frontend is successfully sent over :)")
         #print()
 
@@ -151,7 +149,7 @@ def recommend():
             desired_price_range = int(desired_price_range_str)
             #print(target_lat_str)
             #print(target_lon_str)
-            print(desired_price_range_str)
+            #print(desired_price_range_str)
             #print("Variables successfully converted from strings to floats and int")
             #print()
 
@@ -166,7 +164,7 @@ def recommend():
         place_names = [place['place'] for place in recommended_places['recommendations']]
 
         # Print the place names
-        #print("Here are the recommended Restaurant Names from the TFIDF Model:")
+        #print("Here are the recommended Landmark Names from the TFIDF Model:")
         #print(place_names)
         #print()
 

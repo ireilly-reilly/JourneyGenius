@@ -1,42 +1,134 @@
-// store/store.js
-import { createStore } from 'vuex';
+// store/index.js
+
+import { createStore } from "vuex";
 
 const store = createStore({
-  state() {
-    return {
-      selectedActivities: [],
-      selectedLandmarks: [],
-      selectedFoods: [],
-      selectedShops: [],
-      isLoggedOn: false, // Global variable for login state
-      selectedBudget: null,
-    };
+  state: {
+    city: "",
+    state: "",
+    dates: "",
+    budget: "",
+    activities: [],
+    landmarks: [],
+    shops: [],
+    foods: [],
+    hotels: [],
+
+
   },
+  // directly update the state properties when committed 
+  // We currently only use mutations for the Itinerary Page (the checkboxes are stored in vuex using mutation)
   mutations: {
-    updateSelectedActivities(state, selectedActivities) {
-      state.selectedActivities = selectedActivities;
+
+    setCity(state, city) {
+      state.city = city;
     },
-    updateSelectedLandmarks(state, selectedLandmarks) {
-      state.selectedLandmarks = selectedLandmarks;
+    setState(state, stateName) {
+      state.state = stateName;
     },
-    updateSelectedFoods(state, selectedFoods) {
-      state.selectedFoods = selectedFoods;
+    setDates(state, dates) {
+      state.dates = dates;
     },
-    updateSelectedShops(state, selectedShops) {
-      state.selectedShops = selectedShops;
+    // setBudget(state, budget) {
+    //   state.budget = budget;
+    // },
+    // setActivities(state, activities) {
+    //   state.activities = activities;
+    // },
+    // setLandmarks(state, landmarks) {
+    //   state.landmarks = landmarks;
+    // },
+
+
+    // New mutations to update activities, landmarks, foods, and shops
+    updateActivities(state, activities) {
+      state.activities = activities;
     },
-    // Mutation to update the isLoggedOn variable
-    updateIsLoggedOn(state, isLoggedOn) {
-      state.isLoggedOn = isLoggedOn;
+    updateLandmarks(state, landmarks) {
+      state.landmarks = landmarks;
     },
-    setSelectedBudget(state, budget) {
-      state.selectedBudget = budget;
+    updateFoods(state, foods) {
+      state.foods = foods;
     },
+    updateShops(state, shops) {
+      state.shops = shops;
+    },
+    updateHotels(state, hotels) {
+      state.hotels = hotels;
+    },
+    setBudget(state, budget) {
+      state.budget = budget;
+    }
   },
-  getters: {
-    selectedBudget(state) {
-      return state.selectedBudget;
+
+  //used to commit the mutations.
+  actions: {
+    // Not needed
+    updateCity({ commit }, city) {
+      commit("setCity", city);
     },
+    updateState({ commit }, stateName) {
+      commit("setState", stateName);
+    },
+    updateDates({ commit }, dates) {
+      commit("setDates", dates);
+    },
+    
+    // updateActivities({ commit }, activities) {
+    //   commit("setActivities", activities);
+    // },
+    // updateLandmarks({ commit }, landmarks) {
+    //   commit("setLandmarks", landmarks);
+    // },
+    // updateShopping({ commit }, shopping) {
+    //   commit("setShopping", shopping);
+    // },
+    // updateDining({ commit }, dining) {
+    //   commit("setDining", dining);
+    // },
+
+    // New actions to dispatch mutations for updating activities, landmarks, foods, and shops
+    updateActivities({ commit }, activities) {
+      commit("setActivities", activities);
+    },
+    updateLandmarks({ commit }, landmarks) {
+      commit("setLandmarks", landmarks);
+    },
+    updateFoods({ commit }, foods) {
+      commit("setFoods", foods);
+    },
+    updateShops({ commit }, shops) {
+      commit("setShops", shops);
+    },
+    updateHotels({ commit }, hotels) {
+      commit("setHotels", hotels);
+    },
+    updateBudget({ commit }, budget) {
+      commit("setBudget", budget);
+    },
+
+
+  },
+
+  //provide access to the state properties in a computed manner.
+  getters: {
+    // Not needed
+    getCity: (state) => state.city,
+    getState: (state) => state.state,
+    getDates: (state) => state.dates,
+    // getActivities: (state) => state.activities,
+    // getLandmarks: (state) => state.landmarks,
+    // getShopping: (state) => state.shopping,
+    // getDining: (state) => state.dining,
+
+    // New getters for getting activities, landmarks, foods, and shops
+    getActivities: (state) => state.activities,
+    getLandmarks: (state) => state.landmarks,
+    getFoods: (state) => state.foods,
+    getShops: (state) => state.shops,
+    getHotels: (state) => state.hotels,
+    getBudget: (state) => state.budget,
+
   },
 });
 
