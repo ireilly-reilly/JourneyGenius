@@ -144,7 +144,7 @@
                 </v-dialog>
 
                 <router-link to="/GeneratedItinerary">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" style="min-width: 150px;">
+                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="updateTravelInfo" style="min-width: 150px;">
                         Generate
                     </v-btn>
                 </router-link>
@@ -262,7 +262,6 @@ export default defineComponent({
             // console.log('Selected activities:', this.selectedActivities);
             this.$store.commit('updateActivities', this.selectedActivities);
             console.log("Activities stored in Vuex: " + this.$store.state.activities); // Log the activities stored in Vuex
-
         },
         // Function to update the Vuex store with selected landmarks
         updateSelectedLandmarks() {
@@ -284,6 +283,10 @@ export default defineComponent({
             this.$store.commit('updateHotels', this.selectedHotels);
             console.log("Hotels stored in Vuex: " + this.$store.state.hotels); // Log the landmarks stored in Vuex
         },
+        updateTravelInfo() {
+            
+
+        }
 
     },
     mounted() {
@@ -321,6 +324,7 @@ export default defineComponent({
         const cityData = JSON.parse(this.$route.query.cityData);
         // console.log(cityData);
         this.cityData = cityData; // Assign cityData to the component's property
+        
 
         const state = JSON.parse(this.$route.query.stateData);
         // console.log(state);
@@ -339,20 +343,8 @@ export default defineComponent({
         this.endDateData = endDateData;
 
 
-
-
-
-
-        // Testing
-        console.log("Before - City stored in Vuex: " + this.$store.state.city); // Log the city stored in Vuex
-        console.log("Before - State stored in Vuex: " + this.$store.state.state); // Log the state stored in Vuex
-        console.log("Before - Dates stored in Vuex: " + this.$store.state.dates); // Log the dates stored in Vuex
-        console.log("Before - Budget stored in Vuex: " + this.$store.state.budget); // Log the budget stored in Vuex
-        console.log("Before - Activities stored in Vuex: " + this.$store.state.activities); // Log the activities stored in Vuex
-        console.log("Before - Landmarks stored in Vuex: " + this.$store.state.landmarks); // Log the landmarks stored in Vuex
-        console.log("Before - Shopping stored in Vuex: " + this.$store.state.shops); // Log the shopping spots stored in Vuex
-        console.log("Before - Dining stored in Vuex: " + this.$store.state.foods); // Log the dining options stored in Vuex
-        console.log("Before - Hotels stored in Vuex: " + this.$store.state.hotels); // Log the dining options stored in Vuex
+        // this.$store.commit('updateBudget', this.budgetString);
+        //     console.log("Budget stored in Vuex: " + this.$store.state.budget); // Log the activities stored in Vuex
     },
 
     // mutations: {
@@ -379,10 +371,15 @@ export default defineComponent({
         budgetString() {
             if (this.budgetData === 1) {
                 this.$store.commit('updateBudget', "cheap");
+                console.log("Budget stored in Vuex: " + this.$store.state.budget); // Log the activities stored in Vuex
                 return "cheap";
             } else if (this.budgetData === 2) {
+                this.$store.commit('updateBudget', "medium");
+                console.log("Budget stored in Vuex: " + this.$store.state.budget); // Log the activities stored in Vuex
                 return "medium";
             } else if (this.budgetData === 3) {
+                this.$store.commit('updateBudget', "expensive");
+                console.log("Budget stored in Vuex: " + this.$store.state.budget); // Log the activities stored in Vuex
                 return "expensive";
             } else {
                 return "Unknown";

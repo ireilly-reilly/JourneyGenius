@@ -11,7 +11,8 @@
                     <p>
                         San Francisco is a vibrant city known for its iconic landmarks, diverse neighborhoods, and rich
                         history. Whether
-                        you're interested in exploring the Golden Gate Bridge, visiting Fisherman's Wharf, or enjoying the
+                        you're interested in exploring the Golden Gate Bridge, visiting Fisherman's Wharf, or enjoying
+                        the
                         cultural scene
                         in the Mission District, San Francisco has something for everyone.
                     </p>
@@ -45,18 +46,7 @@
                     <div class="section-content">
                         <h3>Activities</h3>
                         <ul>
-                            <li>
-                                Explore Golden Gate Park: Immerse yourself in the lush greenery of Golden Gate Park, a
-                                sprawling urban oasis offering gardens, museums, and recreational activities.
-                            </li>
-                            <li>
-                                Take a cruise on the Bay: Enjoy breathtaking views of the city skyline, Alcatraz, and the
-                                Golden Gate Bridge while cruising along the scenic San Francisco Bay.
-                            </li>
-                            <li>
-                                Attend a Giants baseball game at Oracle Park: Experience the excitement of Major League
-                                Baseball at Oracle Park, home to the San Francisco Giants.
-                            </li>
+                            <li v-for="activity in activities" :key="activity">{{ activity }}</li>
                         </ul>
                     </div>
 
@@ -64,18 +54,7 @@
                     <div class="section-content">
                         <h3>Iconic Landmarks</h3>
                         <ul>
-                            <li>
-                                Golden Gate Bridge: Marvel at the engineering marvel that is the Golden Gate Bridge, an
-                                iconic symbol of San Francisco.
-                            </li>
-                            <li>
-                                Alcatraz Island: Step back in time with a visit to Alcatraz Island, home to the historic
-                                Alcatraz Federal Penitentiary.
-                            </li>
-                            <li>
-                                Painted Ladies in Alamo Square: Admire the charming Victorian houses known as the Painted
-                                Ladies, set against the backdrop of the city skyline.
-                            </li>
+                            <li v-for="landmark in landmarks" :key="landmark">{{ landmark }}</li>
                         </ul>
                     </div>
 
@@ -83,18 +62,7 @@
                     <div class="section-content">
                         <h3>Places to Eat</h3>
                         <ul>
-                            <li>
-                                Taste clam chowder at Boudin Bakery: Indulge in the famous sourdough bread bowls filled with
-                                delicious clam chowder at Boudin Bakery.
-                            </li>
-                            <li>
-                                Try dim sum in Chinatown: Explore the vibrant flavors of Chinatown and savor traditional dim
-                                sum dishes in this culturally rich neighborhood.
-                            </li>
-                            <li>
-                                Dine with a view at Waterbar: Enjoy a dining experience with stunning waterfront views at
-                                Waterbar, known for its seafood and elegant atmosphere.
-                            </li>
+                            <li v-for="food in foods" :key="food">{{ food }}</li>
                         </ul>
                     </div>
 
@@ -102,18 +70,7 @@
                     <div class="section-content">
                         <h3>Shopping Spots</h3>
                         <ul>
-                            <li>
-                                Union Square: Shop 'til you drop in Union Square, a bustling shopping district with high-end
-                                boutiques and department stores.
-                            </li>
-                            <li>
-                                Ferry Building Marketplace: Explore the Ferry Building Marketplace for artisanal goods,
-                                gourmet foods, and unique gifts.
-                            </li>
-                            <li>
-                                Haight-Ashbury: Discover vintage clothing stores and eclectic shops in Haight-Ashbury, a
-                                historic neighborhood known for its counterculture roots.
-                            </li>
+                            <li v-for="shop in shops" :key="shop">{{ shop }}</li>
                         </ul>
                     </div>
                 </div>
@@ -133,7 +90,8 @@
 
             <h2 class="section-title" style="text-align: center;">Explore San Francisco - Map and Estimated Costs</h2>
             <p style="text-align: center;">
-                Explore this interactive map showcasing the locations of your selected points of interest, encompassing your
+                Explore this interactive map showcasing the locations of your selected points of interest, encompassing
+                your
                 chosen accommodation, transportation options, planned activities, and other areas of interest!
             </p>
             <br>
@@ -151,16 +109,19 @@
                         <div class="section-content">
                             <v-row>
                                 <v-col cols="12" md="6">
-                                    <v-icon color="deep-purple-accent-2">mdi-bed</v-icon> Accommodation: $100-$200 per night
+                                    <v-icon color="deep-purple-accent-2">mdi-bed</v-icon> Accommodation: $100-$200 per
+                                    night
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-icon color="deep-purple-accent-2">mdi-bus</v-icon> Transportation: $20-$50 per day
+                                    <v-icon color="deep-purple-accent-2">mdi-bus</v-icon> Transportation: $20-$50 per
+                                    day
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-icon color="deep-purple-accent-2">mdi-food</v-icon> Food: $20-$40 per meal
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-icon color="deep-purple-accent-2">mdi-walk</v-icon> Activities: $20-$50 per activity
+                                    <v-icon color="deep-purple-accent-2">mdi-walk</v-icon> Activities: $20-$50 per
+                                    activity
                                 </v-col>
                             </v-row>
                         </div>
@@ -189,20 +150,50 @@
         </v-row>
     </v-container>
 </template>
-  
+
 <script>
 export default {
     name: 'SanFranciscoPage',
 
 
     mounted() {
-    // Accessing the hotels variable from the Vuex store
-    const hotels = this.$store.state.hotels;
-    console.log('Hotels:', hotels);
-  },
+        // Accessing the variables from the Vuex store
+        const activities = this.$store.state.activities;
+        const landmarks = this.$store.state.landmarks;
+        const foods = this.$store.state.foods;
+        const shops = this.$store.state.shops;
+        const hotels = this.$store.state.hotels;
+
+        console.log('Activities:', activities);
+        console.log('Landmarks:', landmarks);
+        console.log('Foods:', foods);
+        console.log('Shops:', shops);
+        console.log('Hotels:', hotels);
+    },
+
+    computed: {
+        activities() {
+            return this.$store.state.activities;
+        },
+        landmarks() {
+            return this.$store.state.landmarks;
+        },
+        foods() {
+            return this.$store.state.foods;
+        },
+        shops() {
+            return this.$store.state.shops;
+        },
+        hotels() {
+            return this.$store.state.hotels;
+        },
+    },
+
+
+
 };
 </script>
-  
+
 <style scoped>
 /* Custom styles for the information and new sections */
 .info-container {
@@ -218,8 +209,10 @@ export default {
 .image-container {
     display: flex;
     align-items: flex-start;
-    justify-content: center; /* Align the image at the top when screen is too small */
-    text-align: center; /* Center the content horizontally */
+    justify-content: center;
+    /* Align the image at the top when screen is too small */
+    text-align: center;
+    /* Center the content horizontally */
 }
 
 .section-title {
@@ -267,4 +260,3 @@ export default {
     margin-bottom: 8px;
 }
 </style>
-  

@@ -4,10 +4,10 @@ import { createStore } from "vuex";
 
 const store = createStore({
   state: {
-    city: "",
+    city: null,
     state: "",
-    dates: "",
-    budget: "",
+    dates: null,
+    budget: null,
     activities: [],
     landmarks: [],
     shops: [],
@@ -56,9 +56,16 @@ const store = createStore({
     updateHotels(state, hotels) {
       state.hotels = hotels;
     },
-    setBudget(state, budget) {
+    updateBudget(state, budget) {
       state.budget = budget;
-    }
+    },
+    updateDates(state, dates) {
+      state.dates = dates;
+    },
+    updateCity(state, city) {
+      state.city = city;
+    },
+
   },
 
   //used to commit the mutations.
@@ -72,6 +79,9 @@ const store = createStore({
     },
     updateDates({ commit }, dates) {
       commit("setDates", dates);
+    },
+    updateBudget({ commit }, budget) {
+      commit("setBudget", budget);
     },
     
     // updateActivities({ commit }, activities) {
@@ -106,6 +116,7 @@ const store = createStore({
     updateBudget({ commit }, budget) {
       commit("setBudget", budget);
     },
+    
 
 
   },
@@ -116,6 +127,7 @@ const store = createStore({
     getCity: (state) => state.city,
     getState: (state) => state.state,
     getDates: (state) => state.dates,
+    getBudget: (state) => state.budgets,
     // getActivities: (state) => state.activities,
     // getLandmarks: (state) => state.landmarks,
     // getShopping: (state) => state.shopping,
