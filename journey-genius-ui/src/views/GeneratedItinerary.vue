@@ -5,16 +5,18 @@
         <v-row justify="center">
             <v-col cols="12" class="text-center">
                 <div style="margin-top: 50px;">
-                    <h1 class="headline" style="font-size: 2em;">Welcome to San Francisco!</h1>
-                    <h2 class="subtitle">Explore the City by the Bay</h2>
+                    <h1 style="font-size: 3.5rem;" class="headline text-deep-purple-accent-2">
+                        Welcome to {{ this.$store.state.city }}, {{ this.$store.state.stateData }}!
+                    </h1>                    
+                    <h2 style="font-size: 2rem;" class="headline text-deep-purple-accent-2">
+                        Enter city slogan/motto generated from chat
+                    </h2>                    
+                    <h1 style="font-size: 1rem;" class="headline text-deep-purple-accent-2">
+                        Planned for {{  this.$store.state.datesData }} with a {{ budget }} budget trip.
+                    </h1>
                     <br>
                     <p>
-                        San Francisco is a vibrant city known for its iconic landmarks, diverse neighborhoods, and rich
-                        history. Whether
-                        you're interested in exploring the Golden Gate Bridge, visiting Fisherman's Wharf, or enjoying
-                        the
-                        cultural scene
-                        in the Mission District, San Francisco has something for everyone.
+                        Enter description generated from Chat
                     </p>
                     <br>
                     <hr>
@@ -23,7 +25,7 @@
         </v-row>
 
         <br>
-        <h2 class="section-title text-center">Discover San Francisco - Overview</h2>
+        <h2 class="section-title text-center">Discover {{ this.$store.state.city }} - Overview</h2>
 
 
         <!-- Section with Image and Left Section -->
@@ -88,7 +90,7 @@
             <hr>
             <br>
 
-            <h2 class="section-title" style="text-align: center;">Explore San Francisco - Map and Estimated Costs</h2>
+            <h2 class="section-title" style="text-align: center;">Explore {{ this.$store.state.city }} - Map and Estimated Costs</h2>
             <p style="text-align: center;">
                 Explore this interactive map showcasing the locations of your selected points of interest, encompassing
                 your
@@ -163,12 +165,25 @@ export default {
         const foods = this.$store.state.foods;
         const shops = this.$store.state.shops;
         const hotels = this.$store.state.hotels;
+        const datesData = this.$store.state.datesData;
+        const budget = this.$store.state.budget;
+        const stateData = this.$store.state.stateData;
+        const city = this.$store.state.city;
+        const lat = this.$store.state.lat;
+        const long = this.$store.state.long;
+
 
         console.log('Activities:', activities);
         console.log('Landmarks:', landmarks);
         console.log('Foods:', foods);
         console.log('Shops:', shops);
         console.log('Hotels:', hotels);
+        console.log('Dates:', datesData);
+        console.log('Budget:', budget);
+        console.log('State:', stateData);
+        console.log('City:', city);
+        console.log('Latitude:', lat);
+        console.log('Longitude:', long);
     },
 
     computed: {
@@ -187,6 +202,14 @@ export default {
         hotels() {
             return this.$store.state.hotels;
         },
+        datesData() {
+            return this.$store.state.datesData;
+        },
+        budget() {
+            return this.$store.state.budget;
+        },
+
+        
     },
 
 

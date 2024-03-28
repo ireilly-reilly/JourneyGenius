@@ -5,7 +5,9 @@ import { createStore } from "vuex";
 const store = createStore({
   state: {
     city: null,
-    state: "",
+    st: null,
+    lat: null,
+    long: null,
     dates: null,
     budget: null,
     activities: [],
@@ -59,11 +61,26 @@ const store = createStore({
     updateBudget(state, budget) {
       state.budget = budget;
     },
-    updateDates(state, dates) {
-      state.dates = dates;
+    updateDates(state, datesData) {
+      state.datesData = datesData;
     },
+    // updateStartDates(state, startDates) {
+    //   state.startDates = startDates;
+    // },
+    // updateEndDates(state, endDates) {
+    //   state.endDates = endDates;
+    // },
     updateCity(state, city) {
       state.city = city;
+    },
+    updateState(state, stateData) {
+      state.stateData = stateData;
+    },
+    updateLat(state, lat) {
+      state.lat = lat;
+    },
+    updateLong(state, long) {
+      state.long = long;
     },
 
   },
@@ -77,8 +94,8 @@ const store = createStore({
     updateState({ commit }, stateName) {
       commit("setState", stateName);
     },
-    updateDates({ commit }, dates) {
-      commit("setDates", dates);
+    updateDates({ commit }, datesData) {
+      commit("setDates", datesData);
     },
     updateBudget({ commit }, budget) {
       commit("setBudget", budget);
@@ -126,7 +143,7 @@ const store = createStore({
     // Not needed
     getCity: (state) => state.city,
     getState: (state) => state.state,
-    getDates: (state) => state.dates,
+    getDates: (state) => state.datesData,
     getBudget: (state) => state.budgets,
     // getActivities: (state) => state.activities,
     // getLandmarks: (state) => state.landmarks,

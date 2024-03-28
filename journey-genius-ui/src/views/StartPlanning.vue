@@ -213,6 +213,13 @@ export default defineComponent({
       console.log('Selected Place:', this.selectedPlace);
       this.selectedLat = addressData.latitude; // Store latitude
       this.selectedLon = addressData.longitude; // Store longitude
+
+      this.$store.commit('updateCity', addressData.locality);
+      this.$store.commit('updateLat', addressData.latitude);
+      this.$store.commit('updateLong', addressData.longitude);
+      console.log("City data stored in Vuex: " + addressData.locality);
+      console.log("Latitude data stored in Vuex: " + addressData.latitude);
+      console.log("Longitdue data stored in Vuex: " + addressData.longitude);
     },
 
     // Method for displaying the date picker

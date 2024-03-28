@@ -185,6 +185,8 @@ export default defineComponent({
             endDateData: [],
             budgetData: [],
 
+            savedDates: [],
+
             state: [],
             stateMap: {
                 AL: 'Alabama',
@@ -283,10 +285,8 @@ export default defineComponent({
             this.$store.commit('updateHotels', this.selectedHotels);
             console.log("Hotels stored in Vuex: " + this.$store.state.hotels); // Log the landmarks stored in Vuex
         },
-        updateTravelInfo() {
-            
-
-        }
+        // updateTravelInfo() {
+        // }
 
     },
     mounted() {
@@ -324,7 +324,6 @@ export default defineComponent({
         const cityData = JSON.parse(this.$route.query.cityData);
         // console.log(cityData);
         this.cityData = cityData; // Assign cityData to the component's property
-        
 
         const state = JSON.parse(this.$route.query.stateData);
         // console.log(state);
@@ -389,11 +388,19 @@ export default defineComponent({
             if (this.startDateData && this.endDateData) {
                 const startDateFormat = this.formatDate(this.startDateData);
                 const endDateFormat = this.formatDate(this.endDateData);
+                const datesData = `${startDateFormat} - ${endDateFormat}`;
+                
+                this.$store.commit('updateDates', datesData);
+                console.log("Dates data stored in Vuex: " + datesData);
+
                 return `${startDateFormat} - ${endDateFormat}`;
             }
             return '';
         },
         fullName() {
+            const stateData = this.stateMap[this.state] || this.state;
+            this.$store.commit('updateState', stateData);
+            console.log("State data stored in Vuex: " + stateData);
             return this.stateMap[this.state] || this.state;
         },
 
