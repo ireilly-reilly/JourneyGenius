@@ -156,6 +156,7 @@ def recommend():
 
         # Print the place names
         print(place_names)
+        
 
         # Return the recommended places (limited to 10)
         return jsonify({'recommended_places': place_names[:10]})

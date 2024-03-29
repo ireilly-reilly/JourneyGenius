@@ -14,6 +14,17 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
 import os
+from openai import OpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the OpenAI API key from the environment
+api_key = os.getenv("OPENAI_API_KEY")
+
+# Initialize OpenAI client
+client = OpenAI(api_key=api_key)
 
 #Blueprint declaration
 restaurantRecommendation_bp = Blueprint('restaurantRecommendation_bp', __name__)
@@ -123,6 +134,24 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     return {'recommendations': recommendations}
 
 
+def descriptionGeneration(recommended_places):
+    
+    # Compose a prompt using recommended places
+    prompt = "Describe the following restaurants regarding its food from online sources in one or two sentences:\n" + "\n".join(recommended_places)
+
+    # Generate descriptions using OpenAI
+    completion = client.chat.completions.create(
+        model="gpt-4",
+        messages=[
+            {"role": "system", "content": "You are an experienced food critic."},
+            {"role": "user", "content": prompt}
+        ]
+    )
+    
+    print("Completion response:", completion)
+    return completion
+
+
 @restaurantRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
 def recommend():
     try:
@@ -169,9 +198,10 @@ def recommend():
         #print("Here are the recommended Restaurant Names from the TFIDF Model:")
         #print(place_names)
         #print()
+        results = descriptionGeneration(place_names)
 
         # Return the recommended places (limited to 10)
-        return jsonify({'recommended_places': place_names[:10]})
+        return jsonify({'recommended_places': results[:10]})
 
     except Exception as e:
         # Log the exception for debugging purposes
