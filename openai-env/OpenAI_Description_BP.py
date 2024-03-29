@@ -1,5 +1,5 @@
 # Import necessary modules and functions
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from openai import OpenAI
 from dotenv import load_dotenv
 import requests
@@ -21,22 +21,19 @@ description_bp = Blueprint('description', __name__)
 # Define route to handle description request
 @description_bp.route('/descript', methods=['POST'])
 def descript():
-    # Extract data from request (if needed)
-    # For example, you might receive user preferences as JSON data in the request
-    
-    # Get descriptions from TF-IDF script
-    target_place = "SF Kitchen"
-    target_lat = 39.5296
-    target_lon = -119.8138
-    desired_price_range = 2
-    recommended_places = TF.get_descriptions_with_location_and_price(target_place, target_lat, target_lon, desired_price_range)
+    try: 
+        # data = request.json
+        # Stores 10 recommendations in the variable below for GPT
+        recommended_places = TF.get_recommendations_with_location_and_price()
+    except Exception as e:
+        print("Something's fucked up:", e)
 
     # Compose a prompt using recommended places
-    prompt = "Describe the following restaurants from online sources:\n" + "\n".join(recommended_places)
+    prompt = "Describe the following restaurants regarding its food from online sources in one or two sentences:\n" + "\n".join(recommended_places)
 
     # Generate descriptions using OpenAI
     completion = client.chat.completions.create(
-        model="gpt-3.5-turbo",
+        model="gpt-4",
         messages=[
             {"role": "system", "content": "You are an experienced food critic."},
             {"role": "user", "content": prompt}
