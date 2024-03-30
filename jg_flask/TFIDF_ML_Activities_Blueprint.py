@@ -14,6 +14,17 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
 import os
+from openai import OpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the OpenAI API key from the environment
+api_key = os.getenv("OPENAI_API_KEY")
+
+# Initialize OpenAI client
+client = OpenAI(api_key=api_key)
 
 #Blueprint declaration
 activitiesRecommendation_bp = Blueprint('activitiesRecommendation_bp', __name__)
@@ -118,8 +129,40 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
 
     # Return the top 10 similar places as a list of dictionaries
-    recommendations = [{'place': place} for place in sorted_places[1:11]]
+    recommendations = [{'place': place} for place in sorted_places[1:6]]
     return {'recommendations': recommendations}
+
+
+def descriptionGeneration(recommended_places):
+    # Ensure recommended_places is a list
+    if not isinstance(recommended_places, list):
+        recommended_places = [recommended_places]
+
+    # Initialize an empty array to store descriptions
+    response_message_array = []
+
+    # Iterate over recommended_places and generate descriptions
+    for place in recommended_places:
+        # Compose a prompt using the current place
+        prompt = f"Describe the activity, {place} ,regarding the activity experience from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Activity Name): (Then description)"
+
+        # Generate descriptions using OpenAI
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an enthusiastic travel guide."},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        
+        # Extract and append the description to response_message_array
+        response_message = response.choices[0].message.content
+        response_message_array.append(response_message)
+
+    # Print the array of descriptions
+    #print(response_message_array)
+
+    return response_message_array
 
 
 @activitiesRecommendation_bp.route('/run_ML_model_activity_recommendations', methods=['POST'])
@@ -168,9 +211,14 @@ def recommend():
         #print("Here are the recommended Activities  from the TFIDF Model:")
         #print(place_names)
         #print()
+        descriptions = descriptionGeneration(place_names)
 
         # Return the recommended places (limited to 10)
-        return jsonify({'recommended_places': place_names[:10]})
+        return jsonify({'recommended_places': descriptions[:5]})
+    
+        # Use this for the recommended places without the description!
+        #return jsonify({'recommended_places': place_names[:5]})
+
 
     except Exception as e:
         # Log the exception for debugging purposes

@@ -36,7 +36,7 @@
                     <v-row dense>
                         <v-col v-for="(activity, index) in activities" :key="index" cols="12">
                             <v-checkbox v-model="selectedActivities" @change="updateSelectedActivities"
-                                :value="activity" :label="Array.isArray(activity) ? activity.join(', ') : activity"
+                                :value="activity" :label="Array.isArray(activity) ? activity.join(', ') : activity" color="deep-purple-accent-2"
                                 class="mb-1"></v-checkbox>
                         </v-col>
 
@@ -55,7 +55,7 @@
                     <v-row dense>
                         <v-col v-for="(landmark, index) in landmarks" :key="index" cols="12">
                             <v-checkbox v-model="selectedLandmarks" @change="updateSelectedLandmarks" :value="landmark"
-                                :label="Array.isArray(landmark) ? landmark.join(', ') : landmark"
+                                :label="Array.isArray(landmark) ? landmark.join(', ') : landmark" color="deep-purple-accent-2"
                                 class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
@@ -73,7 +73,7 @@
                     <v-row dense>
                         <v-col v-for="(food, index) in foods" :key="index" cols="12">
                             <v-checkbox v-model="selectedFoods" @change="updateSelectedFoods" :value="food"
-                                :label="Array.isArray(food) ? food.join(', ') : food" class="mb-1"></v-checkbox>
+                                :label="Array.isArray(food) ? food.join(', ') : food" color="deep-purple-accent-2" class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
@@ -91,7 +91,7 @@
                     <v-row dense>
                         <v-col v-for="(shop, index) in shops" :key="index" cols="12">
                             <v-checkbox v-model="selectedShops" @change="updateSelectedShops" :value="shop"
-                                :label="Array.isArray(shop) ? shop.join(', ') : shop" class="mb-1"></v-checkbox>
+                                :label="Array.isArray(shop) ? shop.join(', ') : shop" color="deep-purple-accent-2" class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
@@ -108,7 +108,7 @@
                     <v-row dense>
                         <v-col v-for="(hotel, index) in hotels" :key="index" cols="12">
                             <v-checkbox v-model="selectedHotels" @change="updateSelectedHotels" :value="hotel"
-                                :label="Array.isArray(hotel) ? hotel.join(', ') : hotel" class="mb-1"></v-checkbox>
+                                :label="Array.isArray(hotel) ? hotel.join(', ') : hotel" color="deep-purple-accent-2" class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
@@ -409,4 +409,8 @@ export default defineComponent({
 });
 </script>
 
-<style></style>
+<style>
+.mb-1 .v-label {
+    font-size: 18px;
+}
+</style>

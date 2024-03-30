@@ -145,7 +145,8 @@ def descriptionGeneration(recommended_places):
     # Iterate over recommended_places and generate descriptions
     for place in recommended_places:
         # Compose a prompt using the current place
-        prompt = f"Describe the restaurant {place} regarding its food from online sources in one or two sentences."
+        prompt = f"Describe the restaurant {place} regarding its food from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Restaurant Name): (Then description)"
+
 
         # Generate descriptions using OpenAI
         response = client.chat.completions.create(
@@ -161,17 +162,9 @@ def descriptionGeneration(recommended_places):
         response_message_array.append(response_message)
 
     # Print the array of descriptions
-    print(response_message_array)
+    #print(response_message_array)
 
     return response_message_array
-
-    
-   
-
-
-
-
-
 
 
 @restaurantRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
@@ -224,6 +217,9 @@ def recommend():
 
         # Return the recommended places (limited to 10)
         return jsonify({'recommended_places': descriptions[:5]})
+    
+        # Use this for the recommended places without the description!
+        #return jsonify({'recommended_places': place_names[:5]})
 
     except Exception as e:
         # Log the exception for debugging purposes

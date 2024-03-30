@@ -13,6 +13,17 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
+from openai import OpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the OpenAI API key from the environment
+# api_key = os.getenv("OPENAI_API_KEY")
+
+# Initialize OpenAI client
+# client = OpenAI(api_key=api_key)
 
 #Blueprint declaration
 recommendation_bp = Blueprint('recommendation_bp', __name__)
