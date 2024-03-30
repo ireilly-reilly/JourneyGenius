@@ -348,12 +348,10 @@ export default defineComponent({
           this.hotelData = response.data;
           console.log('run_ML_model_recommendations hotels response:', response.data);
         })
-        .then(response => {
-          this.descriptionData = response.data;
-          console.log('run Description generation response:', response.data);
-          return axios.post('http//localhost:8000/api/descript_bp', requestData)
-        })
 
+
+
+        
         .then(() => {
           this.isLoading = false;
           this.$router.push({
