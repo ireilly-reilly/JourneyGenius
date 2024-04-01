@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <v-container>
+            <LoadingScreenShort v-if="isLoading" />
             <!-- Header -->
             <v-row justify="center" class="mt-4">
                 <v-col cols="12" md="8" class="text-center">
@@ -168,8 +169,8 @@ import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { mapState, mapMutations } from 'vuex';
-
-
+import axios from 'axios';
+import LoadingScreenShort from '@/components/LoadingScreenShort.vue';
 
 
 export default defineComponent({
@@ -259,13 +260,15 @@ export default defineComponent({
             showShoppingError: false,
             hotelErrorMessage: "",
             showHotelError: false,
+
+            isLoading: false,
         };
     },
 
-    mounted() {
-        const stateData = this.$store.state.stateData;
-        const cityData = this.$store.state.city;
-    },
+    // mounted() {
+    //     const state = this.$store.state.stateData;
+    //     const city = this.$store.state.city;
+    // },
 
     methods: {
         formatDate(date) {
@@ -360,19 +363,32 @@ export default defineComponent({
                 return;
             }
 
-            // Generate City Summary + Slogan
+            // Loading Screen
+            this.isLoading = true;
+
+            // Generate City Summary + Slogan Section
             const requestData = {
-                city: this.cityData,
-                state: this.stateData
+                state: this.$store.state.stateData,
+                city: this.$store.state.city,
             }
+            // console.log(requestData)
 
-
-
-
-
-
-
-            this.$router.push({ name: 'GeneratedItinerary' });
+            console.log("Generating Description...")
+            axios.post('http://localhost:8000/api/generateDescription', requestData)
+                .then(response => {
+                    // console.log("City Description: ", response.data);
+                    this.$store.commit('updateCityDescription', response.data);
+                    console.log("City Description: " + response.data)
+                    return axios.post('http://localhost:8000/api/generateSlogan', requestData)
+                })
+                .then(response => {
+                    this.$store.commit('updateCitySlogan', response.data);
+                    console.log("City Slogan " + response.data)
+                })
+                .then(response => {
+                    this.isLoading = false;
+                    this.$router.push({ name: 'GeneratedItinerary' });
+                })
         }
 
     },
@@ -492,6 +508,9 @@ export default defineComponent({
         },
 
     },
+    components: {
+    LoadingScreenShort,
+  },
 
 });
 </script>

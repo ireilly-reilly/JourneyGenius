@@ -26,7 +26,7 @@ def descript_bp():
         # Stores 10 recommendations in the variable below for GPT
         recommended_places = TF.get_recommendations_with_location_and_price()
     except Exception as e:
-        print("Something's fucked up:", e)
+        print("Something's messed up:", e)
 
     # Compose a prompt using recommended places
     prompt = "Describe the following restaurants regarding its food from online sources in one or two sentences:\n" + "\n".join(recommended_places)

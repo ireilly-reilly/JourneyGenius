@@ -8,15 +8,15 @@
                     <h1 style="font-size: 3.5rem;" class="headline text-deep-purple-accent-2">
                         Welcome to {{ this.$store.state.city }}, {{ this.$store.state.stateData }}!
                     </h1>                    
-                    <h2 style="font-size: 2rem;" class="headline text-deep-purple-accent-2">
-                        Enter city slogan/motto generated from chat
+                    <h2 style="font-size: 2.25rem;" class="headline text-deep-purple-accent-2">
+                        {{ this.$store.state.citySlogan }}
                     </h2>                    
                     <h1 style="font-size: 1rem;" class="headline text-deep-purple-accent-2">
                         Planned for {{  this.$store.state.datesData }} with a {{ budget }} budget trip.
                     </h1>
                     <br>
-                    <p>
-                        Enter description generated from Chat
+                    <p style="font-size: 1.125rem">
+                        {{ this.$store.state.cityDescription }}
                     </p>
                     <br>
                     <hr>
@@ -171,19 +171,22 @@ export default {
         const city = this.$store.state.city;
         const lat = this.$store.state.lat;
         const long = this.$store.state.long;
+        const cityDescription = this.$store.state.cityDescription;
+        const citySlogan = this.$store.state.citySlogan;
 
-
-        console.log('Activities:', activities);
-        console.log('Landmarks:', landmarks);
-        console.log('Foods:', foods);
-        console.log('Shops:', shops);
-        console.log('Hotels:', hotels);
-        console.log('Dates:', datesData);
-        console.log('Budget:', budget);
-        console.log('State:', stateData);
-        console.log('City:', city);
-        console.log('Latitude:', lat);
-        console.log('Longitude:', long);
+        // console.log('Activities:', activities);
+        // console.log('Landmarks:', landmarks);
+        // console.log('Foods:', foods);
+        // console.log('Shops:', shops);
+        // console.log('Hotels:', hotels);
+        // console.log('Dates:', datesData);
+        // console.log('Budget:', budget);
+        // console.log('State:', stateData);
+        // console.log('City:', city);
+        // console.log('Latitude:', lat);
+        // console.log('Longitude:', long);
+        // console.log('Generated Description:', cityDescription);
+        // console.log('Generated Slogan:', citySlogan);
     },
 
     computed: {

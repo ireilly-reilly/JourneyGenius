@@ -15,10 +15,10 @@ api_key = os.getenv("OPENAI_API_KEY")
 client = OpenAI(api_key=api_key)
 
 # Define description blueprint
-cityDescription_bp = Blueprint('cityDescription_bp', __name__)
+citySlogan_bp = Blueprint('citySlogan_bp', __name__)
 
 # Define route to handle description request
-@cityDescription_bp.route('/generateDescription', methods=['POST'])
+@citySlogan_bp.route('/generateSlogan', methods=['POST'])
 def descript_bp():
     try: 
         city = request.json.get("city")
@@ -31,7 +31,7 @@ def descript_bp():
         print("Something's messed up:", e)
 
     # Compose a prompt using recommended places
-    prompt = "Describe the following following location in 3-4 sentences. Highlight what makes this location special: " + location
+    prompt = "Give me the town's slogan for:" + location +  ". I don't need an explanation, just give me the slogan and nothing else."
 
     # Generate descriptions using OpenAI
     response = client.chat.completions.create(

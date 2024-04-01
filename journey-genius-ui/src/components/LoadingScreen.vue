@@ -54,8 +54,8 @@ export default {
   display: flex; /* Add this */
   align-items: center; /* Add this */
   justify-content: center; /* Add this */
-  margin-left: 48%;
-  margin-right: 48%;
+  margin-left: 50%;
+  margin-right: 50%;
   margin-top: 15px;
 }
 
