@@ -36,13 +36,15 @@
                     <v-row dense>
                         <v-col v-for="(activity, index) in activities" :key="index" cols="12">
                             <v-checkbox v-model="selectedActivities" @change="updateSelectedActivities"
-                                :value="activity" :label="Array.isArray(activity) ? activity.join(', ') : activity" color="deep-purple-accent-2"
-                                class="mb-1"></v-checkbox>
+                                :value="activity" :label="Array.isArray(activity) ? activity.join(', ') : activity"
+                                color="deep-purple-accent-2" class="mb-1"></v-checkbox>
                         </v-col>
 
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreActivitiesPage" color="deep-purple-accent-2">See More Activities</v-btn> -->
+                        <div v-if="showActivitiesError" class="error-message">{{ activitiesErrorMessage }}</div>
+
                     </v-col>
                 </v-col>
             </v-row>
@@ -55,12 +57,13 @@
                     <v-row dense>
                         <v-col v-for="(landmark, index) in landmarks" :key="index" cols="12">
                             <v-checkbox v-model="selectedLandmarks" @change="updateSelectedLandmarks" :value="landmark"
-                                :label="Array.isArray(landmark) ? landmark.join(', ') : landmark" color="deep-purple-accent-2"
-                                class="mb-1"></v-checkbox>
+                                :label="Array.isArray(landmark) ? landmark.join(', ') : landmark"
+                                color="deep-purple-accent-2" class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreLandmarksPage" color="deep-purple-accent-2">See More Landmarks</v-btn> -->
+                        <div v-if="showLandmarksError" class="error-message">{{ landmarksErrorMessage }}</div>
                     </v-col>
                 </v-col>
             </v-row>
@@ -73,11 +76,13 @@
                     <v-row dense>
                         <v-col v-for="(food, index) in foods" :key="index" cols="12">
                             <v-checkbox v-model="selectedFoods" @change="updateSelectedFoods" :value="food"
-                                :label="Array.isArray(food) ? food.join(', ') : food" color="deep-purple-accent-2" class="mb-1"></v-checkbox>
+                                :label="Array.isArray(food) ? food.join(', ') : food" color="deep-purple-accent-2"
+                                class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreDiningPage" color="deep-purple-accent-2">See More Dining Options</v-btn> -->
+                        <div v-if="showFoodError" class="error-message">{{ foodErrorMessage }}</div>
                     </v-col>
                 </v-col>
             </v-row>
@@ -91,11 +96,13 @@
                     <v-row dense>
                         <v-col v-for="(shop, index) in shops" :key="index" cols="12">
                             <v-checkbox v-model="selectedShops" @change="updateSelectedShops" :value="shop"
-                                :label="Array.isArray(shop) ? shop.join(', ') : shop" color="deep-purple-accent-2" class="mb-1"></v-checkbox>
+                                :label="Array.isArray(shop) ? shop.join(', ') : shop" color="deep-purple-accent-2"
+                                class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreShoppingPage" color="deep-purple-accent-2">See More Retail Stores</v-btn> -->
+                        <div v-if="showShoppingError" class="error-message">{{ shoppingErrorMessage }}</div>
                     </v-col>
                 </v-col>
             </v-row>
@@ -108,11 +115,13 @@
                     <v-row dense>
                         <v-col v-for="(hotel, index) in hotels" :key="index" cols="12">
                             <v-checkbox v-model="selectedHotels" @change="updateSelectedHotels" :value="hotel"
-                                :label="Array.isArray(hotel) ? hotel.join(', ') : hotel" color="deep-purple-accent-2" class="mb-1"></v-checkbox>
+                                :label="Array.isArray(hotel) ? hotel.join(', ') : hotel" color="deep-purple-accent-2"
+                                class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreShoppingPage" color="deep-purple-accent-2">See More Retail Stores</v-btn> -->
+                        <div v-if="showHotelError" class="error-message">{{ hotelErrorMessage }}</div>
                     </v-col>
                 </v-col>
             </v-row>
@@ -143,11 +152,12 @@
                     </v-card>
                 </v-dialog>
 
-                <router-link to="/GeneratedItinerary">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="updateTravelInfo" style="min-width: 150px;">
-                        Generate
-                    </v-btn>
-                </router-link>
+                <!-- <router-link to="/GeneratedItinerary"> -->
+                <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="updateTravelInfo"
+                    style="min-width: 150px;">
+                    Generate
+                </v-btn>
+                <!-- </router-link> -->
             </v-col>
         </v-row>
     </v-app>
@@ -164,10 +174,6 @@ import { mapState, mapMutations } from 'vuex';
 
 export default defineComponent({
     data() {
-
-
-
-
         return {
             activities: [],
             landmarks: [],
@@ -242,7 +248,23 @@ export default defineComponent({
             },
 
             dialogVisible: false,
+
+            activitiesErrorMessage: "",
+            showActivitiesError: false,
+            landmarksErrorMessage: "",
+            showLandmarksError: false,
+            foodErrorMessage: "",
+            showFoodError: false,
+            shoppingErrorMessage: "",
+            showShoppingError: false,
+            hotelErrorMessage: "",
+            showHotelError: false,
         };
+    },
+
+    mounted() {
+        const stateData = this.$store.state.stateData;
+        const cityData = this.$store.state.city;
     },
 
     methods: {
@@ -256,8 +278,6 @@ export default defineComponent({
         goBack() {
             this.$router.push("/StartPlanning");
         },
-
-
 
         // Function to update the Vuex store with selected activities
         updateSelectedActivities() {
@@ -285,8 +305,75 @@ export default defineComponent({
             this.$store.commit('updateHotels', this.selectedHotels);
             console.log("Hotels stored in Vuex: " + this.$store.state.hotels); // Log the landmarks stored in Vuex
         },
-        // updateTravelInfo() {
-        // }
+
+        updateTravelInfo() {
+            let isValid = true; // Assume input is valid unless proven otherwise
+
+            // Check if at least one activity is selected
+            if (this.selectedActivities.length === 0) {
+                this.activitiesErrorMessage = "Please select at least one activity.";
+                // console.log("No work!")
+                this.showActivitiesError = true;
+                isValid = false;
+            } else {
+                this.showActivitiesError = false;
+            }
+
+            if (this.selectedLandmarks.length === 0) {
+                this.landmarksErrorMessage = "Please select at least one landmark.";
+                // console.log("No work!")
+                this.showLandmarksError = true;
+                isValid = false;
+            } else {
+                this.showLandmarksError = false;
+            }
+
+            if (this.selectedFoods.length === 0) {
+                this.foodErrorMessage = "Please select at least one dining option.";
+                // console.log("No work!")
+                this.showFoodError = true;
+                isValid = false;
+            } else {
+                this.showFoodError = false;
+            }
+
+            if (this.selectedShops.length === 0) {
+                this.shoppingErrorMessage = "Please select at least one shopping spot.";
+                // console.log("No work!")
+                this.showShoppingError = true;
+                isValid = false;
+            } else {
+                this.showShoppingError = false;
+            }
+
+            if (this.selectedHotels.length === 0) {
+                this.hotelErrorMessage = "Please select a housing option.";
+                // console.log("No work!")
+                this.showHotelError = true;
+                isValid = false;
+            } else {
+                this.showHotelError = false;
+            }
+
+            // If any input is not valid, exit the method
+            if (!isValid) {
+                return;
+            }
+
+            // Generate City Summary + Slogan
+            const requestData = {
+                city: this.cityData,
+                state: this.stateData
+            }
+
+
+
+
+
+
+
+            this.$router.push({ name: 'GeneratedItinerary' });
+        }
 
     },
     mounted() {
@@ -389,7 +476,7 @@ export default defineComponent({
                 const startDateFormat = this.formatDate(this.startDateData);
                 const endDateFormat = this.formatDate(this.endDateData);
                 const datesData = `${startDateFormat} - ${endDateFormat}`;
-                
+
                 this.$store.commit('updateDates', datesData);
                 console.log("Dates data stored in Vuex: " + datesData);
 
@@ -411,6 +498,13 @@ export default defineComponent({
 
 <style>
 .mb-1 .v-label {
+    font-size: 18px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 18px;
 }
 </style>

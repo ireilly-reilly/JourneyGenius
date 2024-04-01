@@ -212,14 +212,14 @@ def recommend():
         # Print the place names
         #print("Here are the recommended Restaurant Names from the TFIDF Model:")
         # print(place_names)
-        # print()
-        descriptions = descriptionGeneration(place_names)
+        
 
         # Return the recommended places (limited to 10)
-        return jsonify({'recommended_places': descriptions[:5]})
+        # descriptions = descriptionGeneration(place_names)
+        # return jsonify({'recommended_places': descriptions[:5]})
     
         # Use this for the recommended places without the description!
-        #return jsonify({'recommended_places': place_names[:5]})
+        return jsonify({'recommended_places': place_names[:5]})
 
     except Exception as e:
         # Log the exception for debugging purposes

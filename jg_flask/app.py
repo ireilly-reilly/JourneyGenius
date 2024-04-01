@@ -18,7 +18,7 @@ from TFIDF_ML_Shopping_Blueprint import shoppingRecommendation_bp
 from GetShoppingPlacesAPI import getShopping_bp
 from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
 from GetHotelsPlacesAPI import getHotels_bp
-# from OpenAI_Description_bp import description_bp
+from OpenAI_CityDescription_bp import cityDescription_bp
 
 
 #from email_verification import email_verification_bp
@@ -52,7 +52,7 @@ app.register_blueprint(shoppingRecommendation_bp, url_prefix='/api')
 app.register_blueprint(getShopping_bp, url_prefix='/api')
 app.register_blueprint(getHotels_bp, url_prefix='/api')
 app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
-# app.register_blueprint(description_bp, url_prefix='/api')
+app.register_blueprint(cityDescription_bp, url_prefix='/api')
 
 
 
