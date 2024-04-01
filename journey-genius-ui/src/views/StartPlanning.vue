@@ -1,7 +1,9 @@
 <template>
   <v-container>
     <!-- Loading screen overlay -->
-    <LoadingScreen v-if="isLoading" />
+    <!-- <LoadingScreen v-if="isLoading" /> -->
+    <loading-screen :is-loading="isLoading" :progress="progress" v-if="isLoading"></loading-screen>
+
 
     <!-- Header -->
     <v-row justify="center" class="mt-4">
@@ -129,6 +131,8 @@ export default defineComponent({
 
       // Variables used after the generation process
       isLoading: false,
+      progress: 0,
+
       restaurantData: [],
       activityData: [],
       landmarkData: [],
@@ -296,6 +300,7 @@ export default defineComponent({
 
       // Show loading screen overlay
       this.isLoading = true;
+      this.progress = 0;
 
       const requestData = {
         target_lat_str: this.selectedLat,
@@ -322,30 +327,36 @@ export default defineComponent({
         })
         .then(response => {
           console.log('scrape_hotels response', response.data);
+          this.progress = 10;
           return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
         })
         .then(response => {
           this.restaurantData = response.data;
+          this.progress = 20;
           console.log('run_ML_model_recommendations restaurant response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_activity_recommendations', requestData);
         })
         .then(response => {
           this.activityData = response.data;
+          this.progress = 40;
           console.log('run_ML_model_recommendations activities response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_landmark_recommendations', requestData);
         })
         .then(response => {
           this.landmarkData = response.data;
+          this.progress = 60;
           console.log('run_ML_model_recommendations landmarks response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_shopping_recommendations', requestData);
         })
         .then(response => {
           this.shoppingData = response.data;
+          this.progress = 80;
           console.log('run_ML_model_recommendations shopping response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_hotel_recommendations', requestData)
         })
         .then(response => {
           this.hotelData = response.data;
+          this.progress = 100;
           console.log('run_ML_model_recommendations hotels response:', response.data);
         })
 
