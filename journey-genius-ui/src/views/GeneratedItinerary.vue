@@ -7,12 +7,12 @@
                 <div style="margin-top: 50px;">
                     <h1 style="font-size: 3.5rem;" class="headline text-deep-purple-accent-2">
                         Welcome to {{ this.$store.state.city }}, {{ this.$store.state.stateData }}!
-                    </h1>                    
+                    </h1>
                     <h2 style="font-size: 2.25rem;" class="headline text-deep-purple-accent-2">
                         {{ this.$store.state.citySlogan }}
-                    </h2>                    
+                    </h2>
                     <h1 style="font-size: 1rem;" class="headline text-deep-purple-accent-2">
-                        Planned for {{  this.$store.state.datesData }} with a {{ budget }} budget trip.
+                        Planned for {{ this.$store.state.datesData }} with a {{ budget }} budget trip.
                     </h1>
                     <br>
                     <p style="font-size: 1.125rem">
@@ -90,7 +90,7 @@
             <hr>
             <br>
 
-            <h2 class="section-title" style="text-align: center;">Explore {{ this.$store.state.city }} - Map and Estimated Costs</h2>
+            <h2 class="section-title" style="text-align: center;">Explore {{ this.$store.state.city }} - Map</h2>
             <p style="text-align: center;">
                 Explore this interactive map showcasing the locations of your selected points of interest, encompassing
                 your
@@ -98,10 +98,9 @@
             </p>
             <br>
             <div style="position: relative; overflow: hidden; border-radius: 8px;">
-                <!-- Replace YOUR_GOOGLE_MAPS_EMBED_CODE with the actual embed code from Google Maps -->
-                <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100940.18159925131!2d-122.52000105328746!3d37.757671315006284!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1701922231766!5m2!1sen!2sus"
-                    allowfullscreen></iframe>
+                <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y&center=' +
+                            this.$store.state.lat + ',' + this.$store.state.long + '&zoom=15&maptype=roadmap'" allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <br>
             <v-row justify="center">
@@ -173,7 +172,12 @@ export default {
         const long = this.$store.state.long;
         const cityDescription = this.$store.state.cityDescription;
         const citySlogan = this.$store.state.citySlogan;
+        const latitude = this.$store.state.lat;
+        const longitude = this.$store.state.long;
 
+        // console.log("Lets see if this works!")
+        // console.log("it works?" + this.$store.state.lat)
+        // console.log(this.$store.state.long)
         // console.log('Activities:', activities);
         // console.log('Landmarks:', landmarks);
         // console.log('Foods:', foods);
@@ -212,7 +216,7 @@ export default {
             return this.$store.state.budget;
         },
 
-        
+
     },
 
 
