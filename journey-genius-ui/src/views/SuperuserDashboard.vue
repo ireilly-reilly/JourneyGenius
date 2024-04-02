@@ -55,10 +55,12 @@
 </template>
 
 <script>
+import axios from 'axios';
+import Cookies from 'js-cookie';
 export default {
   data() {
     return {
-      adminName: 'Isaac Reilly',
+      adminName: '',
       tfidfStatus: 'Running',
       authenticationStatus: 'Pending',
       scrapingStatus: 'Success',
@@ -82,6 +84,48 @@ export default {
       return this.scrapingStatus === 'Success' ? 'mdi-check-circle' : 'mdi-alert-circle';
     },
   },
+  methods: {
+    logout() {
+      const url = 'http://localhost:8000/api/LogoutUser';
+      Cookies.remove('login_token');
+
+      axios.post(url)
+        .then(response => {
+          console.log('Logout successful!', response);
+          this.message = 'Logout successful.';
+          this.isLoggedIn = false;
+          this.$router.push({ name: 'SuperuserLogin' });
+        })
+        .catch(error => {
+          console.error('Error logging out', error);
+          this.message = 'Error logging out.';
+        })
+      this.buttons = [
+        { text: 'SuperuserLogin', to: '/SuperuserLogin' },
+      ];
+
+    },
+    fetchSuperuserName() {
+      const token = Cookies.get('login_token'); // Assuming you store login token in cookies
+      const url = 'http://localhost:8000/api/GetSuperuserName'; // Replace with your endpoint to fetch super user's name
+
+      axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}` // If your backend requires authentication
+        }
+      })
+      .then(response => {
+        this.adminName = response.data.name; // Assuming the name is returned in the response data
+      })
+      .catch(error => {
+        console.error('Error fetching super user name', error);
+      });
+    },
+  },
+  mounted() {
+    // Call fetchSuperuserName when the component is mounted, i.e., when the dashboard is loaded
+    this.fetchSuperuserName();
+  }
 };
 </script>
 

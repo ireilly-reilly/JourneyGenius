@@ -24,9 +24,27 @@
         <!-- Sort bar -->
         <v-select v-model="sortBy" :items="sortOptions" label="Sort By" outlined dense></v-select>
 
+        <!-- Labels for the table columns -->
+        <v-row class="mb-2">
+            <v-col v-for="header in headers" :key="header.value" cols="auto">
+                <strong>{{ header.text }}</strong>
+            </v-col>
+        </v-row>
+
         <!-- User accounts table -->
-        <v-data-table :headers="headers" :items="filteredUsers" :search="searchQuery"
-            @click:row="redirectToUser"></v-data-table>
+        <v-data-table :headers="headers" :items="filteredUsers" :search="searchQuery" @click:row="redirectToUser">
+            <!-- Table columns -->
+            <template v-slot:items="{ item }">
+                <tr>
+                    <td>{{ item.DatabaseID }}</td>
+                    <td>{{ item.FirstName }}</td>
+                    <td>{{ item.LastName }}</td>
+                    <td>{{ item.Email }}</td>
+                    <td>{{ item.SavedTrips }}</td>
+                    <td>{{ item.LastLoggedIn }}</td>
+                </tr>
+            </template>
+        </v-data-table>
     </div>
 </template>
 
@@ -36,11 +54,12 @@
 <!--:sort-direction="sortDirection" -->
 
 <script>
+import axios from 'axios';
 export default {
     data() {
         return {
             searchQuery: '',
-            sortBy: 'DatabaseID',
+            sortBy: 'Database ID',
             sortDesc: false,
             sortDirection: 'asc',
             buttons: [
@@ -49,7 +68,7 @@ export default {
                 { text: 'Analytics', to: '/SuperuserAnalytics' },
             ],
             sortOptions: [
-                { text: 'DatabaseID', value: 'DatabaseID' },
+                { text: 'Database ID', value: 'DatabaseID' },
                 { text: 'First Name', value: 'FirstName' },
                 { text: 'Last Name', value: 'LastName' },
                 { text: 'Email', value: 'Email' },
@@ -57,32 +76,45 @@ export default {
                 { text: 'Last Logged In', value: 'LastLoggedIn' },
             ],
             headers: [
-                { text: 'DatabaseID', value: 'DatabaseID' },
+                { text: 'Database ID', value: 'DatabaseID' },
                 { text: 'First Name', value: 'FirstName' },
                 { text: 'Last Name', value: 'LastName' },
                 { text: 'Email', value: 'Email' },
-                { text: 'Saved Trips', value: 'SavedTrips' },
+                // { text: 'Saved Trips', value: 'SavedTrips' },
                 { text: 'Last Logged In', value: 'LastLoggedIn' },
             ],
-            users: [
-                { DatabaseID: 1, FirstName: 'John', LastName: 'Doe', Email: 'john.doe@example.com', SavedTrips: 2, LastLoggedIn: '2022-03-15' },
-                // Add more user objects as needed
-            ],
+            users: [],
         };
     },
-    // computed: {
-    //   filteredUsers() {
-    //     return this.users.filter(user => {
-    //       const propertyValue = user[this.sortBy.toLowerCase()];
-    //       return (
-    //         user &&
-    //         propertyValue &&
-    //         propertyValue.toLowerCase().includes(this.searchQuery.toLowerCase())
-    //       );
-    //     });
-    //   },
-    // },
+    mounted() {
+        this.fetchUserAccounts();
+    },
+    computed: {
+        filteredUsers() {
+            // Convert search query to lowercase for case-insensitive search
+            const query = this.searchQuery.toLowerCase().trim();
+            // Filter user accounts based on search query
+            return this.users.filter(user => {
+                return (
+                    user.FirstName.toLowerCase().includes(query) ||
+                    user.LastName.toLowerCase().includes(query) ||
+                    user.Email.toLowerCase().includes(query)
+                );
+            });
+        }
+    },
     methods: {
+        fetchUserAccounts() {
+            // Assuming your Flask backend is running on http://localhost:8000
+            axios.get('http://localhost:8000/api/user_accounts')
+                .then(response => {
+                    this.users = response.data;
+                    console.log('User accounts data:', response.data);
+                })
+                .catch(error => {
+                    console.error('Error fetching user accounts', error);
+                });
+        },
         redirectToUser(selectedUser) {
             this.$router.push({ name: 'UserDetail', params: { id: selectedUser.DatabaseID } });
         },
@@ -126,5 +158,31 @@ export default {
 .user-accounts-page .v-data-table .v-data-table-body tr:hover {
     background-color: #666;
     /* Darker background color for hover effect */
+}
+
+/* Add your CSS styles for table formatting here */
+.user-accounts-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.user-accounts-table th,
+.user-accounts-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.user-accounts-table th {
+  background-color: #f2f2f2;
+  color: #333;
+}
+
+.user-accounts-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.user-accounts-table tbody tr:hover {
+  background-color: #ddd;
 }
 </style>
