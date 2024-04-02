@@ -1,4 +1,4 @@
-import axios from 'axios';
+
 
 <template>
     <v-container>
@@ -155,6 +155,7 @@ import axios from 'axios';
 </template>
 
 <script>
+import axios from 'axios';
 export default {
     name: 'SanFranciscoPage',
 
