@@ -1,3 +1,4 @@
+import click
 from flask import Flask, jsonify, request, session, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
@@ -5,6 +6,8 @@ from flask_bcrypt import Bcrypt
 from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
 import secrets
 import os
+from flask_migrate import Migrate
+from dotenv import load_dotenv
 
 
 #Blueprint imports
@@ -20,7 +23,14 @@ from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
 from GetHotelsPlacesAPI import getHotels_bp
 
 
+
 #from email_verification import email_verification_bp
+
+#This loads .env for database migrations
+load_dotenv()
+
+
+
 
 #Get database information securely
 DB_HOST = os.environ.get("DB_HOST")
@@ -36,6 +46,7 @@ app.config['JWT_SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
+migrate = Migrate(app, db)
 # CORS(app, resources={r"/api/*": {"origins": "http://localhost:8080"}})
 # CORS(app, resources={r"/api/*": {"origins": "*"}})
 
@@ -57,14 +68,21 @@ app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
 CORS(app, supports_credentials=True)
 
 
-#app.register_blueprint(auth_bp)#, url_prefix='/auth') <--might add later
-#app.register_blueprint(email_verification_bp)
+#       |------------DATABASE MIGRATION INFO-------------|
+#       |    After making desired changes to tables      |
+#       |    In command line, run:                       |
+#       |        flask db migrate -m "<your message>"    |
+#       |        flask db upgrade                        |
+#       |                                                |
+#       |    This will save all entries in current       | 
+#       |   database and implement new changes!          |
+#       |________________________________________________|
 
-#Format for 'Users' in database
+#User Table Model
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(100), unique=True, nullable=False)
-    password = db.Column(db.String(60), nullable=False)
+    password = db.Column(db.String(300), nullable=False)
     firstname = db.Column(db.String(40), nullable=False)
     lastname = db.Column(db.String(40), nullable=False)
     gender = db.Column(db.String(5))
@@ -73,8 +91,35 @@ class User(db.Model):
     accommodations = db.Column(db.String(5))
     transportation = db.Column(db.String(5))
 
-# Create the database tables (including the User table)
-# db.create_all()
+#SuperUser Table Model:
+class SuperUser(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(100), unique=True, nullable=False)
+    password = db.Column(db.String(300), nullable=False)
+    firstname = db.Column(db.String(40), nullable=False)
+    lastname = db.Column(db.String(40), nullable=False)
+
+from SuperuserAccounts import superuser_accounts_bp
+app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
+
+#This is a command line prompt to create an initial super user
+#Used like this: flask create_super_user
+@app.cli.command("create_super_user")
+def create_super_user():
+    email = click.prompt("Enter email")
+    password = click.prompt("Enter password", hide_input=True, confirmation_prompt=True)
+    firstname = click.prompt("Enter firstname")
+    lastname = click.prompt("Enter lastname")
+
+    existing_user = SuperUser.query.filter_by(email=email).first()
+    if existing_user:
+        print("Username already exists.")
+    else:
+        hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
+        super_user = SuperUser(email=email, password=hashed_password, firstname=firstname, lastname=lastname)
+        db.session.add(super_user)
+        db.session.commit()
+        print("SuperUser created successfully.")
 
 
 #Route to register new users
@@ -124,6 +169,35 @@ def LoginUser():
         return jsonify({'access_token': access_token}), 200
     else:
         return jsonify({'error': 'Invalid username or password'}), 401 #TODO change to 401 later 
+    
+
+#Route to login superuser
+@app.route('/api/LoginSuperUser', methods = ['POST'])
+def LoginSuperUser():
+    data = request.json
+
+    email = data.get('email')
+    password = data.get('password')
+
+
+    if not email or not password:
+        return jsonify({'error': 'Username and password are required'}), 400
+
+    super_user = SuperUser.query.filter_by(email=email).first()
+    if super_user:
+        stored_password_hash = super_user.password
+
+    print(bcrypt.check_password_hash(super_user.password, password))
+    if super_user and bcrypt.check_password_hash(super_user.password, password):
+        #Generate a JWT token
+        access_token = create_access_token(identity=super_user.id)
+        print("Logging in user... User ID in session: ", super_user.id)
+        
+        return jsonify({'access_token': access_token}), 200
+    else:
+        return jsonify({'error': 'Invalid username or password'}), 401 #TODO change to 401 later
+
+
     
 #Route to check login status
 @app.route('/api/check_login_status', methods=['GET'])
@@ -216,6 +290,18 @@ def get_user_profile():
     }
 
     return jsonify(user_data), 200
+
+#Route to fetch super user's name
+@app.route('/api/GetSuperuserName', methods=['GET'])
+@jwt_required()
+def get_superuser_name():
+    current_user_id = get_jwt_identity()
+    super_user = SuperUser.query.get(current_user_id)
+
+    if not super_user:
+        return jsonify({'error': 'Super user not found'}), 404
+
+    return jsonify({'name': super_user.firstname + ' ' + super_user.lastname}), 200
 
 
 
