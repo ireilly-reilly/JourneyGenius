@@ -2,4 +2,4 @@
 export $(grep -v '^#' .env | xargs)
 
 # Run Flask application
-python3 app.py
+python3 run.py
