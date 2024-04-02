@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 <template>
     <v-container>
 
@@ -191,7 +193,35 @@ export default {
         // console.log('Longitude:', long);
         // console.log('Generated Description:', cityDescription);
         // console.log('Generated Slogan:', citySlogan);
-    },
+    
+
+        // Send data to Python server using HTTP POST request
+        const data = {
+        activities,
+        landmarks,
+        foods,
+        shops,
+        hotels,
+        datesData,
+        budget,
+        stateData,
+        city,
+        lat,
+        long,
+        cityDescription,
+        citySlogan
+    };
+
+    // Make an HTTP POST request to your Python server
+    axios.post('http://localhost:8080/process_data', data)
+        .then(response => {
+            console.log(response.data); // Log response from Python server
+        })
+        .catch(error => {
+            console.error('Error sending data to Python server:', error);
+        });
+},
+
 
     computed: {
         activities() {
