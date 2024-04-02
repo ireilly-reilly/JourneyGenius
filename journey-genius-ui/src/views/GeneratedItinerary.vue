@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 <template>
     <v-container>
 
@@ -5,15 +7,18 @@
         <v-row justify="center">
             <v-col cols="12" class="text-center">
                 <div style="margin-top: 50px;">
-                    <h1 class="headline" style="font-size: 2em;">Welcome to San Francisco!</h1>
-                    <h2 class="subtitle">Explore the City by the Bay</h2>
+                    <h1 style="font-size: 3.5rem;" class="headline text-deep-purple-accent-2">
+                        Welcome to {{ this.$store.state.city }}, {{ this.$store.state.stateData }}!
+                    </h1>
+                    <h2 style="font-size: 2.25rem;" class="headline text-deep-purple-accent-2">
+                        {{ this.$store.state.citySlogan }}
+                    </h2>
+                    <h1 style="font-size: 1rem;" class="headline text-deep-purple-accent-2">
+                        Planned for {{ this.$store.state.datesData }} with a {{ budget }} budget trip.
+                    </h1>
                     <br>
-                    <p>
-                        San Francisco is a vibrant city known for its iconic landmarks, diverse neighborhoods, and rich
-                        history. Whether
-                        you're interested in exploring the Golden Gate Bridge, visiting Fisherman's Wharf, or enjoying the
-                        cultural scene
-                        in the Mission District, San Francisco has something for everyone.
+                    <p style="font-size: 1.125rem">
+                        {{ this.$store.state.cityDescription }}
                     </p>
                     <br>
                     <hr>
@@ -22,7 +27,7 @@
         </v-row>
 
         <br>
-        <h2 class="section-title text-center">Discover San Francisco - Overview</h2>
+        <h2 class="section-title text-center">Discover {{ this.$store.state.city }} - Overview</h2>
 
 
         <!-- Section with Image and Left Section -->
@@ -45,18 +50,7 @@
                     <div class="section-content">
                         <h3>Activities</h3>
                         <ul>
-                            <li>
-                                Explore Golden Gate Park: Immerse yourself in the lush greenery of Golden Gate Park, a
-                                sprawling urban oasis offering gardens, museums, and recreational activities.
-                            </li>
-                            <li>
-                                Take a cruise on the Bay: Enjoy breathtaking views of the city skyline, Alcatraz, and the
-                                Golden Gate Bridge while cruising along the scenic San Francisco Bay.
-                            </li>
-                            <li>
-                                Attend a Giants baseball game at Oracle Park: Experience the excitement of Major League
-                                Baseball at Oracle Park, home to the San Francisco Giants.
-                            </li>
+                            <li v-for="activity in activities" :key="activity">{{ activity }}</li>
                         </ul>
                     </div>
 
@@ -64,18 +58,7 @@
                     <div class="section-content">
                         <h3>Iconic Landmarks</h3>
                         <ul>
-                            <li>
-                                Golden Gate Bridge: Marvel at the engineering marvel that is the Golden Gate Bridge, an
-                                iconic symbol of San Francisco.
-                            </li>
-                            <li>
-                                Alcatraz Island: Step back in time with a visit to Alcatraz Island, home to the historic
-                                Alcatraz Federal Penitentiary.
-                            </li>
-                            <li>
-                                Painted Ladies in Alamo Square: Admire the charming Victorian houses known as the Painted
-                                Ladies, set against the backdrop of the city skyline.
-                            </li>
+                            <li v-for="landmark in landmarks" :key="landmark">{{ landmark }}</li>
                         </ul>
                     </div>
 
@@ -83,18 +66,7 @@
                     <div class="section-content">
                         <h3>Places to Eat</h3>
                         <ul>
-                            <li>
-                                Taste clam chowder at Boudin Bakery: Indulge in the famous sourdough bread bowls filled with
-                                delicious clam chowder at Boudin Bakery.
-                            </li>
-                            <li>
-                                Try dim sum in Chinatown: Explore the vibrant flavors of Chinatown and savor traditional dim
-                                sum dishes in this culturally rich neighborhood.
-                            </li>
-                            <li>
-                                Dine with a view at Waterbar: Enjoy a dining experience with stunning waterfront views at
-                                Waterbar, known for its seafood and elegant atmosphere.
-                            </li>
+                            <li v-for="food in foods" :key="food">{{ food }}</li>
                         </ul>
                     </div>
 
@@ -102,18 +74,7 @@
                     <div class="section-content">
                         <h3>Shopping Spots</h3>
                         <ul>
-                            <li>
-                                Union Square: Shop 'til you drop in Union Square, a bustling shopping district with high-end
-                                boutiques and department stores.
-                            </li>
-                            <li>
-                                Ferry Building Marketplace: Explore the Ferry Building Marketplace for artisanal goods,
-                                gourmet foods, and unique gifts.
-                            </li>
-                            <li>
-                                Haight-Ashbury: Discover vintage clothing stores and eclectic shops in Haight-Ashbury, a
-                                historic neighborhood known for its counterculture roots.
-                            </li>
+                            <li v-for="shop in shops" :key="shop">{{ shop }}</li>
                         </ul>
                     </div>
                 </div>
@@ -131,17 +92,17 @@
             <hr>
             <br>
 
-            <h2 class="section-title" style="text-align: center;">Explore San Francisco - Map and Estimated Costs</h2>
+            <h2 class="section-title" style="text-align: center;">Explore {{ this.$store.state.city }} - Map</h2>
             <p style="text-align: center;">
-                Explore this interactive map showcasing the locations of your selected points of interest, encompassing your
+                Explore this interactive map showcasing the locations of your selected points of interest, encompassing
+                your
                 chosen accommodation, transportation options, planned activities, and other areas of interest!
             </p>
             <br>
             <div style="position: relative; overflow: hidden; border-radius: 8px;">
-                <!-- Replace YOUR_GOOGLE_MAPS_EMBED_CODE with the actual embed code from Google Maps -->
-                <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d100940.18159925131!2d-122.52000105328746!3d37.757671315006284!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x80859a6d00690021%3A0x4a501367f076adff!2sSan%20Francisco%2C%20CA!5e0!3m2!1sen!2sus!4v1701922231766!5m2!1sen!2sus"
-                    allowfullscreen></iframe>
+                <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y&center=' +
+                            this.$store.state.lat + ',' + this.$store.state.long + '&zoom=15&maptype=roadmap'" allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <br>
             <v-row justify="center">
@@ -151,16 +112,19 @@
                         <div class="section-content">
                             <v-row>
                                 <v-col cols="12" md="6">
-                                    <v-icon color="deep-purple-accent-2">mdi-bed</v-icon> Accommodation: $100-$200 per night
+                                    <v-icon color="deep-purple-accent-2">mdi-bed</v-icon> Accommodation: $100-$200 per
+                                    night
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-icon color="deep-purple-accent-2">mdi-bus</v-icon> Transportation: $20-$50 per day
+                                    <v-icon color="deep-purple-accent-2">mdi-bus</v-icon> Transportation: $20-$50 per
+                                    day
                                 </v-col>
                                 <v-col cols="12" md="6">
                                     <v-icon color="deep-purple-accent-2">mdi-food</v-icon> Food: $20-$40 per meal
                                 </v-col>
                                 <v-col cols="12" md="6">
-                                    <v-icon color="deep-purple-accent-2">mdi-walk</v-icon> Activities: $20-$50 per activity
+                                    <v-icon color="deep-purple-accent-2">mdi-walk</v-icon> Activities: $20-$50 per
+                                    activity
                                 </v-col>
                             </v-row>
                         </div>
@@ -189,20 +153,107 @@
         </v-row>
     </v-container>
 </template>
-  
+
 <script>
 export default {
     name: 'SanFranciscoPage',
 
 
     mounted() {
-    // Accessing the hotels variable from the Vuex store
-    const hotels = this.$store.state.hotels;
-    console.log('Hotels:', hotels);
-  },
+        // Accessing the variables from the Vuex store
+        const activities = this.$store.state.activities;
+        const landmarks = this.$store.state.landmarks;
+        const foods = this.$store.state.foods;
+        const shops = this.$store.state.shops;
+        const hotels = this.$store.state.hotels;
+        const datesData = this.$store.state.datesData;
+        const budget = this.$store.state.budget;
+        const stateData = this.$store.state.stateData;
+        const city = this.$store.state.city;
+        const lat = this.$store.state.lat;
+        const long = this.$store.state.long;
+        const cityDescription = this.$store.state.cityDescription;
+        const citySlogan = this.$store.state.citySlogan;
+        const latitude = this.$store.state.lat;
+        const longitude = this.$store.state.long;
+
+        // console.log("Lets see if this works!")
+        // console.log("it works?" + this.$store.state.lat)
+        // console.log(this.$store.state.long)
+        // console.log('Activities:', activities);
+        // console.log('Landmarks:', landmarks);
+        // console.log('Foods:', foods);
+        // console.log('Shops:', shops);
+        // console.log('Hotels:', hotels);
+        // console.log('Dates:', datesData);
+        // console.log('Budget:', budget);
+        // console.log('State:', stateData);
+        // console.log('City:', city);
+        // console.log('Latitude:', lat);
+        // console.log('Longitude:', long);
+        // console.log('Generated Description:', cityDescription);
+        // console.log('Generated Slogan:', citySlogan);
+    
+
+        // Send data to Python server using HTTP POST request
+        const data = {
+        activities,
+        landmarks,
+        foods,
+        shops,
+        hotels,
+        datesData,
+        budget,
+        stateData,
+        city,
+        lat,
+        long,
+        cityDescription,
+        citySlogan
+    };
+
+    // Make an HTTP POST request to your Python server
+    axios.post('http://localhost:8080/process_data', data)
+        .then(response => {
+            console.log(response.data); // Log response from Python server
+        })
+        .catch(error => {
+            console.error('Error sending data to Python server:', error);
+        });
+},
+
+
+    computed: {
+        activities() {
+            return this.$store.state.activities;
+        },
+        landmarks() {
+            return this.$store.state.landmarks;
+        },
+        foods() {
+            return this.$store.state.foods;
+        },
+        shops() {
+            return this.$store.state.shops;
+        },
+        hotels() {
+            return this.$store.state.hotels;
+        },
+        datesData() {
+            return this.$store.state.datesData;
+        },
+        budget() {
+            return this.$store.state.budget;
+        },
+
+
+    },
+
+
+
 };
 </script>
-  
+
 <style scoped>
 /* Custom styles for the information and new sections */
 .info-container {
@@ -218,8 +269,10 @@ export default {
 .image-container {
     display: flex;
     align-items: flex-start;
-    justify-content: center; /* Align the image at the top when screen is too small */
-    text-align: center; /* Center the content horizontally */
+    justify-content: center;
+    /* Align the image at the top when screen is too small */
+    text-align: center;
+    /* Center the content horizontally */
 }
 
 .section-title {
@@ -267,4 +320,3 @@ export default {
     margin-bottom: 8px;
 }
 </style>
-  

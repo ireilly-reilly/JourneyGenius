@@ -13,15 +13,26 @@ import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
 import numpy as np
+from openai import OpenAI
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the OpenAI API key from the environment
+# api_key = os.getenv("OPENAI_API_KEY")
+
+# Initialize OpenAI client
+# client = OpenAI(api_key=api_key)
 
 #Blueprint declaration
 recommendation_bp = Blueprint('recommendation_bp', __name__)
 
 # Load the data from the CSV file with the correct encoding
 # Ethan's Filepath
-# data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
+data = pd.read_csv('/Users/fxckshxt/Github/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
 # Kai's Filepath
-data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
+# data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
 #print(f"Number of rows in data: {len(data)}")
 # Isaac's Filepath
 
@@ -156,6 +167,7 @@ def recommend():
 
         # Print the place names
         print(place_names)
+        
 
         # Return the recommended places (limited to 10)
         return jsonify({'recommended_places': place_names[:10]})

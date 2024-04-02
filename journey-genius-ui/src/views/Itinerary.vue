@@ -1,6 +1,7 @@
 <template>
     <v-app>
         <v-container>
+            <LoadingScreenShort v-if="isLoading" />
             <!-- Header -->
             <v-row justify="center" class="mt-4">
                 <v-col cols="12" md="8" class="text-center">
@@ -37,12 +38,14 @@
                         <v-col v-for="(activity, index) in activities" :key="index" cols="12">
                             <v-checkbox v-model="selectedActivities" @change="updateSelectedActivities"
                                 :value="activity" :label="Array.isArray(activity) ? activity.join(', ') : activity"
-                                class="mb-1"></v-checkbox>
+                                color="deep-purple-accent-2" class="mb-1"></v-checkbox>
                         </v-col>
 
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreActivitiesPage" color="deep-purple-accent-2">See More Activities</v-btn> -->
+                        <div v-if="showActivitiesError" class="error-message">{{ activitiesErrorMessage }}</div>
+
                     </v-col>
                 </v-col>
             </v-row>
@@ -56,11 +59,12 @@
                         <v-col v-for="(landmark, index) in landmarks" :key="index" cols="12">
                             <v-checkbox v-model="selectedLandmarks" @change="updateSelectedLandmarks" :value="landmark"
                                 :label="Array.isArray(landmark) ? landmark.join(', ') : landmark"
-                                class="mb-1"></v-checkbox>
+                                color="deep-purple-accent-2" class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreLandmarksPage" color="deep-purple-accent-2">See More Landmarks</v-btn> -->
+                        <div v-if="showLandmarksError" class="error-message">{{ landmarksErrorMessage }}</div>
                     </v-col>
                 </v-col>
             </v-row>
@@ -73,11 +77,13 @@
                     <v-row dense>
                         <v-col v-for="(food, index) in foods" :key="index" cols="12">
                             <v-checkbox v-model="selectedFoods" @change="updateSelectedFoods" :value="food"
-                                :label="Array.isArray(food) ? food.join(', ') : food" class="mb-1"></v-checkbox>
+                                :label="Array.isArray(food) ? food.join(', ') : food" color="deep-purple-accent-2"
+                                class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreDiningPage" color="deep-purple-accent-2">See More Dining Options</v-btn> -->
+                        <div v-if="showFoodError" class="error-message">{{ foodErrorMessage }}</div>
                     </v-col>
                 </v-col>
             </v-row>
@@ -91,11 +97,13 @@
                     <v-row dense>
                         <v-col v-for="(shop, index) in shops" :key="index" cols="12">
                             <v-checkbox v-model="selectedShops" @change="updateSelectedShops" :value="shop"
-                                :label="Array.isArray(shop) ? shop.join(', ') : shop" class="mb-1"></v-checkbox>
+                                :label="Array.isArray(shop) ? shop.join(', ') : shop" color="deep-purple-accent-2"
+                                class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreShoppingPage" color="deep-purple-accent-2">See More Retail Stores</v-btn> -->
+                        <div v-if="showShoppingError" class="error-message">{{ shoppingErrorMessage }}</div>
                     </v-col>
                 </v-col>
             </v-row>
@@ -108,11 +116,13 @@
                     <v-row dense>
                         <v-col v-for="(hotel, index) in hotels" :key="index" cols="12">
                             <v-checkbox v-model="selectedHotels" @change="updateSelectedHotels" :value="hotel"
-                                :label="Array.isArray(hotel) ? hotel.join(', ') : hotel" class="mb-1"></v-checkbox>
+                                :label="Array.isArray(hotel) ? hotel.join(', ') : hotel" color="deep-purple-accent-2"
+                                class="mb-1"></v-checkbox>
                         </v-col>
                     </v-row>
                     <v-col class="d-flex justify-center">
                         <!-- <v-btn @click="redirectToMoreShoppingPage" color="deep-purple-accent-2">See More Retail Stores</v-btn> -->
+                        <div v-if="showHotelError" class="error-message">{{ hotelErrorMessage }}</div>
                     </v-col>
                 </v-col>
             </v-row>
@@ -143,11 +153,12 @@
                     </v-card>
                 </v-dialog>
 
-                <router-link to="/GeneratedItinerary">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" style="min-width: 150px;">
-                        Generate
-                    </v-btn>
-                </router-link>
+                <!-- <router-link to="/GeneratedItinerary"> -->
+                <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="updateTravelInfo"
+                    style="min-width: 150px;">
+                    Generate
+                </v-btn>
+                <!-- </router-link> -->
             </v-col>
         </v-row>
     </v-app>
@@ -158,16 +169,12 @@ import { defineComponent } from 'vue';
 import { useStore } from 'vuex';
 import { useRoute } from 'vue-router';
 import { mapState, mapMutations } from 'vuex';
-
-
+import axios from 'axios';
+import LoadingScreenShort from '@/components/LoadingScreenShort.vue';
 
 
 export default defineComponent({
     data() {
-
-
-
-
         return {
             activities: [],
             landmarks: [],
@@ -184,6 +191,8 @@ export default defineComponent({
             startDateData: [],
             endDateData: [],
             budgetData: [],
+
+            savedDates: [],
 
             state: [],
             stateMap: {
@@ -240,8 +249,26 @@ export default defineComponent({
             },
 
             dialogVisible: false,
+
+            activitiesErrorMessage: "",
+            showActivitiesError: false,
+            landmarksErrorMessage: "",
+            showLandmarksError: false,
+            foodErrorMessage: "",
+            showFoodError: false,
+            shoppingErrorMessage: "",
+            showShoppingError: false,
+            hotelErrorMessage: "",
+            showHotelError: false,
+
+            isLoading: false,
         };
     },
+
+    // mounted() {
+    //     const state = this.$store.state.stateData;
+    //     const city = this.$store.state.city;
+    // },
 
     methods: {
         formatDate(date) {
@@ -255,14 +282,11 @@ export default defineComponent({
             this.$router.push("/StartPlanning");
         },
 
-
-
         // Function to update the Vuex store with selected activities
         updateSelectedActivities() {
             // console.log('Selected activities:', this.selectedActivities);
             this.$store.commit('updateActivities', this.selectedActivities);
             console.log("Activities stored in Vuex: " + this.$store.state.activities); // Log the activities stored in Vuex
-
         },
         // Function to update the Vuex store with selected landmarks
         updateSelectedLandmarks() {
@@ -284,6 +308,88 @@ export default defineComponent({
             this.$store.commit('updateHotels', this.selectedHotels);
             console.log("Hotels stored in Vuex: " + this.$store.state.hotels); // Log the landmarks stored in Vuex
         },
+
+        updateTravelInfo() {
+            let isValid = true; // Assume input is valid unless proven otherwise
+
+            // Check if at least one activity is selected
+            if (this.selectedActivities.length === 0) {
+                this.activitiesErrorMessage = "Please select at least one activity.";
+                // console.log("No work!")
+                this.showActivitiesError = true;
+                isValid = false;
+            } else {
+                this.showActivitiesError = false;
+            }
+
+            if (this.selectedLandmarks.length === 0) {
+                this.landmarksErrorMessage = "Please select at least one landmark.";
+                // console.log("No work!")
+                this.showLandmarksError = true;
+                isValid = false;
+            } else {
+                this.showLandmarksError = false;
+            }
+
+            if (this.selectedFoods.length === 0) {
+                this.foodErrorMessage = "Please select at least one dining option.";
+                // console.log("No work!")
+                this.showFoodError = true;
+                isValid = false;
+            } else {
+                this.showFoodError = false;
+            }
+
+            if (this.selectedShops.length === 0) {
+                this.shoppingErrorMessage = "Please select at least one shopping spot.";
+                // console.log("No work!")
+                this.showShoppingError = true;
+                isValid = false;
+            } else {
+                this.showShoppingError = false;
+            }
+
+            if (this.selectedHotels.length === 0) {
+                this.hotelErrorMessage = "Please select a housing option.";
+                // console.log("No work!")
+                this.showHotelError = true;
+                isValid = false;
+            } else {
+                this.showHotelError = false;
+            }
+
+            // If any input is not valid, exit the method
+            if (!isValid) {
+                return;
+            }
+
+            // Loading Screen
+            this.isLoading = true;
+
+            // Generate City Summary + Slogan Section
+            const requestData = {
+                state: this.$store.state.stateData,
+                city: this.$store.state.city,
+            }
+            // console.log(requestData)
+
+            console.log("Generating Description...")
+            axios.post('http://localhost:8000/api/generateDescription', requestData)
+                .then(response => {
+                    // console.log("City Description: ", response.data);
+                    this.$store.commit('updateCityDescription', response.data);
+                    console.log("City Description: " + response.data)
+                    return axios.post('http://localhost:8000/api/generateSlogan', requestData)
+                })
+                .then(response => {
+                    this.$store.commit('updateCitySlogan', response.data);
+                    console.log("City Slogan " + response.data)
+                })
+                .then(response => {
+                    this.isLoading = false;
+                    this.$router.push({ name: 'GeneratedItinerary' });
+                })
+        }
 
     },
     mounted() {
@@ -339,20 +445,8 @@ export default defineComponent({
         this.endDateData = endDateData;
 
 
-
-
-
-
-        // Testing
-        console.log("Before - City stored in Vuex: " + this.$store.state.city); // Log the city stored in Vuex
-        console.log("Before - State stored in Vuex: " + this.$store.state.state); // Log the state stored in Vuex
-        console.log("Before - Dates stored in Vuex: " + this.$store.state.dates); // Log the dates stored in Vuex
-        console.log("Before - Budget stored in Vuex: " + this.$store.state.budget); // Log the budget stored in Vuex
-        console.log("Before - Activities stored in Vuex: " + this.$store.state.activities); // Log the activities stored in Vuex
-        console.log("Before - Landmarks stored in Vuex: " + this.$store.state.landmarks); // Log the landmarks stored in Vuex
-        console.log("Before - Shopping stored in Vuex: " + this.$store.state.shops); // Log the shopping spots stored in Vuex
-        console.log("Before - Dining stored in Vuex: " + this.$store.state.foods); // Log the dining options stored in Vuex
-        console.log("Before - Hotels stored in Vuex: " + this.$store.state.hotels); // Log the dining options stored in Vuex
+        // this.$store.commit('updateBudget', this.budgetString);
+        //     console.log("Budget stored in Vuex: " + this.$store.state.budget); // Log the activities stored in Vuex
     },
 
     // mutations: {
@@ -379,10 +473,15 @@ export default defineComponent({
         budgetString() {
             if (this.budgetData === 1) {
                 this.$store.commit('updateBudget', "cheap");
+                console.log("Budget stored in Vuex: " + this.$store.state.budget); // Log the activities stored in Vuex
                 return "cheap";
             } else if (this.budgetData === 2) {
+                this.$store.commit('updateBudget', "medium");
+                console.log("Budget stored in Vuex: " + this.$store.state.budget); // Log the activities stored in Vuex
                 return "medium";
             } else if (this.budgetData === 3) {
+                this.$store.commit('updateBudget', "expensive");
+                console.log("Budget stored in Vuex: " + this.$store.state.budget); // Log the activities stored in Vuex
                 return "expensive";
             } else {
                 return "Unknown";
@@ -392,17 +491,39 @@ export default defineComponent({
             if (this.startDateData && this.endDateData) {
                 const startDateFormat = this.formatDate(this.startDateData);
                 const endDateFormat = this.formatDate(this.endDateData);
+                const datesData = `${startDateFormat} - ${endDateFormat}`;
+
+                this.$store.commit('updateDates', datesData);
+                console.log("Dates data stored in Vuex: " + datesData);
+
                 return `${startDateFormat} - ${endDateFormat}`;
             }
             return '';
         },
         fullName() {
+            const stateData = this.stateMap[this.state] || this.state;
+            this.$store.commit('updateState', stateData);
+            console.log("State data stored in Vuex: " + stateData);
             return this.stateMap[this.state] || this.state;
         },
 
     },
+    components: {
+    LoadingScreenShort,
+  },
 
 });
 </script>
 
-<style></style>
+<style>
+.mb-1 .v-label {
+    font-size: 18px;
+}
+
+.error-message {
+    color: red;
+    margin-top: 5px;
+    margin-bottom: 5px;
+    font-size: 18px;
+}
+</style>

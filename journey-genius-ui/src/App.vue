@@ -14,12 +14,13 @@
 import NavBar from '@/components/NavBar'
 import Footer from '@/components/Footer'
 import LoadingScreen from '@/components/LoadingScreen'
+import LoadingScreenShort from '@/components/LoadingScreenShort'
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import SuperuserLayout from '@/layouts/SuperuserLayout.vue'
 
 export default {
   name: 'App',
-  components: { NavBar, Footer, LoadingScreen, DefaultLayout, SuperuserLayout },
+  components: { NavBar, Footer, LoadingScreen, LoadingScreenShort, DefaultLayout, SuperuserLayout },
   computed: {
     layoutComponent() {
       // Use DefaultLayout by default

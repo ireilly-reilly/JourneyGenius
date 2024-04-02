@@ -1,7 +1,9 @@
 <template>
   <v-container>
     <!-- Loading screen overlay -->
-    <LoadingScreen v-if="isLoading" />
+    <!-- <LoadingScreen v-if="isLoading" /> -->
+    <loading-screen :is-loading="isLoading" :progress="progress" v-if="isLoading"></loading-screen>
+
 
     <!-- Header -->
     <v-row justify="center" class="mt-4">
@@ -129,6 +131,8 @@ export default defineComponent({
 
       // Variables used after the generation process
       isLoading: false,
+      progress: 0,
+
       restaurantData: [],
       activityData: [],
       landmarkData: [],
@@ -174,6 +178,9 @@ export default defineComponent({
   },
   watch: {
     startDate() {
+      if (this.endDate > this.maxEndDate) {
+        this.endDate = this.maxEndDate;
+      }
       if (this.endDate && this.startDate > this.endDate) {
         this.endDate = null;
       }
@@ -192,10 +199,15 @@ export default defineComponent({
 
   computed: {
     formattedStartDate() {
-      return this.startDate ? this.formatDate(this.startDate) : '';
+      return this.startDate ? this.reformatDate(this.startDate) : '';
     },
     formattedEndDate() {
-      return this.endDate ? this.formatDate(this.endDate) : '';
+      return this.endDate ? this.reformatDate(this.endDate) : '';
+    },
+    maxEndDate() {
+      const maxDate = new Date(this.startDate);
+      maxDate.setDate(maxDate.getDate() + 7); // Limit to 7 days
+      return maxDate.toISOString().substr(0, 10);
     },
   },
 
@@ -213,6 +225,13 @@ export default defineComponent({
       console.log('Selected Place:', this.selectedPlace);
       this.selectedLat = addressData.latitude; // Store latitude
       this.selectedLon = addressData.longitude; // Store longitude
+
+      this.$store.commit('updateCity', addressData.locality);
+      this.$store.commit('updateLat', addressData.latitude);
+      this.$store.commit('updateLong', addressData.longitude);
+      console.log("City data stored in Vuex: " + addressData.locality);
+      console.log("Latitude data stored in Vuex: " + addressData.latitude);
+      console.log("Longitdue data stored in Vuex: " + addressData.longitude);
     },
 
     // Method for displaying the date picker
@@ -230,9 +249,13 @@ export default defineComponent({
     },
 
     formatDate(date) {
-      // Custom date formatting logic
-      // return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+      const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+      return `${year}-${month}-${day}`;
+    },
 
+    reformatDate(date) {
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       return date.toLocaleDateString(undefined, options);
     },
@@ -259,13 +282,29 @@ export default defineComponent({
     generateItinerary() {
       let isValid = true; // Assume input is valid unless proven otherwise
 
-      if (!this.startDate || !this.endDate) {
+      // Validate trip duration
+      if (this.startDate && this.endDate) {
+        const tripDuration = this.endDate.getTime() - this.startDate.getTime();
+        const maxTripDuration = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+        const tripLength = Math.ceil((this.endDate - this.startDate) / (1000 * 60 * 60 * 24));
+        console.log("Trip Length: " + tripLength);
+        this.$store.commit('updateTripLength', tripLength);
+
+
+        if (tripDuration > maxTripDuration) {
+          this.datesErrorMessage = "Trip duration cannot exceed 7 days.";
+          this.showDateError = true;
+          isValid = false;
+        } else {
+          this.showDateError = false;
+        }
+      } else {
+        // Handle case where either start or end date is null
         this.datesErrorMessage = "Both the start date and end date are required.";
         this.showDateError = true;
         isValid = false;
-      } else {
-        this.showDateError = false;
       }
+
 
       if (this.selectedBudget !== 1 && this.selectedBudget !== 2 && this.selectedBudget !== 3) {
         this.budgetErrorMessage = "The budget for your trip is required.";
@@ -280,7 +319,7 @@ export default defineComponent({
         this.showCityError = true;
         isValid = false;
       } else {
-        this.showCityError = false; 
+        this.showCityError = false;
       }
 
       if (!isValid) {
@@ -289,6 +328,7 @@ export default defineComponent({
 
       // Show loading screen overlay
       this.isLoading = true;
+      this.progress = 0;
 
       const requestData = {
         target_lat_str: this.selectedLat,
@@ -315,32 +355,41 @@ export default defineComponent({
         })
         .then(response => {
           console.log('scrape_hotels response', response.data);
+          this.progress = 10;
           return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
         })
         .then(response => {
           this.restaurantData = response.data;
+          this.progress = 20;
           console.log('run_ML_model_recommendations restaurant response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_activity_recommendations', requestData);
         })
         .then(response => {
           this.activityData = response.data;
+          this.progress = 40;
           console.log('run_ML_model_recommendations activities response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_landmark_recommendations', requestData);
         })
         .then(response => {
           this.landmarkData = response.data;
+          this.progress = 60;
           console.log('run_ML_model_recommendations landmarks response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_shopping_recommendations', requestData);
         })
         .then(response => {
           this.shoppingData = response.data;
+          this.progress = 80;
           console.log('run_ML_model_recommendations shopping response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_hotel_recommendations', requestData)
         })
         .then(response => {
           this.hotelData = response.data;
+          this.progress = 100;
           console.log('run_ML_model_recommendations hotels response:', response.data);
         })
+
+
+
 
         .then(() => {
           this.isLoading = false;

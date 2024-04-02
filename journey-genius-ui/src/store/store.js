@@ -4,17 +4,20 @@ import { createStore } from "vuex";
 
 const store = createStore({
   state: {
-    city: "",
-    state: "",
-    dates: "",
-    budget: "",
+    city: null,
+    st: null,
+    lat: null,
+    long: null,
+    dates: null,
+    budget: null,
     activities: [],
     landmarks: [],
     shops: [],
     foods: [],
     hotels: [],
-
-
+    cityDescription: null,
+    citySlogan: null,
+    tripLength: null,
   },
   // directly update the state properties when committed 
   // We currently only use mutations for the Itinerary Page (the checkboxes are stored in vuex using mutation)
@@ -56,9 +59,41 @@ const store = createStore({
     updateHotels(state, hotels) {
       state.hotels = hotels;
     },
-    setBudget(state, budget) {
+    updateBudget(state, budget) {
       state.budget = budget;
+    },
+    updateDates(state, datesData) {
+      state.datesData = datesData;
+    },
+    // updateStartDates(state, startDates) {
+    //   state.startDates = startDates;
+    // },
+    // updateEndDates(state, endDates) {
+    //   state.endDates = endDates;
+    // },
+    updateCity(state, city) {
+      state.city = city;
+    },
+    updateState(state, stateData) {
+      state.stateData = stateData;
+    },
+    updateLat(state, lat) {
+      state.lat = lat;
+    },
+    updateLong(state, long) {
+      state.long = long;
+    },
+    updateCityDescription(state, cityDescription) {
+      state.cityDescription = cityDescription;
+    },
+    updateCitySlogan(state, citySlogan) {
+      state.citySlogan = citySlogan;
+    },
+    updateTripLength(state, tripLength) {
+      state.tripLength = tripLength;
     }
+
+
   },
 
   //used to commit the mutations.
@@ -70,8 +105,11 @@ const store = createStore({
     updateState({ commit }, stateName) {
       commit("setState", stateName);
     },
-    updateDates({ commit }, dates) {
-      commit("setDates", dates);
+    updateDates({ commit }, datesData) {
+      commit("setDates", datesData);
+    },
+    updateBudget({ commit }, budget) {
+      commit("setBudget", budget);
     },
     
     // updateActivities({ commit }, activities) {
@@ -106,6 +144,7 @@ const store = createStore({
     updateBudget({ commit }, budget) {
       commit("setBudget", budget);
     },
+    
 
 
   },
@@ -115,7 +154,8 @@ const store = createStore({
     // Not needed
     getCity: (state) => state.city,
     getState: (state) => state.state,
-    getDates: (state) => state.dates,
+    getDates: (state) => state.datesData,
+    getBudget: (state) => state.budgets,
     // getActivities: (state) => state.activities,
     // getLandmarks: (state) => state.landmarks,
     // getShopping: (state) => state.shopping,
