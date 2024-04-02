@@ -68,15 +68,25 @@ app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
 CORS(app, supports_credentials=True)
 
 
-#       |------------DATABASE MIGRATION INFO-------------|
-#       |    After making desired changes to tables      |
-#       |    In command line, run:                       |
-#       |        flask db migrate -m "<your message>"    |
-#       |        flask db upgrade                        |
-#       |                                                |
-#       |    This will save all entries in current       | 
-#       |   database and implement new changes!          |
-#       |________________________________________________|
+#       |----------------------------------DATABASE MIGRATION INFO----------------------------------|
+#       |    After making desired changes to tables                                                 |
+#       |    In command line, run:                                                                  |
+#       |        flask db migrate -m "<your message>"                                               |
+#       |    Then enter the mysql command prompt:                                                   |
+#       |        mysql -u root -p                                                                   |
+#       |    Enter password                                                                         |
+#       |    In mysql command prompt, run:                                                          |
+#       |        GRANT ALL PRIVILEGES ON useraccounts.user TO 'JourneyGenius'@'localhost';          |
+#       |        GRANT ALL PRIVILEGES ON useraccounts.super_user TO 'JourneyGenius'@'localhost';    |
+#       |        GRANT ALL PRIVILEGES ON useraccounts.trip TO 'JourneyGenius'@'localhost';          |
+#       |        FLUSH PRIVILEGES;                                                                  |
+#       |        exit                                                                               |
+#       |    Then in command line, run:                                                             |
+#       |        flask db upgrade                                                                   |
+#       |                                                                                           |
+#       |    This will save all entries in current                                                  | 
+#       |    database and implement new changes!                                                    |
+#       |___________________________________________________________________________________________|
 
 #User Table Model
 class User(db.Model):
@@ -98,6 +108,35 @@ class SuperUser(db.Model):
     password = db.Column(db.String(300), nullable=False)
     firstname = db.Column(db.String(40), nullable=False)
     lastname = db.Column(db.String(40), nullable=False)
+
+class Trip(db.Model):
+    #Strings
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    city = db.Column(db.String(100), nullable=False)
+    state = db.Column(db.String(100))
+    latitude = db.Column(db.Float)
+    longitude = db.Column(db.Float)
+    dates = db.Column(db.String(100), nullable=False)
+    trip_length = db.Column(db.Integer)
+    budget = db.Column(db.Float)
+    city_description = db.Column(db.Text)
+    city_slogan = db.Column(db.String(100))
+    
+    #Arrays of strings
+    activities = db.Column(db.JSON)  # Example: ["hiking", "sightseeing"]
+    landmarks = db.Column(db.JSON)   # Example: ["Statue of Liberty", "Golden Gate Bridge"]
+    shops = db.Column(db.JSON)       # Example: ["local markets", "boutiques"]
+    foods = db.Column(db.JSON)       # Example: ["Italian cuisine", "street food"]
+    hotels = db.Column(db.JSON)      # Example: ["luxury resorts", "budget hotels"]
+    
+    #Pictures
+    activities_images = db.Column(db.JSON)  # Example: ["activity1.jpg", "activity2.png"]
+    landmarks_images = db.Column(db.JSON)   # Example: ["landmark1.jpg", "landmark2.png"]
+    shops_images = db.Column(db.JSON)       # Example: ["shop1.jpg", "shop2.png"]
+    foods_images = db.Column(db.JSON)       # Example: ["food1.jpg", "food2.png"]
+    hotels_images = db.Column(db.JSON)      # Example: ["hotel1.jpg", "https://example.com/hotel2.png"]
+
 
 from SuperuserAccounts import superuser_accounts_bp
 app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
