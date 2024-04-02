@@ -178,6 +178,9 @@ export default defineComponent({
   },
   watch: {
     startDate() {
+      if (this.endDate > this.maxEndDate) {
+        this.endDate = this.maxEndDate;
+      }
       if (this.endDate && this.startDate > this.endDate) {
         this.endDate = null;
       }
@@ -196,10 +199,15 @@ export default defineComponent({
 
   computed: {
     formattedStartDate() {
-      return this.startDate ? this.formatDate(this.startDate) : '';
+      return this.startDate ? this.reformatDate(this.startDate) : '';
     },
     formattedEndDate() {
-      return this.endDate ? this.formatDate(this.endDate) : '';
+      return this.endDate ? this.reformatDate(this.endDate) : '';
+    },
+    maxEndDate() {
+      const maxDate = new Date(this.startDate);
+      maxDate.setDate(maxDate.getDate() + 7); // Limit to 7 days
+      return maxDate.toISOString().substr(0, 10);
     },
   },
 
@@ -241,9 +249,13 @@ export default defineComponent({
     },
 
     formatDate(date) {
-      // Custom date formatting logic
-      // return `${date.getMonth() + 1}-${date.getDate()}-${date.getFullYear()}`;
+      const year = date.getFullYear();
+      const month = date.getMonth() + 1 < 10 ? `0${date.getMonth() + 1}` : date.getMonth() + 1;
+      const day = date.getDate() < 10 ? `0${date.getDate()}` : date.getDate();
+      return `${year}-${month}-${day}`;
+    },
 
+    reformatDate(date) {
       const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
       return date.toLocaleDateString(undefined, options);
     },
@@ -270,13 +282,29 @@ export default defineComponent({
     generateItinerary() {
       let isValid = true; // Assume input is valid unless proven otherwise
 
-      if (!this.startDate || !this.endDate) {
+      // Validate trip duration
+      if (this.startDate && this.endDate) {
+        const tripDuration = this.endDate.getTime() - this.startDate.getTime();
+        const maxTripDuration = 7 * 24 * 60 * 60 * 1000; // 7 days in milliseconds
+        const tripLength = Math.ceil((this.endDate - this.startDate) / (1000 * 60 * 60 * 24));
+        console.log("Trip Length: " + tripLength);
+        this.$store.commit('updateTripLength', tripLength);
+
+
+        if (tripDuration > maxTripDuration) {
+          this.datesErrorMessage = "Trip duration cannot exceed 7 days.";
+          this.showDateError = true;
+          isValid = false;
+        } else {
+          this.showDateError = false;
+        }
+      } else {
+        // Handle case where either start or end date is null
         this.datesErrorMessage = "Both the start date and end date are required.";
         this.showDateError = true;
         isValid = false;
-      } else {
-        this.showDateError = false;
       }
+
 
       if (this.selectedBudget !== 1 && this.selectedBudget !== 2 && this.selectedBudget !== 3) {
         this.budgetErrorMessage = "The budget for your trip is required.";
@@ -291,7 +319,7 @@ export default defineComponent({
         this.showCityError = true;
         isValid = false;
       } else {
-        this.showCityError = false; 
+        this.showCityError = false;
       }
 
       if (!isValid) {
@@ -362,7 +390,7 @@ export default defineComponent({
 
 
 
-        
+
         .then(() => {
           this.isLoading = false;
           this.$router.push({
