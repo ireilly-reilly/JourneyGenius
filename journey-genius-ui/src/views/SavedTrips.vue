@@ -25,7 +25,8 @@
             <v-col cols="12">
               <v-row justify="space-between" align="center">
                 <v-col cols="8">
-                  <h2 class="headline mb-2">{{ trip.city }}, {{ trip.state }}</h2>
+                  <h2 class="headline mb-1 text-deep-purple-accent-2">{{ trip.city }}, {{ trip.state }} </h2>
+                  <h4 class="headline mb-0.5 black">{{ trip.dates }}</h4>
                 </v-col>
                 <v-col cols="4" class="text-right">
                   <v-btn icon @click="confirmDelete(index)">
@@ -38,6 +39,12 @@
 
           <!-- Main Content Section -->
           <v-row>
+            <!-- Trip Dates -->
+          <v-row align="center" class="mb-1">
+            <v-col cols="12">
+              <!-- <p class="subtitle-2 text-deep-purple-accent-2 mb-2">Trip Dates: {{ trip.dates }}</p> -->
+            </v-col>
+          </v-row>
             <!-- Description and Activities Section -->
             <v-col cols="12" md="6" class="pr-4">
               <p class="mb-2">{{ trip.city_description }}</p>
@@ -49,12 +56,25 @@
 
             <!-- Image and Open Itinerary Button Section -->
             <v-col cols="12" md="6">
-              <!-- Your existing image and button code here -->
-            </v-col>
+            <v-row align="center" justify="center">
+              <v-img
+                :src="trip.imageSrc"
+                :alt="trip.location"
+                class="mb-3"
+                style="width: 100%; border-radius: 8px;"
+              ></v-img>
+            <router-link to='/GeneratedItinerary'>
+                <v-btn color="deep-purple-accent-2" class="mt-3" @click="openItinerary">
+                  Open Itinerary
+                </v-btn>
+            </router-link>
           </v-row>
-        </v-card>
-      </v-col>
-    </v-row>
+        </v-col>
+      </v-row>
+    </v-card>
+  </v-col>
+</v-row>
+
 
     <!-- Message for no saved trips -->
     <v-row justify="center" v-else>

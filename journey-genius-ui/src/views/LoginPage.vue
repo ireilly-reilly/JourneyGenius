@@ -113,9 +113,6 @@ export default {
         .catch(error => {
           console.error('Error logging in', error);
 
-          console.log('Error response:', error.response);
-          console.log('Error status:', error.response.status);
-          console.log('Error data:', error.response.data);
 
           //Handle different status codes and display appropriate messages
           if (error.response) {

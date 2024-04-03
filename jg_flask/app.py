@@ -72,7 +72,6 @@ app.register_blueprint(FetchSelectedInformation_bp, url_prefix='/api')
 
 CORS(app, supports_credentials=True)
 
-
 #       |----------------------------------DATABASE MIGRATION INFO----------------------------------|
 #       |    After making desired changes to tables or pulling modified database code               |
 #       |    In command line, run:                                                                  |
