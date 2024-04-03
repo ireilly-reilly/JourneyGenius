@@ -87,10 +87,17 @@ import pandas as pd
 import os
 import googlemaps
 from googlemaps.exceptions import ApiError
+from dotenv import load_dotenv
 
-# Initialize Google Maps client
-api_key = 'YOUR_API_KEY_HERE'
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the GMAPS API key from the environment
+api_key = os.getenv("GMAPS_api_key")
+
+# Define our Client
 gmaps = googlemaps.Client(key=api_key)
+
 
 # Define description blueprint
 FetchSelectedInformation_bp = Blueprint('FetchSelectedInformation_bp', __name__)
@@ -146,6 +153,7 @@ def fetch_single_photo(latitude, longitude):
             if 'photos' in place_details['result']:
                 photo_reference = place_details['result']['photos'][0]['photo_reference']
                 photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+                
                 return photo_url
             else:
                 return None
