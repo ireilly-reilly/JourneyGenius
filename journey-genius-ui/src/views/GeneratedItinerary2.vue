@@ -54,10 +54,120 @@
     export default {
         data() {
             return {
-                itinerary: [
-                    {
-                        title: 'Day 1 - Tuesday, December 13',
-                        activities: [
+                itinerary : [],
+                // itinerary: [
+                //     {
+                //         title: 'Day 1 - Tuesday, December 13',
+                //         activities: [
+                //             {
+                //                 name: 'Check into your Hotel',
+                //                 description: 'You\'ve selected Hotel Nikko San Francisco at 222 Mason St, San Francisco, CA 94102, USA. Head to your hotel to check in and settle in comfortably!',
+                //                 image: require('@/assets/hotel.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Golden State Bridge',
+                //                 description: 'An absolute classic, the Golden Gate Bridge is one of the most recognizable landmarks in the world. Head to viewpoints like Battery Spencer or the Golden Gate Overlook for breathtaking shots.',
+                //                 image: require('@/assets/goldenstatebridge2.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Lunch at Local Restaurant',
+                //                 description: 'Swan Oyster Depot (1517 Polk St) - A historic seafood counter that serves fresh and delicious seafood. It\'s a popular spot,so be prepared for a wait.',
+                //                 image: require('@/assets/swanOyster.jpeg'),
+                //             },
+                //         ],
+                //     },
+                //     {
+                //         title: 'Day 2 - Wednesday, February 14',
+                //         activities: [
+                //             {
+                //                 name: 'Botanical Garden at Strybing Arboretum',
+                //                 description: 'Located in Golden Gate Park, this garden showcases a wide variety of plants from around the world in a beautifully landscaped setting.',
+                //                 image: require('@/assets/garden.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Tea Hut (280 Golden Gate Ave)',
+                //                 description: 'A Chinatown favorite, Tea Hut serves a variety of teas, including boba, fruit teas, and slushies.',
+                //                 image: require('@/assets/boba2.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Union Square',
+                //                 description: 'Known as the city\'s premier shopping destination, Union Square is home to flagship stores of major brands such as Macy\'s, Saks Fifth Avenue, Neiman Marcus, and Apple. You\'ll also find a variety of luxury boutiques and department stores in the surrounding area.',
+                //                 image: require('@/assets/unionsquare2.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Fisherman\'s Wharf',
+                //                 description: 'This popular tourist destination offers a mix of souvenir shops, specialty stores, and waterfront markets. It\'s a lively area with a variety of shopping options.',
+                //                 image: require('@/assets/wharf2.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Ghirardelli Square (900 North Point St)',
+                //                 description: 'While primarily known for its chocolate shops, Ghirardelli Square also houses boutique stores, galleries, and restaurants. It\'s a great place to shop while enjoying views of the bay.',
+                //                 image: require('@/assets/gs.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Sailing on the Bay',
+                //                 description: 'Charter a sailboat or join a sailing tour to experience the beauty of San Francisco from the water.',
+                //                 image: require('@/assets/ferry.jpeg'),
+                //             }
+    
+                //         ],
+                //     },
+                //     {
+                //         title: 'Day 3 - Thursday, February 15',
+                //         activities: [
+                //             {
+                //                 name: 'Haight-Ashbury',
+                //                 description: 'If you\'re into vintage and alternative fashion, head to Haight-Ashbury. This historic neighborhood is known for its eclectic mix of shops, including vintage clothing stores and quirky boutiques.',
+                //                 image: require('@/assets/HaightAshbury.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Hiking in the Marin Headlands',
+                //                 description: 'Explore the network of hiking trails in the Marin Headlands for stunning views of the Golden Gate Bridge, the Pacif ic Ocean, and the San Francisco skyline.',
+                //                 image: require('@/assets/MarinHeadlands.jpg'),
+                //             },
+                //             {
+                //                 name: 'Beach Day at Ocean Beach',
+                //                 description: 'Enjoy a day at Ocean Beach, located on the western edge of the city. It\'s a great spot for a beach walk, picnics, and watching the sunset over the Pacific.',
+                //                 image: require('@/assets/sfbeach.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Rich Table (199 Gough St)',
+                //                 description: 'A Michelin-starred restaurant that offers creative and seasonal dishes in a relaxed and inviting setting.',
+                //                 image: require('@/assets/food.jpeg'),
+                //             },
+                //             {
+                //                 name: 'Flight Back Home',
+                //                 description: 'Enjoy a smooth transition from the vibrant cityscape to the comfort of air travel as you drive to San Francisco International Airport (SFO), winding through iconic streets before arriving at the modern terminals for your journey home.',
+                //                 image: require('@/assets/sfo2.jpeg'),
+                //             }
+                //         ],
+                //     }
+    
+                //     // Add more days as needed
+                // ],
+            };
+        },
+        created() {
+
+            const dateRangeString = this.$store.state.datesData;
+            // Parse date range
+            const [startDateString, endDateString] = dateRangeString.split(" - ");
+
+            // Parse start and end dates
+            const startDate = this.parseDateString(startDateString);
+            const endDate = this.parseDateString(endDateString);
+
+            // Calculate the trip duration
+            const daysDifference = this.calculateTripDuration(startDate, endDate);
+
+            // Generate itinerary sections for each day
+            for (let i = 0; i < daysDifference; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
+                const daySection = {
+                    title: dayTitle,
+                    activities: [
                             {
                                 name: 'Check into your Hotel',
                                 description: 'You\'ve selected Hotel Nikko San Francisco at 222 Mason St, San Francisco, CA 94102, USA. Head to your hotel to check in and settle in comfortably!',
@@ -73,78 +183,10 @@
                                 description: 'Swan Oyster Depot (1517 Polk St) - A historic seafood counter that serves fresh and delicious seafood. It\'s a popular spot,so be prepared for a wait.',
                                 image: require('@/assets/swanOyster.jpeg'),
                             },
-                        ],
-                    },
-                    {
-                        title: 'Day 2 - Wednesday, February 14',
-                        activities: [
-                            {
-                                name: 'Botanical Garden at Strybing Arboretum',
-                                description: 'Located in Golden Gate Park, this garden showcases a wide variety of plants from around the world in a beautifully landscaped setting.',
-                                image: require('@/assets/garden.jpeg'),
-                            },
-                            {
-                                name: 'Tea Hut (280 Golden Gate Ave)',
-                                description: 'A Chinatown favorite, Tea Hut serves a variety of teas, including boba, fruit teas, and slushies.',
-                                image: require('@/assets/boba2.jpeg'),
-                            },
-                            {
-                                name: 'Union Square',
-                                description: 'Known as the city\'s premier shopping destination, Union Square is home to flagship stores of major brands such as Macy\'s, Saks Fifth Avenue, Neiman Marcus, and Apple. You\'ll also find a variety of luxury boutiques and department stores in the surrounding area.',
-                                image: require('@/assets/unionsquare2.jpeg'),
-                            },
-                            {
-                                name: 'Fisherman\'s Wharf',
-                                description: 'This popular tourist destination offers a mix of souvenir shops, specialty stores, and waterfront markets. It\'s a lively area with a variety of shopping options.',
-                                image: require('@/assets/wharf2.jpeg'),
-                            },
-                            {
-                                name: 'Ghirardelli Square (900 North Point St)',
-                                description: 'While primarily known for its chocolate shops, Ghirardelli Square also houses boutique stores, galleries, and restaurants. It\'s a great place to shop while enjoying views of the bay.',
-                                image: require('@/assets/gs.jpeg'),
-                            },
-                            {
-                                name: 'Sailing on the Bay',
-                                description: 'Charter a sailboat or join a sailing tour to experience the beauty of San Francisco from the water.',
-                                image: require('@/assets/ferry.jpeg'),
-                            }
-    
-                        ],
-                    },
-                    {
-                        title: 'Day 3 - Thursday, February 15',
-                        activities: [
-                            {
-                                name: 'Haight-Ashbury',
-                                description: 'If you\'re into vintage and alternative fashion, head to Haight-Ashbury. This historic neighborhood is known for its eclectic mix of shops, including vintage clothing stores and quirky boutiques.',
-                                image: require('@/assets/HaightAshbury.jpeg'),
-                            },
-                            {
-                                name: 'Hiking in the Marin Headlands',
-                                description: 'Explore the network of hiking trails in the Marin Headlands for stunning views of the Golden Gate Bridge, the Pacif ic Ocean, and the San Francisco skyline.',
-                                image: require('@/assets/MarinHeadlands.jpg'),
-                            },
-                            {
-                                name: 'Beach Day at Ocean Beach',
-                                description: 'Enjoy a day at Ocean Beach, located on the western edge of the city. It\'s a great spot for a beach walk, picnics, and watching the sunset over the Pacific.',
-                                image: require('@/assets/sfbeach.jpeg'),
-                            },
-                            {
-                                name: 'Rich Table (199 Gough St)',
-                                description: 'A Michelin-starred restaurant that offers creative and seasonal dishes in a relaxed and inviting setting.',
-                                image: require('@/assets/food.jpeg'),
-                            },
-                            {
-                                name: 'Flight Back Home',
-                                description: 'Enjoy a smooth transition from the vibrant cityscape to the comfort of air travel as you drive to San Francisco International Airport (SFO), winding through iconic streets before arriving at the modern terminals for your journey home.',
-                                image: require('@/assets/sfo2.jpeg'),
-                            }
-                        ],
-                    }
-    
-                    // Add more days as needed
-                ],
-            };
+                        ], // You can populate activities for each day if needed
+                };
+            this.itinerary.push(daySection);
+            }
         },
         mounted() {
             const activities = this.$store.state.activities;
@@ -190,6 +232,39 @@
             //             return null; // Return null in case of an error
             //         });
             // },
+            formatDate(date) {
+                // Format the date into "Month Day, Year" format
+                const options = { month: 'long', day: 'numeric', year: 'numeric' };
+                return date.toLocaleDateString(undefined, options);
+            },
+            parseDateString(dateString) {
+                // Parse the date string into month, day, and year
+                const parts = dateString.split(" ");
+                const month = parts[0];
+                const day = parseInt(parts[1].replace(",", ""));
+                const year = parseInt(parts[2]);
+
+                // Return a Date object
+                return new Date(year, this.getMonthIndex(month), day);
+            },
+            getMonthIndex(monthName) {
+                // Helper function to get the index of a month in JavaScript Date object
+                const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+                return months.indexOf(monthName);
+            },
+            calculateTripDuration(startDate, endDate) {
+                // Convert start and end dates to Date objects
+                const startDateObj = new Date(startDate);
+                const endDateObj = new Date(endDate);
+      
+                // Calculate the difference in milliseconds between the two dates
+                const timeDifference = endDateObj.getTime() - startDateObj.getTime();
+      
+                // Convert milliseconds to days and add 1 to account for same-day trips
+                const daysDifference = Math.ceil(timeDifference / (1000 * 3600 * 24)) + 1;
+      
+                return daysDifference;
+            },
             saveTrip() {
                 console.log("From saveTrip() function: ")
 

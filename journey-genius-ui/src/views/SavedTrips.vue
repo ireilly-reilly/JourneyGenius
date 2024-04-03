@@ -54,11 +54,11 @@
               </ul>
             </v-col>
 
-            <!-- Image and Open Itinerary Button Section -->
+            <!-- Image and Open Itinerary Button Section (NEED TO CHANGE IMAGE SOURCE TO BE DYNAMIC) -->
             <v-col cols="12" md="6">
             <v-row align="center" justify="center">
               <v-img
-                :src="trip.imageSrc"
+                :src="imageSrc" 
                 :alt="trip.location"
                 class="mb-3"
                 style="width: 100%; border-radius: 8px;"
@@ -92,6 +92,7 @@ export default {
   data() {
     return {
       savedTrips: [],
+      imageSrc: require('@/assets/sf.jpeg'), //This will need to be changed to actual image 
     };
     defineProps({
         originPage: String
