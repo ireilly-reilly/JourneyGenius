@@ -16,88 +16,109 @@
       </v-col>
     </v-row>
 
-   <!-- Saved Trip Cards -->
-<v-row justify="center">
-  <v-col cols="12" md="8" v-for="(trip, index) in savedTrips" :key="index">
-    <v-card class="pa-4 mb-4">
-      <!-- Title and Delete Button Section -->
-      <v-row align="center" class="mb-1">
-        <v-col cols="12">
-          <v-row justify="space-between" align="center">
-            <v-col cols="8">
-              <h2 class="headline mb-2">{{ trip.location }}</h2>
-            </v-col>
-            <v-col cols="4" class="text-right">
-              <v-btn icon @click="confirmDelete(index)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
+    <!-- Saved Trip Cards -->
+    <v-row justify="center" v-if="savedTrips.length > 0">
+      <v-col cols="12" md="8" v-for="(trip, index) in savedTrips" :key="index">
+        <v-card class="pa-4 mb-4">
+          <!-- Title and Delete Button Section -->
+          <v-row align="center" class="mb-1">
+            <v-col cols="12">
+              <v-row justify="space-between" align="center">
+                <v-col cols="8">
+                  <h2 class="headline mb-2">{{ trip.city }}, {{ trip.state }}</h2>
+                </v-col>
+                <v-col cols="4" class="text-right">
+                  <v-btn icon @click="confirmDelete(index)">
+                    <v-icon>mdi-delete</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
-        </v-col>
-      </v-row>
 
-      <!-- Main Content Section -->
-      <v-row>
-        <!-- Description and Activities Section -->
-        <v-col cols="12" md="6" class="pr-4">
-          <p class="mb-2">{{ trip.description }}</p>
-          <h3 class="subtitle-1 mb-2">Activities:</h3>
-          <ul class="pl-2"> <!-- Added margin-left to the activities list -->
-            <li v-for="activity in trip.activities" :key="activity">{{ activity }}</li>
-          </ul>
-        </v-col>
+          <!-- Main Content Section -->
+          <v-row>
+            <!-- Description and Activities Section -->
+            <v-col cols="12" md="6" class="pr-4">
+              <p class="mb-2">{{ trip.city_description }}</p>
+              <h3 class="subtitle-1 mb-2">Activities:</h3>
+              <ul class="pl-2">
+                <li v-for="activity in trip.activities" :key="activity">{{ activity }}</li>
+              </ul>
+            </v-col>
 
-        <!-- Image and Open Itinerary Button Section -->
-        <v-col cols="12" md="6">
-          <v-row align="center" justify="center">
-            <v-img
-              :src="trip.imageSrc"
-              :alt="trip.location"
-              class="mb-3"
-              style="width: 100%; border-radius: 8px;"
-            ></v-img>
-            <router-link to='/GeneratedItinerary'>
-            <v-btn color="deep-purple-accent-2" class="mt-3" @click="openItinerary">
-              Open Itinerary
-            </v-btn>
-          </router-link>
+            <!-- Image and Open Itinerary Button Section -->
+            <v-col cols="12" md="6">
+              <!-- Your existing image and button code here -->
+            </v-col>
           </v-row>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-col>
-</v-row>
-</v-container>
+        </v-card>
+      </v-col>
+    </v-row>
 
-
+    <!-- Message for no saved trips -->
+    <v-row justify="center" v-else>
+      <v-col cols="12" md="8" class="text-center">
+        <p class="headline text-deep-purple-accent-2" style="font-size: 1.5rem;">No trips saved, let's plan one!</p>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
+import axios from 'axios';
+import Cookies from 'js-cookie';
 export default {
   data() {
     return {
-      savedTrips: [
-        {
-          location: 'San Francisco, California',
-          description: `San Francisco is a vibrant city known for its iconic landmarks, diverse culture, and stunning views. Explore the Golden Gate Bridge, visit Alcatraz Island, and stroll through Fisherman's Wharf for a taste of the city's rich history and delicious seafood.`,
-          activities: ['Golden Gate Bridge Sightseeing', 'Alcatraz Island Tour', 'Fisherman\'s Wharf Exploration', 'Vibrant Asian Culture in Chinatown'],
-          imageSrc: require('@/assets/sf.jpeg'),
-        },
-        // Add more saved trips as needed
-      ],
+      savedTrips: [],
     };
   },
+  mounted() {
+    this.fetchSavedTrips();
+  },
   methods: {
-    openItinerary() {
-      // Implement logic to open the itinerary for this saved trip
-      console.log('Opening Itinerary...');
+    fetchSavedTrips() {
+      const jwtToken = Cookies.get('login_token');
+      const url = 'http://localhost:8000/api/fetch_saved_trips'
+      axios.get(url, {
+        headers: {
+            Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+        })
+        .then(response => {
+          this.savedTrips = response.data.savedTrips;
+        })
+        .catch(error => {
+          console.error('Error fetching saved trips:', error);
+        });
     },
     confirmDelete(index) {
       const isConfirmed = window.confirm('Are you sure you want to delete this trip?');
 
       if (isConfirmed) {
-        // Implement logic to delete the saved trip
-        this.savedTrips.splice(index, 1); // Remove the trip at the specified index
+        const jwtToken = Cookies.get('login_token');
+        const trip_id = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
+        axios.delete(`http://localhost:8000/api/delete_trip/${trip_id}`, {
+        headers: {
+            Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+        })
+          .then(response => {
+            if (response.status === 200) {
+              // Remove the deleted trip from the savedTrips array
+              const deletedIndex = this.savedTrips.findIndex(trip => trip.id === trip_id);
+              if (deletedIndex !== -1) {
+                this.savedTrips.splice(deletedIndex, 1);
+              }
+            } else {
+              throw new Error('Failed to delete trip');
+            }
+          })
+          .catch(error => {
+            console.error('Error deleting trip:', error);
+            alert('Failed to delete trip. Please try again.');
+          });
       }
     },
   },
@@ -107,7 +128,3 @@ export default {
 <style scoped>
 /* Add custom styles if needed */
 </style>
-
-
-
-

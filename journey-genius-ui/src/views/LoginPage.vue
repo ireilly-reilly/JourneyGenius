@@ -87,6 +87,7 @@ export default {
 
         .then(response => {
           const token = response.data.access_token;
+          const databaseID = response.data.user_id;
           console.log('login token: ', token) //Display token after recieved
           //Make cookies expire after 7 days
           const expirationDate = new Date();
@@ -94,8 +95,10 @@ export default {
 
           //Store the token in a secure manner (e.g., HttpOnly cookie) with expiration date
           Cookies.set('login_token', token, { secure: false, expires: expirationDate });
+          Cookies.set('database_id', databaseID, { secure: false })
           //console.log('Login token:', token) //Display token after cookies set
           console.log('User logged in successfully, login token: ', token)
+          console.log('User ID from database: ', databaseID)
           this.checkLoginStatus();
 
           this.showSnackbar = true; // Show the Snackbar

@@ -123,7 +123,7 @@ class Trip(db.Model):
     longitude = db.Column(db.Float)
     dates = db.Column(db.String(100), nullable=False)
     trip_length = db.Column(db.Integer)
-    budget = db.Column(db.Float)
+    budget = db.Column(db.String(50))
     city_description = db.Column(db.Text)
     city_slogan = db.Column(db.String(100))
     
@@ -141,9 +141,11 @@ class Trip(db.Model):
     foods_images = db.Column(db.JSON)       # Example: ["food1.jpg", "food2.png"]
     hotels_images = db.Column(db.JSON)      # Example: ["hotel1.jpg", "https://example.com/hotel2.png"]
 
-
+#Blueprints requiring database info go here because of circular import issues (idk why)
 from SuperuserAccounts import superuser_accounts_bp
+from SavedTrips_bp import saved_trips_bp
 app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
+app.register_blueprint(saved_trips_bp, url_prefix='/api')
 
 #This is a command line prompt to create an initial super user
 #Used like this: flask create_super_user
@@ -209,7 +211,7 @@ def LoginUser():
         access_token = create_access_token(identity=user.id)
         print("Logging in user... User ID in session: ", user.id)
         
-        return jsonify({'access_token': access_token}), 200
+        return jsonify({'access_token': access_token, 'user_id': user.id}), 200
     else:
         return jsonify({'error': 'Invalid username or password'}), 401 #TODO change to 401 later 
     
@@ -240,8 +242,6 @@ def LoginSuperUser():
     else:
         return jsonify({'error': 'Invalid username or password'}), 401 #TODO change to 401 later
 
-
-    
 #Route to check login status
 @app.route('/api/check_login_status', methods=['GET'])
 @jwt_required()  #Ensure the request has a valid token
@@ -255,6 +255,7 @@ def check_login_status():
 def logout():
     response = make_response(jsonify({'message': 'Logout successful'}), 200)
     response.delete_cookie('login_token')  # Clear the token from the client
+    response.delete_cookie('database_id')
     return response
     # print("Checking Login status... User ID in session: ", session.get('user_id'))
     # return jsonify({'message': 'Logout successful'}), 200

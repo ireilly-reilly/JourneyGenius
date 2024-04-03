@@ -61,6 +61,7 @@ export default {
     logout() {
       const url = 'http://localhost:8000/api/LogoutUser';
       Cookies.remove('login_token');
+      Cookies.remove('database_id');
 
       axios.post(url)
         .then(response => {
@@ -83,7 +84,7 @@ export default {
       const url = 'http://localhost:8000/api/check_login_status';
 
       const token = Cookies.get('login_token');
-      console.log('token from navbar: ', token)
+      console.log('jwt token from navbar: ', token)
       // If the token is available, it means the user is logged in
       if (token) {
         console.log('User logged in');

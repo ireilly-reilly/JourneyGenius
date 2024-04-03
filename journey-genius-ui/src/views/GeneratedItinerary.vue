@@ -178,22 +178,22 @@ export default {
         const latitude = this.$store.state.lat;
         const longitude = this.$store.state.long;
 
-        // console.log("Lets see if this works!")
-        // console.log("it works?" + this.$store.state.lat)
-        // console.log(this.$store.state.long)
-        // console.log('Activities:', activities);
-        // console.log('Landmarks:', landmarks);
-        // console.log('Foods:', foods);
-        // console.log('Shops:', shops);
-        // console.log('Hotels:', hotels);
-        // console.log('Dates:', datesData);
-        // console.log('Budget:', budget);
-        // console.log('State:', stateData);
-        // console.log('City:', city);
-        // console.log('Latitude:', lat);
-        // console.log('Longitude:', long);
-        // console.log('Generated Description:', cityDescription);
-        // console.log('Generated Slogan:', citySlogan);
+        console.log("Lets see if this works!")
+        console.log("it works?" + this.$store.state.lat)
+        console.log(this.$store.state.long)
+        console.log('Activities:', activities);
+        console.log('Landmarks:', landmarks);
+        console.log('Foods:', foods);
+        console.log('Shops:', shops);
+        console.log('Hotels:', hotels);
+        console.log('Dates:', datesData);
+        console.log('Budget:', budget);
+        console.log('State:', stateData);
+        console.log('City:', city);
+        console.log('Latitude:', lat);
+        console.log('Longitude:', long);
+        console.log('Generated Description:', cityDescription);
+        console.log('Generated Slogan:', citySlogan);
     
 
         // Send data to Python server using HTTP POST request

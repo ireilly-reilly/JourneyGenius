@@ -38,8 +38,9 @@
                     </v-btn>
                 </router-link>
     
+                <!-- Call method to save trip to database here-->
                 <router-link to="/SavedTrips">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" style="min-width: 150px;">
+                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip" style="min-width: 150px;">
                         Save Trip
                     </v-btn>
                 </router-link>
@@ -49,6 +50,7 @@
       
     <script>
     import axios from 'axios';
+    import Cookies from 'js-cookie';
     export default {
         data() {
             return {
@@ -144,6 +146,25 @@
                 ],
             };
         },
+        mounted() {
+            const activities = this.$store.state.activities;
+            const landmarks = this.$store.state.landmarks;
+            const foods = this.$store.state.foods;
+            const shops = this.$store.state.shops;
+            const hotels = this.$store.state.hotels;
+            const datesData = this.$store.state.datesData;
+            const budget = this.$store.state.budget;
+            const stateData = this.$store.state.stateData;
+            const city = this.$store.state.city;
+            const lat = this.$store.state.lat;
+            const long = this.$store.state.long;
+            const cityDescription = this.$store.state.cityDescription;
+            const citySlogan = this.$store.state.citySlogan;
+            const latitude = this.$store.state.lat;
+            const longitude = this.$store.state.long;
+
+            
+        },
         methods: {
             getTimelineColor(index) {
                 // Define colors for each day
@@ -155,6 +176,76 @@
                 const icons = ['mdi-hiking', 'mdi-map-marker', 'mdi-spa', 'mdi-food', 'mdi-coffee'];
                 return icons[index % icons.length];
             },
+            // getUserDatabaseID() {
+            //     const jwtToken = Cookies.get('login_token');
+            //     const url = 'http://localhost:8000/api/get_user_id'
+            //     axios.get(url, { headers: { Authorization: `Bearer ${jwtToken}` } })
+            //         .then(response => {
+            //             userId = response.data.user_id;
+            //             console.log('User ID:', userId);
+            //             return userId;
+            //         })
+            //         .catch(error => {
+            //             console.error('Error getting user ID:', error);
+            //             return null; // Return null in case of an error
+            //         });
+            // },
+            saveTrip() {
+                console.log("From saveTrip() function: ")
+
+                //Get userID from cookies
+                const userID = Cookies.get('database_id');
+                console.log("Current user id:");
+                console.log(userID);
+
+                //Gathering data from vuex storage
+                const activities = this.$store.state.activities;
+                const landmarks = this.$store.state.landmarks;
+                const foods = this.$store.state.foods;
+                const shops = this.$store.state.shops;
+                const hotels = this.$store.state.hotels;
+                const datesData = this.$store.state.datesData;
+                const budget = this.$store.state.budget;
+                const stateData = this.$store.state.stateData;
+                const city = this.$store.state.city;
+                const lat = this.$store.state.lat;
+                const long = this.$store.state.long;
+                const cityDescription = this.$store.state.cityDescription;
+                const citySlogan = this.$store.state.citySlogan;
+                const latitude = this.$store.state.lat;
+                const longitude = this.$store.state.long;
+
+                //Condensing to sendable form
+                const tripData = {
+                    userID,
+                    activities,
+                    landmarks,
+                    foods,
+                    shops,
+                    hotels,
+                    datesData,
+                    budget,
+                    stateData,
+                    city,
+                    lat,
+                    long,
+                    cityDescription,
+                    citySlogan
+                };
+                console.log("Trip Data from vuex in ready to send:")
+                console.log(tripData)
+                
+                // Send data to Python backend
+                axios.post('http://localhost:8000/api/save_trip_to_user', tripData)
+                    .then(response => {
+                        console.log('Trip saved successfully:', response.data);
+                        // Optionally, you can perform any further actions here
+                    })
+                    .catch(error => {
+                        console.error('Error saving trip:', error);
+                    });
+            },
+            // Other methods for itinerary display, if any
         },
         computed: {
             fontSizeClass() {
