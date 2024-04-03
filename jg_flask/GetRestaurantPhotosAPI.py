@@ -6,9 +6,13 @@ import os
 import googlemaps
 from googlemaps.exceptions import ApiError
 import pandas as pd
+from dotenv import load_dotenv
 
-# Replace with your Google Places API key
-api_key = 'AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y'
+# Load environment variables from .env file
+load_dotenv()
+
+# Get the GMAPS API key from the environment
+api_key = os.getenv("GMAPS_api_key")
 
 # Initialize Google Maps client
 gmaps = googlemaps.Client(key=api_key)

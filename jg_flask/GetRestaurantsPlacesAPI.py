@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 import googlemaps
 import csv
 import os
+from dotenv import load_dotenv
 
 getRestaurant_bp = Blueprint('getRestaurant_bp', __name__)
 
@@ -34,8 +35,11 @@ def scrape_restaurants():
     location = f'{target_lat}, {target_lon}'  # Use the latitude and longitude in the location variable
     #print("Received coordinates in test restaurants API " + location)
 
-    # Define the API Key that is being used
-    api_key = 'AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y'
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Get the GMAPS API key from the environment
+    api_key = os.getenv("GMAPS_api_key")
 
     # Define our Client
     gmaps = googlemaps.Client(key=api_key)
