@@ -2,32 +2,21 @@
   <div class="home">
     <v-container fluid class="no-border">
       <!-- Top Section -->
-      <v-row align="center" justify="center" class="my-3 ">
-        <v-col cols="12" md="10" lg="8" class="text-center">
-          <!-- <v-card class="pa-5"> -->
-          <h2 class="display-1 font-weight-black">
-
-          </h2>
-          <h2 class="display-1 font-weight-black">
-            Vacation Itineraries with
-          </h2>
-          <h2 class="display-1 font-weight-black mb-2">
-            <span class="text-deep-purple-accent-2">Journey Genius</span>
-          </h2>
-          <!-- Additional smaller text -->
-          <h3 class="subtitle-1 text-grey-darken-2">
-            This application serves as your dedicated travel curator, crafting distinctive itineraries
-          </h3>
-          <h3 class="subtitle-1 text-grey-darken-2">
-            tailored to your interests and budget.
-          </h3>
-
-          <!-- "Start Now"
-          <router-link to='/StartPlanning'>
-            <v-btn rounded="lg" size="large" color="deep-purple-accent-2" class="white--text mt-6">
-              Start Planning
-            </v-btn>
-          </router-link> -->
+<v-row align="center" justify="center" class="my-3" v-if="!isLoggedIn">
+  <v-col cols="12" md="10" lg="8" class="text-center">
+    <h2 class="display-1 font-weight-black">
+      Vacation Itineraries with
+    </h2>
+    <h2 class="display-1 font-weight-black mb-2">
+      <span class="text-deep-purple-accent-2">Journey Genius</span>
+    </h2>
+    <!-- Additional smaller text -->
+    <h3 class="subtitle-1 text-grey-darken-2">
+      This application serves as your dedicated travel curator, crafting distinctive itineraries
+    </h3>
+    <h3 class="subtitle-1 text-grey-darken-2">
+      tailored to your interests and budget.
+    </h3>
 
           <!-- "Start Planning" button with conditional rendering -->
           <router-link v-if="isLoggedIn" to="/StartPlanning">
@@ -42,11 +31,21 @@
             </v-btn>
           </router-link>
 
-          <!-- </v-card> -->
           <br>
           <br>
         </v-col>
       </v-row>
+
+      <!-- Display greeting message -->
+<v-row v-if="isLoggedIn" align="center" justify="center" class="my-3">
+  <v-col cols="12" md="10" lg="8" class="text-center">
+    <h2 class="display-1 font-weight-black">{{ greetingMessage }}
+    <span class="display-1 text-deep-purple-accent-2">Journey Genius!</span>
+  </h2>
+
+  </v-col>
+</v-row>
+
 
 
       <!-- What Makes Our Application Special -->
@@ -166,6 +165,7 @@ export default defineComponent({
   data() {
     return {
       isLoggedIn: false, // Initialize isLoggedIn flag to false
+      greetingMessage: "", // Initialize greetingMessage
       hasPageBeenRefreshed: false, // Flag to track if the page has been refreshed
       featuredDestinations: [
         {
@@ -196,6 +196,7 @@ export default defineComponent({
   mounted() {
     // Call method to check login status when the component is mounted
     this.checkLoginStatus();
+    this.getUserInfoAndGenerateGreeting();
   },
   methods: {
     async checkLoginStatus() {
@@ -212,8 +213,42 @@ export default defineComponent({
         console.error('Error checking login status:', error);
         this.isLoggedIn = false;
       }
-    }
-  }
+    },
+    generateGreetingMessage(firstname) {
+      const firstName = firstname; // You can replace this with the user's first name
+      const now = new Date();
+      const hour = now.getHours();
+      let timeOfDay;
+
+      if (hour < 12) {
+        timeOfDay = "Morning";
+      } else if (hour < 18) {
+        timeOfDay = "Afternoon";
+      } else {
+        timeOfDay = "Evening";
+      }
+      // Set the greeting message
+      this.greetingMessage = `Good ${timeOfDay}, ${firstName}. Welcome to `;
+    },
+    async getUserInfoAndGenerateGreeting() {
+      const url = 'http://localhost:8000/api/get_user_info';
+      const jwtToken = Cookies.get('login_token')
+      axios.get(url, {
+        headers: {
+            Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+      })
+      .then(response => {
+        const firstname = response.data.firstName;
+        this.generateGreetingMessage(firstname)
+      })
+      .catch(error => {
+          console.error('Error fetching user data:', error);
+      });
+      
+    },
+    
+  },
 });
 </script>
 

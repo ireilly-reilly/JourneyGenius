@@ -214,7 +214,7 @@ export default {
     };
 
     // Make an HTTP POST request to your Python server
-    axios.post('http://localhost:8080/process_data', data)
+    axios.post('http://localhost:8000/api/process_data', data)
         .then(response => {
             console.log(response.data); // Log response from Python server
         })

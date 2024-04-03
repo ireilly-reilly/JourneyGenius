@@ -152,9 +152,12 @@ export default {
         this.isLoggedIn = true;
         response.data.message === 'User is logged in';
         console.log('User is logged in:', this.isLoggedIn);
+        console.log("From Login page checkLoginStatus:")
       } catch (error) {
         console.error('Error checking login status', error);
         this.isLoggedIn = false;
+        console.log("From Login page checkLoginStatus:")
+        console.log("Logged in: ", this.isLoggedIn)
       }
     },
 

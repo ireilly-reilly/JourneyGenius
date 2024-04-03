@@ -17,7 +17,7 @@
     </v-row>
 
     <!-- Saved Trip Cards -->
-    <v-row justify="center" v-if="savedTrips.length > 0">
+    <v-row justify="center" v-if="savedTrips && savedTrips.length > 0">
       <v-col cols="12" md="8" v-for="(trip, index) in savedTrips" :key="index">
         <v-card class="pa-4 mb-4">
           <!-- Title and Delete Button Section -->
@@ -59,7 +59,7 @@
     <!-- Message for no saved trips -->
     <v-row justify="center" v-else>
       <v-col cols="12" md="8" class="text-center">
-        <p class="headline text-deep-purple-accent-2" style="font-size: 1.5rem;">No trips saved, let's plan one!</p>
+        <p class="headline text-deep-purple-accent-2" style="font-size: 1.5rem;">You have no trips saved, let's plan one!</p>
       </v-col>
     </v-row>
   </v-container>

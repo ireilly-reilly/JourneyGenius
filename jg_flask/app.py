@@ -314,7 +314,7 @@ def save_user_data():
     return jsonify({'message': 'Data saved successfully'}), 200
 
 
-@app.route('/api/get_user_profile', methods=['GET'])
+@app.route('/api/get_user_info', methods=['GET'])
 @jwt_required()  
 def get_user_profile():
     current_user_id = get_jwt_identity()
@@ -325,13 +325,13 @@ def get_user_profile():
 
     user_data = {
         'firstName': user.firstname,
-        'lastName': user.lastname,
-        'gender': user.gender,
-        'age': user.age,
-        'email': user.email,
-        'accommodationPreference': user.accommodations,
-        'transportationPreference': user.transportation,
-        'selectedActivities': user.interests.split(',')
+        # 'lastName': user.lastname,
+        # 'gender': user.gender,
+        # 'age': user.age,
+        # 'email': user.email,
+        # 'accommodationPreference': user.accommodations,
+        # 'transportationPreference': user.transportation,
+        # 'selectedActivities': user.interests.split(',')
     }
 
     return jsonify(user_data), 200
