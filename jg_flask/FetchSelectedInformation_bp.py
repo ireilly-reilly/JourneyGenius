@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 import requests
 import pandas as pd
+import os
 
 # Define description blueprint
 FetchSelectedInformation_bp = Blueprint('FetchSelectedInformation_bp', __name__)
@@ -15,78 +16,141 @@ def process_data():
         data = request.json
 
         # Extract relevant variables from the data
-        activities = data.get('activities')
-        landmarks = data.get('landmarks')
+        # These variables will differ for each type of place
+
+        # activities = data.get('activities')
+        # landmarks = data.get('landmarks')
         foods = data.get('foods')
-        shops = data.get('shops')
-        hotels = data.get('hotels')
-        datesData = data.get('datesData')
-        budget = data.get('budget')
-        stateData = data.get('stateData')
-        city = data.get('city')
-        lat = data.get('lat')
-        long = data.get('long')
-        cityDescription = data.get('cityDescription')
-        citySlogan = data.get('citySlogan')
+        # shops = data.get('shops')
+        # hotels = data.get('hotels')
+        # datesData = data.get('datesData')
+        # budget = data.get('budget')
+        # stateData = data.get('stateData')
+        # city = data.get('city')
+        # lat = data.get('lat')
+        # long = data.get('long')
+        # cityDescription = data.get('cityDescription')
+        # citySlogan = data.get('citySlogan')
 
-        # Process the received data as needed
-        # For example, you can manipulate CSV file based on this data
-        print("Received data:")
-        print("Activities:", activities)
-        print("Landmarks:", landmarks)
-        print("Foods:", foods)
-        print("Shops:", shops)
-        print("Hotels:", hotels)
-        print("Dates Data:", datesData)
-        print("Budget:", budget)
-        print("State Data:", stateData)
-        print("City:", city)
-        print("Latitude:", lat)
-        print("Longitude:", long)
-        print("City Description:", cityDescription)
-        print("City Slogan:", citySlogan)
 
-        # Perform further operations on the received data
+        # print("Received data:")
+        # print("Activities:", activities)
+        # print("Landmarks:", landmarks)
+        # print("Foods:", foods)
+        # print("Shops:", shops)
+        # print("Hotels:", hotels)
+        # print("Dates Data:", datesData)
+        # print("Budget:", budget)
+        # print("State Data:", stateData)
+        # print("City:", city)
+        # print("Latitude:", lat)
+        # print("Longitude:", long)
+        # print("City Description:", cityDescription)
+        # print("City Slogan:", citySlogan)
 
-        # Return a response indicating that the data was received and processed successfully
-        return jsonify({'message': 'Data received and processed successfully'})
+        BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+        CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
+        restaurant_csv_file_path = os.path.join(CSV_FOLDER, 'restaurant_data.csv')
+
+        df = pd.read_csv(restaurant_csv_file_path, encoding='utf-8') 
+
+        for food in foods:
+            subset = df.loc[df['Place'] == food, ['Latitude', 'Longitude']]
+
+            locations = []
+            for index, row in subset.iterrows():
+                latitude = float(row['Latitude'])
+                longitude = float(row['Longitude'])
+                locations.append({'latitude': latitude, 'longitude': longitude})
+
+        response_data = {
+            'message': 'Location data retrieved successfully',
+            'locations': locations
+        }
+
+        return jsonify(response_data), 200
 
     except Exception as e:
         # Handle any errors that occur during processing
-        print("Error processing data:", e)
-        return jsonify({'error': 'An error occurred while processing the data'})
+        error_message = str(e)  # Convert the exception to a string
+        print("Error processing data:", error_message)
+        return jsonify({'error': 'An error occurred while processing the data', 'message': error_message})
 
 
-# # Function to manipulate CSV file based on fetched restaurants
-# def manipulate_csv(restaurants):
-#     try:
-#         # Load CSV file
-#         df = pd.read_csv('your_csv_file.csv')
 
-#         # Manipulate CSV file based on fetched restaurants
-#         # For example, you can select a different column based on the restaurants
-#         if 'Activity 1' in restaurants:
-#             selected_column = df['Column_A']
-#         elif 'Activity 2' in restaurants:
-#             selected_column = df['Column_B']
-#         else:
-#             selected_column = df['Column_C']
+############################################# MODIFIED SHIT BELOW   :D ####################################################################
 
-#         # Perform further operations on selected_column or save it to a new CSV file
-#         # Example: selected_column.to_csv('output.csv', index=False)
 
-#         print("CSV manipulation completed")
-#     except Exception as e:
-#         print("Error manipulating CSV:", e)
+from flask import Blueprint, jsonify, request
+import requests
+import pandas as pd
+import os
+import googlemaps
+from googlemaps.exceptions import ApiError
 
-# # Main function
-# def main():
-#     # Fetch restaurants from Flask API
-#     restaurants = fetch_restaurants_from_api()
+# Initialize Google Maps client
+api_key = 'YOUR_API_KEY_HERE'
+gmaps = googlemaps.Client(key=api_key)
 
-#     # If restaurants are fetched successfully, manipulate CSV file
-#     if restaurants:
-#         manipulate_csv(restaurants)
+# Define description blueprint
+FetchSelectedInformation_bp = Blueprint('FetchSelectedInformation_bp', __name__)
 
-# if __name__ == '__main__':
-#     main()
+# Define route to handle description request
+@FetchSelectedInformation_bp.route('/process_data', methods=['POST'])
+def process_data():
+    try:
+        data = request.json
+        foods = data.get('foods')
+
+        BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+        CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
+        restaurant_csv_file_path = os.path.join(CSV_FOLDER, 'restaurant_data.csv')
+
+        df = pd.read_csv(restaurant_csv_file_path, encoding='utf-8') 
+
+        locations = []
+        for food in foods:
+            subset = df.loc[df['Place'] == food, ['Latitude', 'Longitude']]
+
+            for index, row in subset.iterrows():
+                latitude = float(row['Latitude'])
+                longitude = float(row['Longitude'])
+                locations.append({'latitude': latitude, 'longitude': longitude})
+
+        photo_urls = []
+        for location in locations:
+            latitude = location['latitude']
+            longitude = location['longitude']
+            photo_url = fetch_single_photo(latitude, longitude)
+            photo_urls.append(photo_url)
+
+        response_data = {
+            'message': 'Location data and photo URLs retrieved successfully',
+            'locations': locations,
+            'photo_urls': photo_urls
+        }
+
+        return jsonify(response_data), 200
+
+    except Exception as e:
+        error_message = str(e)
+        print("Error processing data:", error_message)
+        return jsonify({'error': 'An error occurred while processing the data', 'message': error_message})
+
+def fetch_single_photo(latitude, longitude):
+    try:
+        nearby_search_results = gmaps.places_nearby(location=(latitude, longitude), radius=15)
+        if nearby_search_results['results']:
+            place_id = nearby_search_results['results'][0]['place_id']
+            place_details = gmaps.place(place_id)
+            if 'photos' in place_details['result']:
+                photo_reference = place_details['result']['photos'][0]['photo_reference']
+                photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+                return photo_url
+            else:
+                return None
+        else:
+            return None
+    except ApiError as e:
+        print(f"Error fetching photo: {e}")
+        return None
