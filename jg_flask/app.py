@@ -1,3 +1,4 @@
+from datetime import datetime
 import click
 from flask import Flask, jsonify, request, session, make_response
 from flask_sqlalchemy import SQLAlchemy
@@ -104,6 +105,8 @@ class User(db.Model):
     interests = db.Column(db.String(10))
     accommodations = db.Column(db.String(5))
     transportation = db.Column(db.String(5))
+    last_login = db.Column(db.String(50))
+    date_created = db.Column(db.String(50))
 
 #SuperUser Table Model:
 class SuperUser(db.Model):
@@ -186,7 +189,8 @@ def RegisterUser():
         return jsonify({'error': 'Username already exists'}), 400 #TODO Change to 400 later
 
     hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')
-    new_user = User(email=email, firstname=firstname, lastname=lastname, password=hashed_password)
+    date_created = datetime.utcnow().replace(microsecond=0)
+    new_user = User(email=email, firstname=firstname, lastname=lastname, password=hashed_password, date_created=date_created)
 
     db.session.add(new_user)
     db.session.commit()
@@ -209,6 +213,8 @@ def LoginUser():
     if user and bcrypt.check_password_hash(user.password, password):
         #Generate a JWT token
         access_token = create_access_token(identity=user.id)
+        user.last_login = datetime.utcnow().replace(microsecond=0)
+        db.session.commit()
         print("Logging in user... User ID in session: ", user.id)
         
         return jsonify({'access_token': access_token, 'user_id': user.id}), 200

@@ -144,11 +144,17 @@
                     </v-btn>
                 </router-link>
 
-                <router-link to="/GeneratedItinerary2">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" style="min-width: 150px;">
-                        Generate
-                    </v-btn>
-                </router-link>
+                <!-- Render different buttons based on the origin page -->
+            <router-link v-if="originPage === 'SavedTrips'" to="/SavedTrips">
+                <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" style="min-width: 150px;">
+                    Close
+                </v-btn>
+            </router-link>
+            <router-link v-else to="/GeneratedItinerary2">
+                <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" style="min-width: 150px;">
+                    Generate
+                </v-btn>
+            </router-link>
             </v-col>
         </v-row>
     </v-container>
@@ -158,6 +164,7 @@
 import axios from 'axios';
 export default {
     name: 'SanFranciscoPage',
+    props: ['originPage'],
 
 
     mounted() {
@@ -178,22 +185,24 @@ export default {
         const latitude = this.$store.state.lat;
         const longitude = this.$store.state.long;
 
-        console.log("Lets see if this works!")
-        console.log("it works?" + this.$store.state.lat)
-        console.log(this.$store.state.long)
-        console.log('Activities:', activities);
-        console.log('Landmarks:', landmarks);
-        console.log('Foods:', foods);
-        console.log('Shops:', shops);
-        console.log('Hotels:', hotels);
-        console.log('Dates:', datesData);
-        console.log('Budget:', budget);
-        console.log('State:', stateData);
-        console.log('City:', city);
-        console.log('Latitude:', lat);
-        console.log('Longitude:', long);
-        console.log('Generated Description:', cityDescription);
-        console.log('Generated Slogan:', citySlogan);
+        // console.log("Lets see if this works!")
+        // console.log("it works?" + this.$store.state.lat)
+        // console.log(this.$store.state.long)
+        // console.log('Activities:', activities);
+        // console.log('Landmarks:', landmarks);
+        // console.log('Foods:', foods);
+        // console.log('Shops:', shops);
+        // console.log('Hotels:', hotels);
+        // console.log('Dates:', datesData);
+        // console.log('Budget:', budget);
+        // console.log('State:', stateData);
+        // console.log('City:', city);
+        // console.log('Latitude:', lat);
+        // console.log('Longitude:', long);
+        // console.log('Generated Description:', cityDescription);
+        // console.log('Generated Slogan:', citySlogan);
+
+        console.log("Origin Page: ", this.$route.params.originPage)
     
 
         // Send data to Python server using HTTP POST request

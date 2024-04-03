@@ -18,6 +18,7 @@ def get_user_accounts():
             'FirstName': user.firstname,
             'LastName': user.lastname,
             'Email': user.email,
+            'LastLoggedIn': user.last_login,
             # 'SavedTrips': user.saved_trips,  # Assuming you have this attribute in your User model
             # 'LastLoggedIn': user.last_logged_in  # Assuming you have this attribute in your User model
         } for user in users]

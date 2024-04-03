@@ -63,7 +63,7 @@
                 class="mb-3"
                 style="width: 100%; border-radius: 8px;"
               ></v-img>
-            <router-link to='/GeneratedItinerary'>
+              <router-link :to="{ name: 'GeneratedItinerary', params: { originPage: 'SavedTrips' } }">
                 <v-btn color="deep-purple-accent-2" class="mt-3" @click="openItinerary">
                   Open Itinerary
                 </v-btn>
@@ -93,6 +93,9 @@ export default {
     return {
       savedTrips: [],
     };
+    defineProps({
+        originPage: String
+    })
   },
   mounted() {
     this.fetchSavedTrips();

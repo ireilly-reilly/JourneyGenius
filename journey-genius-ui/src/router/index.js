@@ -64,6 +64,7 @@ const routes = [
     path: '/SavedTrips',
     name: 'SavedTrips',
     component: SavedTrips,
+    props: true
   },
   {
     path: '/LoginPage',
@@ -109,6 +110,7 @@ const routes = [
     path: '/GeneratedItinerary',
     name: 'GeneratedItinerary',
     component: GeneratedItinerary,
+    props: true
   },
   {
     path: '/GeneratedItinerary2',
