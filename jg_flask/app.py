@@ -74,7 +74,7 @@ CORS(app, supports_credentials=True)
 
 
 #       |----------------------------------DATABASE MIGRATION INFO----------------------------------|
-#       |    After making desired changes to tables                                                 |
+#       |    After making desired changes to tables or pulling modified database code               |
 #       |    In command line, run:                                                                  |
 #       |        flask db migrate -m "<your message>"                                               |
 #       |    Then enter the mysql command prompt:                                                   |
