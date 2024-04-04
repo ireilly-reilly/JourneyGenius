@@ -133,7 +133,7 @@
             <v-col cols="12" md="8" class="text-center">
                 <hr />
 
-                <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="showConfirmationDialog"
+                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="showConfirmationDialog"
                     style="min-width: 150px;">
                     Go Back
                 </v-btn>
@@ -154,7 +154,7 @@
                 </v-dialog>
 
                 <!-- <router-link to="/GeneratedItinerary"> -->
-                <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="updateTravelInfo"
+                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="updateTravelInfo"
                     style="min-width: 150px;">
                     Generate
                 </v-btn>

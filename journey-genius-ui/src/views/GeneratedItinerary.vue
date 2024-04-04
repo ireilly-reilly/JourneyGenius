@@ -134,25 +134,25 @@
         </div>
 
 
-        <!-- Two buttons on the bottom -->
+        <!-- Three buttons on the bottom -->
         <v-row justify="center" class="mt-4">
             <v-col cols="12" md="8" class="text-center">
                 <router-link to="/Itinerary">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-4" @click="previousStep"
                         style="min-width: 150px;">
                         Customize
                     </v-btn>
                 </router-link>
 
                 <!-- Render different buttons based on the origin page -->
-            <router-link v-if="originPage === 'SavedTrips'" to="/SavedTrips">
-                <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" style="min-width: 150px;">
-                    Close
+            <router-link to="/GeneratedItinerary2">
+                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 " style="min-width: 150px;">
+                    Itinerary Details
                 </v-btn>
             </router-link>
-            <router-link v-else to="/GeneratedItinerary2">
-                <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" style="min-width: 150px;">
-                    Generate
+            <router-link to="/SavedTrips">
+                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-4"  @click="saveTrip" style="min-width: 150px;">
+                    Save Trip
                 </v-btn>
             </router-link>
             </v-col>
@@ -162,6 +162,8 @@
 
 <script>
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
 export default {
     name: 'SanFranciscoPage',
     props: ['originPage'],
@@ -257,6 +259,63 @@ export default {
         },
 
 
+    },
+    methods: {
+        saveTrip() {
+                console.log("From saveTrip() function: ")
+
+                //Get userID from cookies
+                const userID = Cookies.get('database_id');
+                console.log("Current user id:");
+                console.log(userID);
+
+                //Gathering data from vuex storage
+                const activities = this.$store.state.activities;
+                const landmarks = this.$store.state.landmarks;
+                const foods = this.$store.state.foods;
+                const shops = this.$store.state.shops;
+                const hotels = this.$store.state.hotels;
+                const datesData = this.$store.state.datesData;
+                const budget = this.$store.state.budget;
+                const stateData = this.$store.state.stateData;
+                const city = this.$store.state.city;
+                const lat = this.$store.state.lat;
+                const long = this.$store.state.long;
+                const cityDescription = this.$store.state.cityDescription;
+                const citySlogan = this.$store.state.citySlogan;
+                const latitude = this.$store.state.lat;
+                const longitude = this.$store.state.long;
+
+                //Condensing to sendable form
+                const tripData = {
+                    userID,
+                    activities,
+                    landmarks,
+                    foods,
+                    shops,
+                    hotels,
+                    datesData,
+                    budget,
+                    stateData,
+                    city,
+                    lat,
+                    long,
+                    cityDescription,
+                    citySlogan
+                };
+                console.log("Trip Data from vuex in ready to send:")
+                console.log(tripData)
+                
+                // Send data to Python backend
+                axios.post('http://localhost:8000/api/save_trip_to_user', tripData)
+                    .then(response => {
+                        console.log('Trip saved successfully:', response.data);
+                        // Optionally, you can perform any further actions here
+                    })
+                    .catch(error => {
+                        console.error('Error saving trip:', error);
+                    });
+            },
     },
 
 

@@ -7,17 +7,17 @@
             <v-col cols="12" class="text-center">
                 <div style="margin-top: 50px;">
                     <h1 style="font-size: 3.5rem;" class="headline text-deep-purple-accent-2">
-                        Welcome to {{ this.$store.state.city }}, {{ this.$store.state.stateData }}!
+                        Welcome to {{ this.$store.state.tripObject.city }}, {{ this.$store.state.tripObject.state }}!
                     </h1>
                     <h2 style="font-size: 2.25rem;" class="headline text-deep-purple-accent-2">
-                        {{ this.$store.state.citySlogan }}
+                        {{ this.$store.state.tripObject.city_slogan }}
                     </h2>
                     <h1 style="font-size: 1rem;" class="headline text-deep-purple-accent-2">
-                        Planned for {{ this.$store.state.datesData }} with a {{ budget }} budget trip.
+                        Planned for {{ this.$store.state.tripObject.dates }} with a {{ this.$store.state.tripObject.budget }} budget trip.
                     </h1>
                     <br>
                     <p style="font-size: 1.125rem">
-                        {{ this.$store.state.cityDescription }}
+                        {{ this.$store.state.tripObject.city_description }}
                     </p>
                     <br>
                     <hr>
@@ -26,7 +26,7 @@
         </v-row>
 
         <br>
-        <h2 class="section-title text-center">Discover {{ this.$store.state.city }} - Overview</h2>
+        <h2 class="section-title text-center">Discover {{ this.$store.state.tripObject.city }} - Overview</h2>
 
 
         <!-- Section with Image and Left Section -->
@@ -49,7 +49,7 @@
                     <div class="section-content">
                         <h3>Activities</h3>
                         <ul>
-                            <li v-for="activity in activities" :key="activity">{{ activity }}</li>
+                            <li v-for="activity in $store.state.tripObject.activities" :key="activity">{{ activity }}</li>
                         </ul>
                     </div>
 
@@ -57,7 +57,7 @@
                     <div class="section-content">
                         <h3>Iconic Landmarks</h3>
                         <ul>
-                            <li v-for="landmark in landmarks" :key="landmark">{{ landmark }}</li>
+                            <li v-for="landmark in $store.state.tripObject.landmarks" :key="landmark">{{ landmark }}</li>
                         </ul>
                     </div>
 
@@ -65,7 +65,7 @@
                     <div class="section-content">
                         <h3>Places to Eat</h3>
                         <ul>
-                            <li v-for="food in foods" :key="food">{{ food }}</li>
+                            <li v-for="food in $store.state.tripObject.foods" :key="food">{{ food }}</li>
                         </ul>
                     </div>
 
@@ -73,7 +73,7 @@
                     <div class="section-content">
                         <h3>Shopping Spots</h3>
                         <ul>
-                            <li v-for="shop in shops" :key="shop">{{ shop }}</li>
+                            <li v-for="shop in $store.state.tripObject.shops" :key="shop">{{ shop }}</li>
                         </ul>
                     </div>
                 </div>
@@ -91,7 +91,7 @@
             <hr>
             <br>
 
-            <h2 class="section-title" style="text-align: center;">Explore {{ this.$store.state.city }} - Map</h2>
+            <h2 class="section-title" style="text-align: center;">Explore {{ this.$store.state.tripObject.city }} - Map</h2>
             <p style="text-align: center;">
                 Explore this interactive map showcasing the locations of your selected points of interest, encompassing
                 your
@@ -100,7 +100,7 @@
             <br>
             <div style="position: relative; overflow: hidden; border-radius: 8px;">
                 <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y&center=' +
-                            this.$store.state.lat + ',' + this.$store.state.long + '&zoom=15&maptype=roadmap'"
+                            this.$store.state.tripObject.latitude + ',' + this.$store.state.tripObject.longitude + '&zoom=15&maptype=roadmap'"
                     allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <br>
@@ -133,25 +133,25 @@
         </div>
 
 
-        <!-- Two buttons on the bottom -->
+        <!-- Three buttons on the bottom -->
         <v-row justify="center" class="mt-4">
             <v-col cols="12" md="8" class="text-center">
-                <router-link to="/Itinerary">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
+                <router-link to="/Customize">
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-4" @click="previousStep"
                         style="min-width: 150px;">
                         Customize
                     </v-btn>
                 </router-link>
 
                 <!-- Render different buttons based on the origin page -->
-                <router-link v-if="originPage === 'SavedTrips'" to="/SavedTrips">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" style="min-width: 150px;">
-                        Close
+                <router-link to="/SavedItinerary2">
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6" style="min-width: 150px;">
+                        Itinerary Details
                     </v-btn>
                 </router-link>
-                <router-link v-else to="/GeneratedItinerary2">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" style="min-width: 150px;">
-                        Generate
+                <router-link to="/SavedTrips">
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-4" style="min-width: 150px;">
+                        Close
                     </v-btn>
                 </router-link>
             </v-col>
@@ -165,9 +165,8 @@ export default {
     mounted() {
         const tripObject = this.$store.state.tripObject;
         console.log("This is the saved object: " + tripObject)
-        console.log(tripObject.id)
-        console.log(tripObject.city)
-        console.log(tripObject.city_Description)
+        console.log("activities: " + this.$store.state.tripObject.activities)
+        
 
 
 

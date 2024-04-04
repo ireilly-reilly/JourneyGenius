@@ -157,7 +157,7 @@
   <!-- Save button -->
   <v-row justify="center" class="mt-4">
     <v-col cols="12" md="1" class="text-center">
-      <v-btn class="save-btn" color="deep-purple-accent-2" @click="saveData">
+      <v-btn size="large" class="save-btn" color="deep-purple-accent-2" @click="saveData">
         Save
       </v-btn>
     </v-col>

@@ -32,7 +32,7 @@
         <v-row justify="center" class="mt-4">
             <v-col cols="12" md="8" class="text-center">
                 <router-link to="/GeneratedItinerary">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
                         style="min-width: 150px;">
                         Go Back
                     </v-btn>
@@ -40,7 +40,7 @@
     
                 <!-- Call method to save trip to database here-->
                 <router-link to="/SavedTrips">
-                    <v-btn color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip" style="min-width: 150px;">
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip" style="min-width: 150px;">
                         Save Trip
                     </v-btn>
                 </router-link>
