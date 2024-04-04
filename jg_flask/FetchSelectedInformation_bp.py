@@ -99,10 +99,53 @@ FetchSelectedInformation_bp = Blueprint('FetchSelectedInformation_bp', __name__)
 
 # Define route to handle description request
 @FetchSelectedInformation_bp.route('/process_data', methods=['POST'])
+# def process_data():
+#     try:
+#         data = request.json
+#         foods = data.get('foods')
+#         print(foods)
+
+#         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
+#         CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
+#         restaurant_csv_file_path = os.path.join(CSV_FOLDER, 'restaurant_data.csv')
+
+#         df = pd.read_csv(restaurant_csv_file_path, encoding='utf-8') 
+
+#         locations = []
+#         photo_urls = []
+        
+#         for food in foods:
+#             subset = df.loc[df['Place'] == food, ['Latitude', 'Longitude']]
+
+#             for index, row in subset.iterrows():
+#                 latitude = float(row['Latitude'])
+#                 longitude = float(row['Longitude'])
+#                 locations.append({'latitude': latitude, 'longitude': longitude})
+
+#             for location in locations:
+#                 latitude = location['latitude']
+#                 longitude = location['longitude']
+#                 photo_url = fetch_single_photo(latitude, longitude)
+#                 photo_urls.append(photo_url)
+
+#         response_data = {
+#             'message': 'Location data and photo URLs retrieved successfully',
+#             'locations': locations,
+#             'photo_urls': photo_urls
+#         }
+
+#         return jsonify(response_data), 200
+
+#     except Exception as e:
+#         error_message = str(e)
+#         print("Error processing data:", error_message)
+#         return jsonify({'error': 'An error occurred while processing the data', 'message': error_message})
+
 def process_data():
     try:
         data = request.json
         foods = data.get('foods')
+        print(foods)
 
         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
         CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
@@ -111,6 +154,7 @@ def process_data():
         df = pd.read_csv(restaurant_csv_file_path, encoding='utf-8') 
 
         locations = []
+        photo_urls = []
         for food in foods:
             subset = df.loc[df['Place'] == food, ['Latitude', 'Longitude']]
 
@@ -119,17 +163,16 @@ def process_data():
                 longitude = float(row['Longitude'])
                 locations.append({'latitude': latitude, 'longitude': longitude})
 
-        photo_urls = []
-        for location in locations:
-            latitude = location['latitude']
-            longitude = location['longitude']
-            photo_url = fetch_single_photo(latitude, longitude)
-            photo_urls.append(photo_url)
+                print(locations)
+                photo_url = fetch_single_photo(latitude, longitude)
+                photo_urls.append(photo_url)
+
+        # photo_url = fetch_single_photo(47.611757, -122.2895465)
 
         response_data = {
             'message': 'Location data and photo URLs retrieved successfully',
             'locations': locations,
-            'photo_urls': photo_urls
+            'photo_urls': photo_url
         }
 
         return jsonify(response_data), 200
@@ -143,17 +186,24 @@ def fetch_single_photo(latitude, longitude):
     try:
         nearby_search_results = gmaps.places_nearby(location=(latitude, longitude), radius=15)
         if nearby_search_results['results']:
-            place_id = nearby_search_results['results'][0]['place_id']
-            place_details = gmaps.place(place_id)
-            if 'photos' in place_details['result']:
-                photo_reference = place_details['result']['photos'][0]['photo_reference']
-                photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
-                
-                return photo_url
-            else:
-                return None
+            for place in nearby_search_results['results']:
+                if 'photos' in place:
+                    photo_reference = place['photos'][0]['photo_reference']
+                    print(f"Photo Reference: {photo_reference}")
+
+                    # Construct photo URL
+                    photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+                    print(f"Photo URL: {photo_url}")
+
+                    return photo_url  # Return the first photo URL found
+            # If no photo URLs found
+            print("No photo URLs found for the nearby places.")
+            return None
         else:
+            print("No nearby places found.")
             return None
     except ApiError as e:
         print(f"Error fetching photo: {e}")
         return None
+
+
