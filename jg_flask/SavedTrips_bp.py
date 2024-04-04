@@ -74,3 +74,33 @@ def delete_trip(trip_id):
         return jsonify({'message': 'Trip deleted successfully'}), 200
     else:
         return jsonify({'error': 'Trip not found or unauthorized to delete'}), 404
+    
+    
+@saved_trips_bp.route('/fetch_saved_itinerary/<trip_id>', methods=['GET'])
+@jwt_required()  # Requires authentication
+def get_saved_itinerary(trip_id):
+    current_user_id = get_jwt_identity()  # Get current user's ID from JWT token
+    # Query the database for the saved trip associated with the current user and specified trip ID
+    saved_trip = Trip.query.filter_by(id=trip_id, user_id=current_user_id).first()
+    if saved_trip:
+        serialized_trip = {
+            'id': saved_trip.id,
+            'city': saved_trip.city,
+            'city_description': saved_trip.city_description,
+            'activities': saved_trip.activities,
+            'landmarks': saved_trip.landmarks,
+            'foods': saved_trip.foods,
+            'shops': saved_trip.shops,
+            'hotels': saved_trip.hotels,
+            'foods': saved_trip.foods,
+            'state': saved_trip.state,
+            'city': saved_trip.city,
+            'dates': saved_trip.dates,
+            'budget': saved_trip.budget,
+            'latitude': saved_trip.latitude,
+            'longitude': saved_trip.longitude,
+            'city_slogan': saved_trip.city_slogan,
+        }
+        return jsonify({'savedTrip': serialized_trip}), 200
+    else:
+        return jsonify({'error': 'Saved trip not found or unauthorized to access'}), 404

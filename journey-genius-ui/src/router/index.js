@@ -23,6 +23,8 @@ import SuperuserAccounts from '../views/SuperuserAccounts.vue'
 import SuperuserAccountDetails from '../views/SuperuserAccountDetails.vue'
 import SuperuserAnalytics from '../views/SuperuserAnalytics.vue'
 
+import SavedItinerary from '../views/SavedItinerary.vue'
+
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import SuperuserLayout from '@/layouts/SuperuserLayout.vue'
 
@@ -169,6 +171,12 @@ const routes = [
     component: SuperuserAnalytics,
     meta: { requiresSuperuser: true } 
   },
+  {
+    path: '/SavedItinerary',
+    name: 'SavedItinerary',
+    component: SavedItinerary,
+    props: true,
+  }
 ]
 
 const router = createRouter({
