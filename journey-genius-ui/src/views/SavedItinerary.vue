@@ -162,14 +162,39 @@
 <script>
 import axios from 'axios';
 export default {
-    created() {
-        this.savedTrip = this.$route.params.savedTrip;
-        console.log("This is the saved trip: " + this.savedTrip)
+    mounted() {
+        const tripObject = this.$store.state.tripObject;
+        console.log("This is the saved object: " + tripObject)
+        console.log(tripObject.id)
+        console.log(tripObject.city)
+        console.log(tripObject.city_Description)
+
+
+
+        // axios.get(`http://localhost:8000/api/fetch_saved_itinerary/${tripId}`, {
+        //     // headers: {
+        //     //   Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        //     // }
+        // })
+        //     .then(response => {
+        //         if (response.status === 200) {
+        //             this.savedTripDetails = response.data.savedTrip;
+        //             console.log('Saved trip details:', this.savedTripDetails);
+        //         } else {
+        //             throw new Error('Failed to fetch saved trip details');
+        //         }
+        //     })
+        //     .catch(error => {
+        //         console.error('Error fetching saved trip details:', error);
+        //         // alert('Failed to fetch saved trip details. Please try again.');
+        //     });
     },
 
     data() {
         return {
-            savedTrip: null
+            tripId: null,
+            savedTripDetails: null,
+
         };
     },
 

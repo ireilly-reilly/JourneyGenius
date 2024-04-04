@@ -18,6 +18,23 @@ const store = createStore({
     cityDescription: null,
     citySlogan: null,
     tripLength: null,
+    
+    tripObject: {
+      id: null,
+      city: null,
+      city_description: null,
+      activities: [],
+      landmarks: [],
+      foods: [],
+      shops: [],
+      hotels: [],
+      state: null,
+      dates: null,
+      budget: null,
+      latitude: null,
+      longitude: null,
+      city_slogan: null
+    },
   },
   // directly update the state properties when committed 
   // We currently only use mutations for the Itinerary Page (the checkboxes are stored in vuex using mutation)
@@ -91,6 +108,9 @@ const store = createStore({
     },
     updateTripLength(state, tripLength) {
       state.tripLength = tripLength;
+    },
+    updateTripObject(state, tripObject) {
+      state.tripObject = tripObject;
     }
 
 

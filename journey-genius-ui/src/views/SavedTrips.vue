@@ -190,11 +190,15 @@ export default {
           if (response.status === 200) {
             const savedTripDetails = response.data.savedTrip;
             console.log('Saved trip details:', savedTripDetails);
+
+            this.$store.commit('updateTripObject', savedTripDetails);
+            this.$router.push("SavedItinerary");
+
             // Route to the SavedItinerary page and pass savedTripDetails as a route parameter
-            this.$router.push({
-              name: 'SavedItinerary',
-              params: { savedTrip: savedTripDetails }
-            });
+            // this.$router.push({
+            //   name: 'SavedItinerary',
+            //   params: { savedTrip: savedTripDetails }
+            // });
           } else {
             throw new Error('Failed to fetch saved trip details');
           }
@@ -202,8 +206,15 @@ export default {
         .catch(error => {
           console.error('Error fetching saved trip details:', error);
           alert('Failed to fetch saved trip details. Please try again.');
-        });
+        }
+        );
+
+        // const tripId = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
+        // console.log("tripId: " + tripId);
+        // this.$store.commit('updateTripId', tripId);
+        // this.$router.push("SavedItinerary");
     }
+
 
 
 
