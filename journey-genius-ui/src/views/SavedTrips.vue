@@ -1,5 +1,9 @@
 <template>
+  
   <v-container>
+    <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+            <span class="text-center">Trip Deleted Successfully</span>
+          </v-snackbar>
     <!-- Saved Trips Introduction -->
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
@@ -121,7 +125,7 @@ export default {
     return {
       savedTrips: [],
       imageSrc: require('@/assets/sf.jpeg'), //This will need to be changed to actual image 
-
+      showSnackbar: false,
     };
     defineProps({
       originPage: String
@@ -160,10 +164,12 @@ export default {
           .then(response => {
             if (response.status === 200) {
               // Remove the deleted trip from the savedTrips array
+              this.showSnackbar= true;
               const deletedIndex = this.savedTrips.findIndex(trip => trip.id === trip_id);
               if (deletedIndex !== -1) {
                 this.savedTrips.splice(deletedIndex, 1);
               }
+              
             } else {
               throw new Error('Failed to delete trip');
             }

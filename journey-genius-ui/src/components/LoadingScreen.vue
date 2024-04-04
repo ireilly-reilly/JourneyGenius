@@ -10,7 +10,7 @@
         <div class="loading-text">{{ progress }}%</div>
       </v-col>
       <v-col cols="12">
-        <div class="loading-text2">Loading...</div>
+        <div class="loading-text2">Gathering Data...</div>
       </v-col>
     </v-row>
   </div>

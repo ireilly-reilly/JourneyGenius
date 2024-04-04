@@ -2,7 +2,9 @@
 
 <template>
     <v-container>
-
+        <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+            <span class="text-center">Trip Saved Successfully</span>
+          </v-snackbar>
         <!-- Title and Information Section -->
         <v-row justify="center">
             <v-col cols="12" class="text-center">
@@ -167,6 +169,7 @@ import Cookies from 'js-cookie';
 export default {
     name: 'SanFranciscoPage',
     props: ['originPage'],
+    showSnackbar: false,
 
 
     mounted() {
@@ -310,6 +313,7 @@ export default {
                 axios.post('http://localhost:8000/api/save_trip_to_user', tripData)
                     .then(response => {
                         console.log('Trip saved successfully:', response.data);
+                        this.showSnackbar = true;
                         // Optionally, you can perform any further actions here
                     })
                     .catch(error => {
