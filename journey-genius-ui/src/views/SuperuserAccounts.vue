@@ -193,6 +193,7 @@ export default {
 
 .user-accounts-page .v-data-table .v-data-table-body tr:hover {
     background-color: #171515;
+    position: fixed;
     /* Darker background color for hover effect */
 }
 

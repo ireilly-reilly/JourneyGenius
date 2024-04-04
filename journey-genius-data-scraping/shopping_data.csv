@@ -441,8 +441,12 @@ Emporium Centre San Francisco,,"shopping_mall, point_of_interest, establishment"
 The Grove,2,"shopping_mall, store, restaurant, food, point_of_interest, establishment","189 The Grove Dr, Los Angeles, CA 90036, USA",90036,Los Angeles,California,United States,34.0719407,-118.3575164
 Northgate Station,,"shopping_mall, point_of_interest, establishment","401 NE Northgate Way, Seattle, WA 98125, USA",98125,Seattle,Washington,United States,47.70612269999999,-122.3258649
 Great Mall,,"shopping_mall, point_of_interest, establishment","447 Great Mall Dr, Milpitas, CA 95035, USA",95035,Milpitas,California,United States,37.415738,-121.897412
+<<<<<<< Updated upstream
 Mammoth Mall Shopping Center,,"shopping_mall, point_of_interest, establishment","Old Mammoth Rd, Mammoth Lakes, CA 93546, USA",93546,Mammoth Lakes,California,United States,37.6444104,-118.9668737
 Emporium Centre San Francisco,,"shopping_mall, point_of_interest, establishment","865 Market St, San Francisco, CA 94103, USA",94103,San Francisco,California,United States,37.78428340000001,-122.40712
 Valley Shopping Center,,"shopping_mall, point_of_interest, establishment","S Madera Ave, Kerman, CA 93630, USA",93630,Kerman,California,United States,36.7319903,-120.0598433
 Navy Exchange Main,,"department_store, shopping_mall, point_of_interest, store, establishment","4755 Pasture Rd Building No. 341, Fallon, NV 89496, USA",89496,Fallon,Nevada,United States,39.4226023,-118.7236204
 Navy Exchange Main,,"department_store, shopping_mall, point_of_interest, store, establishment","4755 Pasture Rd Building No. 341, Fallon, NV 89496, USA",89496,Fallon,Nevada,United States,39.4226023,-118.7236204
+=======
+Sunglass Hut,3,"shopping_mall, store, point_of_interest, establishment","350 N Milwaukee St #2154, Boise, ID 83704, USA",83704,Boise,Idaho,United States,43.60821399999999,-116.277462
+>>>>>>> Stashed changes
