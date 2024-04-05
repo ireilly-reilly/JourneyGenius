@@ -6,11 +6,11 @@
       <v-col cols="12">
         <div center class="d-flex justify-center loading-spinner"></div>
       </v-col>
-      <v-col cols="12">
+      <v-col cols="12" style="margin-top: 10px;">
         <div class="loading-text">{{ progress }}%</div>
       </v-col>
       <v-col cols="12">
-        <div class="loading-text2">Gathering Data...</div>
+        <div class="loading-text2" style="margin-top: -40px;"> Gathering Data...</div>
       </v-col>
     </v-row>
   </div>
@@ -70,7 +70,7 @@ export default {
   color: #f3f3f3;
   margin-bottom: 40px;
   align-content: center;
-  font-size: 20px;
+  font-size: 40px;
 }
 
 .loading-text2 {

@@ -1,9 +1,13 @@
 <template>
-  
+
   <v-container>
-    <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-            <span class="text-center">Trip Deleted Successfully</span>
+
+    <div class="text-center">
+          <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+            <span class="centered-text">Successfully Deleted.</span>
           </v-snackbar>
+        </div>
+
     <!-- Saved Trips Introduction -->
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
@@ -58,7 +62,7 @@
         </v-col>
       </v-row> -->
 
-
+      
 
 
     <v-row justify="center" v-if="savedTrips && savedTrips.length > 0">
@@ -94,11 +98,27 @@
                 <v-btn size="large" color="white" class="mr-4" @click="getSavedTripDetails(index)">
                   Open Itinerary <v-icon class="ml-1" right>mdi-map-marker</v-icon>
                 </v-btn>
-                <v-btn size="large" color="white" @click="confirmDelete(index)">
+                <v-btn size="large" color="white" @click="showConfirmationDialog">
                   Delete Trip <v-icon class="ml-1" right>mdi-delete</v-icon>
                 </v-btn>
               </v-row>
             </v-overlay>
+
+
+            <v-dialog v-model="dialogVisible" max-width="650">
+              <v-card>
+                <v-card-title class="headline"
+                  style="padding-left: 25px; padding-top: 15px;">Confirmation</v-card-title>
+                <v-card-text>
+                  Are you sure you want to delete this trip? This action cannot be undone.
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="deep-purple-accent-2" text @click="dialogVisible = false">No</v-btn>
+                  <v-btn color="red darken-1" text @click="confirmDelete(index)">Yes</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
           </v-card>
         </v-hover>
       </v-col>
@@ -113,6 +133,11 @@
           one!</p>
       </v-col>
     </v-row>
+
+
+
+
+
   </v-container>
 
 </template>
@@ -126,6 +151,8 @@ export default {
       savedTrips: [],
       imageSrc: require('@/assets/sf.jpeg'), //This will need to be changed to actual image 
       showSnackbar: false,
+      dialogVisible: false,
+
     };
     defineProps({
       originPage: String
@@ -151,34 +178,39 @@ export default {
         });
     },
     confirmDelete(index) {
-      const isConfirmed = window.confirm('Are you sure you want to delete this trip?');
+      // const isConfirmed = window.confirm('Are you sure you want to delete this trip?');
 
-      if (isConfirmed) {
-        const jwtToken = Cookies.get('login_token');
-        const trip_id = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
-        axios.delete(`http://localhost:8000/api/delete_trip/${trip_id}`, {
-          headers: {
-            Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+      // if (isConfirmed) {
+        
+      const jwtToken = Cookies.get('login_token');
+      const trip_id = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
+      axios.delete(`http://localhost:8000/api/delete_trip/${trip_id}`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+      })
+        .then(response => {
+          if (response.status === 200) {
+            // Remove the deleted trip from the savedTrips array
+            this.showSnackbar = true;
+            const deletedIndex = this.savedTrips.findIndex(trip => trip.id === trip_id);
+            if (deletedIndex !== -1) {
+              this.savedTrips.splice(deletedIndex, 1);
+            }
+            this.dialogVisible = false;
+
+          } else {
+            throw new Error('Failed to delete trip');
           }
         })
-          .then(response => {
-            if (response.status === 200) {
-              // Remove the deleted trip from the savedTrips array
-              this.showSnackbar= true;
-              const deletedIndex = this.savedTrips.findIndex(trip => trip.id === trip_id);
-              if (deletedIndex !== -1) {
-                this.savedTrips.splice(deletedIndex, 1);
-              }
-              
-            } else {
-              throw new Error('Failed to delete trip');
-            }
-          })
-          .catch(error => {
-            console.error('Error deleting trip:', error);
-            alert('Failed to delete trip. Please try again.');
-          });
-      }
+        .catch(error => {
+          console.error('Error deleting trip:', error);
+          alert('Failed to delete trip. Please try again.');
+        });
+      // }
+    },
+    showConfirmationDialog() {
+      this.dialogVisible = true;
     },
     getSavedTripDetails(index) {
       const jwtToken = Cookies.get('login_token');
@@ -215,10 +247,10 @@ export default {
         }
         );
 
-        // const tripId = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
-        // console.log("tripId: " + tripId);
-        // this.$store.commit('updateTripId', tripId);
-        // this.$router.push("SavedItinerary");
+      // const tripId = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
+      // console.log("tripId: " + tripId);
+      // this.$store.commit('updateTripId', tripId);
+      // this.$router.push("SavedItinerary");
     }
 
 
@@ -229,5 +261,10 @@ export default {
 </script>
 
 <style scoped>
-/* Add custom styles if needed */
+.centered-text {
+  display: block;
+  text-align: center;
+  font-size: medium;
+}
+
 </style>

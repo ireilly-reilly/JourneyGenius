@@ -6,7 +6,7 @@
     <v-col cols="12">
       <div center class="d-flex justify-center loading-spinner"></div>
     </v-col>
-    <v-col cols="12">
+    <v-col cols="12" style="margin-top: 10px;">
       <div class="loading-text2">Generating Trip...</div>
     </v-col>
   </v-row>

@@ -1,10 +1,7 @@
-
-
 <template>
+    <v-app>
     <v-container>
-        <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-            <span class="text-center">Trip Saved Successfully</span>
-          </v-snackbar>
+        
         <!-- Title and Information Section -->
         <v-row justify="center">
             <v-col cols="12" class="text-center">
@@ -135,6 +132,13 @@
             </v-row>
         </div>
 
+        <div class="text-center">
+        <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+            <span class="text-center">Trip Successfully Saved!</span>
+          </v-snackbar>
+        </div>
+
+
 
         <!-- Three buttons on the bottom -->
         <v-row justify="center" class="mt-4">
@@ -160,6 +164,7 @@
             </v-col>
         </v-row>
     </v-container>
+</v-app>
 </template>
 
 <script>
@@ -167,10 +172,12 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export default {
-    name: 'SanFranciscoPage',
-    props: ['originPage'],
-    showSnackbar: false,
 
+    data() {
+        return {
+            showSnackbar: false,
+        }
+    },
 
     mounted() {
         // Accessing the variables from the Vuex store
@@ -265,6 +272,7 @@ export default {
     },
     methods: {
         saveTrip() {
+                
                 console.log("From saveTrip() function: ")
 
                 //Get userID from cookies
@@ -309,11 +317,14 @@ export default {
                 console.log("Trip Data from vuex in ready to send:")
                 console.log(tripData)
                 
+                
                 // Send data to Python backend
                 axios.post('http://localhost:8000/api/save_trip_to_user', tripData)
                     .then(response => {
                         console.log('Trip saved successfully:', response.data);
                         this.showSnackbar = true;
+                        console.log("The snackbar boolean is:  " + this.showSnackbar)
+                        
                         // Optionally, you can perform any further actions here
                     })
                     .catch(error => {

@@ -461,4 +461,8 @@ export default defineComponent({
 .error-outline {
   border-color: red;
 }
+
+/* .form-control:focus {
+    background-color: deep-purple-accent-2;
+  } */
 </style>

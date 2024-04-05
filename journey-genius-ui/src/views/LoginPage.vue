@@ -5,7 +5,7 @@
         <div class="text-center">
           <!-- Other template markup -->
           <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-            <span class="text-center">Login Successful!</span>
+            <span class="centered-text">Login Successful!</span>
           </v-snackbar>
         </div>
       </template>
@@ -171,5 +171,11 @@ export default {
 
 .error-outline {
   border-color: red;
+}
+
+.centered-text {
+  display: block;
+  text-align: center;
+  font-size: medium;
 }
 </style>

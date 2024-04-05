@@ -123,10 +123,9 @@
               <v-card class="pa-3" elevation="10" style="flex: 1;">
                 <div class="d-flex flex-column align-center">
                   <v-icon class="display-1 mb-2">mdi-directions</v-icon>
-                  <h3 class="subtitle-1 text-center">Optimal Route Planning</h3>
+                  <h3 class="subtitle-1 text-center">Route Planning</h3>
                   <p class="body-1 text-center description-height3">
-                    Our AI algorithms analyze your preferences to craft the most efficient route, saving you time and
-                    effort.
+                    Our AI algorithms provide specific addresses for each chosen location, saving you time and effort.
                   </p>
                 </div>
               </v-card>

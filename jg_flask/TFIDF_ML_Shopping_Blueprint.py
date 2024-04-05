@@ -214,8 +214,8 @@ def recommend():
 
 
         # Return the recommended places (limited to 10)
-        descriptions = descriptionGeneration(place_names)
-        return jsonify({'recommended_places': descriptions[:5]})
+        # descriptions = descriptionGeneration(place_names)
+        # return jsonify({'recommended_places': descriptions[:5]})
     
         # Use this for the recommended places without the description!
         return jsonify({'recommended_places': place_names[:5]})
