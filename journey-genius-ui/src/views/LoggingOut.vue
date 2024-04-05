@@ -41,7 +41,7 @@
     mounted() {
       setTimeout(() => {
         this.$router.push({ name: 'Home' });
-      }, 3000); // 3000 milliseconds = 3 seconds
+      }, 2000); // 3000 milliseconds = 3 seconds
     },
     data() {
       return {

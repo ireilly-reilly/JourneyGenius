@@ -441,8 +441,42 @@ Emporium Centre San Francisco,,"shopping_mall, point_of_interest, establishment"
 The Grove,2,"shopping_mall, store, restaurant, food, point_of_interest, establishment","189 The Grove Dr, Los Angeles, CA 90036, USA",90036,Los Angeles,California,United States,34.0719407,-118.3575164
 Northgate Station,,"shopping_mall, point_of_interest, establishment","401 NE Northgate Way, Seattle, WA 98125, USA",98125,Seattle,Washington,United States,47.70612269999999,-122.3258649
 Great Mall,,"shopping_mall, point_of_interest, establishment","447 Great Mall Dr, Milpitas, CA 95035, USA",95035,Milpitas,California,United States,37.415738,-121.897412
+<<<<<<< Updated upstream
 Mammoth Mall Shopping Center,,"shopping_mall, point_of_interest, establishment","Old Mammoth Rd, Mammoth Lakes, CA 93546, USA",93546,Mammoth Lakes,California,United States,37.6444104,-118.9668737
 Emporium Centre San Francisco,,"shopping_mall, point_of_interest, establishment","865 Market St, San Francisco, CA 94103, USA",94103,San Francisco,California,United States,37.78428340000001,-122.40712
 Valley Shopping Center,,"shopping_mall, point_of_interest, establishment","S Madera Ave, Kerman, CA 93630, USA",93630,Kerman,California,United States,36.7319903,-120.0598433
 Navy Exchange Main,,"department_store, shopping_mall, point_of_interest, store, establishment","4755 Pasture Rd Building No. 341, Fallon, NV 89496, USA",89496,Fallon,Nevada,United States,39.4226023,-118.7236204
 Navy Exchange Main,,"department_store, shopping_mall, point_of_interest, store, establishment","4755 Pasture Rd Building No. 341, Fallon, NV 89496, USA",89496,Fallon,Nevada,United States,39.4226023,-118.7236204
+=======
+Sunglass Hut,3,"shopping_mall, store, point_of_interest, establishment","350 N Milwaukee St #2154, Boise, ID 83704, USA",83704,Boise,Idaho,United States,43.60821399999999,-116.277462
+>>>>>>> Stashed changes
+Coddingtown Shopping Center,,"shopping_mall, point_of_interest, establishment","1300 Coddingtown Center, Santa Rosa, CA 95401, USA",95401,Santa Rosa,California,United States,38.45781939999999,-122.7302111
+Mammoth Mall Shopping Center,,"shopping_mall, point_of_interest, establishment","Old Mammoth Rd, Mammoth Lakes, CA 93546, USA",93546,Mammoth Lakes,California,United States,37.6444104,-118.9668737
+Navy Exchange Main,,"department_store, shopping_mall, point_of_interest, store, establishment","4755 Pasture Rd Building No. 341, Fallon, NV 89496, USA",89496,Fallon,Nevada,United States,39.4226023,-118.7236204
+Great Mall,,"shopping_mall, point_of_interest, establishment","447 Great Mall Dr, Milpitas, CA 95035, USA",95035,Milpitas,California,United States,37.415738,-121.897412
+San Francisco Premium Outlets,,"shopping_mall, point_of_interest, establishment","2774 Livermore Outlets Dr, Livermore, CA 94551, USA",94551,Livermore,California,United States,37.6987272,-121.8440481
+Arden Fair,,"shopping_mall, clothing_store, restaurant, food, point_of_interest, store, establishment","1689 Arden Wy, Sacramento, CA 95815, USA",95815,Sacramento,California,United States,38.6011646,-121.4276086
+Great Mall,,"shopping_mall, point_of_interest, establishment","447 Great Mall Dr, Milpitas, CA 95035, USA",95035,Milpitas,California,United States,37.415738,-121.897412
+Great Mall,,"shopping_mall, point_of_interest, establishment","447 Great Mall Dr, Milpitas, CA 95035, USA",95035,Milpitas,California,United States,37.415738,-121.897412
+Great Mall,,"shopping_mall, point_of_interest, establishment","447 Great Mall Dr, Milpitas, CA 95035, USA",95035,Milpitas,California,United States,37.415738,-121.897412
+Arden Fair,,"shopping_mall, clothing_store, store, restaurant, food, point_of_interest, establishment","1689 Arden Wy, Sacramento, CA 95815, USA",95815,Sacramento,California,United States,38.6011646,-121.4276086
+Arden Fair,,"shopping_mall, clothing_store, restaurant, food, point_of_interest, store, establishment","1689 Arden Wy, Sacramento, CA 95815, USA",95815,Sacramento,California,United States,38.6011646,-121.4276086
+The Outlets at Legends,,"shopping_mall, point_of_interest, establishment","1310 Scheels Drive, Sparks, NV 89434, USA",89434,Sparks,Nevada,United States,39.5316589,-119.7208903
+Arden Fair,,"shopping_mall, clothing_store, restaurant, food, point_of_interest, store, establishment","1689 Arden Wy, Sacramento, CA 95815, USA",95815,Sacramento,California,United States,38.6011646,-121.4276086
+Arden Fair,,"shopping_mall, clothing_store, store, restaurant, food, point_of_interest, establishment","1689 Arden Wy, Sacramento, CA 95815, USA",95815,Sacramento,California,United States,38.6011646,-121.4276086
+Grayling Mini-Mall,,"shopping_mall, point_of_interest, establishment","2384 I-75BL, Grayling, MI 49738, USA",49738,Grayling,Michigan,United States,44.6504104,-84.7097089
+Great Mall,,"shopping_mall, point_of_interest, establishment","447 Great Mall Dr, Milpitas, CA 95035, USA",95035,Milpitas,California,United States,37.415738,-121.897412
+Arden Fair,,"shopping_mall, clothing_store, restaurant, food, point_of_interest, store, establishment","1689 Arden Wy, Sacramento, CA 95815, USA",95815,Sacramento,California,United States,38.6011646,-121.4276086
+Meadowood Mall,,"shopping_mall, point_of_interest, establishment","5000 Meadowood Mall Cir, Reno, NV 89502, USA",89502,Reno,Nevada,United States,39.4739865,-119.7828143
+Vacaville Premium Outlets,,"shopping_mall, point_of_interest, establishment","321 Nut Tree Rd, Vacaville, CA 95687, USA",95687,Vacaville,California,United States,38.3668064,-121.9573643
+Great Mall,,"shopping_mall, point_of_interest, establishment","447 Great Mall Dr, Milpitas, CA 95035, USA",95035,Milpitas,California,United States,37.415738,-121.897412
+Westfield Garden State Plaza,,"shopping_mall, department_store, shoe_store, movie_theater, clothing_store, restaurant, food, point_of_interest, store, establishment","One Garden State Plaza Pkwy, Paramus, NJ 07652, USA",07652,Paramus,New Jersey,United States,40.91817289999999,-74.076331
+The River at Rancho Mirage,,"shopping_mall, point_of_interest, establishment","71800 CA-111, Rancho Mirage, CA 92270, USA",92270,Rancho Mirage,California,United States,33.7401278,-116.4098097
+Westfield Garden State Plaza,,"shopping_mall, department_store, shoe_store, clothing_store, movie_theater, store, restaurant, food, point_of_interest, establishment","One Garden State Plaza Pkwy, Paramus, NJ 07652, USA",07652,Paramus,New Jersey,United States,40.91817289999999,-74.076331
+Westfield Garden State Plaza,,"shopping_mall, shoe_store, department_store, movie_theater, clothing_store, store, restaurant, point_of_interest, food, establishment","One Garden State Plaza Pkwy, Paramus, NJ 07652, USA",07652,Paramus,New Jersey,United States,40.91817289999999,-74.076331
+Westfield Garden State Plaza,,"shopping_mall, department_store, shoe_store, movie_theater, clothing_store, store, restaurant, food, point_of_interest, establishment","One Garden State Plaza Pkwy, Paramus, NJ 07652, USA",07652,Paramus,New Jersey,United States,40.91817289999999,-74.076331
+Westfield Garden State Plaza,,"shopping_mall, department_store, shoe_store, clothing_store, movie_theater, store, restaurant, food, point_of_interest, establishment","One Garden State Plaza Pkwy, Paramus, NJ 07652, USA",07652,Paramus,New Jersey,United States,40.91817289999999,-74.076331
+Westfield Garden State Plaza,,"shopping_mall, department_store, shoe_store, clothing_store, movie_theater, store, restaurant, food, point_of_interest, establishment","One Garden State Plaza Pkwy, Paramus, NJ 07652, USA",07652,Paramus,New Jersey,United States,40.91817289999999,-74.076331
+The River at Rancho Mirage,,"shopping_mall, point_of_interest, establishment","71800 CA-111, Rancho Mirage, CA 92270, USA",92270,Rancho Mirage,California,United States,33.7401278,-116.4098097
+The River at Rancho Mirage,,"shopping_mall, point_of_interest, establishment","71800 CA-111, Rancho Mirage, CA 92270, USA",92270,Rancho Mirage,California,United States,33.7401278,-116.4098097
+The River at Rancho Mirage,,"shopping_mall, point_of_interest, establishment","71800 CA-111, Rancho Mirage, CA 92270, USA",92270,Rancho Mirage,California,United States,33.7401278,-116.4098097

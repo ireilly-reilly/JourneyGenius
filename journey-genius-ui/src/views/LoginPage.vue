@@ -5,7 +5,7 @@
         <div class="text-center">
           <!-- Other template markup -->
           <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-            <span class="text-center">Login Successful!</span>
+            <span class="centered-text">Login Successful!</span>
           </v-snackbar>
         </div>
       </template>
@@ -104,7 +104,7 @@ export default {
           this.showSnackbar = true; // Show the Snackbar
           setTimeout(() => {
             this.$router.push({ name: 'Home' });
-          }, 3000);
+          }, 1000);
 
           // Redirect to the home page
           // this.$router.push({ name: 'Home' });
@@ -171,5 +171,11 @@ export default {
 
 .error-outline {
   border-color: red;
+}
+
+.centered-text {
+  display: block;
+  text-align: center;
+  font-size: medium;
 }
 </style>

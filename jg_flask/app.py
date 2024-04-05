@@ -150,8 +150,10 @@ class Trip(db.Model):
 #Blueprints requiring database info go here because of circular import issues (idk why)
 from SuperuserAccounts import superuser_accounts_bp
 from SavedTrips_bp import saved_trips_bp
+from SuperuserAnalytics_bp import superuser_analytics_bp
 app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
 app.register_blueprint(saved_trips_bp, url_prefix='/api')
+app.register_blueprint(superuser_analytics_bp, url_prefix='/api')
 
 #This is a command line prompt to create an initial super user
 #Used like this: flask create_super_user

@@ -1,5 +1,8 @@
 <template>
     <v-container fluid class="no-border">
+        <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+            <span class="text-center">Trip Saved Successfully</span>
+          </v-snackbar>
       <v-row>
         <v-col v-for="(day, index) in itinerary" :key="index" cols="12">
           <v-card class="activity-card" style="display: flex; flex-direction: column; height: 100%;">
@@ -55,6 +58,7 @@
         data() {
             return {
                 itinerary : [],
+                showSnackbar: false,
                 // itinerary: [
                 //     {
                 //         title: 'Day 1 - Tuesday, December 13',
@@ -314,6 +318,7 @@
                 axios.post('http://localhost:8000/api/save_trip_to_user', tripData)
                     .then(response => {
                         console.log('Trip saved successfully:', response.data);
+                        this.showSnackbar = true;
                         // Optionally, you can perform any further actions here
                     })
                     .catch(error => {
