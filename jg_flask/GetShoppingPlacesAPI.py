@@ -56,7 +56,7 @@ def scrape_shopping():
 
     ############################################## We can change this keyword in the future ##############################################
     # keyword = 'mexican' 
-    desired_result_count = 1
+    desired_result_count = 10
     # Desired result count here
 
 
