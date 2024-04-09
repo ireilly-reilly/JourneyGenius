@@ -144,11 +144,11 @@
                 </router-link>
 
                 <!-- Render different buttons based on the origin page -->
-                <router-link to="/SavedItinerary2">
-                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6" style="min-width: 150px;">
+                <!-- <router-link to="/SavedItinerary2"> -->
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6" @click="send" style="min-width: 150px;">
                         Itinerary Details
                     </v-btn>
-                </router-link>
+                <!-- </router-link> -->
                 <router-link to="/SavedTrips">
                     <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-4" style="min-width: 150px;">
                         Close
@@ -164,8 +164,9 @@ import axios from 'axios';
 export default {
     mounted() {
         const tripObject = this.$store.state.tripObject;
-        console.log("This is the saved object: " + tripObject)
-        console.log("activities: " + this.$store.state.tripObject.activities)
+        // this.$store.commit('updateTripObject', this.tripObject);
+        // console.log("This is the saved object: " + tripObject)
+        // console.log("activities: " + this.$store.state.tripObject.activities)
         
 
 
@@ -193,10 +194,18 @@ export default {
         return {
             tripId: null,
             savedTripDetails: null,
-
+            
         };
     },
 
+    methods: {
+
+        
+
+        send() {
+            this.$router.push({ name: 'SavedItinerary2', params: { tripObject: this.$store.state.tripObject } });  
+        }
+    },
 
     computed: {
 
