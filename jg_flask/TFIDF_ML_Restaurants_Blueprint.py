@@ -82,9 +82,6 @@ def haversine(lat1, lon1, lat2, lon2):
 
     return distance
 
-# Function to get recommendations by text similarity, location, and price range
-def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
-
     #print(f"Received target_place: {target_place}")
     #print(f"Received input_lat: {input_lat}")
     #print(f"Received input_lon: {input_lon}")
@@ -94,6 +91,9 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     #print(data.head())  # Print the first few rows
     #print(data.info())  # Print column names and data types
     #print()
+# Function to get recommendations by text similarity, location, and price range
+def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
+
 
     # Get the index of the input place
     idx = data[data['Place'] == target_place].index
@@ -134,37 +134,37 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     return {'recommendations': recommendations}
 
 
-def descriptionGeneration(recommended_places):
-    # Ensure recommended_places is a list
-    if not isinstance(recommended_places, list):
-        recommended_places = [recommended_places]
+# def descriptionGeneration(recommended_places):
+#     # Ensure recommended_places is a list
+#     if not isinstance(recommended_places, list):
+#         recommended_places = [recommended_places]
 
-    # Initialize an empty array to store descriptions
-    response_message_array = []
+#     # Initialize an empty array to store descriptions
+#     response_message_array = []
 
-    # Iterate over recommended_places and generate descriptions
-    for place in recommended_places:
-        # Compose a prompt using the current place
-        prompt = f"Describe the restaurant {place} regarding its food from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Restaurant Name): (Then description)"
+#     # Iterate over recommended_places and generate descriptions
+#     for place in recommended_places:
+#         # Compose a prompt using the current place
+#         prompt = f"Describe the restaurant {place} regarding its food from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Restaurant Name): (Then description)"
 
 
-        # Generate descriptions using OpenAI
-        response = client.chat.completions.create(
-            model="gpt-4",
-            messages=[
-                {"role": "system", "content": "You are an experienced food critic."},
-                {"role": "user", "content": prompt}
-            ]
-        )
+#         # Generate descriptions using OpenAI
+#         response = client.chat.completions.create(
+#             model="gpt-4",
+#             messages=[
+#                 {"role": "system", "content": "You are an experienced food critic."},
+#                 {"role": "user", "content": prompt}
+#             ]
+#         )
         
-        # Extract and append the description to response_message_array
-        response_message = response.choices[0].message.content
-        response_message_array.append(response_message)
+#         # Extract and append the description to response_message_array
+#         response_message = response.choices[0].message.content
+#         response_message_array.append(response_message)
 
-    # Print the array of descriptions
-    #print(response_message_array)
+#     # Print the array of descriptions
+#     #print(response_message_array)
 
-    return response_message_array
+#     return response_message_array
 
 
 @restaurantRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
