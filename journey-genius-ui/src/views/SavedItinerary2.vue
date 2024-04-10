@@ -155,42 +155,29 @@ export default {
             // ],
         };
     },
+
     // created() {
-
     //     const tripObject = this.$route.params.tripObject;
-
     //     const dateRangeString = this.$store.state.tripObject.dates;
-    //     // console.log(dateRangeString)
 
     //     // Parse date range
     //     const [startDateString, endDateString] = dateRangeString.split(" - ");
-
-    //     // Parse start and end dates
     //     const startDate = this.parseDateString(startDateString);
     //     const endDate = this.parseDateString(endDateString);
 
     //     // Calculate the trip duration
     //     const daysDifference = this.calculateTripDuration(startDate, endDate);
-    //     // console.log(daysDifference)
 
-    //     const selectedActivities = this.$store.state.tripObject.activities;
+    //     const selectedActivities = this.$store.state.tripObject.activities;;
     //     const selectedLandmarks = this.$store.state.tripObject.landmarks;
-    //     // console.log("Selected Landmarks: " + selectedLandmarks)
-
     //     const selectedFoods = this.$store.state.tripObject.foods;
     //     const selectedShops = this.$store.state.tripObject.shops;
-    //     console.log("Activities: " + selectedActivities + "\nLandmarks: " + selectedLandmarks + "\nFoods: " + selectedFoods + "\nShops: " + selectedShops)
-
-
-    //     console.log("Days difference: " + daysDifference)
-    //     console.log(selectedActivities.length + " " + selectedLandmarks.length + " " + selectedFoods.length + " " + selectedShops.length)
 
     //     // Calculate the number of items per day for each type
     //     const activitiesPerDay = Math.ceil(selectedActivities.length / daysDifference);
     //     const landmarksPerDay = Math.ceil(selectedLandmarks.length / daysDifference);
     //     const foodsPerDay = Math.ceil(selectedFoods.length / daysDifference);
     //     const shopsPerDay = Math.ceil(selectedShops.length / daysDifference);
-    //     console.log("Activities per day: " + activitiesPerDay + "\nLandmarks: " + landmarksPerDay + "\nFoods: " + foodsPerDay + "\nShops: " + shopsPerDay)
 
     //     // Initialize indexes for slicing
     //     let activityIndex = 0;
@@ -205,24 +192,18 @@ export default {
     //         currentDate.setDate(startDate.getDate() + i);
     //         const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
 
+    //         // old method
     //         // Slice items for the day, using modulo to reset index to beginning if end of list is reached
-    //         const dayActivities = selectedActivities.slice(activityIndex, activityIndex + activitiesPerDay);
-    //         const dayLandmarks = selectedLandmarks.slice(landmarkIndex, landmarkIndex + landmarksPerDay);
-    //         const dayFoods = selectedFoods.slice(foodIndex, foodIndex + foodsPerDay);
-    //         const dayShops = selectedShops.slice(shopIndex, shopIndex + shopsPerDay);
+    //         const dayActivities = this.getRoundRobinSlice(selectedActivities, activityIndex, activitiesPerDay);
+    //         const dayLandmarks = this.getRoundRobinSlice(selectedLandmarks, landmarkIndex, landmarksPerDay);
+    //         const dayFoods = this.getRoundRobinSlice(selectedFoods, foodIndex, foodsPerDay);
+    //         const dayShops = this.getRoundRobinSlice(selectedShops, shopIndex, shopsPerDay);
 
     //         // Update indexes for the next iteration, without wrapping around
-    //         activityIndex += activitiesPerDay;
-    //         landmarkIndex += landmarksPerDay;
-    //         foodIndex += foodsPerDay;
-    //         shopIndex += shopsPerDay;
-
-    //         // Ensure the indexes do not exceed the total number of items
-    //         activityIndex = Math.min(activityIndex, selectedActivities.length);
-    //         landmarkIndex = Math.min(landmarkIndex, selectedLandmarks.length);
-    //         foodIndex = Math.min(foodIndex, selectedFoods.length);
-    //         shopIndex = Math.min(shopIndex, selectedShops.length);
-
+    //         activityIndex = (activityIndex + activitiesPerDay) % selectedActivities.length;
+    //         landmarkIndex = (landmarkIndex + landmarksPerDay) % selectedLandmarks.length;
+    //         foodIndex = (foodIndex + foodsPerDay) % selectedFoods.length;
+    //         shopIndex = (shopIndex + shopsPerDay) % selectedShops.length;
 
     //         const daySection = {
     //             title: dayTitle,
@@ -231,6 +212,9 @@ export default {
     //                     name: activity.name,
     //                     description: dayActivities,
     //                     image: activity.image,
+    //                     // name: activity.name,
+    //                     // description: activity.description,
+    //                     // image: activity.image,
     //                 })),
     //                 ...dayLandmarks.map(landmark => ({
     //                     name: landmark.name,
@@ -245,7 +229,6 @@ export default {
     //                 ...dayShops.map(shop => ({
     //                     name: shop.name,
     //                     description: dayShops,
-    //                     // description: shop.description,
     //                     image: shop.image,
     //                 })),
     //             ],
@@ -255,88 +238,111 @@ export default {
     // },
 
 
+
     created() {
-    const tripObject = this.$route.params.tripObject;
-    const dateRangeString = this.$store.state.tripObject.dates;
+        const getRoundRobinSlice = arrays => {
+            let index = 0;
+            let output = [];
 
-    // Parse date range
-    const [startDateString, endDateString] = dateRangeString.split(" - ");
-    const startDate = this.parseDateString(startDateString);
-    const endDate = this.parseDateString(endDateString);
+            while (arrays.some(array => array.length > 0)) {
+                for (let i = 0; i < arrays.length; i++) {
+                    if (arrays[i].length > 0) {
+                        output.push(arrays[i].shift());
+                    }
+                }
+            }
 
-    // Calculate the trip duration
-    const daysDifference = this.calculateTripDuration(startDate, endDate);
-
-    const selectedActivities = this.$store.state.tripObject.activities;;
-    const selectedLandmarks = this.$store.state.tripObject.landmarks;
-    const selectedFoods = this.$store.state.tripObject.foods;
-    const selectedShops = this.$store.state.tripObject.shops;
-
-    // Calculate the number of items per day for each type
-    const activitiesPerDay = Math.ceil(selectedActivities.length / daysDifference);
-    const landmarksPerDay = Math.ceil(selectedLandmarks.length / daysDifference);
-    const foodsPerDay = Math.ceil(selectedFoods.length / daysDifference);
-    const shopsPerDay = Math.ceil(selectedShops.length / daysDifference);
-
-    // Initialize indexes for slicing
-    let activityIndex = 0;
-    let landmarkIndex = 0;
-    let foodIndex = 0;
-    let shopIndex = 0;
-
-    // Generate itinerary sections for each day
-    for (let i = 0; i < daysDifference; i++) {
-        const currentDate = new Date(startDate);
-        currentDate.setDate(startDate.getDate() + i);
-        const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
-
-        // Slice items for the day, using modulo to reset index to beginning if end of list is reached
-        const dayActivities = this.getRoundRobinSlice(selectedActivities, activityIndex, activitiesPerDay);
-        const dayLandmarks = this.getRoundRobinSlice(selectedLandmarks, landmarkIndex, landmarksPerDay);
-        const dayFoods = this.getRoundRobinSlice(selectedFoods, foodIndex, foodsPerDay);
-        const dayShops = this.getRoundRobinSlice(selectedShops, shopIndex, shopsPerDay);
-
-        // Update indexes for the next iteration, without wrapping around
-        activityIndex = (activityIndex + activitiesPerDay) % selectedActivities.length;
-        landmarkIndex = (landmarkIndex + landmarksPerDay) % selectedLandmarks.length;
-        foodIndex = (foodIndex + foodsPerDay) % selectedFoods.length;
-        shopIndex = (shopIndex + shopsPerDay) % selectedShops.length;
-
-        const daySection = {
-            title: dayTitle,
-            activities: [
-                ...dayActivities.map(activity => ({
-                    name: activity.name,
-                    description: dayActivities,
-                    image: activity.image,
-                    // name: activity.name,
-                    // description: activity.description,
-                    // image: activity.image,
-                })),
-                ...dayLandmarks.map(landmark => ({
-                    name: landmark.name,
-                    description: dayLandmarks,
-                    image: landmark.image,
-                })),
-                ...dayFoods.map(food => ({
-                    name: food.name,
-                    description: dayFoods,
-                    image: food.image,
-                })),
-                ...dayShops.map(shop => ({
-                    name: shop.name,
-                    description: dayShops,
-                    image: shop.image,
-                })),
-            ],
+            return output;
         };
-        this.itinerary.push(daySection);
-    }
-},
+
+        const tripObject = this.$route.params.tripObject;
+
+        const selectedActivities = this.$store.state.tripObject.activities;
+        const selectedLandmarks = this.$store.state.tripObject.landmarks;
+        const selectedFoods = this.$store.state.tripObject.foods;
+        const selectedShops = this.$store.state.tripObject.shops;
+        // console.log("This is an array?" + selectedActivities)
+
+        const combinedArray = getRoundRobinSlice([selectedActivities, selectedLandmarks, selectedFoods, selectedShops]);
+        // console.log(combinedArray)
+
+
+        const dateRangeString = this.$store.state.tripObject.dates;
+
+        // Parse date range
+        const [startDateString, endDateString] = dateRangeString.split(" - ");
+        const startDate = this.parseDateString(startDateString);
+        const endDate = this.parseDateString(endDateString);
+
+        // Calculate the trip duration
+        const daysDifference = this.calculateTripDuration(startDate, endDate);
+
+        // // Calculate number of descriptions per day
+        // const descriptionsPerDay = Math.ceil(combinedArray.length / daysDifference);
+
+        // // Loop through each day
+        // for (let i = 0; i < daysDifference; i++) {
+        //     const currentDate = new Date(startDate);
+        //     currentDate.setDate(startDate.getDate() + i);
+        //     const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
+        //     // console.log(dayTitle)
+
+        //     // Slice the descriptions for this day
+        //     const descriptionsForDay = combinedArray.slice(i * descriptionsPerDay, (i + 1) * descriptionsPerDay);
+        //     // console.log(descriptionsForDay)
+
+        //     const daySection = {
+        //         title: dayTitle,
+        //         activities: descriptionsForDay.map(description => ({
+        //             name: "test", // Add Name logic here
+        //             description: description,
+        //             image: "" // Add your image logic here
+        //         }))
+
+        //     };
+        //     this.itinerary.push(daySection);
+        //     console.log(daySection);
+        // }
 
 
 
 
+        // Calculate the number of descriptions per day
+        let descriptionsPerDay = Math.floor(combinedArray.length / daysDifference);
+        let remainingDescriptions = combinedArray.length % daysDifference;
+
+        // Loop through each day
+        for (let i = 0; i < daysDifference; i++) {
+            const currentDate = new Date(startDate);
+            currentDate.setDate(startDate.getDate() + i);
+            const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
+
+            // Calculate the number of descriptions for this day
+            let descriptionsForThisDay = descriptionsPerDay;
+            if (remainingDescriptions > 0) {
+                descriptionsForThisDay++;
+                remainingDescriptions--;
+            }
+
+            // Slice the descriptions for this day
+            const descriptionsForDay = combinedArray.slice(0, descriptionsForThisDay);
+
+            // Remove the sliced descriptions from the combinedArray
+            combinedArray.splice(0, descriptionsForThisDay);
+
+            const daySection = {
+                title: dayTitle,
+                activities: descriptionsForDay.map(description => ({
+                    name: dayTitle,
+                    description: description,
+                    image: "" // Add your image logic here
+                }))
+            };
+            this.itinerary.push(daySection);
+        }
+
+
+    },
 
 
 
@@ -349,14 +355,31 @@ export default {
 
     },
     methods: {
-        getRoundRobinSlice(arr, startIndex, count) {
-        const length = arr.length;
-        const slice = [];
-        for (let i = 0; i < count; i++) {
-            slice.push(arr[(startIndex + i) % length]);
-        }
-        return slice;
-    },
+        // old method but there are duplicates
+        // getRoundRobinSlice(arr, startIndex, count) {
+        //     const length = arr.length;
+        //     const slice = [];
+        //     for (let i = 0; i < count; i++) {
+        //         slice.push(arr[(startIndex + i) % length]);
+        //     }
+        //     return slice;
+        // },
+
+        getRoundRobinSlice(arrays) {
+            let index = 0;
+            let output = [];
+
+            while (arrays.some(array => array.length > 0)) {
+                for (let i = 0; i < arrays.length; i++) {
+                    if (arrays[i].length > 0) {
+                        output.push(arrays[i].shift());
+                    }
+                }
+            }
+
+            return output;
+        },
+
 
 
 
@@ -505,7 +528,7 @@ export default {
 
 <style scoped>
 .description-height {
-    height: 175px;
+    height: 190px;
     /* Set a fixed height for the descriptions */
     overflow: hidden;
     /* Hide overflow content if the description is longer */
