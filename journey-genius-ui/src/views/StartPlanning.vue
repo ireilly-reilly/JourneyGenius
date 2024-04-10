@@ -92,7 +92,7 @@
       <v-col cols="12" md="8" class="text-center">
         <br>
         <!-- <router-link to="/Itinerary"> -->
-        <v-btn class="generate-btn" color="deep-purple-accent-2" @click="generateItinerary">
+        <v-btn size="large" class="generate-btn" color="deep-purple-accent-2" @click="generateItinerary">
           Generate
         </v-btn>
         <!-- </router-link> -->
@@ -461,4 +461,8 @@ export default defineComponent({
 .error-outline {
   border-color: red;
 }
+
+/* .form-control:focus {
+    background-color: deep-purple-accent-2;
+  } */
 </style>

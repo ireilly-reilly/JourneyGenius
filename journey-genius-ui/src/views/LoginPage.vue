@@ -5,7 +5,7 @@
         <div class="text-center">
           <!-- Other template markup -->
           <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-            <span class="text-center">Login Successful!</span>
+            <span class="centered-text">Login Successful!</span>
           </v-snackbar>
         </div>
       </template>
@@ -87,6 +87,7 @@ export default {
 
         .then(response => {
           const token = response.data.access_token;
+          const databaseID = response.data.user_id;
           console.log('login token: ', token) //Display token after recieved
           //Make cookies expire after 7 days
           const expirationDate = new Date();
@@ -94,14 +95,16 @@ export default {
 
           //Store the token in a secure manner (e.g., HttpOnly cookie) with expiration date
           Cookies.set('login_token', token, { secure: false, expires: expirationDate });
+          Cookies.set('database_id', databaseID, { secure: false })
           //console.log('Login token:', token) //Display token after cookies set
           console.log('User logged in successfully, login token: ', token)
+          console.log('User ID from database: ', databaseID)
           this.checkLoginStatus();
 
           this.showSnackbar = true; // Show the Snackbar
           setTimeout(() => {
             this.$router.push({ name: 'Home' });
-          }, 3000);
+          }, 1000);
 
           // Redirect to the home page
           // this.$router.push({ name: 'Home' });
@@ -110,9 +113,6 @@ export default {
         .catch(error => {
           console.error('Error logging in', error);
 
-          console.log('Error response:', error.response);
-          console.log('Error status:', error.response.status);
-          console.log('Error data:', error.response.data);
 
           //Handle different status codes and display appropriate messages
           if (error.response) {
@@ -149,9 +149,12 @@ export default {
         this.isLoggedIn = true;
         response.data.message === 'User is logged in';
         console.log('User is logged in:', this.isLoggedIn);
+        console.log("From Login page checkLoginStatus:")
       } catch (error) {
         console.error('Error checking login status', error);
         this.isLoggedIn = false;
+        console.log("From Login page checkLoginStatus:")
+        console.log("Logged in: ", this.isLoggedIn)
       }
     },
 
@@ -168,5 +171,11 @@ export default {
 
 .error-outline {
   border-color: red;
+}
+
+.centered-text {
+  display: block;
+  text-align: center;
+  font-size: medium;
 }
 </style>

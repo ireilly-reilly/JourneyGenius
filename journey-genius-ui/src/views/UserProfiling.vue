@@ -17,7 +17,7 @@
     </v-row>
 
     <!-- Personal Information Section -->
-    <v-row justify="center" class="mt-4">
+    <!-- <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8">
         <v-card class="pa-4">
           <h3 class="headline text-deep-purple-accent-2">Personal Information</h3>
@@ -29,12 +29,6 @@
               <v-col cols="12" md="6">
                 <v-text-field v-model="lastName" label="Last Name"></v-text-field>
               </v-col>
-              <!-- <v-col cols="12" md="6">
-                <v-select v-model="gender" label="Gender" :items="genderOptions"></v-select>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="age" label="Age" type="number"></v-text-field>
-              </v-col> -->
               <v-col cols="12">
                 <v-text-field v-model="email" label="Email"></v-text-field>
               </v-col>
@@ -42,7 +36,7 @@
           </v-form>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
 
     <!-- Activities selection -->
     <v-row justify="center">
@@ -157,7 +151,7 @@
   <!-- Save button -->
   <v-row justify="center" class="mt-4">
     <v-col cols="12" md="1" class="text-center">
-      <v-btn class="save-btn" color="deep-purple-accent-2" @click="saveData">
+      <v-btn size="large" class="save-btn" color="deep-purple-accent-2" @click="saveData">
         Save
       </v-btn>
     </v-col>

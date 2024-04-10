@@ -1,5 +1,13 @@
 <template>
+
   <v-container>
+
+    <div class="text-center">
+          <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+            <span class="centered-text">Successfully Deleted.</span>
+          </v-snackbar>
+        </div>
+
     <!-- Saved Trips Introduction -->
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
@@ -16,98 +24,247 @@
       </v-col>
     </v-row>
 
-   <!-- Saved Trip Cards -->
-<v-row justify="center">
-  <v-col cols="12" md="8" v-for="(trip, index) in savedTrips" :key="index">
-    <v-card class="pa-4 mb-4">
-      <!-- Title and Delete Button Section -->
-      <v-row align="center" class="mb-1">
-        <v-col cols="12">
-          <v-row justify="space-between" align="center">
-            <v-col cols="8">
-              <h2 class="headline mb-2">{{ trip.location }}</h2>
-            </v-col>
-            <v-col cols="4" class="text-right">
-              <v-btn icon @click="confirmDelete(index)">
-                <v-icon>mdi-delete</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
+    <!-- Grid system - Future implemenetation. Don't delete this commented out code. -->
+    <!-- <v-row justify="center" v-if="savedTrips && savedTrips.length > 0">
+        <v-col cols="6" md="4" v-for="(trip, index) in savedTrips" :key="index">
+          <v-hover v-slot="{ isHovering, props }">
 
-      <!-- Main Content Section -->
-      <v-row>
-        <!-- Description and Activities Section -->
-        <v-col cols="12" md="6" class="pr-4">
-          <p class="mb-2">{{ trip.description }}</p>
-          <h3 class="subtitle-1 mb-2">Activities:</h3>
-          <ul class="pl-2"> <!-- Added margin-left to the activities list -->
-            <li v-for="activity in trip.activities" :key="activity">{{ activity }}</li>
-          </ul>
-        </v-col>
+          <v-card class="pa-4 mb-4" @mouseover="isHovering = index" @mouseleave="isHovering = null">
 
-        <!-- Image and Open Itinerary Button Section -->
-        <v-col cols="12" md="6">
-          <v-row align="center" justify="center">
-            <v-img
-              :src="trip.imageSrc"
-              :alt="trip.location"
-              class="mb-3"
-              style="width: 100%; border-radius: 8px;"
-            ></v-img>
-            <router-link to='/GeneratedItinerary'>
-            <v-btn color="deep-purple-accent-2" class="mt-3" @click="openItinerary">
-              Open Itinerary
-            </v-btn>
-          </router-link>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-card>
-  </v-col>
-</v-row>
-</v-container>
+            <v-img :src="imageSrc" :alt="trip.location" class="mb-3" style="width: 100%; border-radius: 8px;"></v-img>
 
+            <v-row align="center" class="mb-1">
+              <v-col cols="12">
+                <h2 class="headline mb-2 text-deep-purple-accent-2">{{ trip.city }}, {{ trip.state }}</h2>
+                <h4 class="headline mb-0.5 black">{{ trip.dates }}</h4>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12" class="pr-4">
+                <p class="mb-2">{{ trip.city_description }}</p>
+              </v-col>
+            </v-row>
+
+             <v-overlay :value="isHovering === index" class="align-center justify-center" scrim="deep-purple-accent-2" contain>
+              contain>
+              <v-row justify="center">
+                <v-btn size="large" color="white" class="mr-4" @click="openItinerary(index)">
+                  Open Itinerary <v-icon class="ml-1" right>mdi-map-marker</v-icon>
+                </v-btn>
+                <v-btn size="large" color="white" @click="confirmDelete(index)">
+                  Delete Trip <v-icon class="ml-1" right>mdi-delete</v-icon>
+                </v-btn>
+              </v-row>
+            </v-overlay>
+          </v-card>
+          </v-hover>
+        </v-col>
+      </v-row> -->
+
+      
+
+
+    <v-row justify="center" v-if="savedTrips && savedTrips.length > 0">
+      <v-col cols="12" md="8" v-for="(trip, index) in savedTrips" :key="index">
+        <v-hover v-slot="{ isHovering, props }">
+          <v-card class="pa-4 mb-4" v-bind="props">
+            <v-img :src="imageSrc" :alt="trip.location" class="mb-3"
+              style="width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px;"></v-img>
+
+            <v-row align="center" class="mb-1">
+              <v-col cols="12">
+                <v-row justify="space-between" align="center">
+                  <v-col cols="12">
+                    <h2 class="headline mb-1 text-deep-purple-accent-2">{{ trip.city }}, {{ trip.state }}</h2>
+                    <h4 class="headline mb-0.5 black">{{ trip.dates }}</h4>
+                  </v-col>
+                  <v-col cols="12" class="text-right">
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+
+            <v-row>
+              <v-col cols="12" class="pr-4">
+                <p class="mb-2">{{ trip.city_description }}</p>
+              </v-col>
+            </v-row>
+
+
+            <v-overlay :model-value="isHovering" class="align-center justify-center" scrim="deep-purple-accent-2"
+              contained>
+              <v-row justify="center">
+                <v-btn size="large" color="white" class="mr-4" @click="getSavedTripDetails(index)">
+                  Open Itinerary <v-icon class="ml-1" right>mdi-map-marker</v-icon>
+                </v-btn>
+                <v-btn size="large" color="white" @click="showConfirmationDialog">
+                  Delete Trip <v-icon class="ml-1" right>mdi-delete</v-icon>
+                </v-btn>
+              </v-row>
+            </v-overlay>
+
+
+            <v-dialog v-model="dialogVisible" max-width="650">
+              <v-card>
+                <v-card-title class="headline"
+                  style="padding-left: 25px; padding-top: 15px;">Confirmation</v-card-title>
+                <v-card-text>
+                  Are you sure you want to delete this trip? This action cannot be undone.
+                </v-card-text>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn color="deep-purple-accent-2" text @click="dialogVisible = false">No</v-btn>
+                  <v-btn color="red darken-1" text @click="confirmDelete(index)">Yes</v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
+          </v-card>
+        </v-hover>
+      </v-col>
+    </v-row>
+
+
+
+    <!-- Message for no saved trips -->
+    <v-row justify="center" v-else>
+      <v-col cols="12" md="8" class="text-center">
+        <p class="headline text-deep-purple-accent-2" style="font-size: 1.5rem;">You have no trips saved, let's plan
+          one!</p>
+      </v-col>
+    </v-row>
+
+
+
+
+
+  </v-container>
 
 </template>
 
 <script>
+import axios from 'axios';
+import Cookies from 'js-cookie';
 export default {
   data() {
     return {
-      savedTrips: [
-        {
-          location: 'San Francisco, California',
-          description: `San Francisco is a vibrant city known for its iconic landmarks, diverse culture, and stunning views. Explore the Golden Gate Bridge, visit Alcatraz Island, and stroll through Fisherman's Wharf for a taste of the city's rich history and delicious seafood.`,
-          activities: ['Golden Gate Bridge Sightseeing', 'Alcatraz Island Tour', 'Fisherman\'s Wharf Exploration', 'Vibrant Asian Culture in Chinatown'],
-          imageSrc: require('@/assets/sf.jpeg'),
-        },
-        // Add more saved trips as needed
-      ],
+      savedTrips: [],
+      imageSrc: require('@/assets/sf.jpeg'), //This will need to be changed to actual image 
+      showSnackbar: false,
+      dialogVisible: false,
+
     };
+    defineProps({
+      originPage: String
+    })
+  },
+  mounted() {
+    this.fetchSavedTrips();
   },
   methods: {
-    openItinerary() {
-      // Implement logic to open the itinerary for this saved trip
-      console.log('Opening Itinerary...');
+    fetchSavedTrips() {
+      const jwtToken = Cookies.get('login_token');
+      const url = 'http://localhost:8000/api/fetch_saved_trips'
+      axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+      })
+        .then(response => {
+          this.savedTrips = response.data.savedTrips;
+        })
+        .catch(error => {
+          console.error('Error fetching saved trips:', error);
+        });
     },
     confirmDelete(index) {
-      const isConfirmed = window.confirm('Are you sure you want to delete this trip?');
+      // const isConfirmed = window.confirm('Are you sure you want to delete this trip?');
 
-      if (isConfirmed) {
-        // Implement logic to delete the saved trip
-        this.savedTrips.splice(index, 1); // Remove the trip at the specified index
-      }
+      // if (isConfirmed) {
+        
+      const jwtToken = Cookies.get('login_token');
+      const trip_id = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
+      axios.delete(`http://localhost:8000/api/delete_trip/${trip_id}`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+      })
+        .then(response => {
+          if (response.status === 200) {
+            // Remove the deleted trip from the savedTrips array
+            this.showSnackbar = true;
+            const deletedIndex = this.savedTrips.findIndex(trip => trip.id === trip_id);
+            if (deletedIndex !== -1) {
+              this.savedTrips.splice(deletedIndex, 1);
+            }
+            this.dialogVisible = false;
+
+          } else {
+            throw new Error('Failed to delete trip');
+          }
+        })
+        .catch(error => {
+          console.error('Error deleting trip:', error);
+          alert('Failed to delete trip. Please try again.');
+        });
+      // }
     },
+    showConfirmationDialog() {
+      this.dialogVisible = true;
+    },
+    getSavedTripDetails(index) {
+      const jwtToken = Cookies.get('login_token');
+      const tripId = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
+      console.log("token: " + jwtToken)
+      console.log("tripId: " + tripId)
+
+
+      axios.get(`http://localhost:8000/api/fetch_saved_itinerary/${tripId}`, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+      })
+        .then(response => {
+          if (response.status === 200) {
+            const savedTripDetails = response.data.savedTrip;
+            console.log('Saved trip details:', savedTripDetails);
+
+            this.$store.commit('updateTripObject', savedTripDetails);
+            this.$router.push("SavedItinerary");
+
+            // Route to the SavedItinerary page and pass savedTripDetails as a route parameter
+            // this.$router.push({
+            //   name: 'SavedItinerary',
+            //   params: { savedTrip: savedTripDetails }
+            // });
+          } else {
+            throw new Error('Failed to fetch saved trip details');
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching saved trip details:', error);
+          alert('Failed to fetch saved trip details. Please try again.');
+        }
+        );
+
+      // const tripId = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
+      // console.log("tripId: " + tripId);
+      // this.$store.commit('updateTripId', tripId);
+      // this.$router.push("SavedItinerary");
+    }
+
+
+
+
   },
 };
 </script>
 
 <style scoped>
-/* Add custom styles if needed */
+.centered-text {
+  display: block;
+  text-align: center;
+  font-size: medium;
+}
+
 </style>
-
-
-
-

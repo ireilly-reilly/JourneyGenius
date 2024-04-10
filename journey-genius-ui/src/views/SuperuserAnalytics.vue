@@ -57,12 +57,13 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   data() {
     return {
-      totalAccounts: 1000,
+      totalAccounts: 0,
       usersOnline: 50,
-      totalTripsSaved: 5000,
+      totalTripsSaved: 0,
       revenueGenerated: 1000000,
       // Add more statistics data as needed
       buttons: [
@@ -73,11 +74,27 @@ export default {
     };
 
   },
+  mounted() {
+    this.fetchAnalyticsData();
+  },
   methods: {
     viewAdminChangelog() {
       // Implement logic to open PDF for admin changelog
       alert('Opening admin changelog PDF');
     },
+    async fetchAnalyticsData() {
+        try {
+          // Make API calls to fetch total accounts and total trips saved
+          const accountsResponse = await axios.get('http://localhost:8000/api/total_accounts');
+          const tripsResponse = await axios.get('http://localhost:8000/api/total_trips_saved');
+  
+          // Update data properties with API response data
+          this.totalAccounts = accountsResponse.data.totalAccounts;
+          this.totalTripsSaved = tripsResponse.data.totalTripsSaved;
+        } catch (error) {
+          console.error('Error fetching analytics data:', error);
+        }
+      },
   },
 };
 </script>

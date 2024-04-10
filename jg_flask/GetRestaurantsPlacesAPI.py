@@ -2,6 +2,7 @@ from flask import Blueprint, request, jsonify
 import googlemaps
 import csv
 import os
+from dotenv import load_dotenv
 
 getRestaurant_bp = Blueprint('getRestaurant_bp', __name__)
 
@@ -34,8 +35,11 @@ def scrape_restaurants():
     location = f'{target_lat}, {target_lon}'  # Use the latitude and longitude in the location variable
     #print("Received coordinates in test restaurants API " + location)
 
-    # Define the API Key that is being used
-    api_key = 'AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y'
+    # Load environment variables from .env file
+    load_dotenv()
+
+    # Get the GMAPS API key from the environment
+    api_key = os.getenv("GMAPS_api_key")
 
     # Define our Client
     gmaps = googlemaps.Client(key=api_key)
@@ -47,8 +51,9 @@ def scrape_restaurants():
     type = 'restaurant' 
     
     ############################################## We can change this keyword in the future ##############################################
-    keyword = 'mexican' 
-    desired_result_count = 1 # Desired result count here
+    keyword = 'chinese' 
+    desired_result_count = 10
+    # Desired result count here
 
     # Check if the CSV file already exists
 
@@ -89,6 +94,15 @@ def scrape_restaurants():
         # Initialize a set to store processed place IDs
         processed_place_ids = set()
 
+        # Read existing place_id values from the CSV file and populate processed_place_ids
+        if csv_exists:
+            with open(restaurant_csv_file_path, mode='r', newline='', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                next(reader)  # Skip header row
+                for row in reader:
+                    place_id = row[0]  # Assuming place_id is the first column in your CSV
+                    processed_place_ids.add(place_id)
+
         # Use a loop to fetch multiple pages of results
         while results_fetched < desired_result_count:
             # Define Search as needed, including the next_page_token if available
@@ -101,8 +115,9 @@ def scrape_restaurants():
                 page_token=next_page_token  # Include the next_page_token
             )
 
-            # Initialize a set to store processed place IDs
-            processed_place_ids = set()
+            # Loop through each place in the results
+            # Define a list of chain restaurant names to filter out
+            chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros']  # Add more chain names as needed
 
             # Loop through each place in the results
             for place in places_result['results']:
@@ -120,6 +135,11 @@ def scrape_restaurants():
 
                 # Extract and format the data
                 name = place_details['result']['name']
+
+                # Check if the place name contains any chain restaurant names
+                if any(chain_name in name for chain_name in chain_restaurant_names):
+                    continue  # Skip this place if it's a chain restaurant
+                
                 price_range = place_details['result'].get('price_level', '')  # Check if 'price_level' exists
                 types = ', '.join(place_details['result']['types'])
                 address_components = place_details['result'].get('address_components', [])  # Check if 'address_components' exists
@@ -132,7 +152,7 @@ def scrape_restaurants():
                 longitude = place_details['result']['geometry']['location']['lng']
 
                 # Write the data to the CSV file
-                writer.writerow([name, price_range, types, address, postal_code, city, state, country, latitude, longitude])
+                writer.writerow([my_place_id, name, price_range, types, f"{address} {postal_code}", postal_code, city, state, country])
 
                 #print("Here is what is stored inside the csv file:")
                 #print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")

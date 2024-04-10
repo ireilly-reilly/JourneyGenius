@@ -18,7 +18,7 @@
         </v-app-bar>
 
         <h1>User Details</h1>
-        <!--
+        
       <v-card>
         <v-list>
           <v-list-item>
@@ -59,7 +59,7 @@
           </v-list-item>
         </v-list>
       </v-card>
-      -->
+     
     </div>
 </template>
 
@@ -78,7 +78,7 @@ export default {
     },
     mounted() {
         // Fetch user data based on route parameter
-        const userId = this.$route.params.id; // Assuming the route param is named 'id'
+        //const userId = this.$route.params.id; // Assuming the route param is named 'id'
         // this.user = this.getUserById(userId); // Implement this method to fetch user data
     },
     methods: {

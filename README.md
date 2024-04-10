@@ -89,3 +89,76 @@ npm run lint
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
 
+
+# MySQL localhost Initialization and Migration Setup Information
+
+1. Install MySQL and MySQL client
+
+Log into MySQL as a root admin user: 
+```
+mysql -u root -p
+```
+Enter your root user password.   
+Create database:
+```
+CREATE DATABASE useraccounts;
+```
+Create the new JourneyGenius user referenced in your .env file:
+```
+CREATE USER 'JourneyGenius'@'localhost' IDENTIFIED BY 'WanderDeezNutz';
+```
+Grant JourneyGenius user ability to create:
+```
+GRANT CREATE ON *.* TO 'JourneyGenius'@'localhost';
+```
+Flush privileges:
+```
+FLUSH PRIVILEGES;
+```
+Exit MySQL CLI:
+```
+exit
+```
+Run JourneyGenius to initialize database models from code:
+```
+./run_dev.sh
+```
+Use ^C to cancel because things won't work yet.   
+Log into MySQL as a root admin user again: 
+```
+mysql -u root -p
+```
+Enter your root password.   
+Run the following commands:
+```
+USE useraccounts;
+GRANT ALL PRIVILEGES ON useraccounts.user TO 'JourneyGenius'@'localhost';
+GRANT ALL PRIVILEGES ON useraccounts.super_user TO 'JourneyGenius'@'localhost';
+GRANT ALL PRIVILEGES ON useraccounts.trip TO 'JourneyGenius'@'localhost';
+GRANT SELECT ON alembic_version TO 'JourneyGenius'@'localhost';
+FLUSH PRIVILEGES;
+```
+Exit MySQL:
+```
+exit
+```
+I think this should get everything to work.   
+## If you make changes to the database structure or pull code that changed database structure
+### First setup migration system
+In  terminal, install flask migrate:
+```
+pip install Flask-Migrate
+```
+Initialize Migrations folders by typing into terminal:
+```
+flask db init
+```
+### To use migration system:
+After making changes or pulling code that made changes to database structure, type the following:
+```
+flask db migrate -m "<your change message>"
+```
+Apply changes:
+```
+flask db upgrade
+```

@@ -2,10 +2,10 @@ from flask import Blueprint, jsonify
 from app import db  # Import your SQLAlchemy instance
 from app import User  # Import your User model
 
-# Create the blueprint object
+#Create the blueprint object
 superuser_accounts_bp = Blueprint('superuser_accounts', __name__, url_prefix='/api')
 
-# Route to fetch user accounts
+#Route to fetch user accounts
 @superuser_accounts_bp.route('/user_accounts', methods=['GET'])
 def get_user_accounts():
     try:
@@ -18,6 +18,7 @@ def get_user_accounts():
             'FirstName': user.firstname,
             'LastName': user.lastname,
             'Email': user.email,
+            'LastLoggedIn': user.last_login,
             # 'SavedTrips': user.saved_trips,  # Assuming you have this attribute in your User model
             # 'LastLoggedIn': user.last_logged_in  # Assuming you have this attribute in your User model
         } for user in users]
