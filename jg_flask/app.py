@@ -20,12 +20,14 @@ from TFIDF_ML_Landmarks_Blueprint import landmarksRecommendation_bp
 from GetLandmarksPlacesAPI import getLandMark_bp
 from TFIDF_ML_Shopping_Blueprint import shoppingRecommendation_bp
 from GetShoppingPlacesAPI import getShopping_bp
+
 from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
 from GetHotelsPlacesAPI import getHotels_bp
 from OpenAI_CityDescription_bp import cityDescription_bp
 from OpenAI_CitySlogan_bp import citySlogan_bp
 from FetchSelectedInformation_bp import FetchSelectedInformation_bp
 # from GetSavedTrip import saved_trips_bp
+
 
 
 
@@ -65,12 +67,14 @@ app.register_blueprint(landmarksRecommendation_bp, url_prefix='/api')
 app.register_blueprint(getLandMark_bp, url_prefix='/api')
 app.register_blueprint(shoppingRecommendation_bp, url_prefix='/api')
 app.register_blueprint(getShopping_bp, url_prefix='/api')
+
 app.register_blueprint(getHotels_bp, url_prefix='/api')
 app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
 app.register_blueprint(cityDescription_bp, url_prefix='/api')
 app.register_blueprint(citySlogan_bp, url_prefix='/api')
 app.register_blueprint(FetchSelectedInformation_bp, url_prefix='/api')
 # app.register_blueprint(saved_trips_bp, url_prefix='/api')
+
 
 
 
