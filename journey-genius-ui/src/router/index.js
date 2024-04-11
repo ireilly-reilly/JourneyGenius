@@ -24,6 +24,8 @@ import SuperuserAccountDetails from '../views/SuperuserAccountDetails.vue'
 import SuperuserAnalytics from '../views/SuperuserAnalytics.vue'
 
 import SavedItinerary from '../views/SavedItinerary.vue'
+import SavedItinerary2 from '../views/SavedItinerary2.vue'
+
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import SuperuserLayout from '@/layouts/SuperuserLayout.vue'
@@ -176,7 +178,13 @@ const routes = [
     name: 'SavedItinerary',
     component: SavedItinerary,
     props: true,
-  }
+  },
+  {
+    path: '/SavedItinerary2',
+    name: 'SavedItinerary2',
+    component: SavedItinerary2,
+    props: true,
+  },
 ]
 
 const router = createRouter({

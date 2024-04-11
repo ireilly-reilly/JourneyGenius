@@ -59,6 +59,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 export default {
     data() {
+
         return {
             itinerary: [],
             showSnackbar: false,
@@ -154,123 +155,235 @@ export default {
             // ],
         };
     },
+
+    // created() {
+    //     const tripObject = this.$route.params.tripObject;
+    //     const dateRangeString = this.$store.state.tripObject.dates;
+
+    //     // Parse date range
+    //     const [startDateString, endDateString] = dateRangeString.split(" - ");
+    //     const startDate = this.parseDateString(startDateString);
+    //     const endDate = this.parseDateString(endDateString);
+
+    //     // Calculate the trip duration
+    //     const daysDifference = this.calculateTripDuration(startDate, endDate);
+
+    //     const selectedActivities = this.$store.state.tripObject.activities;;
+    //     const selectedLandmarks = this.$store.state.tripObject.landmarks;
+    //     const selectedFoods = this.$store.state.tripObject.foods;
+    //     const selectedShops = this.$store.state.tripObject.shops;
+
+    //     // Calculate the number of items per day for each type
+    //     const activitiesPerDay = Math.ceil(selectedActivities.length / daysDifference);
+    //     const landmarksPerDay = Math.ceil(selectedLandmarks.length / daysDifference);
+    //     const foodsPerDay = Math.ceil(selectedFoods.length / daysDifference);
+    //     const shopsPerDay = Math.ceil(selectedShops.length / daysDifference);
+
+    //     // Initialize indexes for slicing
+    //     let activityIndex = 0;
+    //     let landmarkIndex = 0;
+    //     let foodIndex = 0;
+    //     let shopIndex = 0;
+
+
+    //     // Generate itinerary sections for each day
+    //     for (let i = 0; i < daysDifference; i++) {
+    //         const currentDate = new Date(startDate);
+    //         currentDate.setDate(startDate.getDate() + i);
+    //         const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
+
+    //         // old method
+    //         // Slice items for the day, using modulo to reset index to beginning if end of list is reached
+    //         const dayActivities = this.getRoundRobinSlice(selectedActivities, activityIndex, activitiesPerDay);
+    //         const dayLandmarks = this.getRoundRobinSlice(selectedLandmarks, landmarkIndex, landmarksPerDay);
+    //         const dayFoods = this.getRoundRobinSlice(selectedFoods, foodIndex, foodsPerDay);
+    //         const dayShops = this.getRoundRobinSlice(selectedShops, shopIndex, shopsPerDay);
+
+    //         // Update indexes for the next iteration, without wrapping around
+    //         activityIndex = (activityIndex + activitiesPerDay) % selectedActivities.length;
+    //         landmarkIndex = (landmarkIndex + landmarksPerDay) % selectedLandmarks.length;
+    //         foodIndex = (foodIndex + foodsPerDay) % selectedFoods.length;
+    //         shopIndex = (shopIndex + shopsPerDay) % selectedShops.length;
+
+    //         const daySection = {
+    //             title: dayTitle,
+    //             activities: [
+    //                 ...dayActivities.map(activity => ({
+    //                     name: activity.name,
+    //                     description: dayActivities,
+    //                     image: activity.image,
+    //                     // name: activity.name,
+    //                     // description: activity.description,
+    //                     // image: activity.image,
+    //                 })),
+    //                 ...dayLandmarks.map(landmark => ({
+    //                     name: landmark.name,
+    //                     description: dayLandmarks,
+    //                     image: landmark.image,
+    //                 })),
+    //                 ...dayFoods.map(food => ({
+    //                     name: food.name,
+    //                     description: dayFoods,
+    //                     image: food.image,
+    //                 })),
+    //                 ...dayShops.map(shop => ({
+    //                     name: shop.name,
+    //                     description: dayShops,
+    //                     image: shop.image,
+    //                 })),
+    //             ],
+    //         };
+    //         this.itinerary.push(daySection);
+    //     }
+    // },
+
+
+
     created() {
+        const getRoundRobinSlice = arrays => {
+            let index = 0;
+            let output = [];
 
-        // const dateRangeString = this.$store.state.datesData;
-        // // Parse date range
-        // const [startDateString, endDateString] = dateRangeString.split(" - ");
+            while (arrays.some(array => array.length > 0)) {
+                for (let i = 0; i < arrays.length; i++) {
+                    if (arrays[i].length > 0) {
+                        output.push(arrays[i].shift());
+                    }
+                }
+            }
 
-        // // Parse start and end dates
-        // const startDate = this.parseDateString(startDateString);
-        // const endDate = this.parseDateString(endDateString);
+            return output;
+        };
 
-        // // Calculate the trip duration
-        // const daysDifference = this.calculateTripDuration(startDate, endDate);
+        const tripObject = this.$route.params.tripObject;
 
-        // // Generate itinerary sections for each day
-        // for (let i = 0; i < daysDifference; i++) {
-        //     const currentDate = new Date(startDate);
-        //     currentDate.setDate(startDate.getDate() + i);
-        //     const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
-        //     const daySection = {
-        //         title: dayTitle,
-        //         activities: [
-        //                 {
-        //                     name: 'Check into your Hotel',
-        //                     description: 'You\'ve selected Hotel Nikko San Francisco at 222 Mason St, San Francisco, CA 94102, USA. Head to your hotel to check in and settle in comfortably!',
-        //                     image: require('@/assets/hotel.jpeg'),
-        //                 },
-        //                 {
-        //                     name: 'Golden State Bridge',
-        //                     description: 'An absolute classic, the Golden Gate Bridge is one of the most recognizable landmarks in the world. Head to viewpoints like Battery Spencer or the Golden Gate Overlook for breathtaking shots.',
-        //                     image: require('@/assets/goldenstatebridge2.jpeg'),
-        //                 },
-        //                 {
-        //                     name: 'Lunch at Local Restaurant',
-        //                     description: 'Swan Oyster Depot (1517 Polk St) - A historic seafood counter that serves fresh and delicious seafood. It\'s a popular spot,so be prepared for a wait.',
-        //                     image: require('@/assets/swanOyster.jpeg'),
-        //                 },
-        //             ], // You can populate activities for each day if needed
-        //     };
-        // this.itinerary.push(daySection);
-        // }
+        const selectedActivities = this.$store.state.tripObject.activities;
+        const selectedLandmarks = this.$store.state.tripObject.landmarks;
+        const selectedFoods = this.$store.state.tripObject.foods;
+        const selectedShops = this.$store.state.tripObject.shops;
+        // console.log("This is an array?" + selectedActivities)
 
-        const dateRangeString = this.$store.state.datesData;
+        const combinedArray = getRoundRobinSlice([selectedActivities, selectedLandmarks, selectedFoods, selectedShops]);
+        // console.log(combinedArray)
+
+
+        const dateRangeString = this.$store.state.tripObject.dates;
+
         // Parse date range
         const [startDateString, endDateString] = dateRangeString.split(" - ");
-
-        // Parse start and end dates
         const startDate = this.parseDateString(startDateString);
         const endDate = this.parseDateString(endDateString);
 
         // Calculate the trip duration
         const daysDifference = this.calculateTripDuration(startDate, endDate);
 
-        // Get selected items from the store
-        const selectedActivities = this.$store.state.activities;
-        const selectedLandmarks = this.$store.state.landmarks;
-        const selectedFoods = this.$store.state.foods;
-        const selectedShops = this.$store.state.shops;
+        // // Calculate number of descriptions per day
+        // const descriptionsPerDay = Math.ceil(combinedArray.length / daysDifference);
 
-        // Calculate the number of items per day for each type
-        const activitiesPerDay = Math.ceil(selectedActivities.length / daysDifference);
-        const landmarksPerDay = Math.ceil(selectedLandmarks.length / daysDifference);
-        const foodsPerDay = Math.ceil(selectedFoods.length / daysDifference);
-        const shopsPerDay = Math.ceil(selectedShops.length / daysDifference);
-        console.log("Activities per day: " + activitiesPerDay)
+        // // Loop through each day
+        // for (let i = 0; i < daysDifference; i++) {
+        //     const currentDate = new Date(startDate);
+        //     currentDate.setDate(startDate.getDate() + i);
+        //     const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
+        //     // console.log(dayTitle)
 
-        // Initialize indexes for slicing
-        let activityIndex = 0;
-        let landmarkIndex = 0;
-        let foodIndex = 0;
-        let shopIndex = 0;
+        //     // Slice the descriptions for this day
+        //     const descriptionsForDay = combinedArray.slice(i * descriptionsPerDay, (i + 1) * descriptionsPerDay);
+        //     // console.log(descriptionsForDay)
 
-        // Generate itinerary sections for each day
+        //     const daySection = {
+        //         title: dayTitle,
+        //         activities: descriptionsForDay.map(description => ({
+        //             name: "test", // Add Name logic here
+        //             description: description,
+        //             image: "" // Add your image logic here
+        //         }))
+
+        //     };
+        //     this.itinerary.push(daySection);
+        //     console.log(daySection);
+        // }
+
+
+
+
+        // Calculate the number of descriptions per day
+        let descriptionsPerDay = Math.floor(combinedArray.length / daysDifference);
+        let remainingDescriptions = combinedArray.length % daysDifference;
+
+        // Loop through each day
         for (let i = 0; i < daysDifference; i++) {
             const currentDate = new Date(startDate);
             currentDate.setDate(startDate.getDate() + i);
             const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
 
-            // Slice items for the day
-            const dayActivities = selectedActivities.slice(activityIndex, activityIndex + activitiesPerDay);
-            const dayLandmarks = selectedLandmarks.slice(landmarkIndex, landmarkIndex + landmarksPerDay);
-            const dayFoods = selectedFoods.slice(foodIndex, foodIndex + foodsPerDay);
-            const dayShops = selectedShops.slice(shopIndex, shopIndex + shopsPerDay);
-            console.log("List of activities: " + dayActivities)
+            // Calculate the number of descriptions for this day
+            let descriptionsForThisDay = descriptionsPerDay;
+            if (remainingDescriptions > 0) {
+                descriptionsForThisDay++;
+                remainingDescriptions--;
+            }
 
-            // Update indexes for the next iteration
-            activityIndex += activitiesPerDay;
-            landmarkIndex += landmarksPerDay;
-            foodIndex += foodsPerDay;
-            shopIndex += shopsPerDay;
+            // Slice the descriptions for this day
+            const descriptionsForDay = combinedArray.slice(0, descriptionsForThisDay);
+
+            // Remove the sliced descriptions from the combinedArray
+            combinedArray.splice(0, descriptionsForThisDay);
 
             const daySection = {
                 title: dayTitle,
-                activities: [...dayActivities, ...dayLandmarks, ...dayFoods, ...dayShops]
+                activities: descriptionsForDay.map(description => ({
+                    name: dayTitle,
+                    description: description,
+                    image: "" // Add your image logic here
+                }))
             };
             this.itinerary.push(daySection);
         }
-    },
-    mounted() {
-        const activities = this.$store.state.activities;
-        const landmarks = this.$store.state.landmarks;
-        const foods = this.$store.state.foods;
-        const shops = this.$store.state.shops;
-        const hotels = this.$store.state.hotels;
-        const datesData = this.$store.state.datesData;
-        const budget = this.$store.state.budget;
-        const stateData = this.$store.state.stateData;
-        const city = this.$store.state.city;
-        const lat = this.$store.state.lat;
-        const long = this.$store.state.long;
-        const cityDescription = this.$store.state.cityDescription;
-        const citySlogan = this.$store.state.citySlogan;
-        const latitude = this.$store.state.lat;
-        const longitude = this.$store.state.long;
 
+
+    },
+
+
+
+
+    mounted() {
+        // console.log("HEY!!!")
+        const tripObject = this.$route.params.tripObject;
+        // console.log("This is the saved object: " + tripObject)
+        // console.log("activities: " + this.$store.state.tripObject.activities)
 
     },
     methods: {
+        // old method but there are duplicates
+        // getRoundRobinSlice(arr, startIndex, count) {
+        //     const length = arr.length;
+        //     const slice = [];
+        //     for (let i = 0; i < count; i++) {
+        //         slice.push(arr[(startIndex + i) % length]);
+        //     }
+        //     return slice;
+        // },
+
+        getRoundRobinSlice(arrays) {
+            let index = 0;
+            let output = [];
+
+            while (arrays.some(array => array.length > 0)) {
+                for (let i = 0; i < arrays.length; i++) {
+                    if (arrays[i].length > 0) {
+                        output.push(arrays[i].shift());
+                    }
+                }
+            }
+
+            return output;
+        },
+
+
+
+
+
         getTimelineColor(index) {
             // Define colors for each day
             const colors = ['primary', 'info', 'success', 'error', 'warning'];
@@ -415,7 +528,7 @@ export default {
 
 <style scoped>
 .description-height {
-    height: 100px;
+    height: 190px;
     /* Set a fixed height for the descriptions */
     overflow: hidden;
     /* Hide overflow content if the description is longer */
