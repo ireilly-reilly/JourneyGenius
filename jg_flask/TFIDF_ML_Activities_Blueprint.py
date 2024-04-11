@@ -106,11 +106,11 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     idx = idx[0]  # Get the first index if multiple matches exist
 
     # Extract the price range of the input place as an integer
-    input_price = int(data['Price Range'][idx])
+    input_price = int(data.loc[idx, 'Price Range'])
     
     # Extract the latitude and longitude of the input place
-    input_lat = data['Latitude'].iloc[idx]
-    input_lon = data['Longitude'].iloc[idx]
+    input_lat = data.loc[idx, 'Latitude']
+    input_lon = data.loc[idx, 'Longitude']
     #print(input_lat)
     #print(input_lon)
 

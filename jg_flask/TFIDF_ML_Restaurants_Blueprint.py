@@ -92,28 +92,68 @@ def haversine(lat1, lon1, lat2, lon2):
     #print(data.info())  # Print column names and data types
     #print()
 # Function to get recommendations by text similarity, location, and price range
+
+
+
+# def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
+
+
+#     # Get the index of the input place
+#     idx = data[data['Place'] == target_place].index
+#     #print(idx)
+#     #print(data['Place'].unique())
+
+
+#     if len(idx) == 0:
+#         return {'error': f'Place "{target_place}" not found'}, 404
+
+#     idx = idx[0]  # Get the first index if multiple matches exist
+
+#     print(target_place)
+#     print("idx:", idx)
+#     print("Type of idx:", type(idx))
+
+#     # Extract the price range of the input place as an integer
+#     input_price = int(data['Price Range'][idx])
+    
+#     # Extract the latitude and longitude of the input place
+#     input_lat = data['Latitude'].iloc[idx]
+#     input_lon = data['Longitude'].iloc[idx]
+#     #print(input_lat)
+#     #print(input_lon)
+
+#     # Calculate geographical distances and text-based similarities
+#     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
+#     text_similarities = cosine_sim[idx]
+
+#     # Calculate price differences
+#     price_differences = [abs(input_price - price) for price in data['Price Range']]
+
+    # # Combine text similarity, geographical distance, and price difference into a composite score
+    # composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
+    #                     for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+
+    # # Sort places by composite similarity score
+    # sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
+
+#     # Return the top 10 similar places as a list of dictionaries
+#     recommendations = [{'place': place} for place in sorted_places[1:6]]
+#     return {'recommendations': recommendations}
+
+
+# Modified code snippet to get recommendations with location and price
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
-
-
-    # Get the index of the input place
+    # Get the index of the target place
     idx = data[data['Place'] == target_place].index
-    #print(idx)
-    #print(data['Place'].unique())
-
-
     if len(idx) == 0:
         return {'error': f'Place "{target_place}" not found'}, 404
 
     idx = idx[0]  # Get the first index if multiple matches exist
 
-    # Extract the price range of the input place as an integer
-    input_price = int(data['Price Range'][idx])
-    
-    # Extract the latitude and longitude of the input place
-    input_lat = data['Latitude'].iloc[idx]
-    input_lon = data['Longitude'].iloc[idx]
-    #print(input_lat)
-    #print(input_lon)
+    # Extract the price range, latitude, and longitude of the target place
+    input_price = int(data.loc[idx, 'Price Range'])
+    input_lat = data.loc[idx, 'Latitude']
+    input_lon = data.loc[idx, 'Longitude']
 
     # Calculate geographical distances and text-based similarities
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
@@ -132,6 +172,10 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     # Return the top 10 similar places as a list of dictionaries
     recommendations = [{'place': place} for place in sorted_places[1:6]]
     return {'recommendations': recommendations}
+
+
+
+
 
 
 # def descriptionGeneration(recommended_places):
@@ -211,7 +255,7 @@ def recommend():
 
         # Print the place names
         #print("Here are the recommended Restaurant Names from the TFIDF Model:")
-        # print(place_names)
+        print(place_names)
         
 
         # Return the recommended places (limited to 10)
