@@ -39,15 +39,15 @@
             <router-link to="/GeneratedItinerary">
                 <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
                     style="min-width: 150px;">
-                    Go Back
+                    Itinerary Overview
                 </v-btn>
             </router-link>
 
             <!-- Call method to save trip to database here-->
             <router-link to="/SavedTrips">
-                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
+                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2"
                     style="min-width: 150px;">
-                    Save Trip
+                    Close
                 </v-btn>
             </router-link>
         </v-col>
@@ -76,7 +76,12 @@ export default {
         const selectedLandmarks = this.$store.state.tripObject.landmarks;
         const selectedFoods = this.$store.state.tripObject.foods;
         const selectedShops = this.$store.state.tripObject.shops;
+        const selectedHotel = this.$store.state.tripObject.hotels;
+        const selectedHotelString = selectedHotel.join(', '); // Use a comma and a space as the separator
+        console.log(selectedHotelString)
         // console.log("This is the activities array: " + selectedActivities)
+        // console.log("This is the hotel array: " + selectedHotel)
+
 
         // Round robin sorting function
         const getRoundRobinSlice = arrays => {
@@ -112,19 +117,32 @@ export default {
             });
         };
 
+        const parseTitleFromString = (str) => {
+            const parts = str.split(':');
+            return parts[0].trim();
+        };
+
         // Separating the titles from the descriptions
         const activityTitles = getActivityTitles(selectedActivities);
         const landmarkTitles = getActivityTitles(selectedLandmarks);
         const foodTitles = getActivityTitles(selectedFoods);
         const shopTitles = getActivityTitles(selectedShops);
+        const hotelTitles = parseTitleFromString(selectedHotelString);
+
 
 
         const sortedArray = getRoundRobinSlice([selectedActivities, selectedLandmarks, selectedFoods, selectedShops]);
+        sortedArray.unshift(selectedHotelString);
+        console.log(sortedArray);
+
         const combinedArray = removeTitles(sortedArray);
+
+
         const combinedTitles = getRoundRobinSlice([activityTitles, landmarkTitles, foodTitles, shopTitles]);
+        combinedTitles.unshift(hotelTitles);
         // console.log("Combined Description: " + combinedArray)
         // console.log("Combined Titles: " + combinedTitles)
-        console.log("Sorted array without titles: " + combinedArray)
+        console.log("Sorted array without titles: " + combinedArray);
 
         const dateRangeString = this.$store.state.tripObject.dates;
 

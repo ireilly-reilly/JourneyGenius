@@ -353,11 +353,13 @@ export default defineComponent({
           console.log('scrape_shopping response', response.data);
           return axios.post('http://localhost:8000/api/scrape_hotels', requestData);
         })
-        .then(response => {
-          console.log('scrape_hotels response', response.data);
-          this.progress = 10;
-          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
-        })
+        
+        // .then(response => {
+        //   console.log('scrape_hotels response', response.data);
+        //   this.progress = 10;
+        //   return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
+        // })
+
         .then(response => {
           this.restaurantData = response.data;
           this.progress = 20;

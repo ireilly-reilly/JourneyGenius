@@ -143,8 +143,11 @@ def haversine(lat1, lon1, lat2, lon2):
 
 # Modified code snippet to get recommendations with location and price
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
+    
     # Get the index of the target place
     idx = data[data['Place'] == target_place].index
+    print("idx: " + idx)
+
     if len(idx) == 0:
         return {'error': f'Place "{target_place}" not found'}, 404
 
