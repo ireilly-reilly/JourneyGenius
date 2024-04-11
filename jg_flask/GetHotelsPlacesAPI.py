@@ -73,13 +73,13 @@ def scrape_hotels():
 
     #Dynamic Filepath
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
-    CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
-    activities_csv_file_path = os.path.join(CSV_FOLDER, 'hotel_data.csv')
+    CSV_FOLDER = os.path.join(BASE_DIR, '..', 'jg_flask')
+    hotel_csv_file_path = os.path.join(CSV_FOLDER, 'hotel_data.csv')
 
-    csv_exists = os.path.exists(activities_csv_file_path)
+    csv_exists = os.path.exists(hotel_csv_file_path)
 
     # Create and open a CSV file for writing
-    with open(activities_csv_file_path, mode='a', newline='', encoding='utf-8') as file:
+    with open(hotel_csv_file_path, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         
         # Only write the header row if the file is empty (or doesn't exist)
@@ -93,6 +93,16 @@ def scrape_hotels():
 
         # Initialize a set to store processed place IDs
         processed_place_ids = set()
+
+        # Read existing place_id values from the CSV file and populate processed_place_ids
+        if csv_exists:
+            with open(hotel_csv_file_path, mode='r', newline='', encoding='utf-8') as file:
+                reader = csv.reader(file)
+                next(reader)  # Skip header row
+                for row in reader:
+                    place_id = row[0]  # Assuming place_id is the first column in your CSV
+                    processed_place_ids.add(place_id)
+
 
         # Use a loop to fetch multiple pages of results
         while results_fetched < desired_result_count:
@@ -137,7 +147,7 @@ def scrape_hotels():
                 longitude = place_details['result']['geometry']['location']['lng']
 
                 # Write the data to the CSV file
-                writer.writerow([name, price_range, types, address, postal_code, city, state, country, latitude, longitude])
+                writer.writerow([my_place_id, name, price_range, types, address, postal_code, city, state, country, latitude, longitude])
 
                 #print("Here is what is saved inside the csv file:")
                 #print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
