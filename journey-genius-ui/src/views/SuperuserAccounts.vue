@@ -37,7 +37,8 @@
                 <tr>
                     <th v-for="header in headers" :key="header.value" @click="sortByColumn(header.value)">
                         <strong>{{ header.text }}</strong>
-                        <span v-if="sortBy === header.value" :class="[sortDesc ? 'mdi mdi-arrow-down' : 'mdi mdi-arrow-up']"></span>
+                        <span v-if="sortBy === header.value"
+                            :class="[sortDesc ? 'mdi mdi-arrow-down' : 'mdi mdi-arrow-up']"></span>
                     </th>
                 </tr>
             </thead>
@@ -53,50 +54,109 @@
         </table>
 
         <!-- Dialog for displaying and editing user details -->
-        <v-dialog v-model="dialogVisible" >
+        <v-dialog v-model="dialogVisible" max-width="700px">
             <v-card>
                 <v-card-title class="headline">User Information</v-card-title>
                 <v-card-text>
-                    <!-- Freeze, Delete, Reset Password Buttons -->
+                    <!-- ID, Last Name, First Name, Email -->
                     <v-row>
-                        <v-btn color="primary" class="mr-4">Freeze</v-btn>
-                        <v-btn color="primary" class="mr-4">Delete</v-btn>
-                        <v-btn color="primary">Reset Password</v-btn>
-                    </v-row>
-                    <!-- ID, Last Name, First Name, Email with Edit button -->
-                    <v-row class="mt-4 user-info-header">
-                        <div class="mr-4"><strong>ID:</strong> {{ selectedUser.DatabaseID }}</div>
-                        <div class="mr-4"><strong>Last Name:</strong> {{ selectedUser.LastName }}</div>
-                        <div class="mr-4"><strong>First Name:</strong> {{ selectedUser.FirstName }}</div>
-                        <div class="mr-4"><strong>Email:</strong> {{ selectedUser.Email }}</div>
-                        <v-btn color="primary" class="ml-auto">Edit</v-btn>
+                        <v-col cols="12">
+                            <v-row>
+                                <v-col cols="3">
+                                    <strong>ID:</strong>
+                                </v-col>
+                                <v-col cols="9">
+                                    {{ selectedUser.DatabaseID }}
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-row>
+                                <v-col cols="3">
+                                    <strong>Last Name:</strong>
+                                </v-col>
+                                <v-col cols="9">
+                                    <span v-if="!isEditingUser">{{ selectedUser.LastName }}</span>
+                                    <v-text-field v-model="editedUser.LastName" v-else></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-row>
+                                <v-col cols="3">
+                                    <strong>First Name:</strong>
+                                </v-col>
+                                <v-col cols="9">
+                                    <span v-if="!isEditingUser">{{ selectedUser.FirstName }}</span>
+                                    <v-text-field v-model="editedUser.FirstName" v-else></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-col>
+                        <v-col cols="12">
+                            <v-row>
+                                <v-col cols="3">
+                                    <strong>Email:</strong>
+                                </v-col>
+                                <v-col cols="9">
+                                    <span v-if="!isEditingUser">{{ selectedUser.Email }}</span>
+                                    <v-text-field v-model="editedUser.Email" v-else></v-text-field>
+                                </v-col>
+                            </v-row>
+                        </v-col>
                     </v-row>
                     <!-- Date Created -->
-                    <div class="mt-4"><strong>Date Created:</strong> {{ selectedUser.DateCreated }}</div>
+                    <v-row>
+                        <v-col cols="3">
+                            <strong>Date Created:</strong>
+                        </v-col>
+                        <v-col cols="9">
+                            {{ selectedUser.DateCreated }}
+                        </v-col>
+                    </v-row>
                     <!-- Last Logged In -->
-                    <div class="mt-4"><strong>Last Logged In:</strong> {{ selectedUser.LastLoggedIn }}</div>
+                    <v-row>
+                        <v-col cols="3">
+                            <strong>Last Logged In:</strong>
+                        </v-col>
+                        <v-col cols="9">
+                            {{ selectedUser.LastLoggedIn }}
+                        </v-col>
+                    </v-row>
+                    <br>
                     <!-- Saved Trips -->
                     <v-card class="mt-4">
                         <v-card-title class="headline">Saved Trips</v-card-title>
                         <v-card-text>
-                            <v-data-table :headers="tripHeaders" :items="selectedUser.SavedTrips" hide-default-footer>
+                            <v-data-table :headers="tripHeaders" :items="savedTrips" hide-default-footer>
                                 <template v-slot:items="props">
                                     <td>{{ props.item.tripID }}</td>
                                     <td>{{ props.item.tripName }}</td>
                                     <td>{{ props.item.tripDescription }}</td>
-                                    <td><v-btn color="primary">Edit</v-btn></td>
-                                    <td><v-btn color="primary">Delete</v-btn></td>
+                                    <td>
+                                        <v-btn color="primary" @click="editTrip(props.item)">Edit</v-btn>
+                                    </td>
+                                    <td>
+                                        <v-btn color="primary" @click="deleteTrip(props.item)">Delete</v-btn>
+                                    </td>
                                 </template>
                             </v-data-table>
                         </v-card-text>
                     </v-card>
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="primary" @click="closeDialog">Close</v-btn>
+                    <!-- Freeze, Delete, Reset Password Buttons -->
+                    <v-btn color="deep-purple-accent-2" class="mr-4">Freeze</v-btn>
+                    <v-btn color="deep-purple-accent-2" class="mr-4">Delete</v-btn>
+                    <v-btn color="deep-purple-accent-2">Reset Password</v-btn>
+                    <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ?
+                        'Save' :
+                        'Edit Profile' }}</v-btn>
+                    <v-btn color="deep-purple-accent-2" @click="closeDialog">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-        
+
+
     </div>
 </template>
 
@@ -112,7 +172,7 @@ export default {
         return {
             selectedUser: null, // Newly added property to store selected user
             dialogVisible: false, // Property to control dialog visibility
-            isEditing: false, // Flag to indicate whether user information is being edited
+            isEditingUser: false, // Flag to indicate whether user information is being edited
             tripHeaders: [
                 { text: 'Trip ID', value: 'tripID' },
                 { text: 'Trip Name', value: 'tripName' },
@@ -121,7 +181,7 @@ export default {
                 { text: 'Delete', value: 'delete', sortable: false }
             ],
 
-            
+
             searchQuery: '',
             sortBy: 'Database ID',
             sortDesc: false,
@@ -147,10 +207,12 @@ export default {
                 { text: 'Last Logged In', value: 'LastLoggedIn' },
             ],
             users: [],
+            savedTrips: [],
         };
     },
     mounted() {
         this.fetchUserAccounts();
+        // this.fetchSavedTrips();
     },
     computed: {
         filteredUsers() {
@@ -186,8 +248,10 @@ export default {
     methods: {
         // Method to set selected user and open dialog
         selectUser(user) {
-            this.selectedUser = user;
+            this.selectedUser = { ...user }; // Create a copy of the user object
+            this.editedUser = { ...user }; // Initialize edited user object
             this.dialogVisible = true;
+            this.isEditingUser = false; // Reset editing flag
         },
 
         // Method to close dialog
@@ -199,8 +263,9 @@ export default {
         },
 
         // Method to toggle editing mode
-        toggleEditing(editing) {
-            this.isEditing = editing;
+        toggleEditingUser() {
+            this.isEditingUser = !this.isEditingUser;
+            console.log(this.isEditingUser)
         },
 
 
@@ -221,12 +286,31 @@ export default {
                 });
         },
 
+        editTrip(trip) {
+            // Implement edit trip functionality
+            console.log("Editing trip:", trip);
+        },
+        deleteTrip(trip) {
+            // Implement delete trip functionality
+            console.log("Deleting trip:", trip);
+        },
 
 
 
 
 
 
+        // fetchSavedTrips() {
+        //     axios.get('http://localhost:8000/api/fetch_saved_trips')
+        //         .then(response => {
+        //             this.savedTrips = response.data;
+        //             console.log(savedTrips)
+        //             console.log('User accounts data:', response.data);
+        //         })
+        //         .catch(error => {
+        //             console.error('Error fetching user accounts', error);
+        //         });
+        // },
 
 
 
@@ -301,29 +385,30 @@ export default {
 
 /* Add your CSS styles for table formatting here */
 .user-accounts-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 20px;
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
 }
 
 .user-accounts-table th,
 .user-accounts-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+    border: 1px solid #ddd;
+    padding: 8px;
 }
 
 .user-accounts-table th {
-  background-color: #e0e0e0;
-  color: #333;
+    background-color: #e0e0e0;
+    color: #333;
 }
 
 .user-accounts-table tbody tr:nth-child(even) {
-  background-color: #f2f2f2;
-  color: #000; /* Black text color */
+    background-color: #f2f2f2;
+    color: #000;
+    /* Black text color */
 }
 
 .user-accounts-table tbody tr:hover {
-  background-color: #ddd;
+    background-color: #ddd;
 }
 
 .v-card-title.headline {
