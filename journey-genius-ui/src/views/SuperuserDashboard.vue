@@ -1,7 +1,5 @@
 <template>
   <div class="dashboard-page dark-mode">
-
-
     <v-app-bar app color="grey">
       <v-toolbar-title>Journey Genius - Admin</v-toolbar-title>
       <!-- Buttons that link to other parts of the site -->
@@ -10,16 +8,14 @@
           {{ button.text }}
         </v-btn>
       </div>
-
       <v-spacer></v-spacer>
-
       <v-btn text @click="logout">
         <span style="margin-right: 5px;">Logout</span>
-        <v-icon right>mdi-exit-to-app</v-icon></v-btn>
+        <v-icon right>mdi-exit-to-app</v-icon>
+      </v-btn>
     </v-app-bar>
 
-    <h1>Dashboard</h1>
-
+    <h1 style="font-size: 2.5rem;">Dashboard Welcome</h1>
 
     <!-- Welcome message -->
     <div class="welcome-message">
@@ -33,21 +29,33 @@
         <p>TF-IDF Status:</p>
         <div class="status-content">
           <p>{{ tfidfStatus }}</p>
-          <v-icon>{{ tfidfIcon }}</v-icon>
+          <p>{{ tfidfUpdatedStatus }}</p>
+          <div>
+            <v-icon class="mr-2">{{ tfidfIcon }}</v-icon>
+            <v-btn @click="updateStatus('tfidf')">Update</v-btn>
+          </div>
         </div>
       </div>
       <div class="status-item">
         <p>Authentication Status:</p>
         <div class="status-content">
           <p>{{ authenticationStatus }}</p>
-          <v-icon>{{ authenticationIcon }}</v-icon>
+          <p>{{ authenticationUpdatedStatus }}</p>
+          <div>
+            <v-icon class="mr-2">{{ authenticationIcon }}</v-icon>
+            <v-btn @click="updateStatus('authentication')">Update</v-btn>
+          </div>
         </div>
       </div>
       <div class="status-item">
         <p>Scraping Status:</p>
         <div class="status-content">
           <p>{{ scrapingStatus }}</p>
-          <v-icon>{{ scrapingIcon }}</v-icon>
+          <p>{{ scrapingUpdatedStatus }}</p>
+          <div>
+            <v-icon class="mr-2">{{ scrapingIcon }}</v-icon>
+            <v-btn @click="updateStatus('scraping')">Update</v-btn>
+          </div>
         </div>
       </div>
     </div>
@@ -60,10 +68,13 @@ import Cookies from 'js-cookie';
 export default {
   data() {
     return {
-      adminName: '',
-      tfidfStatus: 'Running',
-      authenticationStatus: 'Pending',
-      scrapingStatus: 'Success',
+      adminName: "Admin Name", // Assuming this is dynamically set
+      tfidfStatus: "Status", // Assuming these statuses are dynamically set
+      authenticationStatus: "Status",
+      scrapingStatus: "Status",
+      tfidfIcon: "mdi-checkbox-marked-circle",
+      authenticationIcon: "mdi-checkbox-marked-circle",
+      scrapingIcon: "mdi-checkbox-marked-circle",
 
       buttons: [
         { text: 'Home', to: '/SuperuserDashboard' },
@@ -104,6 +115,22 @@ export default {
         { text: 'SuperuserLogin', to: '/SuperuserLogin' },
       ];
 
+    },
+    updateStatus(type) {
+      // Update the status based on the type (tfidf, authentication, scraping)
+      switch (type) {
+        case "tfidf":
+          this.tfidfStatus = "Updated Status";
+          break;
+        case "authentication":
+          this.authenticationStatus = "Updated Status";
+          break;
+        case "scraping":
+          this.scrapingStatus = "Updated Status";
+          break;
+        default:
+          break;
+      }
     },
     fetchSuperuserName() {
       const token = Cookies.get('login_token'); // Assuming you store login token in cookies

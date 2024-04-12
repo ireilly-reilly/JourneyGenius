@@ -212,7 +212,7 @@ export default {
     },
     mounted() {
         this.fetchUserAccounts();
-        // this.fetchSavedTrips();
+        this.fetchSavedTrips();
     },
     computed: {
         filteredUsers() {
@@ -300,19 +300,16 @@ export default {
 
 
 
-        // fetchSavedTrips() {
-        //     axios.get('http://localhost:8000/api/fetch_saved_trips')
-        //         .then(response => {
-        //             this.savedTrips = response.data;
-        //             console.log(savedTrips)
-        //             console.log('User accounts data:', response.data);
-        //         })
-        //         .catch(error => {
-        //             console.error('Error fetching user accounts', error);
-        //         });
-        // },
-
-
+        fetchSavedTrips() {
+            axios.get('http://localhost:8000/api/fetch_saved_trips')
+                .then(response => {
+                    this.savedTrips = response.data.savedTrips;
+                    console.log('Saved trips data:', this.savedTrips);
+                })
+                .catch(error => {
+                    console.error('Error fetching saved trips', error);
+                });
+        },
 
         fetchUserAccounts() {
             // Assuming your Flask backend is running on http://localhost:8000
