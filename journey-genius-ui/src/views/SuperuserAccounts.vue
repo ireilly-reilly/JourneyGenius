@@ -42,7 +42,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="user in sortedUsers" :key="user.DatabaseID" @click="redirectToUser(user)">
+                <tr v-for="user in sortedUsers" :key="user.DatabaseID" @click="selectUser(user)">
                     <td>{{ user.DatabaseID }}</td>
                     <td>{{ user.FirstName }}</td>
                     <td>{{ user.LastName }}</td>
@@ -51,6 +51,51 @@
                 </tr>
             </tbody>
         </table>
+
+        <!-- Dialog for displaying and editing user details -->
+        <v-dialog v-model="dialogVisible" >
+            <v-card>
+                <v-card-title class="headline">User Information</v-card-title>
+                <v-card-text>
+                    <!-- Freeze, Delete, Reset Password Buttons -->
+                    <v-row>
+                        <v-btn color="primary" class="mr-4">Freeze</v-btn>
+                        <v-btn color="primary" class="mr-4">Delete</v-btn>
+                        <v-btn color="primary">Reset Password</v-btn>
+                    </v-row>
+                    <!-- ID, Last Name, First Name, Email with Edit button -->
+                    <v-row class="mt-4 user-info-header">
+                        <div class="mr-4"><strong>ID:</strong> {{ selectedUser.DatabaseID }}</div>
+                        <div class="mr-4"><strong>Last Name:</strong> {{ selectedUser.LastName }}</div>
+                        <div class="mr-4"><strong>First Name:</strong> {{ selectedUser.FirstName }}</div>
+                        <div class="mr-4"><strong>Email:</strong> {{ selectedUser.Email }}</div>
+                        <v-btn color="primary" class="ml-auto">Edit</v-btn>
+                    </v-row>
+                    <!-- Date Created -->
+                    <div class="mt-4"><strong>Date Created:</strong> {{ selectedUser.DateCreated }}</div>
+                    <!-- Last Logged In -->
+                    <div class="mt-4"><strong>Last Logged In:</strong> {{ selectedUser.LastLoggedIn }}</div>
+                    <!-- Saved Trips -->
+                    <v-card class="mt-4">
+                        <v-card-title class="headline">Saved Trips</v-card-title>
+                        <v-card-text>
+                            <v-data-table :headers="tripHeaders" :items="selectedUser.SavedTrips" hide-default-footer>
+                                <template v-slot:items="props">
+                                    <td>{{ props.item.tripID }}</td>
+                                    <td>{{ props.item.tripName }}</td>
+                                    <td>{{ props.item.tripDescription }}</td>
+                                    <td><v-btn color="primary">Edit</v-btn></td>
+                                    <td><v-btn color="primary">Delete</v-btn></td>
+                                </template>
+                            </v-data-table>
+                        </v-card-text>
+                    </v-card>
+                </v-card-text>
+                <v-card-actions>
+                    <v-btn color="primary" @click="closeDialog">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         
     </div>
 </template>
@@ -65,6 +110,17 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            selectedUser: null, // Newly added property to store selected user
+            dialogVisible: false, // Property to control dialog visibility
+            isEditing: false, // Flag to indicate whether user information is being edited
+            tripHeaders: [
+                { text: 'Trip ID', value: 'tripID' },
+                { text: 'Trip Name', value: 'tripName' },
+                { text: 'Trip Description', value: 'tripDescription' },
+                { text: 'Edit', value: 'edit', sortable: false },
+                { text: 'Delete', value: 'delete', sortable: false }
+            ],
+
             
             searchQuery: '',
             sortBy: 'Database ID',
@@ -128,6 +184,52 @@ export default {
         },
     },
     methods: {
+        // Method to set selected user and open dialog
+        selectUser(user) {
+            this.selectedUser = user;
+            this.dialogVisible = true;
+        },
+
+        // Method to close dialog
+        closeDialog() {
+            // this.selectedUser = null;
+            this.dialogVisible = false;
+            this.isEditing = false; // Reset editing flag
+
+        },
+
+        // Method to toggle editing mode
+        toggleEditing(editing) {
+            this.isEditing = editing;
+        },
+
+
+        // Have fun doing this, Isaac!!!!!!!! FIGHT ON!!!!
+        // Method to save user changes
+        saveUserChanges() {
+            // Send request to update user information
+            // For example, using axios:
+            axios.put(`http://localhost:8000/api/user_accounts/${this.selectedUser.DatabaseID}`, this.selectedUser)
+                .then(response => {
+                    // Handle success
+                    console.log('User information updated:', response.data);
+                    this.isEditing = false; // Exit editing mode
+                })
+                .catch(error => {
+                    // Handle error
+                    console.error('Error updating user information', error);
+                });
+        },
+
+
+
+
+
+
+
+
+
+
         fetchUserAccounts() {
             // Assuming your Flask backend is running on http://localhost:8000
             axios.get('http://localhost:8000/api/user_accounts')
@@ -222,5 +324,29 @@ export default {
 
 .user-accounts-table tbody tr:hover {
   background-color: #ddd;
+}
+
+.v-card-title.headline {
+    font-size: 24px;
+}
+
+.v-card-text {
+    font-size: 18px;
+    margin-top: 16px;
+}
+
+.v-card-actions {
+    justify-content: flex-end;
+    margin-top: 16px;
+}
+
+.v-btn {
+    font-size: 18px;
+    margin-top: 16px;
+}
+
+.user-info-header div {
+    /* font-weight: bold; */
+    font-size: 30px;
 }
 </style>
