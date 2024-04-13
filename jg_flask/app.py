@@ -107,13 +107,12 @@ class User(db.Model):
     password = db.Column(db.String(300), nullable=False)
     firstname = db.Column(db.String(40), nullable=False)
     lastname = db.Column(db.String(40), nullable=False)
-    gender = db.Column(db.String(5))
-    age = db.Column(db.String(5))
-    interests = db.Column(db.String(10))
-    accommodations = db.Column(db.String(5))
-    transportation = db.Column(db.String(5))
     last_login = db.Column(db.String(50))
     date_created = db.Column(db.String(50))
+    fav_activities = db.Column(db.JSON)
+    fav_foods = db.Column(db.JSON)
+    fav_shopping = db.Column(db.JSON)
+    fav_accomodations = db.Column(db.JSON)
 
 #SuperUser Table Model:
 class SuperUser(db.Model):
@@ -155,9 +154,11 @@ class Trip(db.Model):
 from SuperuserAccounts import superuser_accounts_bp
 from SavedTrips_bp import saved_trips_bp
 from SuperuserAnalytics_bp import superuser_analytics_bp
+from UserProfiling_bp import user_profiling_bp
 app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
 app.register_blueprint(saved_trips_bp, url_prefix='/api')
 app.register_blueprint(superuser_analytics_bp, url_prefix='/api')
+app.register_blueprint(user_profiling_bp, url_prefix='/api/user_profiling')
 
 #This is a command line prompt to create an initial super user
 #Used like this: flask create_super_user
@@ -277,55 +278,7 @@ def logout():
 
 
 
-#TODO Refactor into separate blueprint
-#---------------------USER PROFILING METHODS--------------------------
 
-# @app.route('/api/GetUserProfile', methods=['GET'])
-# @jwt_required()
-# def fetchUserData():
-#     print("hello from fetchUserData")
-#     current_user_id = get_jwt_identity()
-# #     #current_user_id = user.id
-# #     print('Current user ID: ', current_user_id)
-#     user = User.query.get(current_user_id)
-
-#     if user:
-# #         #Convert user data to a dictionary and send it as JSON response
-# #         user_data = {
-# #             'firstName': user.firstname,
-# #             'lastName': user.lastname,
-# #             'email': user.email,
-# #             # Add other fields as needed
-# #         }
-# #         return jsonify(user_data), 200
-# #     else:
-# #         print("Current User ID: ", current_user_id)
-# #         print('error')
-# #         return jsonify({'error': 'User not found from fetch data'}), 404
-
-
-@app.route('/api/save_user_data', methods=['POST'])
-@jwt_required()  # Ensure the request has a valid JWT token
-def save_user_data():
-    current_user_id = get_jwt_identity()
-    user = User.query.get(current_user_id)
-
-    if not user:
-        return jsonify({'error': 'User not found'}), 404
-
-    data = request.json
-    user.firstname = data.get('firstName')
-    user.lastname = data.get('lastName')
-    user.gender = data.get('gender')
-    user.age = data.get('age')
-    user.email = data.get('email')
-    user.accommodations = data.get('accommodationPreference')
-    user.transportation = data.get('transportationPreference')
-    user.interests = ','.join(data.get('selectedActivities'))
-
-    db.session.commit()
-
-    return jsonify({'message': 'Data saved successfully'}), 200
 
 
 @app.route('/api/get_user_info', methods=['GET'])
@@ -339,13 +292,7 @@ def get_user_profile():
 
     user_data = {
         'firstName': user.firstname,
-        # 'lastName': user.lastname,
-        # 'gender': user.gender,
-        # 'age': user.age,
-        # 'email': user.email,
-        # 'accommodationPreference': user.accommodations,
-        # 'transportationPreference': user.transportation,
-        # 'selectedActivities': user.interests.split(',')
+        
     }
 
     return jsonify(user_data), 200
