@@ -146,6 +146,8 @@
       </v-snackbar>
     </div>
 
+
+
     <!-- Saved Trips Introduction -->
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
@@ -162,6 +164,15 @@
       </v-col>
     </v-row>
 
+    <v-row justify="center" v-if="savedTrips && savedTrips.length > 0">
+      <v-col cols="12" md="8">
+        <v-select v-model="sortKey" :items="sortOptions" label="Sort by" @change="sortTrips" outlined dense return-object></v-select>
+
+       
+          <!-- <v-select label="Sort by"
+          :items="['Recently Added', 'Date', 'State', 'City', 'Budget']" @change="sortTrips"></v-select> -->
+      </v-col>
+    </v-row>
 
     <!-- Grid style Saved Trips Cards -->
     <v-row justify="center" v-if="savedTrips && savedTrips.length > 0">
@@ -169,7 +180,7 @@
         <v-row class="equal-height-cards">
           <v-col cols="12" md="6" v-for="(trip, index) in savedTrips" :key="index">
             <v-hover v-slot="{ isHovering, props }">
-              <v-card class="pa-4 mb-4" v-bind="props">
+              <v-card class="pa-4 mb-4 d-flex flex-column" v-bind="props">
                 <v-img :src="imageSrc" :alt="trip.location" class="mb-3"
                   style="width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px;"></v-img>
 
@@ -185,9 +196,9 @@
                 </v-row>
 
                 <!-- make this section the same height -->
-                <v-row>
+                <v-row class="flex-grow-1">
                   <v-col cols="12" class="pr-4">
-                    <p class="mb-2">{{ trip.city_description }}</p>
+                    <p class="mb-2" style="flex: 1; overflow: hidden;">{{ trip.city_description }}</p>
                   </v-col>
                 </v-row>
 
@@ -238,21 +249,27 @@
   </v-container>
 </template>
 
-
-
-
-
-
 <script>
 import axios from 'axios';
 import Cookies from 'js-cookie';
 export default {
   data() {
+    console.log(this.sortOptions); // Check if sortOptions are correctly populated
+
     return {
       savedTrips: [],
       imageSrc: require('@/assets/sf.jpeg'), //This will need to be changed to actual image 
       showSnackbar: false,
       dialogVisible: false,
+      sortKey: '',
+
+      sortOptions: [
+        { name: 'Recently Added', value: '' },
+        { name: 'Dates', value: "tripDate" },
+        { name: 'State Name', value: "tripState" },
+        { name: 'City Name', value: "tripCity" },
+        { name: 'Budget', value: "tripBudget" }
+      ],
 
     };
     defineProps({
@@ -261,8 +278,55 @@ export default {
   },
   mounted() {
     this.fetchSavedTrips();
+    // console.log('Sort Options:', this.sortOptions); // Check if sortOptions are populated correctly
+
   },
   methods: {
+    sortTrips() {
+      console.log("the text field was selected"); 
+
+      if (!this.sortKey) return; // Do nothing if sortKey is not selected
+
+      console.log('Sorting by:', this.sortKey); // Debug: Check which key is used for sorting
+
+      const isDescending = (key) => ['recent', 'budget'].includes(key); // Add keys that should sort descending
+
+      this.savedTrips.sort((a, b) => {
+        let valA, valB;
+        switch (this.sortKey) {
+          case 'recent':
+            valA = new Date(a.addedDate);
+            valB = new Date(b.addedDate);
+            break;
+          case 'dates':
+            valA = new Date(a.dates.start);
+            valB = new Date(b.dates.start);
+            break;
+          case 'state':
+          case 'city':
+            valA = a[this.sortKey].toLowerCase(); // assuming city and state are stored as strings
+            valB = b[this.sortKey].toLowerCase();
+            break;
+          case 'budget':
+            valA = parseFloat(a.budget); // assuming budget is stored as a string or number
+            valB = parseFloat(b.budget);
+            break;
+          default:
+            return 0;
+        }
+
+        console.log(`Comparing ${valA} to ${valB}`); // Debug: Check values being compared
+
+        if (isDescending(this.sortKey)) {
+          return valB - valA; // For descending order
+        }
+        return valA - valB; // For ascending order
+      });
+
+      // To trigger Vue's reactivity system after sorting
+      this.savedTrips = [...this.savedTrips];
+    },
+
     fetchSavedTrips() {
       const jwtToken = Cookies.get('login_token');
       const url = 'http://localhost:8000/api/fetch_saved_trips'
@@ -384,6 +448,7 @@ export default {
 }
 
 .description-content {
-  flex: 1; /* Makes the content expand to fill the available space */
+  flex: 1;
+  /* Makes the content expand to fill the available space */
 }
 </style>
