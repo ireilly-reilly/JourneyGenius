@@ -36,7 +36,7 @@
     <!-- Two buttons on the bottom -->
     <v-row justify="center" class="mt-4">
         <v-col cols="12" md="8" class="text-center">
-            <router-link to="/GeneratedItinerary">
+            <router-link to="/SavedItinerary">
                 <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
                     style="min-width: 150px;">
                     Itinerary Overview
