@@ -95,24 +95,16 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     #print()
 
     # Get the index of the input place
-    idx = data[data['Place'] == target_place].index
-    #print(idx)
-    #print(data['Place'].unique())
-
-
+    idx = data[data['Place'] == target_place].index[0]
     if len(idx) == 0:
         return {'error': f'Place "{target_place}" not found'}, 404
 
     idx = idx[0]  # Get the first index if multiple matches exist
 
-    # Extract the price range of the input place as an integer
+    # Extract the price range, latitude, and longitude of the target place
     input_price = int(data.loc[idx, 'Price Range'])
-    
-    # Extract the latitude and longitude of the input place
     input_lat = data.loc[idx, 'Latitude']
     input_lon = data.loc[idx, 'Longitude']
-    #print(input_lat)
-    #print(input_lon)
 
     # Calculate geographical distances and text-based similarities
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]

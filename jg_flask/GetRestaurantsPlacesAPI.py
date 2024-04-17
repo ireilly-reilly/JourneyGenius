@@ -77,6 +77,7 @@ def scrape_restaurants():
     
     csv_exists = os.path.exists(restaurant_csv_file_path)
 
+    Number = 1
     # Create and open a CSV file for writing
     #with open('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', mode='a', newline='', encoding='utf-8') as file:
     with open(restaurant_csv_file_path, mode='a', newline='', encoding='utf-8') as file:
@@ -84,7 +85,7 @@ def scrape_restaurants():
         
         # Only write the header row if the file is empty (or doesn't exist)
         if not csv_exists:
-            writer.writerow(['Place', 'Price Range', 'Types', 'Address', 'Postal Code', 'City', 'State', 'Country', 'Latitude', 'Longitude'])
+            writer.writerow(['Number', 'Id', 'Place', 'Price Range', 'Types', 'Address', 'Postal Code', 'City', 'State', 'Country', 'Latitude', 'Longitude'])
         # Initialize a variable to store the next_page_token
         next_page_token = None
 
@@ -94,14 +95,47 @@ def scrape_restaurants():
         # Initialize a set to store processed place IDs
         processed_place_ids = set()
 
-        # Read existing place_id values from the CSV file and populate processed_place_ids
-        if csv_exists:
-            with open(restaurant_csv_file_path, mode='r', newline='', encoding='utf-8') as file:
-                reader = csv.reader(file)
-                next(reader)  # Skip header row
-                for row in reader:
-                    place_id = row[0]  # Assuming place_id is the first column in your CSV
+    # Read existing place_id values from the CSV file and populate processed_place_ids
+    if csv_exists:
+        with open(restaurant_csv_file_path, mode='r', newline='', encoding='utf-8') as file:
+            reader = csv.reader(file)
+            rows = list(reader)  # Read all rows into a list
+
+            if len(rows) > 1:  # Check if the CSV has data rows (excluding the header)
+                # Skip the header row and iterate over the rows to populate processed_place_ids
+                for row in rows[1:]:
+                    place_id = row[1]  # Assuming place_id is the second column in your CSV
                     processed_place_ids.add(place_id)
+
+                # Update the Number variable if there are processed_place_ids
+                if len(processed_place_ids) > 0:
+                    last_row = rows[-1]
+                    last_number = int(last_row[0])  # Assuming Number is the first column in your CSV
+                    Number = last_number + 1  # Start from the next number after the last one in the CSV
+
+
+
+
+        # # Read existing place_id values from the CSV file and populate processed_place_ids
+        # if csv_exists:
+        #     with open(restaurant_csv_file_path, mode='r', newline='', encoding='utf-8') as file:
+        #         reader = csv.reader(file)
+        #         rows = list(reader)  # Read all rows into a list
+
+        #         next(reader)  # Skip header row
+
+        #         # for row in reader:
+        #         #     place_id = row[0]  # Assuming place_id is the first column in your CSV
+        #         #     processed_place_ids.add(place_id)
+
+        #         for row in rows[1:]:  # Start from the second row since the first one is the header
+        #             place_id = row[1]  # Assuming place_id is the first column in your CSV
+        #             processed_place_ids.add(place_id)
+        #         if len(processed_place_ids) > 0:
+        #             last_row = rows[-1]
+        #             last_number = int(last_row[0])  # Assuming Number is the first column in your CSV
+        #             Number = last_number + 1  # Start from the next number after the last one in the CSV
+
 
         # Use a loop to fetch multiple pages of results
         while results_fetched < desired_result_count:
@@ -152,7 +186,7 @@ def scrape_restaurants():
                 longitude = place_details['result']['geometry']['location']['lng']
 
                 # Write the data to the CSV file
-                writer.writerow([my_place_id, name, price_range, types, f"{address} {postal_code}", postal_code, city, state, country])
+                writer.writerow([Number, my_place_id, name, price_range, types, f"{address} {postal_code}", postal_code, city, state, country])
 
                 #print("Here is what is stored inside the csv file:")
                 #print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")

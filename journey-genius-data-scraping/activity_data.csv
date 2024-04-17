@@ -1,476 +1,127 @@
-Place,Price Range,Types,Address,Postal Code,City,State,Country,Latitude,Longitude
-Nevada Museum of Art,,"tourist_attraction, museum, point_of_interest, establishment","160 W Liberty St, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5207823,-119.8134183
-Chamizal National Memorial,,"park, museum, point_of_interest, establishment","800 S San Marcial St, El Paso, TX 79905, USA",79905,El Paso,Texas,United States,31.76724089999999,-106.4543374
-Vizcaya Museum & Gardens,,"tourist_attraction, museum, point_of_interest, establishment","3251 S Miami Ave, Miami, FL 33129, USA",33129,Miami,Florida,United States,25.7443866,-80.21047469999999
-The Mob Museum,2,"museum, tourist_attraction, point_of_interest, establishment","300 Stewart Ave, Las Vegas, NV 89101, USA",89101,Las Vegas,Nevada,United States,36.17281979999999,-115.1412395
-Denver Museum of Nature & Science,2,"tourist_attraction, museum, point_of_interest, establishment","2001 Colorado Blvd, Denver, CO 80205, USA",80205,Denver,Colorado,United States,39.74752609999999,-104.9428078
-Occoneechee State Park,,"tourist_attraction, park, museum, point_of_interest, establishment","1192 Occoneechee Park Rd, Clarksville, VA 23927, USA",23927,Clarksville,Virginia,United States,36.6241207,-78.52583340000001
-Turtle Bay Exploration Park,,"zoo, tourist_attraction, museum, park, point_of_interest, establishment","844 Sundial Bridge Drive, Redding, CA 96001, USA",96001,Redding,California,United States,40.59099479999999,-122.3763838
-The Frick Collection,2,"museum, point_of_interest, establishment","1 E 70th St, New York, NY 10021, USA",10021,New York,New York,United States,40.7710857,-73.9673861
-The Mob Museum,2,"museum, tourist_attraction, point_of_interest, establishment","300 Stewart Ave, Las Vegas, NV 89101, USA",89101,Las Vegas,Nevada,United States,36.17281979999999,-115.1412395
-Foresthill Divide Museum,,"museum, tourist_attraction, point_of_interest, establishment","24601 Harrison St, Foresthill, CA 95631, USA",95631,Foresthill,California,United States,39.0217372,-120.8170221
-Nevada Museum of Art,,"tourist_attraction, museum, point_of_interest, establishment","160 W Liberty St, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5207823,-119.8134183
-Nevada Museum of Art,,"tourist_attraction, museum, point_of_interest, establishment","160 W Liberty St, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5207823,-119.8134183
-National Automobile Museum,,"tourist_attraction, museum, point_of_interest, establishment","1 Museum Dr, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.526224,-119.8083969
-UC Davis Tahoe Environmental Research Center,,"university, museum, point_of_interest, establishment","291 Country Club Dr, Incline Village, NV 89451, USA",89451,Incline Village,Nevada,United States,39.24272149999999,-119.9395973
-Donner Memorial State Museum,,"museum, tourist_attraction, point_of_interest, establishment","12593 Donner Pass Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.32413390000001,-120.2321081
-Wilbur D. May Center,,"museum, tourist_attraction, park, point_of_interest, store, establishment","1595 N Sierra St, Reno, NV 89503, USA",89503,Reno,Nevada,United States,39.5460619,-119.8254368
-Fleischmann Planetarium,,"tourist_attraction, museum, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5459068,-119.8194696
-Comstock Firemen's Museum,,"tourist_attraction, museum, point_of_interest, establishment","125 C St, Virginia City, NV 89440, USA",89440,Virginia City,Nevada,United States,39.3090237,-119.6499163
-UC Davis Tahoe Science Center,,"tourist_attraction, museum, point_of_interest, establishment","291 Country Club Dr, Incline Village, NV 89451, USA",89451,Incline Village,Nevada,United States,39.2428814,-119.9396311
-The Discovery,,"tourist_attraction, museum, point_of_interest, establishment","490 S Center St, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.52176830000001,-119.8094121
-W. M Keck Earth Science And Mineral Engineering Museum,,"museum, tourist_attraction, point_of_interest, establishment","1664 North Virginia Street, Mackay Mines, 057 Mail Stop 0168, Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5392212,-119.8144189
-The Sensory Garden At Idlewild Park,,"museum, tourist_attraction, point_of_interest, establishment","74 Cowan Dr, Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5217021,-119.8331676
-Gold Hill Train Depot,,"museum, point_of_interest, establishment","1455 N Main St, Silver City, NV 89428, USA",89428,Silver City,Nevada,United States,39.2939521,-119.6575252
-Republic of Molossia,,"tourist_attraction, museum, point_of_interest, establishment","Republic of Molossia, 226 Mary Ln, Dayton, NV 89403, USA",89403,Dayton,Nevada,United States,39.3229009,-119.5395228
-Historical Society of Dayton Valley,,"tourist_attraction, museum, point_of_interest, establishment","135 Shady Ln, Dayton, NV 89403, USA",89403,Dayton,Nevada,United States,39.2378825,-119.5925817
-Foreman-Roberts House Museum,,"tourist_attraction, museum, point_of_interest, establishment","1207 N Carson St, Carson City, NV 89701, USA",89701,Carson City,Nevada,United States,39.1718163,-119.7666228
-Wild Island Family Adventure Park - Waterpark,,"amusement_park, tourist_attraction, park, point_of_interest, establishment","250 Wild Island Ct, Sparks, NV 89434, USA",89434,Sparks,Nevada,United States,39.531658,-119.713385
-Konex Wake Parks,,"amusement_park, point_of_interest, establishment","204 W Spear St, Carson City, NV 89703, USA",89703,Carson City,Nevada,United States,39.1667006,-119.7681157
-Urban Air Trampoline and Adventure Park,,"amusement_park, point_of_interest, establishment","2210 Harvard Wy, Reno, NV 89502, USA",89502,Reno,Nevada,United States,39.5027535,-119.7837771
-Sierra Saltwater Systems,,"aquarium, pet_store, store, point_of_interest, establishment","8465 Speckled Ave, Kings Beach, CA 96143, USA",96143,Kings Beach,California,United States,39.24353440000001,-120.0235586
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Patterson Community Stadium,,"stadium, point_of_interest, establishment","Patterson, CA 95363, USA",95363,Patterson,California,United States,37.4735816,-121.1399393
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-State Farm Stadium,,"stadium, point_of_interest, establishment","1 Cardinals Dr, Glendale, AZ 85305, USA",85305,Glendale,Arizona,United States,33.5276247,-112.2625593
-State Farm Stadium,,"stadium, point_of_interest, establishment","1 Cardinals Dr, Glendale, AZ 85305, USA",85305,Glendale,Arizona,United States,33.5276247,-112.2625593
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Reno Huskies Football Field,,"stadium, premise, point_of_interest, establishment","Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5171977,-119.8329697
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Busch Stadium,3,"stadium, tourist_attraction, point_of_interest, establishment","700 Clark Ave, St. Louis, MO 63102, USA",63102,St. Louis,Missouri,United States,38.6226188,-90.1928209
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Valley Children's Stadium,,"stadium, point_of_interest, establishment","1620 E Bulldog Ln, Fresno, CA 93710, USA",93710,Fresno,California,United States,36.8144001,-119.7581518
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Soccer/ Baseball Fields,,"stadium, premise, point_of_interest, establishment","176 Springfield Pkwy, Spring Creek, NV 89815, USA",89815,Spring Creek,Nevada,United States,40.7345842,-115.6384126
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Scheumann Stadium,,"stadium, point_of_interest, establishment","3300 Tillotson Ave, Muncie, IN 47304, USA",47304,Muncie,Indiana,United States,40.21594649999999,-85.41684099999999
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Redding Rodeo Grounds,,"stadium, point_of_interest, establishment","715 Auditorium Dr, Redding, CA 96001, USA",96001,Redding,California,United States,40.5898518,-122.3826205
-Diamond Stadium of Lake Elsinore,,"stadium, point_of_interest, establishment","500 Diamond Dr, Lake Elsinore, CA 92530, USA",92530,Lake Elsinore,California,United States,33.65385319999999,-117.3033106
-Grape Bowl,,"stadium, point_of_interest, establishment","221 E Lawrence Ave, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.1409889,-121.2675189
-Grape Bowl,,"stadium, point_of_interest, establishment","221 E Lawrence Ave, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.1409889,-121.2675189
-Grape Bowl,,"stadium, point_of_interest, establishment","221 E Lawrence Ave, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.1409889,-121.2675189
-Grape Bowl,,"stadium, point_of_interest, establishment","221 E Lawrence Ave, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.1409889,-121.2675189
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Colusa Casino Stadium,,"stadium, point_of_interest, establishment","1431 C St, Marysville, CA 95901, USA",95901,Marysville,California,United States,39.151138,-121.588321
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Redding Rodeo Grounds,,"stadium, point_of_interest, establishment","715 Auditorium Dr, Redding, CA 96001, USA",96001,Redding,California,United States,40.5898518,-122.3826205
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Redding Rodeo Grounds,,"stadium, point_of_interest, establishment","715 Auditorium Dr, Redding, CA 96001, USA",96001,Redding,California,United States,40.5898518,-122.3826205
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Alex G. Spanos Center,,"stadium, point_of_interest, establishment","1178 Larry Heller Dr, Stockton, CA 95211, USA",95211,Stockton,California,United States,37.9766653,-121.3151069
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Valley Children's Stadium,,"stadium, point_of_interest, establishment","1620 E Bulldog Ln, Fresno, CA 93710, USA",93710,Fresno,California,United States,36.8144001,-119.7581518
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Grape Bowl,,"stadium, point_of_interest, establishment","221 E Lawrence Ave, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.1409889,-121.2675189
-Grape Bowl,,"stadium, point_of_interest, establishment","221 E Lawrence Ave, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.1409889,-121.2675189
-Grape Bowl,,"stadium, point_of_interest, establishment","221 E Lawrence Ave, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.1409889,-121.2675189
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Pete Susick Stadium,,"stadium, premise, point_of_interest, establishment","S 10th St, Coos Bay, OR 97420, USA",97420,Coos Bay,Oregon,United States,43.3618923,-124.2215416
-Crypto.com Arena,,"stadium, point_of_interest, establishment","1111 S Figueroa St, Los Angeles, CA 90015, USA",90015,Los Angeles,California,United States,34.0430175,-118.2672541
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Lomira School District Track & Field,,"stadium, point_of_interest, establishment","325 Pleasant Hill Ave, Lomira, WI 53048, USA",53048,Lomira,Wisconsin,United States,43.5848771,-88.44475969999999
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Redding Rodeo Grounds,,"stadium, point_of_interest, establishment","715 Auditorium Dr, Redding, CA 96001, USA",96001,Redding,California,United States,40.5898518,-122.3826205
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Redding Rodeo Grounds,,"stadium, point_of_interest, establishment","715 Auditorium Dr, Redding, CA 96001, USA",96001,Redding,California,United States,40.5898518,-122.3826205
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Redding Rodeo Grounds,,"stadium, point_of_interest, establishment","715 Auditorium Dr, Redding, CA 96001, USA",96001,Redding,California,United States,40.5898518,-122.3826205
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Valley Children's Stadium,,"stadium, point_of_interest, establishment","1620 E Bulldog Ln, Fresno, CA 93710, USA",93710,Fresno,California,United States,36.8144001,-119.7581518
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Valley Children's Stadium,,"stadium, point_of_interest, establishment","1620 E Bulldog Ln, Fresno, CA 93710, USA",93710,Fresno,California,United States,36.8144001,-119.7581518
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Levi's Stadium,,"stadium, point_of_interest, establishment","4900 Marie P DeBartolo Way, Santa Clara, CA 95054, USA",95054,Santa Clara,California,United States,37.4033165,-121.9693774
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Honda Center,,"tourist_attraction, stadium, point_of_interest, establishment","2695 E Katella Ave, Anaheim, CA 92806, USA",92806,Anaheim,California,United States,33.8078476,-117.8764687
-Alex G. Spanos Center,,"stadium, point_of_interest, establishment","1178 Larry Heller Dr, Stockton, CA 95211, USA",95211,Stockton,California,United States,37.9766653,-121.3151069
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-VyStar Veterans Memorial Arena,,"stadium, point_of_interest, establishment","300 A Philip Randolph Blvd, Jacksonville, FL 32202, USA",32202,Jacksonville,Florida,United States,30.3258872,-81.6450447
-Fitzpatrick Stadium,,"stadium, point_of_interest, establishment","Deering Ave, Portland, ME 04101, USA",04101,Portland,Maine,United States,43.6579507,-70.2766242
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-VyStar Veterans Memorial Arena,,"stadium, point_of_interest, establishment","300 A Philip Randolph Blvd, Jacksonville, FL 32202, USA",32202,Jacksonville,Florida,United States,30.3258872,-81.6450447
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Children's Mercy Park,,"stadium, point_of_interest, establishment","1 Sporting Way, Kansas City, KS 66111, USA",66111,Kansas City,Kansas,United States,39.1215929,-94.82317669999999
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Hard Rock Stadium,,"stadium, point_of_interest, establishment","347 Don Shula Dr Suite 102, Miami Gardens, FL 33056, USA",33056,Miami Gardens,Florida,United States,25.958326,-80.23959789999999
-Spiegelberg Stadium,,"stadium, point_of_interest, establishment","700-898 Kenyon St, Medford, OR 97501, USA",97501,Medford,Oregon,United States,42.31660170000001,-122.8704024
-Indian Braves Stadiums,,"stadium, point_of_interest, establishment","1501 Cerrillos Rd, Santa Fe, NM 87505, USA",87505,Santa Fe,New Mexico,United States,35.6717507,-105.969192
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Grape Bowl,,"stadium, point_of_interest, establishment","221 E Lawrence Ave, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.1409889,-121.2675189
-Alex G. Spanos Center,,"stadium, point_of_interest, establishment","1178 Larry Heller Dr, Stockton, CA 95211, USA",95211,Stockton,California,United States,37.9766653,-121.3151069
-Brennan Stadium,,"stadium, point_of_interest, establishment","570 Golden Eagle Ave, Quincy, CA 95971, USA",95971,Quincy,California,United States,39.94903960000001,-120.9692356
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Bearkatz Stadium,,"stadium, point_of_interest, establishment","Melbourne, AR 72556, USA",72556,Melbourne,Arkansas,United States,36.0693918,-91.8371002
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"stadium, tourist_attraction, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"stadium, tourist_attraction, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"stadium, tourist_attraction, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Children's Mercy Park,,"stadium, point_of_interest, establishment","1 Sporting Way, Kansas City, KS 66111, USA",66111,Kansas City,Kansas,United States,39.1215929,-94.82317669999999
-Children's Mercy Park,,"stadium, point_of_interest, establishment","1 Sporting Way, Kansas City, KS 66111, USA",66111,Kansas City,Kansas,United States,39.1215929,-94.82317669999999
-Children's Mercy Park,,"stadium, point_of_interest, establishment","1 Sporting Way, Kansas City, KS 66111, USA",66111,Kansas City,Kansas,United States,39.1215929,-94.82317669999999
-Children's Mercy Park,,"stadium, point_of_interest, establishment","1 Sporting Way, Kansas City, KS 66111, USA",66111,Kansas City,Kansas,United States,39.1215929,-94.82317669999999
-Children's Mercy Park,,"stadium, point_of_interest, establishment","1 Sporting Way, Kansas City, KS 66111, USA",66111,Kansas City,Kansas,United States,39.1215929,-94.82317669999999
-Children's Mercy Park,,"stadium, point_of_interest, establishment","1 Sporting Way, Kansas City, KS 66111, USA",66111,Kansas City,Kansas,United States,39.1215929,-94.82317669999999
-Children's Mercy Park,,"stadium, point_of_interest, establishment","1 Sporting Way, Kansas City, KS 66111, USA",66111,Kansas City,Kansas,United States,39.1215929,-94.82317669999999
-Children's Mercy Park,,"stadium, point_of_interest, establishment","1 Sporting Way, Kansas City, KS 66111, USA",66111,Kansas City,Kansas,United States,39.1215929,-94.82317669999999
-High Country Sports Arena,,"stadium, point_of_interest, establishment","18960 Waylon Way, Sonora, CA 95370, USA",95370,Sonora,California,United States,37.9660595,-120.3231339
-High Country Sports Arena,,"stadium, point_of_interest, establishment","18960 Waylon Way, Sonora, CA 95370, USA",95370,Sonora,California,United States,37.9660595,-120.3231339
-High Country Sports Arena,,"stadium, point_of_interest, establishment","18960 Waylon Way, Sonora, CA 95370, USA",95370,Sonora,California,United States,37.9660595,-120.3231339
-High Country Sports Arena,,"stadium, point_of_interest, establishment","18960 Waylon Way, Sonora, CA 95370, USA",95370,Sonora,California,United States,37.9660595,-120.3231339
-High Country Sports Arena,,"stadium, point_of_interest, establishment","18960 Waylon Way, Sonora, CA 95370, USA",95370,Sonora,California,United States,37.9660595,-120.3231339
-High Country Sports Arena,,"stadium, point_of_interest, establishment","18960 Waylon Way, Sonora, CA 95370, USA",95370,Sonora,California,United States,37.9660595,-120.3231339
-High Country Sports Arena,,"stadium, point_of_interest, establishment","18960 Waylon Way, Sonora, CA 95370, USA",95370,Sonora,California,United States,37.9660595,-120.3231339
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Brennan Stadium,,"stadium, point_of_interest, establishment","570 Golden Eagle Ave, Quincy, CA 95971, USA",95971,Quincy,California,United States,39.94903960000001,-120.9692356
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Charles Whitlow Rodeo Grounds,,"stadium, park, point_of_interest, establishment","11608 AZ-79, Florence, AZ 85132, USA",85132,Florence,Arizona,United States,32.9842555,-111.3611094
-Brennan Stadium,,"stadium, point_of_interest, establishment","570 Golden Eagle Ave, Quincy, CA 95971, USA",95971,Quincy,California,United States,39.94903960000001,-120.9692356
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Alex G. Spanos Center,,"stadium, point_of_interest, establishment","1178 Larry Heller Dr, Stockton, CA 95211, USA",95211,Stockton,California,United States,37.9766653,-121.3151069
-Levi's Stadium,,"stadium, point_of_interest, establishment","4900 Marie P DeBartolo Way, Santa Clara, CA 95054, USA",95054,Santa Clara,California,United States,37.4033165,-121.9693774
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-AT&T Stadium,,"stadium, tourist_attraction, point_of_interest, establishment","1 AT&T Way, Arlington, TX 76011, USA",76011,Arlington,Texas,United States,32.7479966,-97.09341649999999
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Charles Whitlow Rodeo Grounds,,"stadium, park, point_of_interest, establishment","11608 AZ-79, Florence, AZ 85132, USA",85132,Florence,Arizona,United States,32.9842555,-111.3611094
-Grant County Fairgrounds,,"campground, stadium, park, lodging, point_of_interest, establishment","3953 Airway Dr NE, Moses Lake, WA 98837, USA",98837,Moses Lake,Washington,United States,47.145036,-119.3099314
-Kingston Stadium,,"stadium, point_of_interest, establishment","Roane County, TN 37763, USA",37763,,Tennessee,United States,35.7775845,-84.5529159
-Charles Whitlow Rodeo Grounds,,"stadium, park, point_of_interest, establishment","11608 AZ-79, Florence, AZ 85132, USA",85132,Florence,Arizona,United States,32.9842555,-111.3611094
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-McAllen Convention Center,,"stadium, point_of_interest, establishment","700 Convention Center Blvd, McAllen, TX 78501, USA",78501,McAllen,Texas,United States,26.2001825,-98.25936000000002
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Charles Whitlow Rodeo Grounds,,"stadium, park, point_of_interest, establishment","11608 AZ-79, Florence, AZ 85132, USA",85132,Florence,Arizona,United States,32.9842555,-111.3611094
-Charles Whitlow Rodeo Grounds,,"stadium, park, point_of_interest, establishment","11608 AZ-79, Florence, AZ 85132, USA",85132,Florence,Arizona,United States,32.9842555,-111.3611094
-Charles Whitlow Rodeo Grounds,,"stadium, park, point_of_interest, establishment","11608 AZ-79, Florence, AZ 85132, USA",85132,Florence,Arizona,United States,32.9842555,-111.3611094
-McAllen Convention Center,,"stadium, point_of_interest, establishment","700 Convention Center Blvd, McAllen, TX 78501, USA",78501,McAllen,Texas,United States,26.2001825,-98.25936000000002
-Hohokam Stadium,,"stadium, point_of_interest, establishment","1235 N Center St, Mesa, AZ 85201, USA",85201,Mesa,Arizona,United States,33.4385825,-111.8294729
-Hohokam Stadium,,"stadium, point_of_interest, establishment","1235 N Center St, Mesa, AZ 85201, USA",85201,Mesa,Arizona,United States,33.4385825,-111.8294729
-State Farm Stadium,,"stadium, point_of_interest, establishment","1 Cardinals Dr, Glendale, AZ 85305, USA",85305,Glendale,Arizona,United States,33.5276247,-112.2625593
-Charles Whitlow Rodeo Grounds,,"stadium, park, point_of_interest, establishment","11608 AZ-79, Florence, AZ 85132, USA",85132,Florence,Arizona,United States,32.9842555,-111.3611094
-Levi's Stadium,,"stadium, point_of_interest, establishment","4900 Marie P DeBartolo Way, Santa Clara, CA 95054, USA",95054,Santa Clara,California,United States,37.4033165,-121.9693774
-Kingston Stadium,,"stadium, point_of_interest, establishment","Roane County, TN 37763, USA",37763,,Tennessee,United States,35.7775845,-84.5529159
-Scott Stadium,,"stadium, point_of_interest, establishment","940 W Chanslor Way, Blythe, CA 92225, USA",92225,Blythe,California,United States,33.6197329,-114.6075984
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Hugo City School Football Stadium,,"stadium, school, point_of_interest, establishment","208 N 2nd St, Hugo, OK 74743, USA",74743,Hugo,Oklahoma,United States,34.0180074,-95.51068430000001
-Thomas & Mack Center,,"stadium, point_of_interest, establishment","4505 S Maryland Pkwy, Las Vegas, NV 89154, USA",89154,Las Vegas,Nevada,United States,36.1048084,-115.144046
-Alex G. Spanos Center,,"stadium, point_of_interest, establishment","1178 Larry Heller Dr, Stockton, CA 95211, USA",95211,Stockton,California,United States,37.9766653,-121.3151069
-Tokyo Dome,,"stadium, tourist_attraction, point_of_interest, establishment","1-chōme-3-61 Kōraku, Bunkyo City, Tokyo 112-0004, Japan",112-0004,Bunkyo City,Tokyo,Japan,35.70563959999999,139.7518913
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Honda Center,,"tourist_attraction, stadium, point_of_interest, establishment","2695 E Katella Ave, Anaheim, CA 92806, USA",92806,Anaheim,California,United States,33.8078476,-117.8764687
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Empower Field at Mile High,,"stadium, point_of_interest, establishment","1701 Bryant St, Denver, CO 80204, USA",80204,Denver,Colorado,United States,39.7438895,-105.0201094
-AT&T Stadium,,"stadium, tourist_attraction, point_of_interest, establishment","1 AT&T Way, Arlington, TX 76011, USA",76011,Arlington,Texas,United States,32.7479966,-97.09341649999999
-Hohokam Stadium,,"stadium, point_of_interest, establishment","1235 N Center St, Mesa, AZ 85201, USA",85201,Mesa,Arizona,United States,33.4385825,-111.8294729
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Husky Stadium,,"stadium, point_of_interest, establishment","3800 Montlake Blvd NE, Seattle, WA 98105, USA",98105,Seattle,Washington,United States,47.6502935,-122.3020732
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Eagle Stadium,,"stadium, point_of_interest, establishment","155 Rivercrest Blvd, Allen, TX 75002, USA",75002,Allen,Texas,United States,33.11410010000001,-96.656993
-Eagle Stadium,,"stadium, point_of_interest, establishment","155 Rivercrest Blvd, Allen, TX 75002, USA",75002,Allen,Texas,United States,33.11410010000001,-96.656993
-Eagle Stadium,,"stadium, point_of_interest, establishment","155 Rivercrest Blvd, Allen, TX 75002, USA",75002,Allen,Texas,United States,33.11410010000001,-96.656993
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Grape Bowl,,"stadium, point_of_interest, establishment","221 E Lawrence Ave, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.1409889,-121.2675189
-Valley Children's Stadium,,"stadium, point_of_interest, establishment","1620 E Bulldog Ln, Fresno, CA 93710, USA",93710,Fresno,California,United States,36.8144001,-119.7581518
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Jenny Craig Pavilion at University of San Diego,,"university, stadium, point_of_interest, establishment","5998 Alcala Park Way, San Diego, CA 92110, USA",92110,San Diego,California,United States,32.7739894,-117.1840955
-Jack Trice Stadium,,"stadium, point_of_interest, establishment","1732 S 4th St, Ames, IA 50011, USA",50011,Ames,Iowa,United States,42.0139693,-93.635762
-Jack Trice Stadium,,"stadium, point_of_interest, establishment","1732 S 4th St, Ames, IA 50011, USA",50011,Ames,Iowa,United States,42.0139693,-93.635762
-Jack Trice Stadium,,"stadium, point_of_interest, establishment","1732 S 4th St, Ames, IA 50011, USA",50011,Ames,Iowa,United States,42.0139693,-93.635762
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Crypto.com Arena,,"stadium, point_of_interest, establishment","1111 S Figueroa St, Los Angeles, CA 90015, USA",90015,Los Angeles,California,United States,34.0430175,-118.2672541
-Husky Stadium,,"stadium, point_of_interest, establishment","3800 Montlake Blvd NE, Seattle, WA 98105, USA",98105,Seattle,Washington,United States,47.6502935,-122.3020732
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-<<<<<<< Updated upstream
-Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
-Coalinga Memorial Bowl,,"stadium, premise, point_of_interest, establishment","Coalinga, CA 93210, USA",93210,Coalinga,California,United States,36.1479547,-120.3626469
-=======
-Caldwell Night Rodeo Office,,"stadium, point_of_interest, establishment","121 S 22nd Ave, Caldwell, ID 83605, USA",83605,Caldwell,Idaho,United States,43.65523220000001,-116.6717417
->>>>>>> Stashed changes
-Memorial Stadium,,"stadium, point_of_interest, establishment","1340 Menlo Ave, Napa, CA 94558, USA",94558,Napa,California,United States,38.313763,-122.2997538
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Levi's Stadium,,"stadium, point_of_interest, establishment","4900 Marie P DeBartolo Way, Santa Clara, CA 95054, USA",95054,Santa Clara,California,United States,37.4033165,-121.9693774
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Gaylord Stadium,,"stadium, point_of_interest, establishment","28XJ+5C, Gaylord, MI 49735, USA",49735,Gaylord,Michigan,United States,45.0478829,-84.66896
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-California Memorial Stadium,,"stadium, point_of_interest, establishment","2227 Piedmont Ave, Berkeley, CA 94720, USA",94720,Berkeley,California,United States,37.8706571,-122.2507783
-SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
-Madison Square Garden,,"stadium, tourist_attraction, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Madison Square Garden,,"stadium, tourist_attraction, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"stadium, tourist_attraction, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"stadium, tourist_attraction, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Madison Square Garden,,"stadium, tourist_attraction, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Palm Springs Power Baseball,,"stadium, point_of_interest, establishment","1901 E Baristo Rd, Palm Springs, CA 92262, USA",92262,Palm Springs,California,United States,33.818498,-116.525931
-Alex G. Spanos Center,,"stadium, point_of_interest, establishment","1178 Larry Heller Dr, Stockton, CA 95211, USA",95211,Stockton,California,United States,37.9766653,-121.3151069
-Patterson Community Stadium,,"stadium, point_of_interest, establishment","Patterson, CA 95363, USA",95363,Patterson,California,United States,37.4735816,-121.1399393
-Banner Island Ballpark,,"stadium, point_of_interest, establishment","404 W Fremont St, Stockton, CA 95203, USA",95203,Stockton,California,United States,37.9553349,-121.2979711
-John Thurman Field,,"stadium, local_government_office, point_of_interest, establishment","601 Neece Dr, Modesto, CA 95351, USA",95351,Modesto,California,United States,37.62230819999999,-121.0009279
-Chuck Hughes Stadium,,"stadium, point_of_interest, establishment","1000 Coffee Rd, Modesto, CA 95355, USA",95355,Modesto,California,United States,37.655364,-120.9720009
-Dan Gonsalves Stadium,,"stadium, point_of_interest, establishment","641 Norseman Dr, Modesto, CA 95357, USA",95357,Modesto,California,United States,37.6512344,-120.9190983
-Ripon High Stadium,,"stadium, point_of_interest, establishment","301 N Acacia Ave, Ripon, CA 95366, USA",95366,Ripon,California,United States,37.7413055,-121.1290434
-Stan State Stadium,,"stadium, point_of_interest, establishment","071 005-005, Turlock, CA 95382, USA",95382,Turlock,California,United States,37.5281467,-120.8507577
-Joe Debley Field,,"stadium, point_of_interest, establishment","Turlock, CA 95380, USA",95380,Turlock,California,United States,37.4969859,-120.8325636
-Joe F. Alvernaz Field,,"stadium, point_of_interest, establishment","Park St, Livingston, CA 95334, USA",95334,Livingston,California,United States,37.3780678,-120.7218041
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Hughes Stadium,,"stadium, point_of_interest, establishment","3835 Freeport Blvd, Sacramento, CA 95822, USA",95822,Sacramento,California,United States,38.5407716,-121.4861988
-Hornet Stadium,,"stadium, point_of_interest, establishment","6000 Jed Smith Dr, Sacramento, CA 95819, USA",95819,Sacramento,California,United States,38.5556482,-121.4230077
-Heart Health Park,,"stadium, point_of_interest, establishment","1600 Exposition Blvd, Sacramento, CA 95815, USA",95815,Sacramento,California,United States,38.5913553,-121.4380313
-Cosumnes River College Stadium,,"stadium, point_of_interest, establishment","8401 Center Pkwy, Sacramento, CA 95823, USA",95823,Sacramento,California,United States,38.4546396,-121.419473
-ARC Stadium,,"stadium, point_of_interest, establishment","4700 College Oak Dr, Sacramento, CA 95841, USA",95841,Sacramento,California,United States,38.6466506,-121.3478243
-Athletic Sports Banners,,"stadium, point_of_interest, establishment","11327 Trade Center Dr, Rancho Cordova, CA 95742, USA",95742,Rancho Cordova,California,United States,38.6075366,-121.2641567
-Negri Field at Foothill High School,,"stadium, point_of_interest, establishment","5000 McCloud Dr, Sacramento, CA 95842, USA",95842,Sacramento,California,United States,38.6761564,-121.3505652
-Thunder Stadium,,"stadium, point_of_interest, establishment","5301 Victory Ln, Rocklin, CA 95765, USA",95765,Rocklin,California,United States,38.8128416,-121.2506945
-Simon Bruin Stadium,,"stadium, point_of_interest, establishment","3661 Ponderosa Rd, Shingle Springs, CA 95682, USA",95682,Shingle Springs,California,United States,38.6723326,-120.9399431
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Lawlor Events Center,,"stadium, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.54508,-119.8183072
-Mackay Stadium,,"stadium, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5469709,-119.8176081
-Reno Rodeo Association,,"tourist_attraction, stadium, point_of_interest, establishment","Rodeo Arena, 1350 N Wls Ave, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.5413662,-119.8008123
-William Peccole Park,,"stadium, point_of_interest, establishment","1775 Evans Ave, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.54827309999999,-119.8127651
-Christina M. Hixson Softball Park,,"stadium, point_of_interest, establishment","100 Dolly Dr, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.5459245,-119.8109773
-Reno Aces Baseball,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5287552,-119.8091611
-Wolf Pack Park,,"stadium, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.5475394,-119.8150267
-Tennis Courts,,"stadium, premise, point_of_interest, establishment","Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5472762,-119.8157875
-Reno Orthopedic Sports Med. Complex,,"stadium, premise, point_of_interest, establishment","Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5461921,-119.8159684
-Allen Field,,"stadium, point_of_interest, establishment","Playforth Pl, Morehead, KY 40351, USA",40351,Morehead,Kentucky,United States,38.192972,-83.4260559
-Jayne Stadium,,"stadium, point_of_interest, establishment","23 Playforth Pl, Morehead, KY 40351, USA",40351,Morehead,Kentucky,United States,38.1919217,-83.42535869999999
-Comet Stadium,,"stadium, point_of_interest, establishment","Olive Hill, KY 41164, USA",41164,Olive Hill,Kentucky,United States,38.3127195,-83.15198509999999
-University Field,,"stadium, point_of_interest, establishment","917 Piedmont St, Morehead, KY 40351, USA",40351,Morehead,Kentucky,United States,38.19457260000001,-83.4257939
-Ellis T. Johnson Arena,,"stadium, point_of_interest, establishment","Morehead, KY 40351, USA",40351,Morehead,Kentucky,United States,38.19007999999999,-83.4256489
-Coach Paul Ousley Stadium,,"stadium, point_of_interest, establishment","Rowan County, KY 40351, USA",40351,,Kentucky,United States,38.2058596,-83.4810802
-KCU Stadium,,"stadium, point_of_interest, establishment","Grayson, KY 41143, USA",41143,Grayson,Kentucky,United States,38.342965,-82.9486878
-Panther Field,,"stadium, point_of_interest, establishment","Fleming County, KY 41041, USA",41041,,Kentucky,United States,38.4227716,-83.7627361
-Veterans Stadium,,"stadium, point_of_interest, establishment","Adams County, OH 45144, USA",45144,Adams County,Ohio,United States,38.6932437,-83.58963410000001
-Raider Stadium,,"stadium, point_of_interest, establishment","405 Hitchens Rd, Grayson, KY 41143, USA",41143,Grayson,Kentucky,United States,38.326339,-82.9336409
-Sutter Health Park,,"stadium, point_of_interest, establishment","400 Ballpark Dr, West Sacramento, CA 95691, USA",95691,West Sacramento,California,United States,38.5805433,-121.5135048
-Hughes Stadium,,"stadium, point_of_interest, establishment","3835 Freeport Blvd, Sacramento, CA 95822, USA",95822,Sacramento,California,United States,38.5407716,-121.4861988
-Hornet Stadium,,"stadium, point_of_interest, establishment","6000 Jed Smith Dr, Sacramento, CA 95819, USA",95819,Sacramento,California,United States,38.5556482,-121.4230077
-Heart Health Park,,"stadium, point_of_interest, establishment","1600 Exposition Blvd, Sacramento, CA 95815, USA",95815,Sacramento,California,United States,38.5913553,-121.4380313
-Cosumnes River College Stadium,,"stadium, point_of_interest, establishment","8401 Center Pkwy, Sacramento, CA 95823, USA",95823,Sacramento,California,United States,38.4546396,-121.419473
-Toomey Field and Woody Wilson Track,,"stadium, point_of_interest, establishment","101 Russell Blvd, Davis, CA 95616, USA",95616,Davis,California,United States,38.5452508,-121.7482471
-Dairy Outdoor Recreation Complex,,"stadium, point_of_interest, establishment","135 Dairy Rd, Davis, CA 95616, USA",95616,Davis,California,United States,38.5380317,-121.7602693
-ARC Stadium,,"stadium, point_of_interest, establishment","4700 College Oak Dr, Sacramento, CA 95841, USA",95841,Sacramento,California,United States,38.6466506,-121.3478243
-Jerry Cloutier's Used Books,,"stadium, bowling_alley, book_store, store, point_of_interest, establishment","417 1st St, Woodland, CA 95695, USA",95695,Woodland,California,United States,38.6768903,-121.7730391
-University Credit Union Center,,"stadium, point_of_interest, establishment","750 Orchard Rd, Davis, CA 95616, USA",95616,Davis,California,United States,38.5418238,-121.7596385
-Minute Maid Park,3,"stadium, point_of_interest, establishment","501 Crawford St, Houston, TX 77002, USA",77002,Houston,Texas,United States,29.7572014,-95.35525
-Berry Center of Northwest Houston,,"stadium, gym, health, point_of_interest, establishment","8877 Barker Cypress Rd, Cypress, TX 77433, USA",77433,Cypress,Texas,United States,29.9055797,-95.68874919999999
-Abshier Stadium,,"stadium, point_of_interest, establishment","710 San Augustine Ave, Deer Park, TX 77536, USA",77536,Deer Park,Texas,United States,29.6854384,-95.129038
-Pridgeon Stadium,,"stadium, point_of_interest, establishment","11355 Falcon Rd a, Houston, TX 77065, USA",77065,Houston,Texas,United States,29.93564529999999,-95.5699954
-Rice Stadium,,"stadium, point_of_interest, establishment","6100 Main St, Houston, TX 77005, USA",77005,Houston,Texas,United States,29.7162887,-95.4093113
-Galena Park ISD Stadium,,"stadium, point_of_interest, establishment","15025 Wallisville Rd, Houston, TX 77049, USA",77049,Houston,Texas,United States,29.8082818,-95.1764858
-Barnett Sports Complex,,"stadium, point_of_interest, establishment","6800 Fairway Dr, Houston, TX 77087, USA",77087,Houston,Texas,United States,29.69227790000001,-95.306759
-Constellation Field,,"stadium, point_of_interest, establishment","1 Stadium Dr, Sugar Land, TX 77498, USA",77498,Sugar Land,Texas,United States,29.6223578,-95.6473025
-Rhodes Stadium,,"stadium, point_of_interest, establishment","1733 Katyland Dr, Katy, TX 77493, USA",77493,Katy,Texas,United States,29.7963125,-95.8054279
-Veterans Memorial Stadium,,"stadium, point_of_interest, establishment","2906 Dabney Dr, Pasadena, TX 77502, USA",77502,Pasadena,Texas,United States,29.6694217,-95.1848441
-Reno Huskies Football Field,,"stadium, premise, point_of_interest, establishment","Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5171977,-119.8329697
-Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
-Lawlor Events Center,,"stadium, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.54508,-119.8183072
-Mackay Stadium,,"stadium, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5469709,-119.8176081
-Reno Rodeo Association,,"tourist_attraction, stadium, point_of_interest, establishment","Rodeo Arena, 1350 N Wls Ave, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.5413662,-119.8008123
-William Peccole Park,,"stadium, point_of_interest, establishment","1775 Evans Ave, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.54827309999999,-119.8127651
-Reno Aces Baseball,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5287552,-119.8091611
-Wolf Pack Park,,"stadium, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.5475394,-119.8150267
-Christina M. Hixson Softball Park,,"stadium, point_of_interest, establishment","100 Dolly Dr, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.5459245,-119.8109773
-North Valleys Regional Park Baseball Fields,,"stadium, point_of_interest, establishment","Regional Park, 8085 Silver Lake Rd, Reno, NV 89506, USA",89506,Reno,Nevada,United States,39.6226586,-119.8657389
-Reno Huskies Football Field,,"stadium, premise, point_of_interest, establishment","Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5171977,-119.8329697
-State Farm Stadium,,"stadium, point_of_interest, establishment","1 Cardinals Dr, Glendale, AZ 85305, USA",85305,Glendale,Arizona,United States,33.5276247,-112.2625593
-Salt River Fields at Talking Stick,,"stadium, point_of_interest, establishment","7555 N Pima Rd, Scottsdale, AZ 85258, USA",85258,Scottsdale,Arizona,United States,33.5449922,-111.8861867
-Hohokam Stadium,,"stadium, point_of_interest, establishment","1235 N Center St, Mesa, AZ 85201, USA",85201,Mesa,Arizona,United States,33.4385825,-111.8294729
-Camelback Ranch - Glendale,,"stadium, point_of_interest, establishment","10710 W Camelback Rd, Phoenix, AZ 85037, USA",85037,Phoenix,Arizona,United States,33.51409939999999,-112.2958463
-Ice Den Scottsdale,,"stadium, school, point_of_interest, store, health, establishment","9375 E Bell Rd, Scottsdale, AZ 85260, USA",85260,Scottsdale,Arizona,United States,33.63879439999999,-111.8820106
-Goodyear Ballpark,,"stadium, point_of_interest, establishment","1933 S Ballpark Way, Goodyear, AZ 85338, USA",85338,Goodyear,Arizona,United States,33.42917549999999,-112.3899889
-Surprise Stadium,,"stadium, point_of_interest, establishment","15850 N Bullard Ave, Surprise, AZ 85374, USA",85374,Surprise,Arizona,United States,33.6288191,-112.3770585
-Desert Financial Arena,,"stadium, point_of_interest, establishment","600 E Veterans Way, Tempe, AZ 85281, USA",85281,Tempe,Arizona,United States,33.424495,-111.9310002
-Tempe Diablo Stadium,,"stadium, point_of_interest, establishment","2200 W Alameda Dr, Tempe, AZ 85282, USA",85282,Tempe,Arizona,United States,33.40078149999999,-111.9709335
-Phoenix Municipal Stadium,,"stadium, point_of_interest, establishment","5999 E Van Buren St #3410, Phoenix, AZ 85008, USA",85008,Phoenix,Arizona,United States,33.4492164,-111.9547754
+Id,Place,Price Range,Types,Address,Postal Code,City,State,Country,Latitude,Longitude
+ChIJ10In10pHmYARKmrneO89h_g,Greater Nevada Field,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5288493,-119.8077378
+ChIJJxpYhRVHmYARh8D8O89ZqQM,Lawlor Events Center,,"stadium, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.54508,-119.8183072
+ChIJzf7vKxRHmYARtx0Q9WhgIzc,Mackay Stadium,,"stadium, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5469709,-119.8176081
+ChIJHzNUwkRHmYARjvwnVT39LoE,Reno Rodeo Association,,"stadium, tourist_attraction, point_of_interest, establishment","Rodeo Arena, 1350 N Wls Ave, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.5413662,-119.8008123
+ChIJ25Oj0BRHmYARq16X8ctnKWk,William Peccole Park,,"stadium, point_of_interest, establishment","1775 Evans Ave, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.54827309999999,-119.8127651
+ChIJXeejIEtHmYARcp8A6NomHH4,Reno Aces Baseball,,"stadium, point_of_interest, establishment","250 Evans Ave, Reno, NV 89501, USA",89501,Reno,Nevada,United States,39.5287552,-119.8091611
+ChIJy2sGpWpHmYARH1Kxr5ONbts,Christina M. Hixson Softball Park,,"stadium, point_of_interest, establishment","100 Dolly Dr, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.5459245,-119.8109773
+ChIJZdKgmmVHmYARtmmI4qylJDE,Wolf Pack Park,,"stadium, point_of_interest, establishment","1664 N Virginia St, Reno, NV 89512, USA",89512,Reno,Nevada,United States,39.5475394,-119.8150267
+ChIJoR8TYzlJmYARQt8sEoKzPBQ,North Valleys Regional Park Baseball Fields,,"stadium, point_of_interest, establishment","Regional Park, 8085 Silver Lake Rd, Reno, NV 89506, USA",89506,Reno,Nevada,United States,39.6226586,-119.8657389
+ChIJp-uF6hVHmYARDiTzWTC1bjw,Robert Cashell Fieldhouse,,"stadium, premise, point_of_interest, establishment","Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5456928,-119.8167597
+ChIJWwckvBVHmYARaW55so2qMH4,Reno Orthopedic Sports Med. Complex,,"stadium, premise, point_of_interest, establishment","Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5461921,-119.8159684
+ChIJ88UvuBVHmYARdNR6qwqJ4tM,Stadium Visitors Locker Room,,"stadium, premise, point_of_interest, establishment","Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5464473,-119.8163075
+ChIJmerkthVHmYARzr1N7PfGQo4,Mackay Stadium South East Restroom,,"stadium, premise, point_of_interest, establishment","Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5466699,-119.8161719
+ChIJ8TZITRRHmYAR4JDZtpikHtA,Tennis Courts,,"stadium, premise, point_of_interest, establishment","Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.5472762,-119.8157875
+ChIJgQRcHhRHmYARwdo8Mt5yarE,Mackay Stadium North West Restroom,,"stadium, premise, point_of_interest, establishment","Reno, NV 89557, USA",89557,Reno,Nevada,United States,39.547399,-119.8184328
+ChIJgUhpz9VAmYARSigBNXsIg0Q,Reno Huskies Football Field,,"stadium, premise, point_of_interest, establishment","Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5171977,-119.8329697
+ChIJ_T25cNd_j4ARehGmHe0pT84,Oracle Park,,"stadium, tourist_attraction, point_of_interest, establishment","24 Willie Mays Plaza, San Francisco, CA 94107, USA",94107,San Francisco,California,United States,37.7785951,-122.3892698
+ChIJcbu2hTB8hYAR7BD72wgCRxU,California Memorial Stadium,,"stadium, point_of_interest, establishment","2227 Piedmont Ave, Berkeley, CA 94720, USA",94720,Berkeley,California,United States,37.8706571,-122.2507783
+ChIJ8WOAG8OFj4AR1W_wwL7JV3A,Oakland Coliseum,,"stadium, point_of_interest, establishment","7000 S Coliseum Wy, Oakland, CA 94621, USA",94621,Oakland,California,United States,37.7514142,-122.2009106
+ChIJldoU6FCHhYAREFqwcwO0fr8,Kezar Stadium,,"stadium, point_of_interest, establishment","670 Kezar Dr, San Francisco, CA 94118, USA",94118,San Francisco,California,United States,37.7669182,-122.4561008
+ChIJM1VVVSm7j4AR7l0mAlv7LnI,Stanford Stadium,,"stadium, point_of_interest, establishment","625 Nelson Rd, Stanford, CA 94305, USA",94305,Stanford,California,United States,37.4345298,-122.1611227
+ChIJwc9whSd8hYAR7Lf5IDzdLws,Edwards Stadium,,"stadium, point_of_interest, establishment","2223 Fulton St, Berkeley, CA 94704, USA",94704,Berkeley,California,United States,37.8689946,-122.2648373
+ChIJXVgkLie7j4ARuYPE-E-je6k,Maloney Field at Laird Q. Cagan Stadium,,"stadium, point_of_interest, establishment","641 Nelson Rd, Stanford, CA 94305, USA",94305,Stanford,California,United States,37.4331137,-122.1580747
+ChIJT9yecIB-j4ARtNlbxG2Tuw8,Boxer Stadium,,"stadium, point_of_interest, establishment","166 Havelock St, San Francisco, CA 94112, USA",94112,San Francisco,California,United States,37.72583720000001,-122.444565
+ChIJs_e27ye7j4ARDbt6XFiWGpU,Taube Tennis Center,,"stadium, point_of_interest, establishment","625 Campus Drive, Stanford, CA 94305, USA",94305,Stanford,California,United States,37.430672,-122.162416
+ChIJAzCIOEmHhYARNSDw2K0OXNM,Negoesco Stadium,,"stadium, point_of_interest, establishment","222 Stanyan St, San Francisco, CA 94117, USA",94117,San Francisco,California,United States,37.7762244,-122.4528655
+ChIJR4k7qZQUkFQRusu8FWxRSxg,Husky Stadium,,"stadium, point_of_interest, establishment","3800 Montlake Blvd NE, Seattle, WA 98105, USA",98105,Seattle,Washington,United States,47.6502935,-122.3020732
+ChIJO35K7UYVkFQRa5aum6ADWY4,Memorial Stadium,,"stadium, point_of_interest, establishment","401 5th Ave N, Seattle, WA 98109, USA",98109,Seattle,Washington,United States,47.62284450000001,-122.3489055
+ChIJ3WMRuUEOkFQRcNGiX8RAO0c,Pop Keeney Stadium,,"stadium, point_of_interest, establishment","9809 NE 188th St, Bothell, WA 98011, USA",98011,Bothell,Washington,United States,47.7642479,-122.20966
+ChIJAYZ7Bqj-kFQRm6HMLG87aq4,Sparks Stadium,,"stadium, point_of_interest, establishment","601 7th Ave SW, Puyallup, WA 98371, USA",98371,Puyallup,Washington,United States,47.1873578,-122.3003422
+ChIJiw5mFGBDkFQRD6Q7DqE1M8Q,Highline Memorial Stadium,,"stadium, point_of_interest, establishment","400 S 156th St, Burien, WA 98148, USA",98148,Burien,Washington,United States,47.4646487,-122.329944
+ChIJG22ZAqhCkFQR0J4PkwqxW4M,Renton Memorial Stadium,,"stadium, point_of_interest, establishment","405 Logan Ave N, Renton, WA 98057, USA",98057,Renton,Washington,United States,47.4886768,-122.2095896
+ChIJuQhCiWRXkFQRb38VSK_NXlo,Federal Way Memorial Field,,"stadium, point_of_interest, establishment","1300 S 308th St, Federal Way, WA 98003, USA",98003,Federal Way,Washington,United States,47.3275774,-122.3170758
+ChIJQWO7tExZkFQRULLuBKveXes,Martin Victory Products Inc M.V.P. Inc,,"general_contractor, stadium, point_of_interest, establishment","15717 SE 240th St, Kent, WA 98042, USA",98042,Kent,Washington,United States,47.38575489999999,-122.1310862
+ChIJZY9ZcrkakFQR57T_lW7CvNQ,Greater Seattle US BC,,"stadium, point_of_interest, establishment","7638 NE Bothell Way, Kenmore, WA 98028, USA",98028,Kenmore,Washington,United States,47.7577273,-122.2376073
+ChIJGaxAR8uqkVQR8LuHLWXzazg,Cheney Stadium,,"stadium, point_of_interest, establishment","2502 S Tyler St, Tacoma, WA 98405, USA",98405,Tacoma,Washington,United States,47.23812239999999,-122.4974895
+ChIJJZR4Y2cAkVQRWoXjwYVNdl8,Mount Tahoma Athletic Stadium,,"stadium, point_of_interest, establishment","4634 S 74th St, Tacoma, WA 98409, USA",98409,Tacoma,Washington,United States,47.1894662,-122.5003542
+ChIJxRF4ZdP7kFQRmmmYBk7VmFI,Sunset Chev Stadium,,"stadium, florist, point_of_interest, store, establishment","1707 Main St, Sumner, WA 98390, USA",98390,Sumner,Washington,United States,47.2041443,-122.2311291
+ChIJk8X7HZ8VkFQRoNaOrgMMdI0,Interbay Athletic Complex,,"stadium, point_of_interest, establishment","3027 17th Ave W, Seattle, WA 98104, USA",98104,Seattle,Washington,United States,47.64731570000001,-122.378501
+ChIJM5271e0SkFQRtj5EHb6gPxc,Van Aalst Park Basketball Court,,"stadium, point_of_interest, establishment","335 13th Ave, Kirkland, WA 98033, USA",98033,Kirkland,Washington,United States,47.6849068,-122.2030559
+ChIJKxjxuaNqkFQR3CK6O1HNNqY,Lumen Field,,"stadium, point_of_interest, establishment","800 Occidental Ave S, Seattle, WA 98134, USA",98134,Seattle,Washington,United States,47.5951518,-122.3316393
+ChIJ8zJIFqJqkFQRU3sVwAYdGnA,Washington State Public Stadium Authority,,"stadium, point_of_interest, establishment","Lumen Field, 800 Occidental Ave S #700, Seattle, WA 98134, USA",98134,Seattle,Washington,United States,47.5933102,-122.3322721
+ChIJ28RdUJ9qkFQRlf2mprMp-MY,T-Mobile Park,,"stadium, point_of_interest, establishment","1250 1st Ave S, Seattle, WA 98134, USA",98134,Seattle,Washington,United States,47.59134900000001,-122.3325172
+ChIJTzbRYt1DkFQRCxLUqm-a7cE,DubSea Fish Sticks,,"stadium, point_of_interest, establishment","1321 SW 102nd St, Seattle, WA 98146, USA",98146,Seattle,Washington,United States,47.5111932,-122.3521638
+ChIJ2_wYuV4QkFQRNkdkQIbJ8UM,Shoreline Stadium,,"stadium, point_of_interest, establishment","400 NE 185th St, Shoreline, WA 98155, USA",98155,Shoreline,Washington,United States,47.7633816,-122.3252884
+ChIJFQXgTLVLkFQRtWCMe1sJ1Vg,Twisted Pine Arena,,"stadium, point_of_interest, establishment","1579 SW J H Rd, Port Orchard, WA 98367, USA",98367,Port Orchard,Washington,United States,47.46242829999999,-122.6713491
+ChIJq56TmaDMj4ARJJCpWy9v-i0,SAP Center,,"stadium, point_of_interest, establishment","525 W Santa Clara St, San Jose, CA 95113, USA",95113,San Jose,California,United States,37.3329688,-121.9020006
+ChIJ3_DFJ8jJj4ARGH0fLjdaRRE,Levi's Stadium,,"stadium, point_of_interest, establishment","4900 Marie P DeBartolo Way, Santa Clara, CA 95054, USA",95054,Santa Clara,California,United States,37.4033165,-121.9693774
+ChIJ7WDi3DEzjoARDNsHUIAp2I8,CEFCU Stadium,,"stadium, point_of_interest, establishment","1257 S 10th St, San Jose, CA 95112, USA",95112,San Jose,California,United States,37.31967289999999,-121.8682899
+ChIJCQycZ6_Lj4ARHJmAT_aA88k,Stevens Stadium,,"stadium, point_of_interest, establishment","500 El Camino Real, Santa Clara, CA 95050, USA",95050,Santa Clara,California,United States,37.3505104,-121.9356657
+ChIJvZrKLy8zjoARKFobE55105U,Excite Ballpark,,"stadium, point_of_interest, establishment","588 E Alma Ave, San Jose, CA 95112, USA",95112,San Jose,California,United States,37.3204351,-121.8623634
+ChIJKbQs0y4zjoARbDFDC9Qg5_M,San Jose Giants,,"stadium, point_of_interest, store, establishment","588 E Alma Ave, San Jose, CA 95112, USA",95112,San Jose,California,United States,37.3205166,-121.8624136
+ChIJwRPR0Se7j4ARQaSLehKU2T0,Angell Field,,"stadium, point_of_interest, establishment","295 Galvez St, Stanford, CA 94305, USA",94305,Stanford,California,United States,37.4319693,-122.1625632
+ChIJY1pp36bLj4ARwlP16YYii94,Stephen Schott Stadium,,"stadium, point_of_interest, establishment","443 El Camino Real, Santa Clara, CA 95050, USA",95050,Santa Clara,California,United States,37.3485007,-121.9315464
+ChIJOacloyXNj4AREMs9_1XAefw,PAL Stadium,,"stadium, point_of_interest, establishment","680 S 34th St, San Jose, CA 95116, USA",95116,San Jose,California,United States,37.3428698,-121.8491718
+ChIJGXZh0aHLj4ARX-9DpASeh5w,PayPal Park,,"stadium, point_of_interest, establishment","1123 Coleman Ave, San Jose, CA 95110, USA",95110,San Jose,California,United States,37.3511366,-121.9246518
+ChIJhRwB-yFawokR5Phil-QQ3zM,Madison Square Garden,,"tourist_attraction, stadium, point_of_interest, establishment","4 Pennsylvania Plaza, New York, NY 10001, USA",10001,New York,New York,United States,40.7505045,-73.9934387
+ChIJcWnnWiz0wokRCB6aVdnDQEk,Yankee Stadium,,"stadium, tourist_attraction, point_of_interest, establishment","1 E 161 St, Bronx, NY 10451, USA",10451,,New York,United States,40.8296426,-73.9261745
+ChIJldFHseBfwokRO3aZ8NSVW_U,Citi Field,,"stadium, point_of_interest, establishment","41 Seaver Wy, Queens, NY 11368, USA",11368,,New York,United States,40.7570877,-73.8458213
+ChIJvwJZrWH4wokRNBcFMQ0ohIE,MetLife Stadium,,"stadium, tourist_attraction, point_of_interest, establishment","1 MetLife Stadium Dr, East Rutherford, NJ 07073, USA",07073,East Rutherford,New Jersey,United States,40.8135064,-74.074457
+ChIJMcsIau5UwokRGFF_-qkblbc,Newark Schools Stadium,,"stadium, point_of_interest, establishment","516-566 Roseville Ave, Newark, NJ 07107, USA",07107,Newark,New Jersey,United States,40.7699062,-74.184494
+ChIJsWUD2n3zwokREg66vBXha6g,Houlihan Park,,"stadium, point_of_interest, establishment","Bronx, NY 10458, USA",10458,,New York,United States,40.8610552,-73.8826819
+ChIJHWRdYfLzwokRU2nwHgkxoGU,Baker Athletics Complex,,"stadium, point_of_interest, establishment","533 W 218th St, New York, NY 10034, USA",10034,New York,New York,United States,40.8726377,-73.91590099999999
+ChIJnYWp_4pTwokRMiFcokpnOEg,Red Bull Arena,,"stadium, point_of_interest, establishment","600 Cape May St, Harrison, NJ 07029, USA",07029,Harrison,New Jersey,United States,40.7368436,-74.1502355
+ChIJQXtvkPdYwokRu5tQy7A85cw,Stadium Entertainment Holdings,,"stadium, point_of_interest, establishment","888 7th Ave #35, New York, NY 10106, USA",10106,New York,New York,United States,40.7652747,-73.9807922
+ChIJH1Nc3-_1wokR8skV1X6kJUw,Icahn Stadium,,"stadium, point_of_interest, establishment","10 Central Rd, New York, NY 10035, USA",10035,New York,New York,United States,40.7929771,-73.92441219999999
+ChIJeXwTRdlfwokRIY-HcNLJRWA,Arthur Ashe Stadium,,"stadium, point_of_interest, establishment","124-02 Roosevelt Ave, Flushing, NY 11368, USA",11368,,New York,United States,40.7498559,-73.8468776
+ChIJoc_M1n3zwokRkeCZKplj2W0,Jack Coffey Field,,"stadium, point_of_interest, establishment","441 E Fordham Rd, Bronx, NY 10458, USA",10458,,New York,United States,40.86149079999999,-73.8828568
+ChIJ82sx58pFwokRRT-xa4N2KGw,Brooklyn Cyclones,,"stadium, point_of_interest, establishment","1904 Surf Ave, Brooklyn, NY 11224, USA",11224,,New York,United States,40.5748548,-73.9848629
+ChIJfxws3xRVwokRZMuMfra93C0,Foley Field,,"stadium, point_of_interest, establishment","John F Kennedy Dr N, Bloomfield, NJ 07003, USA",07003,Bloomfield,New Jersey,United States,40.8044727,-74.19158039999999
+ChIJ3xuKMBavw4kR771xEjUOHLk,Centercourt Athletic Club of Chatham,,"stadium, gym, health, point_of_interest, establishment","222 N Passaic Ave, Chatham, NJ 07928, USA",07928,Chatham,New Jersey,United States,40.75189109999999,-74.3707689
+ChIJz2WfSLvzwokRTGFGuj3iBVU,Gaelic Park,,"stadium, point_of_interest, establishment","201 W 240th St, Bronx, NY 10463, USA",10463,,New York,United States,40.88765219999999,-73.90142589999999
+ChIJTa1F-wTHw4kR0Z-LB6-03XM,SHI Stadium,,"stadium, point_of_interest, establishment","Rutgers Football Stadium, 1 Scarlet Knight Way Shi, Piscataway, NJ 08854, USA",08854,Piscataway,New Jersey,United States,40.51361110000001,-74.4652778
+ChIJX5BdhdtYwokRmOBPLspuOa0,Firefighters Field,,"stadium, point_of_interest, establishment","405-425 Main St, New York, NY 10044, USA",10044,New York,New York,United States,40.7576425,-73.9528997
+ChIJQ46XvQFhwokRaLvmPsZWQzA,Belson Stadium,,"stadium, point_of_interest, establishment","8000 Utopia Pkwy, Jamaica, NY 11439, USA",11439,,New York,United States,40.7243187,-73.7928314
+ChIJQUigia9ZwokRXh0MfPlmd_8,salt and pepper media,,"stadium, university, health, point_of_interest, store, establishment","150 W 28th St, New York, NY 10001, USA",10001,New York,New York,United States,40.7467744,-73.992879
+ChIJJ0eIyIZ9ToYR-J1qjOhgHm0,AT&T Stadium,,"stadium, tourist_attraction, point_of_interest, establishment","1 AT&T Way, Arlington, TX 76011, USA",76011,Arlington,Texas,United States,32.7479966,-97.09341649999999
+ChIJDd4hPc4QTIYRM0bfG7pckMU,Eagle Stadium,,"stadium, point_of_interest, establishment","155 Rivercrest Blvd, Allen, TX 75002, USA",75002,Allen,Texas,United States,33.11410010000001,-96.656993
+ChIJ1XCX6P47TIYRgdxgzkF9gco,Toyota Stadium,,"stadium, point_of_interest, establishment","9200 World Cup Way, Frisco, TX 75033, USA",75033,Frisco,Texas,United States,33.1543199,-96.8352278
+ChIJD6crL1V-ToYRXuUYGJaKHb0,Pennington Field,,"stadium, gym, health, point_of_interest, establishment","1501 Central Dr, Bedford, TX 76022, USA",76022,Bedford,Texas,United States,32.8326367,-97.13626649999999
+ChIJGRCXNxAbTIYR3HFsBeytR7E,Tom Kimbrough Stadium,,"stadium, point_of_interest, establishment","700 N Murphy Rd, Murphy, TX 75094, USA",75094,Murphy,Texas,United States,33.0255045,-96.6088248
+ChIJNV3MVbt4ToYRUzFPcZaD0mQ,NYTEX Sports Centre,,"stadium, store, point_of_interest, establishment","8851 Ice House Dr, North Richland Hills, TX 76180, USA",76180,North Richland Hills,Texas,United States,32.8597424,-97.19653269999999
+ChIJWQA86C4mTIYRLzsMT3F-m-U,Tommy Standridge Stadium,,"stadium, point_of_interest, establishment","1330 Valwood Pkwy, Carrollton, TX 75006, USA",75006,Carrollton,Texas,United States,32.9404561,-96.91479609999999
+ChIJg0N7e73zToYRbfwHtGnk4DU,Midlothian ISD Multi-Purpose Stadium,,"stadium, police, school, point_of_interest, establishment","1800 S 14th St, Midlothian, TX 76065, USA",76065,Midlothian,Texas,United States,32.4658361,-96.9850168
+ChIJ56Pd9WicToYRj4ZbOpiXc3Y,Cotton Bowl Stadium,,"stadium, point_of_interest, establishment","3750 The Midway, Dallas, TX 75215, USA",75215,Dallas,Texas,United States,32.7796106,-96.7595891
+ChIJixcHXw2gToYR5RGJsdOyXQw,Wildcat-Ram Stadium,,"stadium, point_of_interest, establishment","9449 Church Rd, Dallas, TX 75238, USA",75238,Dallas,Texas,United States,32.8869917,-96.729145
+ChIJ2RkKMEv_jYARyGC99SAJ6T4,Rabobank Stadium,,"stadium, point_of_interest, establishment","1034 N Main St, Salinas, CA 93906, USA",93906,Salinas,California,United States,36.6963994,-121.6474915
+ChIJH32klEr_jYARPSFe5PBctoA,Salinas Municipal Stadium,,"stadium, local_government_office, point_of_interest, establishment","175 Maryal Dr, Salinas, CA 93906, USA",93906,Salinas,California,United States,36.6942338,-121.6493056
+ChIJOzHN7lZtkoAR8ZQGBVd2xcs,Gonzales Union High School Stadium,,"stadium, point_of_interest, establishment","Del Monte Dr, Gonzales, CA 93926, USA",93926,Gonzales,California,United States,36.5160846,-121.4415111
+ChIJR4IriKn8jYARpR0e_5i9guY,Cardinale Stadium,,"stadium, point_of_interest, establishment","4111 2nd Ave, Seaside, CA 93955, USA",93955,Seaside,California,United States,36.6508245,-121.8050846
+ChIJTwSEXFvljYARvEvRPDtqzgQ,Community Stadium,,"stadium, point_of_interest, establishment","MPC Track & Football Field, Monterey, CA 93940, USA",93940,Monterey,California,United States,36.5879251,-121.8845374
+ChIJ8WD3ySoBkoARMis9uSnYIW0,Mortensen Field,,"stadium, point_of_interest, establishment","1100 Rogge Rd, Salinas, CA 93906, USA",93906,Salinas,California,United States,36.728281,-121.6274748
+ChIJbwnVZMgbjoARCMsA2RjscxU,Grizzly Stadium | Pajaro Valley High,,"stadium, point_of_interest, establishment","500 Harkins Slough Rd, Watsonville, CA 95076, USA",95076,Watsonville,California,United States,36.91278189999999,-121.7919529
+ChIJCcml6DsbjoARdcD-hdn4A8I,EM Geiser Field,,"stadium, point_of_interest, establishment","200-298 Lincoln St, Watsonville, CA 95076, USA",95076,Watsonville,California,United States,36.9122472,-121.7487814
+ChIJVQogRPkWjoARDOWOK5g8B5o,Trevin Dilfer Memorial Stadium,,"stadium, point_of_interest, establishment","Aptos, CA 95003, USA",95003,Aptos,California,United States,36.9768779,-121.8629275
+ChIJiwFunpQVjoAR2WLqI48sMQU,Carl Conely Stadium,,"stadium, point_of_interest, establishment","2732-2752 Cabrillo College Dr, Aptos, CA 95003, USA",95003,Aptos,California,United States,36.9861541,-121.9249523
+ChIJM9wrbriq3oARkZwgGq8yp2U,Jenny Craig Pavilion at University of San Diego,,"university, stadium, point_of_interest, establishment","5998 Alcala Park Way, San Diego, CA 92110, USA",92110,San Diego,California,United States,32.7739894,-117.1840955
+ChIJfZDFw7eq3oAR78eOf0Sh3NY,Torero Stadium,,"stadium, point_of_interest, establishment","5998 Alcala Park Way, San Diego, CA 92111, USA",92111,San Diego,California,United States,32.77307710000001,-117.1836315
+ChIJNSE1NCH524ARm5qVeLaF6ks,Hourglass Community Park,,"park, stadium, tourist_attraction, point_of_interest, establishment","10440 Black Mountain Rd, San Diego, CA 92126, USA",92126,San Diego,California,United States,32.9072983,-117.1228516
+ChIJMy4CK2Sq3oARtZUP8um65DM,Bayside Amphitheater,,"stadium, point_of_interest, establishment","San Diego, CA 92109, USA",92109,San Diego,California,United States,32.7667409,-117.2292354
+ChIJvy3h_WCq3oAR755T8fNeYnA,Nautilus Amphitheater,,"stadium, point_of_interest, establishment","Sea World, San Diego, CA 92109, USA",92109,San Diego,California,United States,32.7652922,-117.2238945
+ChIJ2fzVzPv_24AR89spE51q_b0,Upper Athletic Field,,"stadium, point_of_interest, establishment","Mesa College Dr, San Diego, CA 92111, USA",92111,San Diego,California,United States,32.8046735,-117.1667312
+ChIJ7fMsvKtU2YARXM4yStBv8rU,Petco Park,,"stadium, point_of_interest, establishment","100 Park Blvd, San Diego, CA 92101, USA",92101,San Diego,California,United States,32.7075941,-117.1570422
+ChIJn9610KFU2YARa5lk-KN56us,Balboa Stadium,,"stadium, point_of_interest, establishment","1418-1570 Russ Blvd, San Diego, CA 92101, USA",92101,San Diego,California,United States,32.720434,-117.150394
+ChIJT9LAdOwG3IARHZ1tm0RhfRM,Triton Track and Field Stadium,,"stadium, point_of_interest, establishment","9730 Hopkins Dr, San Diego, CA 92121, USA",92121,San Diego,California,United States,32.88983,-117.2396087
+ChIJIRf6oQNI2YAR5j_8RACnXRI,Caliente Stadium,,"stadium, point_of_interest, establishment","Blvd. Agua Caliente 12027, Hipodromo, 22020 Tijuana, B.C., Mexico",22020,Tijuana,Baja California,Mexico,32.5059817,-116.9930726
+ChIJLRpHmF2CT4YRjADqc7lbKA0,McLane Stadium,,"stadium, point_of_interest, establishment","1001 S M.L.K. Jr Blvd, Waco, TX 76704, USA",76704,Waco,Texas,United States,31.5582015,-97.1156702
+ChIJZ80UJF2BT4YRUaadmc7Om9c,Waco ISD Stadium,,"stadium, point_of_interest, establishment","1401 S New Rd, Waco, TX 76711, USA",76711,Waco,Texas,United States,31.50813829999999,-97.15987129999999
+ChIJKWrSn-eGT4YRu4JbR5ADSgg,Panther Stadium,,"stadium, point_of_interest, establishment","Hewitt, TX 76643, USA",76643,Hewitt,Texas,United States,31.4803098,-97.202348
+ChIJ_2R2bW-oT4YRAOLPxMB2-OI,Eagle Field,,"stadium, point_of_interest, establishment","1180 S Waco St, Hillsboro, TX 76645, USA",76645,Hillsboro,Texas,United States,31.98971739999999,-97.1239837
+ChIJn_2mZ8ODT4YRm3o3YO8Fqj8,Clyde Hart Track & Field Stadium,,"stadium, park, point_of_interest, establishment","1601 S M.L.K. Jr Blvd, Waco, TX 76704, USA",76704,Waco,Texas,United States,31.555678,-97.1097703
+ChIJcSlnpRSDT4YRlL4P2nPJ_EQ,Falcon Field,,"stadium, point_of_interest, establishment","Waco, TX 76706, USA",76706,Waco,Texas,United States,31.5536253,-97.1290575
+ChIJL1QZgL2DT4YRGGzPcy_xolE,J. J. Kearns Stadium,,"stadium, point_of_interest, establishment","Waco, TX 76708, USA",76708,Waco,Texas,United States,31.56094589999999,-97.1670884
+ChIJhbZK1Z6DT4YRv4bPL4J9xjk,Willie Williams Stadium,,"stadium, point_of_interest, establishment","Bellmead, TX 76705, USA",76705,Bellmead,Texas,United States,31.600309,-97.0968963
+ChIJ8-ZHn0-bT4YRA2JG4SiFMBY,Bulldog Stadium,,"stadium, point_of_interest, establishment","7636 Rock Creek Rd, Waco, TX 76708, USA",76708,Waco,Texas,United States,31.6177978,-97.1922378
+ChIJBfL6dOaGT4YRCDMnXYOBeWg,Rice Field,,"stadium, point_of_interest, establishment","8500 Mars Dr, Waco, TX 76712, USA",76712,Waco,Texas,United States,31.4816888,-97.2051809
+ChIJh8l2-niBT4YRzfc0vac5SOI,Rocket Field,,"stadium, point_of_interest, establishment","Robinson, TX 76706, USA",76706,Robinson,Texas,United States,31.4631942,-97.1232708
+ChIJ07q6UWSdT4YRKFN7XL9zSzE,Mac Peoples Stadium,,"stadium, point_of_interest, establishment","900 N Lacy Dr, Waco, TX 76705, USA",76705,Waco,Texas,United States,31.6413051,-97.100214
+ChIJhfeHFNCPT4YRW2ZNzyqmQdQ,Cougar Stadium,,"stadium, point_of_interest, establishment","7301 N River Crossing, China Spring, TX 76633, USA",76633,China Spring,Texas,United States,31.6306133,-97.2902699
+ChIJX7Z69aB9RYYRFGUSuoxe-ZI,Leopard Field,,"stadium, point_of_interest, establishment","Lorena, TX 76655, USA",76655,Lorena,Texas,United States,31.3864716,-97.2238301
+ChIJwaK3ydFxT4YRKsLJkPui3wg,Ellison Field,,"stadium, point_of_interest, establishment","124 W Seley, Axtell, TX 76624, USA",76624,Axtell,Texas,United States,31.6525122,-96.97371
+ChIJQ1-ER0FjT4YRSsDYuMA-jXk,Fair Park Field,,"stadium, point_of_interest, establishment","Riesel, TX 76682, USA",76682,Riesel,Texas,United States,31.4754311,-96.91305539999999
+ChIJKxCH5c2MT4YRApjfGhTmrAA,Pirate Field,,"stadium, point_of_interest, establishment","245-523 E 4th St, Crawford, TX 76638, USA",76638,Crawford,Texas,United States,31.5376042,-97.4340491
+ChIJc4EdDi6LT4YROZmnZ6HHhRU,Bulldog Stadium,,"stadium, point_of_interest, establishment","1190 S Jackson Ave, McGregor, TX 76657, USA",76657,McGregor,Texas,United States,31.4282211,-97.4030549
+ChIJaVcHkrALT4YRMhje_6RVkv0,Trojan Stadium,,"stadium, point_of_interest, establishment","1008 Jerry Mashek Dr, West, TX 76691, USA",76691,West,Texas,United States,31.8112294,-97.08574329999999
+ChIJ2V4fm-ztT4YRaXDyUJWMopI,J.C. Larkin Athletic Complex,,"stadium, point_of_interest, establishment","One Eagle Way, Valley Mills, TX 76689, USA",76689,Valley Mills,Texas,United States,31.6437557,-97.4525783
