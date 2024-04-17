@@ -48,12 +48,15 @@ data = pd.read_csv(restaurant_csv_file_path)
 # Preprocess the "Price Range" column
 # Fill missing values with 0 (unknown)
 data['Price Range'] = data['Price Range'].fillna(0)
+# print(data['Price Range'])
 
 # Preprocess the data and extract relevant features
 # Include 'Price Range' as a feature
 data['Types'] = data['Types'].fillna('')
 data['Address'] = data['Address'].fillna('')
 data['Features'] = data['Types'] + ' ' + data['Address'] + ' ' + data['Price Range'].astype(str)
+# print(data['Types'])
+# print(data['Address'])
 
 # Create a TF-IDF vectorizer to convert text features into numerical vectors
 tfidf_vectorizer = TfidfVectorizer(stop_words='english')
@@ -145,13 +148,26 @@ def haversine(lat1, lon1, lat2, lon2):
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
     
     # Get the index of the target place
-    idx = data[data['Place'] == target_place].index
-    print("idx: " + idx)
+    # idx = data[data['Place'] == target_place].index
+    # print(idx)
+
+    # if len(idx) == 0:
+    #     return {'error': f'Place "{target_place}" not found'}, 404
+
+    # idx = idx[0]  # Get the first index if multiple matches exist
+
+    # Get the index of the target place
+    idx = data[data['Place'].str.strip().str.lower() == target_place.lower().strip()].index
+    print(f"Indexes found: {idx}")
 
     if len(idx) == 0:
+        print(f"No matching places found for {target_place}")
         return {'error': f'Place "{target_place}" not found'}, 404
 
-    idx = idx[0]  # Get the first index if multiple matches exist
+    # Get the first index if multiple matches exist
+    idx = idx[0]  
+    print(f"Using index: {idx}")
+
 
     # Extract the price range, latitude, and longitude of the target place
     input_price = int(data.loc[idx, 'Price Range'])
@@ -218,18 +234,18 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 def recommend():
     try:
         data = request.json
-        target_place = "Lucky Dragon Restaurant" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = "China King" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
-        #print(target_place)
-        #print(target_lat_str)
-        #print(target_lon_str)
-        #print(desired_price_range_str)
-        #print()
-        #print("#################### TFIDF - Restaurant Recommendations ####################")
-        #print("Values from the frontend is successfully sent over :)")
-        #print()
+        # print(target_place)
+        # print(target_lat_str)
+        # print(target_lon_str)
+        # print(desired_price_range_str)
+        # print()
+        # print("#################### TFIDF - Restaurant Recommendations ####################")
+        # print("Values from the frontend is successfully sent over :)")
+        # print()
 
         # Check if latitude, longitude, and price range are not None
         if None in (target_lat_str, target_lon_str, desired_price_range_str):
@@ -257,7 +273,7 @@ def recommend():
         place_names = [place['place'] for place in recommended_places['recommendations']]
 
         # Print the place names
-        #print("Here are the recommended Restaurant Names from the TFIDF Model:")
+        print("Here are the recommended Restaurant Names from the TFIDF Model:")
         print(place_names)
         
 
