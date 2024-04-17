@@ -1,13 +1,3 @@
-#-----------SUMMARY-------------
-#This is a Flask blueprint version of TFIDF_ML script
-#Make sure the filepath for the CSV is correct on the machine it is running on
-#We may need to make the filepath dynamic for ease of use across multiple computers
-#It may also make more sense to make this a blueprint to the original Flask app so it can all run on the same port 
-#TO MAKE A CALL TO THIS MODEL:
-#API link is: '/api/run_ML_model_recommendations'
-#Note to Ethan: We will need to add a json request to receive the location or whatever parameters
-#   this function requires
-
 from flask import Flask, jsonify, request, Blueprint, make_response, Response
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -29,14 +19,6 @@ client = OpenAI(api_key=api_key)
 #Blueprint declaration
 restaurantRecommendation_bp = Blueprint('restaurantRecommendation_bp', __name__)
 
-# Load the data from the CSV file with the correct encoding
-# Ethan's Filepath
-# data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
-
-# # Kai's Filepath
-#data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
-# #print(f"Number of rows in data: {len(data)}")
-# # Isaac's Filepath
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
 restaurant_csv_file_path = os.path.join(CSV_FOLDER, 'restaurant_data.csv')
@@ -146,16 +128,6 @@ def haversine(lat1, lon1, lat2, lon2):
 
 # Modified code snippet to get recommendations with location and price
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
-    
-    # Get the index of the target place
-    # idx = data[data['Place'] == target_place].index
-    # print(idx)
-
-    # if len(idx) == 0:
-    #     return {'error': f'Place "{target_place}" not found'}, 404
-
-    # idx = idx[0]  # Get the first index if multiple matches exist
-
     # Get the index of the target place
     idx = data[data['Place'].str.strip().str.lower() == target_place.lower().strip()].index
     print(f"Indexes found: {idx}")
@@ -274,7 +246,7 @@ def recommend():
 
         # Print the place names
         print("Here are the recommended Restaurant Names from the TFIDF Model:")
-        print(place_names)
+        # print(place_names)
         
 
         # Return the recommended places (limited to 10)

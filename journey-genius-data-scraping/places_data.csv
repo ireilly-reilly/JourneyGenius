@@ -1,5 +1,4 @@
-
-Place,Price Range,Types,Address,Postal Code,City,State,Country
+Number,Id,Place,Price Range,Types,Address,Postal Code,City,State,Country,Latitude,Longitude
 Café Espresso,,"cafe, point_of_interest, food, store, establishment",2707 South Virginia Street 89502,89502,Reno,Nevada,United States
 Barnes & Noble,2,"book_store, cafe, store, food, point_of_interest, establishment",5555 South Virginia Street 89502,89502,Reno,Nevada,United States
 SIPS Coffee and Tea - Silver Legacy,,"cafe, food, store, point_of_interest, establishment",407 North Virginia Street 89501,89501,Reno,Nevada,United States
