@@ -79,6 +79,14 @@
                                 <li v-for="shop in shops" :key="shop">{{ shop }}</li>
                             </ul>
                         </div>
+
+                        <!-- Hotel Spot Section -->
+                        <div class="section-content">
+                            <h3>Accomodation</h3>
+                            <ul>
+                                <li v-for="hotel in $store.state.tripObject.hotels" :key="hotel">{{ hotel }}</li>
+                            </ul>
+                        </div>
                     </div>
 
                 </v-col>

@@ -603,103 +603,33 @@ Cholla Trailhead Camelback Mountain,,"tourist_attraction, park, point_of_interes
 McDowell Mountain Regional Park,,"park, tourist_attraction, point_of_interest, establishment","16300 McDowell Mountain Park Dr, Fort McDowell, AZ 85264, USA",85264,Fort McDowell,Arizona,United States,33.6674891,-111.6978047
 Freestone District Park,,"park, tourist_attraction, point_of_interest, establishment","1045 E Juniper Ave, Gilbert, AZ 85234, USA",85234,Gilbert,Arizona,United States,33.3590953,-111.7685207
 Desert Botanical Garden: Corporate Event and Group Sales,,"park, point_of_interest, establishment","1201 N Galvin Pkwy, Phoenix, AZ 85008, USA",85008,Phoenix,Arizona,United States,33.4620259,-111.9451522
-Lincoln Memorial,,"tourist_attraction, park, point_of_interest, establishment","2 Lincoln Memorial Cir NW, Washington, DC 20002, USA",20002,Washington,District of Columbia,United States,38.8892686,-77.050176
-National Mall,,"park, tourist_attraction, point_of_interest, establishment","Washington, DC, USA",,Washington,District of Columbia,United States,38.8875144,-77.0363934
-Grand Army of the Republic Memorial,,"tourist_attraction, park, store, point_of_interest, establishment","Washington, DC 20004, USA",20004,Washington,District of Columbia,United States,38.8935918,-77.02157989999999
-Lake Fairfax Park,,"park, campground, tourist_attraction, amusement_park, lodging, school, point_of_interest, establishment","1400 Lake Fairfax Dr, Reston, VA 20190, USA",20190,Reston,Virginia,United States,38.9616703,-77.318032
-Vietnam Veterans Memorial,,"tourist_attraction, park, point_of_interest, establishment","5 Henry Bacon Dr NW, Washington, DC 20002, USA",20002,Washington,District of Columbia,United States,38.8912933,-77.04771319999999
-Meadowlark Botanical Gardens,,"tourist_attraction, park, point_of_interest, establishment","9750 Meadowlark Gardens Ct, Vienna, VA 22182, USA",22182,Vienna,Virginia,United States,38.9380317,-77.2819304
-United States National Arboretum,0,"tourist_attraction, park, point_of_interest, establishment","3501 New York Ave NE, Washington, DC 20002, USA",20002,Washington,District of Columbia,United States,38.91213,-76.9657782
-Great Falls Park,,"park, tourist_attraction, point_of_interest, establishment","9200 Old Dominion Dr, McLean, VA 22102, USA",22102,McLean,Virginia,United States,38.9951903,-77.25540579999999
-The Adventure Park at Sandy Spring,,"tourist_attraction, park, point_of_interest, establishment","16701 Norwood Rd, Sandy Spring, MD 20860, USA",20860,Ashton-Sandy Spring,Maryland,United States,39.13132330000001,-77.02743079999999
-Burke Lake Park,,"park, tourist_attraction, point_of_interest, establishment","7315 Ox Rd, Fairfax Station, VA 22039, USA",22039,Fairfax Station,Virginia,United States,38.76078469999999,-77.30747579999999
-Griffith Park,0,"park, tourist_attraction, point_of_interest, establishment","Los Angeles, CA 90027, USA",90027,Los Angeles,California,United States,34.1365544,-118.2942
-Los Angeles State Historic Park,,"tourist_attraction, park, point_of_interest, establishment","1245 N Spring St, Los Angeles, CA 90012, USA",90012,Los Angeles,California,United States,34.0682286,-118.2318135
-Venice Beach Recreation Center,,"park, point_of_interest, establishment","1800 Ocean Front Walk, Venice, CA 90291, USA",90291,Los Angeles,California,United States,33.9853771,-118.4727913
-Forest Lawn,,"funeral_home, park, point_of_interest, establishment","6300 Forest Lawn Dr, Los Angeles, CA 90068, USA",90068,Los Angeles,California,United States,34.1467012,-118.3223656
-Pan Pacific Park,,"park, point_of_interest, establishment","7600 Beverly Blvd, Los Angeles, CA 90036, USA",90036,Los Angeles,California,United States,34.0732282,-118.3549294
-Gloria Molina Grand Park,,"park, point_of_interest, establishment","200 N Grand Ave, Los Angeles, CA 90012, USA",90012,Los Angeles,California,United States,34.0563289,-118.2467713
-Shakespeare Bridge Garden,,"park, point_of_interest, establishment","1900 Monon St, Los Angeles, CA 90027, USA",90027,Los Angeles,California,United States,34.1054841,-118.2795905
-The Japanese Garden,,"tourist_attraction, park, point_of_interest, establishment","6100 Woodley Ave, Lake Balboa, CA 91406, USA",91406,Los Angeles,California,United States,34.1829524,-118.4809759
-Descanso Gardens,,"tourist_attraction, park, point_of_interest, establishment","1418 Descanso Dr, La Cañada Flintridge, CA 91011, USA",91011,La Cañada Flintridge,California,United States,34.2009509,-118.2118943
-Electric Fountain,,"park, point_of_interest, establishment","9800 Wilshire Blvd, Beverly Hills, CA 90212, USA",90212,Beverly Hills,California,United States,34.0673396,-118.4104516
-Sand Harbor,,"tourist_attraction, park, point_of_interest, establishment","2005 NV-28, Incline Village, NV 89452, USA",89452,Incline Village,Nevada,United States,39.1984978,-119.9322541
-Donner Memorial State Park,,"tourist_attraction, park, point_of_interest, establishment","12593 Donner Pass Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3159261,-120.239782
-Rancho San Rafael Regional Park,,"park, tourist_attraction, point_of_interest, establishment","1595 N Sierra St, Reno, NV 89503, USA",89503,Reno,Nevada,United States,39.5456988,-119.8239912
-Lakeside Campground,,"campground, lodging, park, point_of_interest, establishment","Lakeside Campground Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.383672,-120.1729703
-Hunter Creek Trailhead,,"park, point_of_interest, establishment","Reno, NV 89519, USA",89519,Reno,Nevada,United States,39.4928146,-119.8948073
-Ridge Campground,,"campground, lodging, park, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3206402,-120.2364189
-Splitrock Campground,,"campground, lodging, park, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.32046169999999,-120.2421433
-Idlewild Park,,"park, tourist_attraction, point_of_interest, establishment","2055 Idlewild Dr, Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5218409,-119.8329796
-Tahoe Donner Association,2,"campground, lodging, park, restaurant, point_of_interest, food, establishment","11509 Northwoods Blvd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.34355789999999,-120.2148946
-Bartley Ranch Regional Park,,"park, tourist_attraction, point_of_interest, establishment","6000 Bartley Ranch Rd, Reno, NV 89511, USA",89511,Reno,Nevada,United States,39.46978099999999,-119.8073539
-Sand Harbor,,"tourist_attraction, park, point_of_interest, establishment","2005 NV-28, Incline Village, NV 89452, USA",89452,Incline Village,Nevada,United States,39.1984978,-119.9322541
-Donner Memorial State Park,,"tourist_attraction, park, point_of_interest, establishment","12593 Donner Pass Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3159261,-120.239782
-Rancho San Rafael Regional Park,,"park, tourist_attraction, point_of_interest, establishment","1595 N Sierra St, Reno, NV 89503, USA",89503,Reno,Nevada,United States,39.5456988,-119.8239912
-Lakeside Campground,,"campground, park, lodging, point_of_interest, establishment","Lakeside Campground Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.383672,-120.1729703
-Hunter Creek Trailhead,,"park, point_of_interest, establishment","Reno, NV 89519, USA",89519,Reno,Nevada,United States,39.4928146,-119.8948073
-Ridge Campground,,"campground, park, lodging, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3206402,-120.2364189
-Splitrock Campground,,"campground, park, lodging, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.32046169999999,-120.2421433
-Idlewild Park,,"park, tourist_attraction, point_of_interest, establishment","2055 Idlewild Dr, Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5218409,-119.8329796
-Tahoe Donner Association,2,"campground, park, lodging, restaurant, food, point_of_interest, establishment","11509 Northwoods Blvd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.34355789999999,-120.2148946
-Bartley Ranch Regional Park,,"park, tourist_attraction, point_of_interest, establishment","6000 Bartley Ranch Rd, Reno, NV 89511, USA",89511,Reno,Nevada,United States,39.46978099999999,-119.8073539
-Placer County Fair,,"rv_park, lodging, park, point_of_interest, establishment","700 Event Center Dr, Roseville, CA 95678, USA",95678,Roseville,California,United States,38.7569493,-121.2965674
-Fairytale Town,,"amusement_park, tourist_attraction, park, point_of_interest, establishment","3901 Land Park Dr, Sacramento, CA 95822, USA",95822,Sacramento,California,United States,38.5395888,-121.5012772
-Cosumnes River Preserve,,"tourist_attraction, park, point_of_interest, establishment","13501 Franklin Blvd, Galt, CA 95690, USA",95690,Galt,California,United States,38.2657318,-121.43927
-Woodland Cty Pk & Rec Community Swm,,"park, point_of_interest, establishment","2001 East St, Woodland, CA 95776, USA",95776,Woodland,California,United States,38.6537824,-121.7640824
-McKinley Park,,"park, tourist_attraction, point_of_interest, establishment","601 Alhambra Blvd, Sacramento, CA 95816, USA",95816,Sacramento,California,United States,38.5768935,-121.4630764
-Funderland Amusement Park,,"amusement_park, park, point_of_interest, establishment","1350 17th Ave, Sacramento, CA 95822, USA",95822,Sacramento,California,United States,38.5373061,-121.5018575
-Sutter's Fort State Historic Park,,"tourist_attraction, park, point_of_interest, establishment","2701 L St, Sacramento, CA 95816, USA",95816,Sacramento,California,United States,38.57233889999999,-121.4712056
-Folsom City Zoo Sanctuary,,"zoo, tourist_attraction, park, point_of_interest, establishment","403 Stafford St, Folsom, CA 95630, USA",95630,Folsom,California,United States,38.6827047,-121.1661338
-UC Davis Arboretum and Public Garden Headquarters,,"park, point_of_interest, establishment","448 La Rue Rd, Davis, CA 95616, USA",95616,Davis,California,United States,38.53401459999999,-121.7530787
-Maidu Regional Park,,"park, tourist_attraction, point_of_interest, establishment","1550 Maidu Dr, Roseville, CA 95661, USA",95661,Roseville,California,United States,38.7348068,-121.2526237
+Dallas Zoo,,"zoo, tourist_attraction, park, point_of_interest, establishment","650 S R.L. Thornton Fwy, Dallas, TX 75203, USA",75203,Dallas,Texas,United States,32.7409696,-96.81532
+College Hills Park,,"park, point_of_interest, establishment","151 University Dr, Arlington, TX 76013, USA",76013,Arlington,Texas,United States,32.7285864,-97.12226799999999
+John F. Kennedy Memorial Plaza,,"tourist_attraction, park, point_of_interest, establishment","646 Main St, Dallas, TX 75202, USA",75202,Dallas,Texas,United States,32.7787249,-96.8064507
+The Dallas Arboretum and Botanical Garden,,"tourist_attraction, park, point_of_interest, establishment","8525 Garland Rd, Dallas, TX 75218, USA",75218,Dallas,Texas,United States,32.8236184,-96.71662359999999
+Dealey Plaza,,"park, tourist_attraction, point_of_interest, establishment","Dallas, TX 75202, USA",75202,Dallas,Texas,United States,32.7788184,-96.8082993
+George W. Bush Presidential Center,,"museum, tourist_attraction, library, park, point_of_interest, establishment","2943 SMU Boulevard, Dallas, TX 75205, USA",75205,Dallas,Texas,United States,32.84118300000001,-96.778198
+Klyde Warren Park,,"park, tourist_attraction, point_of_interest, establishment","2012 Woodall Rodgers Fwy, Dallas, TX 75201, USA",75201,Dallas,Texas,United States,32.7893644,-96.8016184
+Cedar Hill State Park,,"park, point_of_interest, establishment","1570 FM1382, Cedar Hill, TX 75104, USA",75104,Cedar Hill,Texas,United States,32.6194734,-96.9837294
+Pioneer Plaza,,"park, tourist_attraction, point_of_interest, establishment","1428 Young St, Dallas, TX 75202, USA",75202,Dallas,Texas,United States,32.7766323,-96.80119859999999
+Fair Park,0,"park, point_of_interest, establishment","3809 Grand Ave, Dallas, TX 75210, USA",75210,Dallas,Texas,United States,32.7782181,-96.75927089999999
 Knights Bridge Park,,"park, tourist_attraction, point_of_interest, establishment","Canby, OR 97013, USA",97013,Canby,Oregon,United States,45.26646239999999,-122.7131116
-Portland Japanese Garden,,"tourist_attraction, art_gallery, cafe, museum, park, store, food, point_of_interest, establishment","611 SW Kingston Ave, Portland, OR 97205, USA",97205,Portland,Oregon,United States,45.5188634,-122.7080354
-Pittock Mansion,,"tourist_attraction, museum, park, book_store, store, point_of_interest, establishment","3229 NW Pittock Dr, Portland, OR 97210, USA",97210,Portland,Oregon,United States,45.5252061,-122.7162689
-Lan Su Chinese Garden,2,"tourist_attraction, cafe, park, point_of_interest, food, establishment","239 NW Everett St, Portland, OR 97209, USA",97209,Portland,Oregon,United States,45.5256321,-122.6729955
-The Grotto,,"tourist_attraction, park, church, store, place_of_worship, point_of_interest, establishment","8840 NE Skidmore St, Portland, OR 97220, USA",97220,Portland,Oregon,United States,45.5532151,-122.5735354
+Portland Japanese Garden,,"art_gallery, cafe, tourist_attraction, park, museum, food, point_of_interest, store, establishment","611 SW Kingston Ave, Portland, OR 97205, USA",97205,Portland,Oregon,United States,45.5188634,-122.7080354
+Pittock Mansion,,"tourist_attraction, park, book_store, museum, point_of_interest, store, establishment","3229 NW Pittock Dr, Portland, OR 97210, USA",97210,Portland,Oregon,United States,45.5252061,-122.7162689
+Lan Su Chinese Garden,2,"cafe, tourist_attraction, park, food, point_of_interest, establishment","239 NW Everett St, Portland, OR 97209, USA",97209,Portland,Oregon,United States,45.5256321,-122.6729955
+The Grotto,,"tourist_attraction, park, church, place_of_worship, store, point_of_interest, establishment","8840 NE Skidmore St, Portland, OR 97220, USA",97220,Portland,Oregon,United States,45.5532151,-122.5735354
 Sellwood Park,,"park, tourist_attraction, point_of_interest, establishment","SE 7th Ave &, SE Miller St, Portland, OR 97202, USA",97202,Portland,Oregon,United States,45.46837839999999,-122.6605233
 International Rose Test Garden,,"tourist_attraction, park, point_of_interest, establishment","400 SW Kingston Ave, Portland, OR 97205, USA",97205,Portland,Oregon,United States,45.51895239999999,-122.7052686
 Washington Park,,"park, zoo, tourist_attraction, point_of_interest, store, establishment","4033 SW Canyon Rd, Portland, OR 97221, USA",97221,Portland,Oregon,United States,45.51517560000001,-122.7104903
 Forest Park,,"park, tourist_attraction, point_of_interest, establishment","Portland, OR 97231, USA",97231,Portland,Oregon,United States,45.5709848,-122.7683495
 Gordon Faber Recreation Complex,,"park, point_of_interest, establishment","4450 NW 229th Ave, Hillsboro, OR 97124, USA",97124,Hillsboro,Oregon,United States,45.5532094,-122.907202
-Arizona-Sonora Desert Museum,,"aquarium, tourist_attraction, zoo, park, museum, point_of_interest, establishment","2021 N Kinney Rd, Tucson, AZ 85743, USA",85743,Tucson,Arizona,United States,32.244013,-111.168174
-Saguaro National Park,,"tourist_attraction, park, point_of_interest, establishment","Arizona, USA",,,Arizona,United States,32.18308990000001,-110.6126823
-Pusch Ridge Wilderness,,"tourist_attraction, park, point_of_interest, establishment","Tucson, AZ 85750, USA",85750,Tucson,Arizona,United States,32.366742,-110.817315
-Catalina State Park,,"park, local_government_office, point_of_interest, establishment","11570 N Oracle Rd, Tucson, AZ 85737, USA",85737,Tucson,Arizona,United States,32.436433,-110.909647
-Mt Lemmon Ski Valley,,"tourist_attraction, park, point_of_interest, establishment","10300 E Ski Run Rd, Mt Lemmon, AZ 85619, USA",85619,Mount Lemmon,Arizona,United States,32.4475,-110.7816667
-Voyager RV Resort,,"rv_park, lodging, park, point_of_interest, establishment","8701 S Kolb Rd, Tucson, AZ 85756, USA",85756,Tucson,Arizona,United States,32.0920861,-110.8372663
-Tucson Botanical Gardens,1,"tourist_attraction, park, point_of_interest, establishment","2150 N Alvernon Way, Tucson, AZ 85712, USA",85712,Tucson,Arizona,United States,32.248523,-110.908785
-Colossal Cave Mountain Park,,"restaurant, tourist_attraction, campground, park, travel_agency, lodging, point_of_interest, food, store, establishment","16721 E Old Spanish Trail, Vail, AZ 85641, USA",85641,Vail,Arizona,United States,32.0624375,-110.6342377
-Sabino Canyon Recreation Area,,"park, tourist_attraction, point_of_interest, establishment","5700 N Sabino Canyon Rd, Tucson, AZ 85750, USA",85750,Tucson,Arizona,United States,32.32236449999999,-110.8098631
-Brandi Fenton Memorial Park,,"park, tourist_attraction, point_of_interest, establishment","3482 E River Rd, Tucson, AZ 85718, USA",85718,Tucson,Arizona,United States,32.271999,-110.917779
-Sand Harbor,,"tourist_attraction, park, point_of_interest, establishment","2005 NV-28, Incline Village, NV 89452, USA",89452,Incline Village,Nevada,United States,39.1984978,-119.9322541
-Donner Memorial State Park,,"tourist_attraction, park, point_of_interest, establishment","12593 Donner Pass Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3159261,-120.239782
-Rancho San Rafael Regional Park,,"park, tourist_attraction, point_of_interest, establishment","1595 N Sierra St, Reno, NV 89503, USA",89503,Reno,Nevada,United States,39.5456988,-119.8239912
-Lakeside Campground,,"campground, lodging, park, point_of_interest, establishment","Lakeside Campground Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.383672,-120.1729703
-Hunter Creek Trailhead,,"park, point_of_interest, establishment","Reno, NV 89519, USA",89519,Reno,Nevada,United States,39.4928146,-119.8948073
-Ridge Campground,,"campground, park, lodging, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3206402,-120.2364189
-Splitrock Campground,,"campground, park, lodging, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.32046169999999,-120.2421433
-Idlewild Park,,"park, tourist_attraction, point_of_interest, establishment","2055 Idlewild Dr, Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5218409,-119.8329796
-Tahoe Donner Association,2,"campground, lodging, park, restaurant, food, point_of_interest, establishment","11509 Northwoods Blvd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.34355789999999,-120.2148946
-Bartley Ranch Regional Park,,"park, tourist_attraction, point_of_interest, establishment","6000 Bartley Ranch Rd, Reno, NV 89511, USA",89511,Reno,Nevada,United States,39.46978099999999,-119.8073539
-Sand Harbor,,"tourist_attraction, park, point_of_interest, establishment","2005 NV-28, Incline Village, NV 89452, USA",89452,Incline Village,Nevada,United States,39.1984978,-119.9322541
-Donner Memorial State Park,,"tourist_attraction, park, point_of_interest, establishment","12593 Donner Pass Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3159261,-120.239782
-Rancho San Rafael Regional Park,,"park, tourist_attraction, point_of_interest, establishment","1595 N Sierra St, Reno, NV 89503, USA",89503,Reno,Nevada,United States,39.5456988,-119.8239912
-Lakeside Campground,,"campground, lodging, park, point_of_interest, establishment","Lakeside Campground Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.383672,-120.1729703
-Hunter Creek Trailhead,,"park, point_of_interest, establishment","Reno, NV 89519, USA",89519,Reno,Nevada,United States,39.4928146,-119.8948073
-Ridge Campground,,"campground, park, lodging, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3206402,-120.2364189
-Splitrock Campground,,"campground, park, lodging, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.32046169999999,-120.2421433
-Idlewild Park,,"park, tourist_attraction, point_of_interest, establishment","2055 Idlewild Dr, Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5218409,-119.8329796
-Tahoe Donner Association,2,"campground, lodging, park, restaurant, food, point_of_interest, establishment","11509 Northwoods Blvd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.34355789999999,-120.2148946
-Bartley Ranch Regional Park,,"park, tourist_attraction, point_of_interest, establishment","6000 Bartley Ranch Rd, Reno, NV 89511, USA",89511,Reno,Nevada,United States,39.46978099999999,-119.8073539
-Sand Harbor,,"tourist_attraction, park, point_of_interest, establishment","2005 NV-28, Incline Village, NV 89452, USA",89452,Incline Village,Nevada,United States,39.1984978,-119.9322541
-Donner Memorial State Park,,"tourist_attraction, park, point_of_interest, establishment","12593 Donner Pass Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3159261,-120.239782
-Rancho San Rafael Regional Park,,"park, tourist_attraction, point_of_interest, establishment","1595 N Sierra St, Reno, NV 89503, USA",89503,Reno,Nevada,United States,39.5456988,-119.8239912
-Lakeside Campground,,"campground, park, lodging, point_of_interest, establishment","Lakeside Campground Rd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.383672,-120.1729703
-Hunter Creek Trailhead,,"park, point_of_interest, establishment","Reno, NV 89519, USA",89519,Reno,Nevada,United States,39.4928146,-119.8948073
-Ridge Campground,,"campground, park, lodging, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.3206402,-120.2364189
-Splitrock Campground,,"campground, park, lodging, point_of_interest, establishment","Truckee, CA 96161, USA",96161,Truckee,California,United States,39.32046169999999,-120.2421433
-Idlewild Park,,"park, tourist_attraction, point_of_interest, establishment","2055 Idlewild Dr, Reno, NV 89509, USA",89509,Reno,Nevada,United States,39.5218409,-119.8329796
-Tahoe Donner Association,2,"campground, park, restaurant, lodging, food, point_of_interest, establishment","11509 Northwoods Blvd, Truckee, CA 96161, USA",96161,Truckee,California,United States,39.34355789999999,-120.2148946
-Bartley Ranch Regional Park,,"park, tourist_attraction, point_of_interest, establishment","6000 Bartley Ranch Rd, Reno, NV 89511, USA",89511,Reno,Nevada,United States,39.46978099999999,-119.8073539
+Placer County Fair,,"rv_park, lodging, park, point_of_interest, establishment","700 Event Center Dr, Roseville, CA 95678, USA",95678,Roseville,California,United States,38.7569493,-121.2965674
+Camanche Recreation Company - North Shore,,"park, rv_park, lodging, food, point_of_interest, store, establishment","2000 Camanche Rd, Ione, CA 95640, USA",95640,Ione,California,United States,38.2395132,-120.947538
+Cosumnes River Preserve,,"tourist_attraction, park, point_of_interest, establishment","13501 Franklin Blvd, Galt, CA 95690, USA",95690,Galt,California,United States,38.2657318,-121.43927
+Fairytale Town,,"amusement_park, tourist_attraction, park, point_of_interest, establishment","3901 Land Park Dr, Sacramento, CA 95822, USA",95822,Sacramento,California,United States,38.5395888,-121.5012772
+McKinley Park,,"park, tourist_attraction, point_of_interest, establishment","601 Alhambra Blvd, Sacramento, CA 95816, USA",95816,Sacramento,California,United States,38.5768935,-121.4630764
+Funderland Amusement Park,,"amusement_park, park, point_of_interest, establishment","1350 17th Ave, Sacramento, CA 95822, USA",95822,Sacramento,California,United States,38.5373061,-121.5018575
+Sutter's Fort State Historic Park,,"tourist_attraction, park, point_of_interest, establishment","2701 L St, Sacramento, CA 95816, USA",95816,Sacramento,California,United States,38.57233889999999,-121.4712056
+Micke Grove Zoo,,"zoo, tourist_attraction, park, point_of_interest, establishment","11793 Micke Grove Rd, Lodi, CA 95240, USA",95240,Lodi,California,United States,38.0785377,-121.2740797
+Woodland Cty Pk & Rec Community Swm,,"park, point_of_interest, establishment","2001 East St, Woodland, CA 95776, USA",95776,Woodland,California,United States,38.6537824,-121.7640824
+Folsom City Zoo Sanctuary,,"zoo, tourist_attraction, park, point_of_interest, establishment","403 Stafford St, Folsom, CA 95630, USA",95630,Folsom,California,United States,38.6827047,-121.1661338
