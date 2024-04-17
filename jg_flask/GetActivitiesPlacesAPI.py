@@ -111,7 +111,7 @@ def scrape_activities():
                 page_token=next_page_token
             )
             
-            chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres']  # Add more chain names as needed
+            chain_activity_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres']  # Add more chain names as needed
 
 
             for place in places_result['results']:
@@ -121,7 +121,7 @@ def scrape_activities():
                 processed_place_ids.add(my_place_id)
                 place_details = gmaps.place(place_id=my_place_id, fields=['name', 'type', 'price_level', 'formatted_address', 'address_component', 'geometry'])
                 name = place_details['result']['name']
-                if any(chain_name in name for chain_name in chain_restaurant_names):
+                if any(chain_name in name for chain_name in chain_activity_names):
                     continue
                 price_range = place_details['result'].get('price_level', '')
                 types = ', '.join(place_details['result']['types'])

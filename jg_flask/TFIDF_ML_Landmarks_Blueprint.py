@@ -1,13 +1,3 @@
-#-----------SUMMARY-------------
-#This is a Flask blueprint version of TFIDF_ML script
-#Make sure the filepath for the CSV is correct on the machine it is running on
-#We may need to make the filepath dynamic for ease of use across multiple computers
-#It may also make more sense to make this a blueprint to the original Flask app so it can all run on the same port 
-#TO MAKE A CALL TO THIS MODEL:
-#API link is: '/api/run_ML_model_recommendations'
-#Note to Ethan: We will need to add a json request to receive the location or whatever parameters
-#   this function requires
-
 from flask import Flask, jsonify, request, Blueprint, make_response, Response
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -28,10 +18,6 @@ client = OpenAI(api_key=api_key)
 
 #Blueprint declaration
 landmarksRecommendation_bp = Blueprint('landmarksRecommendation_bp', __name__)
-
-# Load the data from the CSV file with the correct encoding
-# Ethan's Filepath
-# data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
 
 #Dynamic filepath
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -83,16 +69,6 @@ def haversine(lat1, lon1, lat2, lon2):
 # Function to get recommendations by text similarity, location, and price range
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
 
-    #print(f"Received target_place: {target_place}")
-    #print(f"Received input_lat: {input_lat}")
-    #print(f"Received input_lon: {input_lon}")
-    #print(f"Received input_price: {input_price}")
-    #print("Variables successfully passed by parameter :)")
-    #print()
-    #print(data.head())  # Print the first few rows
-    #print(data.info())  # Print column names and data types
-    #print()
-
     # Get the index of the input place
     idx = data[data['Place'] == target_place].index
     #print(idx)
@@ -120,9 +96,21 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     # Calculate price differences
     price_differences = [abs(input_price - price) for price in data['Price Range']]
 
-    # Combine text similarity, geographical distance, and price difference into a composite score
-    composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
-                        for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+    # # Combine text similarity, geographical distance, and price difference into a composite score
+    # composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
+    #                     for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+    
+    # Calculate composite scores, safely handling divisions
+    composite_scores = []
+    max_distance = max(distances) if max(distances) > 0 else 1  # Avoid division by zero
+    max_price_difference = max(price_differences) if max(price_differences) > 0 else 1  # Avoid division by zero
+
+    for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences):
+        # Calculate the score, considering safe division
+        score = (1 - text_sim)
+        score += (1 - dist / max_distance)
+        score += (1 - price_diff / max_price_difference)
+        composite_scores.append(score)
 
     # Sort places by composite similarity score
     sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
@@ -168,7 +156,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 def recommend():
     try:
         data = request.json
-        target_place = "Donner Memorial State Park" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = "Ed Fountain Park" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
