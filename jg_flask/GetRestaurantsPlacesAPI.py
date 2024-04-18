@@ -4,8 +4,7 @@ import csv
 import os
 from dotenv import load_dotenv
 
-
-
+# MODIFIED BLUEPRINT
 getRestaurant_bp = Blueprint('getRestaurant_bp', __name__)
 
 @getRestaurant_bp.route('/scrape_restaurants', methods=['POST'])
