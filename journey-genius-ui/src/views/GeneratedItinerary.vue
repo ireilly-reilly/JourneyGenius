@@ -112,8 +112,8 @@
                 <br>
                 <div style="position: relative; overflow: hidden; border-radius: 8px;">
                     <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y&center=' +
-                        this.$store.state.lat + ',' + this.$store.state.long + '&zoom=15&maptype=roadmap'"
-                        allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+                this.$store.state.lat + ',' + this.$store.state.long + '&zoom=15&maptype=roadmap'" allowfullscreen
+                        referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
                 <br>
                 <v-row justify="center">
@@ -247,12 +247,44 @@ export default {
         };
 
         // Make an HTTP POST request to your Python server
-        axios.post('http://localhost:8000/api/process_data', data)
+        axios.post('http://localhost:8000/api/restaurant_photo_data', data)
             .then(response => {
                 console.log(response.data); // Log response from Python server
             })
             .catch(error => {
-                console.error('Error sending data to Python server:', error);
+                console.error('Error sending data to Python server (restaurant):', error);
+            });
+
+        axios.post('http://localhost:8000/api/activity_photo_data', data)
+            .then(response => {
+                console.log(response.data); // Log response from Python server
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (activity):', error);
+            });
+
+        axios.post('http://localhost:8000/api/landmark_photo_data', data)
+            .then(response => {
+                console.log(response.data); // Log response from Python server
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (landmark):', error);
+            });
+
+        axios.post('http://localhost:8000/api/shopping_photo_data', data)
+            .then(response => {
+                console.log(response.data); // Log response from Python server
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (shopping):', error);
+            });
+
+        axios.post('http://localhost:8000/api/hotel_photo_data', data)
+            .then(response => {
+                console.log(response.data); // Log response from Python server
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (hotel):', error);
             });
     },
 

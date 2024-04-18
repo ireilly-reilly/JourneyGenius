@@ -404,7 +404,7 @@ from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
 from GetHotelsPlacesAPI import getHotels_bp
 from OpenAI_CityDescription_bp import cityDescription_bp
 from OpenAI_CitySlogan_bp import citySlogan_bp
-from FetchSelectedInformation_bp import FetchSelectedInformation_bp
+from FetchSelectedInformation_PHOTOS_bp import FetchSelectedInformation_bp
 # from GetSavedTrip import saved_trips_bp
 
 from FetchSelectedAddress_bp import FetchAddress_bp
