@@ -341,13 +341,11 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .user-accounts-page {
     padding: 20px;
     background-color: #333;
-    /* Dark background color */
     color: white;
-    /* Light text color */
 }
 
 .user-accounts-page h1 {
@@ -361,26 +359,21 @@ export default {
 
 .user-accounts-page .v-data-table {
     background-color: white;
-    /* Darker background color for table */
 }
 
 .user-accounts-page .v-data-table .v-data-table-header th {
     color: white;
-    /* Light text color for table header */
 }
 
 .user-accounts-page .v-data-table .v-data-table-body tr:nth-child(odd) {
     background-color: rgb(51, 44, 44);
-    /* Darker background color for odd rows */
 }
 
 .user-accounts-page .v-data-table .v-data-table-body tr:hover {
     background-color: #171515;
-    position: fixed;
-    /* Darker background color for hover effect */
+    position: relative; /* Changed from fixed to relative */
 }
 
-/* Add your CSS styles for table formatting here */
 .user-accounts-table {
     width: 100%;
     border-collapse: collapse;
@@ -401,7 +394,6 @@ export default {
 .user-accounts-table tbody tr:nth-child(even) {
     background-color: #f2f2f2;
     color: #000;
-    /* Black text color */
 }
 
 .user-accounts-table tbody tr:hover {
@@ -422,13 +414,8 @@ export default {
     margin-top: 16px;
 }
 
-.v-btn {
+/* .v-btn {
     font-size: 18px;
     margin-top: 16px;
-}
-
-.user-info-header div {
-    /* font-weight: bold; */
-    font-size: 30px;
-}
+} */
 </style>
