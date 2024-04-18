@@ -1,13 +1,3 @@
-#-----------SUMMARY-------------
-#This is a Flask blueprint version of TFIDF_ML script
-#Make sure the filepath for the CSV is correct on the machine it is running on
-#We may need to make the filepath dynamic for ease of use across multiple computers
-#It may also make more sense to make this a blueprint to the original Flask app so it can all run on the same port 
-#TO MAKE A CALL TO THIS MODEL:
-#API link is: '/api/run_ML_model_recommendations'
-#Note to Ethan: We will need to add a json request to receive the location or whatever parameters
-#   this function requires
-
 from flask import Flask, jsonify, request, Blueprint, make_response, Response
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -29,14 +19,6 @@ client = OpenAI(api_key=api_key)
 #Blueprint declaration
 restaurantRecommendation_bp = Blueprint('restaurantRecommendation_bp', __name__)
 
-# Load the data from the CSV file with the correct encoding
-# Ethan's Filepath
-# data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
-
-# # Kai's Filepath
-#data = pd.read_csv('/Users/kai/Capstone/JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') 
-# #print(f"Number of rows in data: {len(data)}")
-# # Isaac's Filepath
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
 restaurant_csv_file_path = os.path.join(CSV_FOLDER, 'restaurant_data.csv')
@@ -48,12 +30,15 @@ data = pd.read_csv(restaurant_csv_file_path)
 # Preprocess the "Price Range" column
 # Fill missing values with 0 (unknown)
 data['Price Range'] = data['Price Range'].fillna(0)
+# print(data['Price Range'])
 
 # Preprocess the data and extract relevant features
 # Include 'Price Range' as a feature
 data['Types'] = data['Types'].fillna('')
 data['Address'] = data['Address'].fillna('')
 data['Features'] = data['Types'] + ' ' + data['Address'] + ' ' + data['Price Range'].astype(str)
+# print(data['Types'])
+# print(data['Address'])
 
 # Create a TF-IDF vectorizer to convert text features into numerical vectors
 tfidf_vectorizer = TfidfVectorizer(stop_words='english')
@@ -92,28 +77,74 @@ def haversine(lat1, lon1, lat2, lon2):
     #print(data.info())  # Print column names and data types
     #print()
 # Function to get recommendations by text similarity, location, and price range
+
+
+
+# def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
+
+
+#     # Get the index of the input place
+#     idx = data[data['Place'] == target_place].index
+#     #print(idx)
+#     #print(data['Place'].unique())
+
+
+#     if len(idx) == 0:
+#         return {'error': f'Place "{target_place}" not found'}, 404
+
+#     idx = idx[0]  # Get the first index if multiple matches exist
+
+#     print(target_place)
+#     print("idx:", idx)
+#     print("Type of idx:", type(idx))
+
+#     # Extract the price range of the input place as an integer
+#     input_price = int(data['Price Range'][idx])
+    
+#     # Extract the latitude and longitude of the input place
+#     input_lat = data['Latitude'].iloc[idx]
+#     input_lon = data['Longitude'].iloc[idx]
+#     #print(input_lat)
+#     #print(input_lon)
+
+#     # Calculate geographical distances and text-based similarities
+#     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
+#     text_similarities = cosine_sim[idx]
+
+#     # Calculate price differences
+#     price_differences = [abs(input_price - price) for price in data['Price Range']]
+
+    # # Combine text similarity, geographical distance, and price difference into a composite score
+    # composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
+    #                     for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+
+    # # Sort places by composite similarity score
+    # sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
+
+#     # Return the top 10 similar places as a list of dictionaries
+#     recommendations = [{'place': place} for place in sorted_places[1:6]]
+#     return {'recommendations': recommendations}
+
+
+# Modified code snippet to get recommendations with location and price
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
-
-
-    # Get the index of the input place
-    idx = data[data['Place'] == target_place].index
-    #print(idx)
-    #print(data['Place'].unique())
-
+    # Get the index of the target place
+    idx = data[data['Place'].str.strip().str.lower() == target_place.lower().strip()].index
+    print(f"Indexes found: {idx}")
 
     if len(idx) == 0:
+        print(f"No matching places found for {target_place}")
         return {'error': f'Place "{target_place}" not found'}, 404
 
-    idx = idx[0]  # Get the first index if multiple matches exist
+    # Get the first index if multiple matches exist
+    idx = idx[0]  
+    # print(f"Using index: {idx}")
 
-    # Extract the price range of the input place as an integer
-    input_price = int(data['Price Range'][idx])
-    
-    # Extract the latitude and longitude of the input place
-    input_lat = data['Latitude'].iloc[idx]
-    input_lon = data['Longitude'].iloc[idx]
-    #print(input_lat)
-    #print(input_lon)
+
+    # Extract the price range, latitude, and longitude of the target place
+    input_price = int(data.loc[idx, 'Price Range'])
+    input_lat = data.loc[idx, 'Latitude']
+    input_lon = data.loc[idx, 'Longitude']
 
     # Calculate geographical distances and text-based similarities
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
@@ -132,6 +163,10 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     # Return the top 10 similar places as a list of dictionaries
     recommendations = [{'place': place} for place in sorted_places[1:6]]
     return {'recommendations': recommendations}
+
+
+
+
 
 
 # def descriptionGeneration(recommended_places):
@@ -171,18 +206,18 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 def recommend():
     try:
         data = request.json
-        target_place = "Lucky Dragon Restaurant" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = "China King" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
-        #print(target_place)
-        #print(target_lat_str)
-        #print(target_lon_str)
-        #print(desired_price_range_str)
-        #print()
-        #print("#################### TFIDF - Restaurant Recommendations ####################")
-        #print("Values from the frontend is successfully sent over :)")
-        #print()
+        # print(target_place)
+        # print(target_lat_str)
+        # print(target_lon_str)
+        # print(desired_price_range_str)
+        # print()
+        # print("#################### TFIDF - Restaurant Recommendations ####################")
+        # print("Values from the frontend is successfully sent over :)")
+        # print()
 
         # Check if latitude, longitude, and price range are not None
         if None in (target_lat_str, target_lon_str, desired_price_range_str):
@@ -210,7 +245,7 @@ def recommend():
         place_names = [place['place'] for place in recommended_places['recommendations']]
 
         # Print the place names
-        #print("Here are the recommended Restaurant Names from the TFIDF Model:")
+        # print("Here are the recommended Restaurant Names from the TFIDF Model:")
         # print(place_names)
         
 

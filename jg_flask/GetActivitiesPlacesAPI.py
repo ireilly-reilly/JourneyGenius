@@ -8,7 +8,6 @@ from dotenv import load_dotenv
 # MODIFIED BLUEPRINT
 getActivity_bp = Blueprint('getActivity_bp', __name__)
 
-# MODIFIED ROUTE AND STRING PRINT
 @getActivity_bp.route('/scrape_activities', methods=['POST'])
 def scrape_activities():
     # Get the latitude and longitude from the request
@@ -60,16 +59,7 @@ def scrape_activities():
     ############################################## We can change this keyword in the future ##############################################
     # keyword = 'mexican' 
     desired_result_count = 10
-     # Desired result count here
-
-
-
-    ############# I RECOMMEND PUTTING THE RELATIVE PATH IN FOR LOCATING THE CSV (E.G. /JourneyGenius/journey-genius-datascraping/activity....) - Ethan
-
-    # Check if the CSV file already exists
-    
-    # csv_exists = os.path.exists('/JourneyGenius/journey-genius-datascraping/activity_data.csv')
-    # try above at some point
+    # Desired result count here
 
     #Dynamic Filepath
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -78,13 +68,15 @@ def scrape_activities():
 
     csv_exists = os.path.exists(activities_csv_file_path)
 
+    Number = 1
     # Create and open a CSV file for writing
     with open(activities_csv_file_path, mode='a', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         
         # Only write the header row if the file is empty (or doesn't exist)
         if not csv_exists:
-            writer.writerow(['Place', 'Price Range', 'Types', 'Address', 'Postal Code', 'City', 'State', 'Country', 'Latitude', 'Longitude'])
+            writer.writerow(['Number', 'Id', 'Place', 'Price Range', 'Types', 'Address', 'Postal Code', 'City', 'State', 'Country', 'Latitude', 'Longitude'])
+
         # Initialize a variable to store the next_page_token
         next_page_token = None
 
@@ -93,6 +85,19 @@ def scrape_activities():
 
         # Initialize a set to store processed place IDs
         processed_place_ids = set()
+
+        # If the CSV file exists, read existing place_id values from the CSV file and populate processed_place_ids
+        if csv_exists:
+            with open(activities_csv_file_path, mode='r', newline='', encoding='utf-8') as read_file:
+                reader = csv.reader(read_file)
+                rows = list(reader)  # Read all rows into a list
+                if len(rows) > 1:
+                    for row in rows[1:]:
+                        place_id = row[1]
+                        processed_place_ids.add(place_id)
+                    last_row = rows[-1]
+                    last_number = int(last_row[0])
+                    Number = last_number + 1
 
         # Use a loop to fetch multiple pages of results
         while results_fetched < desired_result_count:
@@ -103,31 +108,24 @@ def scrape_activities():
                 open_now=open_now,
                 type=type,
                 # keyword=keyword,
-                page_token=next_page_token  # Include the next_page_token
+                page_token=next_page_token
             )
+            
+            chain_activity_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres']  # Add more chain names as needed
 
-            # Initialize a set to store processed place IDs
-            processed_place_ids = set()
 
-            # Loop through each place in the results
             for place in places_result['results']:
                 my_place_id = place['place_id']
-
-                # Check if the place ID has already been processed
                 if my_place_id in processed_place_ids:
-                    continue  # Skip this place
-
-                # Add the place ID to the set of processed IDs
+                    continue
                 processed_place_ids.add(my_place_id)
-
-                # Make a request for details
                 place_details = gmaps.place(place_id=my_place_id, fields=['name', 'type', 'price_level', 'formatted_address', 'address_component', 'geometry'])
-
-                # Extract and format the data
                 name = place_details['result']['name']
-                price_range = place_details['result'].get('price_level', '')  # Check if 'price_level' exists
+                if any(chain_name in name for chain_name in chain_activity_names):
+                    continue
+                price_range = place_details['result'].get('price_level', '')
                 types = ', '.join(place_details['result']['types'])
-                address_components = place_details['result'].get('address_components', [])  # Check if 'address_components' exists
+                address_components = place_details['result'].get('address_components', [])
                 address = place_details['result']['formatted_address']
                 postal_code = next((component['long_name'] for component in address_components if 'postal_code' in component['types']), '')
                 city = next((component['long_name'] for component in address_components if 'locality' in component['types']), '')
@@ -135,25 +133,16 @@ def scrape_activities():
                 country = next((component['long_name'] for component in address_components if 'country' in component['types']), '')
                 latitude = place_details['result']['geometry']['location']['lat']
                 longitude = place_details['result']['geometry']['location']['lng']
+                # print(latitude)
+                # print(longitude)
+                writer.writerow([Number, my_place_id, name, price_range, types, f"{address} {postal_code}", postal_code, city, state, country, latitude, longitude])
+                # print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
 
-                # Write the data to the CSV file
-                writer.writerow([name, price_range, types, address, postal_code, city, state, country, latitude, longitude])
-
-                #print("Here is what is stored inside the csv file:")
-                #print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
-                #print()
-
-                # Increment the results fetched counter
                 results_fetched += 1
-
-                # Check if you have reached the desired result count
+                Number += 1
                 if results_fetched >= desired_result_count:
                     break
-
-            # Check if there are more results to fetch
             next_page_token = places_result.get('next_page_token', None)
-
-            # If there are no more results or you have reached the desired count, exit the loop
             if not next_page_token or results_fetched >= desired_result_count:
                 break
 

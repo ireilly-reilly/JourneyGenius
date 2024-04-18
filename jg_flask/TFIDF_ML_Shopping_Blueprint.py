@@ -121,9 +121,17 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     # Calculate price differences
     price_differences = [abs(input_price - price) for price in data['Price Range']]
 
-    # Combine text similarity, geographical distance, and price difference into a composite score
-    composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
-                        for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+    # Calculate composite scores, safely handling divisions
+    composite_scores = []
+    max_distance = max(distances) if max(distances) > 0 else 1  # Avoid division by zero
+    max_price_difference = max(price_differences) if max(price_differences) > 0 else 1  # Avoid division by zero
+
+    for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences):
+        # Calculate the score, considering safe division
+        score = (1 - text_sim)
+        score += (1 - dist / max_distance)
+        score += (1 - price_diff / max_price_difference)
+        composite_scores.append(score)
 
     # Sort places by composite similarity score
     sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
@@ -169,7 +177,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 def recommend():
     try:
         data = request.json
-        target_place = "Patagonia Outlet" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = "Southland Mall" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')

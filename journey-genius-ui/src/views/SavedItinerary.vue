@@ -26,7 +26,7 @@
         </v-row>
 
         <br>
-        <h2 class="section-title text-center">Discover {{ this.$store.state.tripObject.city }} - Overview</h2>
+        <h2 class="section-title text-center"> Discover {{ this.$store.state.tripObject.city }} - Overview</h2>
 
 
         <!-- Section with Image and Left Section -->
@@ -74,6 +74,14 @@
                         <h3>Shopping Spots</h3>
                         <ul>
                             <li v-for="shop in $store.state.tripObject.shops" :key="shop">{{ shop }}</li>
+                        </ul>
+                    </div>
+
+                    <!-- Hotel Spot Section -->
+                    <div class="section-content">
+                        <h3>Accomodation</h3>
+                        <ul>
+                            <li v-for="hotel in $store.state.tripObject.hotels" :key="hotel">{{ hotel }}</li>
                         </ul>
                     </div>
                 </div>
@@ -166,7 +174,7 @@ export default {
         const tripObject = this.$store.state.tripObject;
         // this.$store.commit('updateTripObject', this.tripObject);
         // console.log("This is the saved object: " + tripObject)
-        // console.log("activities: " + this.$store.state.tripObject.activities)
+        // console.log("hotels: " + this.$store.state.tripObject.hotels)
         
 
 
@@ -200,11 +208,10 @@ export default {
 
     methods: {
 
-        
-
         send() {
             this.$router.push({ name: 'SavedItinerary2', params: { tripObject: this.$store.state.tripObject } });  
         }
+
     },
 
     computed: {

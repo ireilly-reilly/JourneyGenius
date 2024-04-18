@@ -1,13 +1,3 @@
-#-----------SUMMARY-------------
-#This is a Flask blueprint version of TFIDF_ML script
-#Make sure the filepath for the CSV is correct on the machine it is running on
-#We may need to make the filepath dynamic for ease of use across multiple computers
-#It may also make more sense to make this a blueprint to the original Flask app so it can all run on the same port 
-#TO MAKE A CALL TO THIS MODEL:
-#API link is: '/api/run_ML_model_recommendations'
-#Note to Ethan: We will need to add a json request to receive the location or whatever parameters
-#   this function requires
-
 from flask import Flask, jsonify, request, Blueprint, make_response, Response
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -29,20 +19,12 @@ client = OpenAI(api_key=api_key)
 #Blueprint declaration
 activitiesRecommendation_bp = Blueprint('activitiesRecommendation_bp', __name__)
 
-# Load the data from the CSV file with the correct encoding
-# Ethan's Filepath
-# data = pd.read_csv('/Users/dontstealmyshxt/Documents/GitHub/JourneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8') #TODO Make sure this is set to the correct location depending on the machine running it 
-
-# # Kai's Filepath
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
 activities_csv_file_path = os.path.join(CSV_FOLDER, 'activity_data.csv')
 
 data = pd.read_csv(activities_csv_file_path, encoding='utf-8') 
 # #print(f"Number of rows in data: {len(data)}")
-# # Isaac's Filepath
-
-# data = pd.read_csv('JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
 
 # Preprocess the "Price Range" column
 # Fill missing values with 0 (unknown)
@@ -94,25 +76,21 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     #print(data.info())  # Print column names and data types
     #print()
 
-    # Get the index of the input place
-    idx = data[data['Place'] == target_place].index
-    #print(idx)
-    #print(data['Place'].unique())
-
+    # Get the index of the target place
+    idx = data[data['Place'].str.strip().str.lower() == target_place.lower().strip()].index
+    # print(f"Indexes found: {idx}")
 
     if len(idx) == 0:
+        print(f"No matching places found for {target_place}")
         return {'error': f'Place "{target_place}" not found'}, 404
 
-    idx = idx[0]  # Get the first index if multiple matches exist
+    # Get the first index if multiple matches exist
+    idx = idx[0]  
 
-    # Extract the price range of the input place as an integer
-    input_price = int(data['Price Range'][idx])
-    
-    # Extract the latitude and longitude of the input place
-    input_lat = data['Latitude'].iloc[idx]
-    input_lon = data['Longitude'].iloc[idx]
-    #print(input_lat)
-    #print(input_lon)
+    # Extract the price range, latitude, and longitude of the target place
+    input_price = int(data.loc[idx, 'Price Range'])
+    input_lat = data.loc[idx, 'Latitude']
+    input_lon = data.loc[idx, 'Longitude']
 
     # Calculate geographical distances and text-based similarities
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
@@ -122,8 +100,21 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     price_differences = [abs(input_price - price) for price in data['Price Range']]
 
     # Combine text similarity, geographical distance, and price difference into a composite score
-    composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
-                        for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+    # composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
+    #                     for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+    
+    # Calculate composite scores, safely handling divisions
+    composite_scores = []
+    max_distance = max(distances) if max(distances) > 0 else 1  # Avoid division by zero
+    max_price_difference = max(price_differences) if max(price_differences) > 0 else 1  # Avoid division by zero
+
+    for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences):
+        # Calculate the score, considering safe division
+        score = (1 - text_sim)
+        score += (1 - dist / max_distance)
+        score += (1 - price_diff / max_price_difference)
+        composite_scores.append(score)
+
 
     # Sort places by composite similarity score
     sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
@@ -169,7 +160,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 def recommend():
     try:
         data = request.json
-        target_place = "The Sensory Garden At Idlewild Park" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = "Mackay Stadium" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
