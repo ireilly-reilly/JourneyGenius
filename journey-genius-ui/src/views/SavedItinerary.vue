@@ -26,7 +26,7 @@
         </v-row>
 
         <br>
-        <h2 class="section-title text-center">Discover {{ this.$store.state.tripObject.city }} - Overview</h2>
+        <h2 class="section-title text-center"> Discover {{ this.$store.state.tripObject.city }} - Overview</h2>
 
 
         <!-- Section with Image and Left Section -->

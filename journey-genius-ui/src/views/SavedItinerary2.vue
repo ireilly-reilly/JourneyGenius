@@ -208,25 +208,6 @@ export default {
 
     },
     methods: {
-        getRoundRobinSlice(arrays) {
-            let index = 0;
-            let output = [];
-
-            while (arrays.some(array => array.length > 0)) {
-                for (let i = 0; i < arrays.length; i++) {
-                    if (arrays[i].length > 0) {
-                        output.push(arrays[i].shift());
-                    }
-                }
-            }
-
-            return output;
-        },
-
-
-
-
-
         getTimelineColor(index) {
             // Define colors for each day
             const colors = ['primary', 'info', 'success', 'error', 'warning'];

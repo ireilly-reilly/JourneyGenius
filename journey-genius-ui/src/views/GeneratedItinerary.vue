@@ -29,7 +29,7 @@
             </v-row>
 
             <br>
-            <h2 class="section-title text-center">Discover {{ this.$store.state.city }} - Overview</h2>
+            <h2 class="section-title text-center"> Discover {{ this.$store.state.city }} - Overview</h2>
 
 
             <!-- Section with Image and Left Section -->
@@ -84,7 +84,7 @@
                         <div class="section-content">
                             <h3>Accomodation</h3>
                             <ul>
-                                <li v-for="hotel in $store.state.tripObject.hotels" :key="hotel">{{ hotel }}</li>
+                                <li v-for="hotel in hotels" :key="hotel">{{ hotel }}</li>
                             </ul>
                         </div>
                     </div>
