@@ -51,17 +51,22 @@
                       <v-col cols="12">
                         <h2 class="headline mb-1 text-deep-purple-accent-2">{{ trip.city }}, {{ trip.state }}</h2>
                         <h4 class="headline mb-0.5 black">{{ trip.dates }}</h4>
+                        <h4 class="headline mb-0.5 black">{{ formatBudget(trip.budget) }}</h4>
+
+                        <br>
+                        <p class="mb-2" style="flex: 1; overflow: hidden;">{{ trip.city_description }}</p>
+
                       </v-col>
                     </v-row>
                   </v-col>
                 </v-row>
 
                 <!-- make this section the same height -->
-                <v-row class="flex-grow-1">
+                <!-- <v-row class="flex-grow-1">
                   <v-col cols="12" class="pr-4">
                     <p class="mb-2" style="flex: 1; overflow: hidden;">{{ trip.city_description }}</p>
                   </v-col>
-                </v-row>
+                </v-row> -->
 
                 <v-overlay :model-value="isHovering" class="align-center justify-center" scrim="deep-purple-accent-2"
                   contained>
@@ -123,6 +128,8 @@ export default {
       showSnackbar: false,
       dialogVisible: false,
       sortKey: '',
+      budget: [],
+      
 
       sortOptions: [
         { name: 'Recently Added', value: '' },
@@ -140,9 +147,28 @@ export default {
   mounted() {
     this.fetchSavedTrips();
     // console.log('Sort Options:', this.sortOptions); // Check if sortOptions are populated correctly
-
   },
+
+  computed: {
+    
+  },
+
   methods: {
+    formatBudget(budget) {
+      if (budget === "medium") {
+        return "Medium Budget Trip";
+      }
+      else if (budget === "cheap") {
+        return "Cheap Budget Trip"
+      }
+      else if (budget === 'expensive') {
+        return "Expensive Budget Trip"
+      }
+      else {
+        return budget;
+      }
+    },
+
     sortTrips() {
       console.log("the text field was selected"); 
 
