@@ -78,7 +78,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 
     # Get the index of the target place
     idx = data[data['Place'].str.strip().str.lower() == target_place.lower().strip()].index
-    print(f"Indexes found: {idx}")
+    # print(f"Indexes found: {idx}")
 
     if len(idx) == 0:
         print(f"No matching places found for {target_place}")

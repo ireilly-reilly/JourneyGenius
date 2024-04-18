@@ -138,7 +138,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 
     # Get the first index if multiple matches exist
     idx = idx[0]  
-    print(f"Using index: {idx}")
+    # print(f"Using index: {idx}")
 
 
     # Extract the price range, latitude, and longitude of the target place
@@ -245,7 +245,7 @@ def recommend():
         place_names = [place['place'] for place in recommended_places['recommendations']]
 
         # Print the place names
-        print("Here are the recommended Restaurant Names from the TFIDF Model:")
+        # print("Here are the recommended Restaurant Names from the TFIDF Model:")
         # print(place_names)
         
 
