@@ -407,6 +407,7 @@ from OpenAI_CitySlogan_bp import citySlogan_bp
 from FetchSelectedInformation_bp import FetchSelectedInformation_bp
 # from GetSavedTrip import saved_trips_bp
 
+from FetchSelectedAddress_bp import FetchAddress_bp
 
 
 
@@ -452,6 +453,8 @@ app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
 app.register_blueprint(cityDescription_bp, url_prefix='/api')
 app.register_blueprint(citySlogan_bp, url_prefix='/api')
 app.register_blueprint(FetchSelectedInformation_bp, url_prefix='/api')
+
+app.register_blueprint(FetchAddress_bp, url_prefix='/api')
 # app.register_blueprint(saved_trips_bp, url_prefix='/api')
 
 

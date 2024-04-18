@@ -91,6 +91,50 @@ export default {
         const latitude = this.$store.state.lat;
         const longitude = this.$store.state.long;
 
+        const RestaurantAddress = []
+        const ActivityAddress = []
+        const LandmarkAddress = []
+        const ShoppingAddress = []
+        const HotelAddress = []
+
+        const requestData = {
+            Activities: this.$store.state.activities,
+            Landmarks: this.$store.state.landmarks,
+            Foods: this.$store.state.foods,
+            Shops: this.$store.state.shops,
+            Hotels: this.$store.state.hotels
+        };
+
+        axios.post('http://localhost:8000/api/fetch_restaurant_address', requestData)
+            .then(response => {
+                console.log('Address response:', response.data);
+                this.RestaurantAddress = response.data;
+            })
+
+        axios.post('http://localhost:8000/api/fetch_activity_address', requestData)
+            .then(response => {
+                console.log('Address response:', response.data);
+                this.ActivitytAddress = response.data;
+            })
+
+        axios.post('http://localhost:8000/api/fetch_landmark_address', requestData)
+            .then(response => {
+                console.log('Address response:', response.data);
+                this.LandmarkAddress = response.data;
+            })
+
+        axios.post('http://localhost:8000/api/fetch_shopping_address', requestData)
+            .then(response => {
+                console.log('Address response:', response.data);
+                this.ShoppingAddress = response.data;
+            })
+        axios.post('http://localhost:8000/api/fetch_hotel_address', requestData)
+            .then(response => {
+                console.log('Address response:', response.data);
+                this.HotelAddress = response.data;
+            })
+
+
         const selectedHotelString = selectedHotel.join(', '); // Use a comma and a space as the separator
         console.log(selectedHotelString)
         // console.log("This is the activities array: " + selectedActivities)
