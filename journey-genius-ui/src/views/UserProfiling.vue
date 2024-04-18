@@ -1,5 +1,13 @@
 <template>
   <v-container>
+    <template>
+        <div class="text-center">
+          <!-- Other template markup -->
+          <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+            <span class="centered-text">Preferences Saved Successfully!</span>
+          </v-snackbar>
+        </div>
+      </template>
     <!-- Your Header -->
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
@@ -46,17 +54,17 @@
           <p>Choose your favorite activities to customize your experience!</p>
 
           <v-row justify="center">
-            <v-col v-for="activity in activities" :key="activity.value" cols="4">
-              <v-btn class="companion-btn" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-                @click="selectActivity(activity)">
-                <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
-                <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
-                <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
-                <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
-                <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
-                <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
-                <div>{{ activity.label }}</div>
-              </v-btn>
+          <v-col v-for="activity in activities" :key="activity.value" cols="4">
+            <v-btn class="activities-btn" stacked="" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'"
+              @click="toggleActivity(activity)">
+              <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
+              <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
+              <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
+              <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
+              <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
+              <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
+              <div>{{ activity.label }}</div>
+            </v-btn>
               <br>
             </v-col>
           </v-row>
@@ -74,8 +82,8 @@
 
           <v-row justify="center">
             <v-col v-for="food in ethnicFoods" :key="food.value" cols="4">
-              <v-btn class="companion-btn" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-                @click="selectEthnicFood(food)">
+              <v-btn class="food-btn" stacked="" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'"
+                @click="toggleFood(food)">
                 <v-icon v-if="food.value === 'asian'">mdi-noodles</v-icon>
                 <v-icon v-if="food.value === 'american'">mdi-hamburger</v-icon>
                 <v-icon v-if="food.value === 'italian'">mdi-pizza</v-icon>
@@ -83,6 +91,7 @@
                 <v-icon v-if="food.value === 'mediterranean'">mdi-fish</v-icon>
                 <v-icon v-if="food.value === 'vegan'">mdi-leaf</v-icon>
                 <div>{{ food.label }}</div>
+                
               </v-btn>
               <br>
             </v-col>
@@ -100,8 +109,8 @@
 
           <v-row justify="center">
             <v-col v-for="shopping in shoppingOptions" :key="shopping.value" cols="4">
-              <v-btn class="companion-btn" :color="shopping.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
-                @click="selectShopping(shopping)">
+              <v-btn class="shopping-btn" :color="shopping.selected ? 'deep-purple' : 'deep-purple-accent-2'" stacked
+                @click="toggleShopping(shopping)">
                 <v-icon v-if="shopping.value === 'shopping_mall'">mdi-shopping</v-icon>
                 <v-icon v-if="shopping.value === 'clothing_store'">mdi-tshirt-crew</v-icon>
                 <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon>
@@ -121,7 +130,7 @@
         <v-card class="pa-4">
           <h3 class="headline text-deep-purple-accent-2">Accommodation Preferences</h3>
           <v-form>
-            <v-radio-group v-model="accommodationPreference">
+            <v-radio-group v-model="selectedAccommodation">
               <v-radio label="Hotels" value="hotels"></v-radio>
               <v-radio label="Resorts" value="resorts"></v-radio>
               <v-radio label="Vacation Rentals" value="vacationRentals"></v-radio>
@@ -151,7 +160,7 @@
   <!-- Save button -->
   <v-row justify="center" class="mt-4">
     <v-col cols="12" md="1" class="text-center">
-      <v-btn size="large" class="save-btn" color="deep-purple-accent-2" @click="saveData">
+      <v-btn size="large" class="save-btn" color="deep-purple-accent-2" @click="savePreferencesToUser">
         Save
       </v-btn>
     </v-col>
@@ -168,16 +177,13 @@ export default defineComponent({
     return {
       
       selectedActivities: [],
-      firstName: '',
-      lastName: '',
-      gender: null,
-      age: null,
-      email: '',
-      genderOptions: ['Male', 'Female', 'Other'],
-      accommodationPreference: null,
-      transportationPreference: null,
+      selectedFoods: [],
+      selectedShopping: [],
+      selectedAccommodation: [],
       existingUserData: {},
       savedActivities: [],
+      showSnackbar: false,
+      existingUserData: {},
 
       activities: [
         { value: 'amusement_park', label: 'Amusement Park', selected: false },
@@ -208,77 +214,146 @@ export default defineComponent({
     };
   },
   mounted() {
-
+    this.fetchUserPreferences();
     const token = Cookies.get('login_token');
-      console.log('token from navbar: ', token)
-
-    if (token) {
-        axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    }
-
-    axios.get('/api/get_user_profile')
-        .then(response => {
-            this.firstName = response.data.firstName;
-            this.lastName = response.data.lastName;
-            this.gender = response.data.gender;
-            this.age = response.data.age;
-            this.email = response.data.email;
-            this.accommodationPreference = response.data.accommodationPreference;
-            this.transportationPreference = response.data.transportationPreference;
-            this.selectedActivities = response.data.selectedActivities;
-        })
-        .catch(error => {
-            console.error('Error fetching user profile data:', error);
-        });
+    console.log('token from navbar: ', token)
+    
+    
   },
   methods: {
-    toggleInterest(activity) {
-      const index = this.selectedActivities.indexOf(activity);
-      if (index === -1) {
-        this.selectedActivities.push(activity);
+    toggleActivity(activity) {
+      activity.selected = !activity.selected;
+      if (activity.selected) {
+        // If activity is selected, add it to the array
+        this.selectedActivities.push(activity.label);
       } else {
-        this.selectedActivities.splice(index, 1);
+        // If activity is unselected, remove its label from the array
+        const index = this.selectedActivities.indexOf(activity.label);
+        if (index !== -1) {
+          this.selectedActivities.splice(index, 1);
+        }
+      }
+      console.log('Activities array: ', this.selectedActivities);
+    },
+    toggleFood(food) {
+      food.selected = !food.selected;
+      if (food.selected) {
+        // If activity is selected, add it to the array
+        this.selectedFoods.push(food.label);
+      } else {
+        // If activity is unselected, remove its label from the array
+        const index = this.selectedFoods.indexOf(food.label);
+        if (index !== -1) {
+          this.selectedFoods.splice(index, 1);
+        }
+      }
+      console.log('Foods array: ', this.selectedFoods);
+    },
+    toggleShopping(shopping) {
+      shopping.selected = !shopping.selected;
+      if (shopping.selected) {
+        // If activity is selected, add it to the array
+        this.selectedShopping.push(shopping.label);
+      } else {
+        // If activity is unselected, remove its label from the array
+        const index = this.selectedShopping.indexOf(shopping.label);
+        if (index !== -1) {
+          this.selectedShopping.splice(index, 1);
+        }
+      }
+      console.log('Shopping array: ', this.selectedShopping);
+      console.log('Accommodation Preference: ', this.selectedAccommodation)
+    },
+    savePreferencesToUser() {
+      const token = Cookies.get('login_token');
+      const preferences = {
+        selectedActivities: this.selectedActivities,
+        selectedFoods: this.selectedFoods,
+        selectedShopping: this.selectedShopping,
+        selectedAccommodation: this.selectedAccommodation,
+      };
+
+      axios.post('http://localhost:8000/api/user_profiling/save_preferences_to_user', preferences, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then(response => {
+        // Handle response
+        console.log('Preferences saved successfully:', response.data);
+        this.showSnackbar = true;
+      })
+      .catch(error => {
+        // Handle error
+        console.error('Error saving preferences:', error);
+      });
+    },
+    //Function to gather user preferences from database
+    async fetchUserPreferences() {
+      const token = Cookies.get('login_token');
+      try {
+        const response = await axios.get('http://localhost:8000/api/user_profiling/fetch_user_preferences', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+        //Get user preferences from respone
+        this.existingUserData = response.data;
+
+        //Printing response data to console
+        console.log('-----------FROM FETCHED DATA------------')
+        console.log(this.existingUserData);
+        console.log('Activities: ',this.existingUserData.activities);
+        console.log('Foods: ',this.existingUserData.foods);
+        console.log('Shopping: ',this.existingUserData.shopping);
+        console.log('Accommodation: ',this.existingUserData.accommodation);
+        console.log('-----------END FETCHED DATA------------')
+
+        //Turning response data into arrays that can be used to update buttons to reflect previously selected preferences
+        const activitiesArray = Array.from(this.existingUserData.activities);
+        const foodsArray = Array.from(this.existingUserData.foods);
+        const shoppingArray = Array.from(this.existingUserData.shopping);
+        //Accommodation just directly set because only one can be chosen
+        this.selectedAccommodation = this.existingUserData.accommodation;
+
+        //Actually updates buttons and selected options on vue end
+        this.toggleButtons(activitiesArray, this.activities);
+        this.toggleButtons(foodsArray, this.ethnicFoods);
+        this.toggleButtons(shoppingArray, this.shoppingOptions);
+        //this.toggleButtons(accommodationArray, this.selectedAccommodation);
+
+        //Prints preferences saved on vue end
+        console.log('********FROM SELECTED OPTIONS VUE**********');
+        console.log('Selected Activities: ', this.selectedActivities);
+        console.log('Selected Foods: ', this.selectedFoods);
+        console.log('Selected Shopping: ', this.selectedShopping);
+        console.log('Selected Accommodation: ', this.selectedAccommodation);
+        console.log('********END SELECTED OPTIONS VUE**********');
+      } catch (error) {
+        console.error('Error fetching user preferences:', error);
       }
     },
-
-    saveData() {
-    axios.post('/api/save_user_data', {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        gender: this.gender,
-        age: this.age,
-        email: this.email,
-        accommodationPreference: this.accommodationPreference,
-        transportationPreference: this.transportationPreference,
-        selectedActivities: this.selectedActivities
-    })
-    .then(response => {
-        console.log('Data saved successfully:', response.data);
-        // Optionally, show a success message or navigate to another page
-    })
-    .catch(error => {
-        console.error('Error saving user profile data:', error);
-        // Optionally, show an error message to the user
-    });
-
-
-      // Log the form data
-      console.log('Data saved:', {
-        firstName: this.firstName,
-        lastName: this.lastName,
-        gender: this.gender,
-        age: this.age,
-        email: this.email,
-        selectedActivities: this.selectedActivities,
-        accommodationPreference: this.accommodationPreference,
-        transportationPreference: this.transportationPreference,
-      });
-      // Add your logic to save the data (e.g., send it to a server)
-      // You can also navigate to another page or show a success message
+    toggleButtons(preferences, options) {
+      //Loop through the preferences retrieved from the backend
+      for (const preference of preferences) {
+        //Find the corresponding option in the Vue array and set its selected property to true
+        const option = options.find(option => option.label === preference);
+        if (option) {
+          if (options === this.activities) {
+            this.selectedActivities.push(option.label);
+            option.selected = true;
+          } else if (options === this.ethnicFoods) {
+            this.selectedFoods.push(option.label);
+            option.selected = true;
+          } else if (options === this.shoppingOptions) {
+            this.selectedShopping.push(option.label);
+            option.selected = true;
+          
+          }
+          
+        }
+      }
     },
-
-    // Add your logic to save the data (e.g., send it to a server)
-    // You can also navigate to another page or show a success message
   },
   async checkLoginStatus() {
     const url = 'http://localhost:8000/api/check_login_status';
@@ -296,68 +371,6 @@ export default defineComponent({
     }
 
   },
-
-
-  fetchExistingUserData() {
-        const token = Cookies.get('login_token');
-        console.log("Token from fetch: ", token)
-
-        // Make an HTTP GET request to fetch the existing user data
-        axios.get('http://localhost:8000/api/get_user_profile', { headers: { Authorization: `Bearer ${token}` }})
-             .then(response => {
-                 this.existingUserData = response.data;
-                 // Autofill the text fields with the existing user data
-                 this.firstName = this.existingUserData.firstName;
-                 this.lastName = this.existingUserData.lastName;
-                 this.email = this.existingUserData.email;
-                 // ... autofill other fields as needed ...
-             })
-             .catch(error => {
-                 console.error('Error fetching existing user data from fetchExistingUserData:', error);
-             });
-    },
-
-
-
-  // fetchExistingUserData() {
-  //   const token = this.checkLoginStatus();
-  //   console.log("Token from fetch: ", token)
-
-  //   // Make an HTTP GET request to fetch the existing user data
-  //   axios.get('http://localhost:8000/api/GetUserProfile', { headers: { Authorization: `Bearer ${token}` }})
-
-
-
-
-  //      .then(response => {
-  //        this.existingUserData = response.data;
-  //        // Autofill the text fields with the existing user data
-  //        this.firstName = this.existingUserData.firstName;
-  //        this.lastName = this.existingUserData.lastName;
-  //        this.email = this.existingUserData.email;
-  //        // ... autofill other fields as needed ...
-  //      })
-  //      .catch(error => {
-  //        console.error('Error fetching existing user data from fetchExistingUserData:', error);
-  //      });
-  //  },
-  getGender(gender) {
-    switch (gender) {
-      case 'Male':
-        return 'M';
-      case 'Female':
-        return 'F';
-      case 'Other':
-        return 'O';
-    }
-  },
-  // Method to send data to the Flask backend
-  sendDataToBackend() {
-    const selectedGender = this.getGender(this.gender);
-
-    // Now you can send the selectedGender to your Flask backend
-    // using an HTTP request (e.g., axios.post or axios.put)
-  },
 },
 );
 </script>
@@ -371,5 +384,20 @@ export default defineComponent({
 .save-btn {
   width: 100%;
   margin-top: 16px;
+}
+
+.activities-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.food-btn {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.shopping-btn {
+  width: 100%;
+  margin-top: 8px;
 }
 </style>

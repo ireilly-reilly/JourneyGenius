@@ -59,4 +59,8 @@ def downgrade():
                type_=mysql.VARCHAR(length=2000),
                existing_nullable=True)
 
+<<<<<<< HEAD
     # ### end Alembic commands ###
+=======
+    # ### end Alembic commands ###
+>>>>>>> main

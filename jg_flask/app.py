@@ -491,10 +491,10 @@ class User(db.Model):
     lastname = db.Column(db.String(40), nullable=False)
     last_login = db.Column(db.String(50))
     date_created = db.Column(db.String(50))
-    # fav_activities = db.Column(db.JSON)
-    # fav_foods = db.Column(db.JSON)
-    # fav_shopping = db.Column(db.JSON)
-    # fav_accomodations = db.Column(db.JSON)
+    fav_activities = db.Column(db.JSON)
+    fav_foods = db.Column(db.JSON)
+    fav_shopping = db.Column(db.JSON)
+    fav_accomodations = db.Column(db.JSON)
 
 #SuperUser Table Model:
 class SuperUser(db.Model):
@@ -536,11 +536,11 @@ class Trip(db.Model):
 from SuperuserAccounts import superuser_accounts_bp
 from SavedTrips_bp import saved_trips_bp
 from SuperuserAnalytics_bp import superuser_analytics_bp
-# from UserProfiling_bp import user_profiling_bp
+from UserProfiling_bp import user_profiling_bp
 app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
 app.register_blueprint(saved_trips_bp, url_prefix='/api')
 app.register_blueprint(superuser_analytics_bp, url_prefix='/api')
-# app.register_blueprint(user_profiling_bp, url_prefix='/api/user_profiling')
+app.register_blueprint(user_profiling_bp, url_prefix='/api/user_profiling')
 
 #This is a command line prompt to create an initial super user
 #Used like this: flask create_super_user
@@ -674,6 +674,7 @@ def get_user_profile():
 
     user_data = {
         'firstName': user.firstname,
+        
         
     }
 
