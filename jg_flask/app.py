@@ -117,6 +117,9 @@ class User(db.Model):
     fav_shopping = db.Column(db.JSON)
     fav_accomodations = db.Column(db.JSON)
 
+    #For super user functions
+    freeze_flag = db.Column(db.Integer)
+
 #SuperUser Table Model:
 class SuperUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
