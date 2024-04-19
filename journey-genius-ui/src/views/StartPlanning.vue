@@ -343,6 +343,7 @@ export default defineComponent({
         })
         .then(response => {
           console.log('scrape_activities response', response.data);
+          this.progress = 5;
           return axios.post('http://localhost:8000/api/scrape_landmarks', requestData);
         })
         .then(response => {

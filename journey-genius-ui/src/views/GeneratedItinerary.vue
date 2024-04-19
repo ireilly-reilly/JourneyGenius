@@ -79,6 +79,13 @@
                                 <li v-for="shop in shops" :key="shop">{{ shop }}</li>
                             </ul>
                         </div>
+                         <!-- Hotel Spot Section -->
+                         <div class="section-content">
+                            <h3>Accomodation</h3>
+                            <ul>
+                                <li v-for="hotel in hotels" :key="hotel">{{ hotel }}</li>
+                            </ul>
+                        </div>
                     </div>
 
                 </v-col>
@@ -242,12 +249,44 @@ export default {
         };
 
         // Make an HTTP POST request to your Python server
-        axios.post('http://localhost:8000/api/process_data', data)
+        axios.post('http://localhost:8000/api/restaurant_photo_data', data)
             .then(response => {
                 console.log(response.data); // Log response from Python server
             })
             .catch(error => {
-                console.error('Error sending data to Python server:', error);
+                console.error('Error sending data to Python server (restaurant):', error);
+            });
+
+        axios.post('http://localhost:8000/api/activity_photo_data', data)
+            .then(response => {
+                console.log(response.data); // Log response from Python server
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (activity):', error);
+            });
+
+        axios.post('http://localhost:8000/api/landmark_photo_data', data)
+            .then(response => {
+                console.log(response.data); // Log response from Python server
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (landmark):', error);
+            });
+
+        axios.post('http://localhost:8000/api/shopping_photo_data', data)
+            .then(response => {
+                console.log(response.data); // Log response from Python server
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (shopping):', error);
+            });
+
+        axios.post('http://localhost:8000/api/hotel_photo_data', data)
+            .then(response => {
+                console.log(response.data); // Log response from Python server
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (hotel):', error);
             });
     },
 
