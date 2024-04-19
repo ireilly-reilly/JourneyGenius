@@ -49,6 +49,7 @@
 //Imports
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { ref } from 'vue';
 
 export default {
   data() {
@@ -88,17 +89,16 @@ export default {
         .then(response => {
           const token = response.data.access_token;
           const databaseID = response.data.user_id;
+          const refresh_token = response.data.refresh_token;
           console.log('login token: ', token) //Display token after recieved
-          //Make cookies expire after 7 days
-          const expirationDate = new Date();
-          expirationDate.setDate(expirationDate.getDate() + 7);
 
           //Store the token in a secure manner (e.g., HttpOnly cookie) with expiration date
-          Cookies.set('login_token', token, { secure: false, expires: expirationDate });
-          Cookies.set('database_id', databaseID, { secure: false })
+          Cookies.set('login_token', token, { secure: false });
+          Cookies.set('database_id', databaseID, { secure: false });
+          Cookies.set('refresh_token', refresh_token, { secure: false });
           //console.log('Login token:', token) //Display token after cookies set
-          console.log('User logged in successfully, login token: ', token)
-          console.log('User ID from database: ', databaseID)
+          console.log('User logged in successfully, login token: ', token);
+          console.log('User ID from database: ', databaseID);
           this.checkLoginStatus();
 
           this.showSnackbar = true; // Show the Snackbar

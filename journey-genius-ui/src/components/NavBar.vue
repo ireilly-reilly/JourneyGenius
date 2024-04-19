@@ -55,6 +55,7 @@ export default {
       const url = 'http://localhost:8000/api/LogoutUser';
       Cookies.remove('login_token');
       Cookies.remove('database_id');
+      Cookies.remove('refresh_token');
 
       axios.post(url)
         .then(response => {
