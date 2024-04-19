@@ -117,22 +117,22 @@ export default {
                 this.ActivitytAddress = response.data;
             })
 
-        axios.post('http://localhost:8000/api/fetch_landmark_address', requestData)
-            .then(response => {
-                console.log('Address response:', response.data);
-                this.LandmarkAddress = response.data;
-            })
+        // axios.post('http://localhost:8000/api/fetch_landmark_address', requestData)
+        //     .then(response => {
+        //         console.log('Address response:', response.data);
+        //         this.LandmarkAddress = response.data;
+        //     })
 
-        axios.post('http://localhost:8000/api/fetch_shopping_address', requestData)
-            .then(response => {
-                console.log('Address response:', response.data);
-                this.ShoppingAddress = response.data;
-            })
-        axios.post('http://localhost:8000/api/fetch_hotel_address', requestData)
-            .then(response => {
-                console.log('Address response:', response.data);
-                this.HotelAddress = response.data;
-            })
+        // axios.post('http://localhost:8000/api/fetch_shopping_address', requestData)
+        //     .then(response => {
+        //         console.log('Address response:', response.data);
+        //         this.ShoppingAddress = response.data;
+        //     })
+        // axios.post('http://localhost:8000/api/fetch_hotel_address', requestData)
+        //     .then(response => {
+        //         console.log('Address response:', response.data);
+        //         this.HotelAddress = response.data;
+        //     })
 
 
         const selectedHotelString = selectedHotel.join(', '); // Use a comma and a space as the separator

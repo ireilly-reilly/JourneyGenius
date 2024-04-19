@@ -81,6 +81,7 @@ export default {
         console.log(selectedHotelString)
         // console.log("This is the activities array: " + selectedActivities)
         // console.log("This is the hotel array: " + selectedHotel)
+    
 
 
         // Round robin sorting function
@@ -128,6 +129,51 @@ export default {
         const foodTitles = getActivityTitles(selectedFoods);
         const shopTitles = getActivityTitles(selectedShops);
         const hotelTitles = parseTitleFromString(selectedHotelString);
+
+        // Retrieve addresses
+        const RestaurantAddress = []
+        const ActivityAddress = []
+        const LandmarkAddress = []
+        const ShoppingAddress = []
+        const HotelAddress = []
+
+        const requestData = {
+            Activities: this.$store.state.tripObject.activities,
+            Landmarks: this.$store.state.tripObject.landmarks,
+            Foods: this.$store.state.tripObject.foods,
+            Shops: this.$store.state.tripObject.shops,
+            Hotels: this.$store.state.tripObject.hotels,
+            City: this.$store.state.tripObject.city,
+        };
+
+        axios.post('http://localhost:8000/api/fetch_restaurant_address', requestData)
+            .then(response => {
+                console.log('Address Restaurant response:', response.data);
+                this.RestaurantAddress = response.data;
+            })
+
+        // axios.post('http://localhost:8000/api/fetch_activity_address', requestData)
+        //     .then(response => {
+        //         console.log('Address Activity response:', response.data);
+        //         this.ActivitytAddress = response.data;
+        //     })
+
+        // axios.post('http://localhost:8000/api/fetch_landmark_address', requestData)
+        //     .then(response => {
+        //         console.log('Address response:', response.data);
+        //         this.LandmarkAddress = response.data;
+        //     })
+
+        // axios.post('http://localhost:8000/api/fetch_shopping_address', requestData)
+        //     .then(response => {
+        //         console.log('Address response:', response.data);
+        //         this.ShoppingAddress = response.data;
+        //     })
+        // axios.post('http://localhost:8000/api/fetch_hotel_address', requestData)
+        //     .then(response => {
+        //         console.log('Address response:', response.data);
+        //         this.HotelAddress = response.data;
+        //     })
 
 
 
