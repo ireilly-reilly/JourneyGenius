@@ -148,7 +148,6 @@ class Trip(db.Model):
     shops = db.Column(db.JSON)       # Example: ["local markets", "boutiques"]
     foods = db.Column(db.JSON)       # Example: ["Italian cuisine", "street food"]
     hotels = db.Column(db.JSON)      # Example: ["luxury resorts", "budget hotels"]
-    
 
     #Arrays of all generated data
     generated_activities = db.Column(db.JSON)
@@ -156,7 +155,7 @@ class Trip(db.Model):
     generated_shops = db.Column(db.JSON)
     generated_foods = db.Column(db.JSON)
     generated_hotels = db.Column(db.JSON)
-    
+
     #Pictures
     activities_images = db.Column(db.JSON)  # Example: ["activity1.jpg", "activity2.png"]
     landmarks_images = db.Column(db.JSON)   # Example: ["landmark1.jpg", "landmark2.png"]

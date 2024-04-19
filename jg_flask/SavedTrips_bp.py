@@ -44,6 +44,12 @@ def save_trip_to_user():
 
     db.session.add(trip)
     db.session.commit()
+    print("---------ALL GENERATED DATA FOR TRIP THAT IS SAVED TO DATABASE---------")
+    print("Generated Activities: ", activity_data)
+    print("Generated Landmarks: ", landmark_data)
+    print("Generated Foods: ", restaurant_data)
+    print("Generated Shopping: ", shopping_data)
+    print("Generated Hotels: ", hotel_data)
 
     #Clear the temp arrays after saving trip data
     restaurant_data.clear()
