@@ -11,24 +11,32 @@
       </template>
 
       <v-card width="500" class="mx-auto mt-9">
-        <v-card-title>Login</v-card-title>
-        <v-card-text>
-          <v-text-field v-model="email" label="Email" prepend-icon="mdi-account-circle"
-            :class="{ 'error-outline': showLoginError }" />
-          <v-text-field v-model="password" label="Password" :type="showPassword ? 'text' : 'password'"
+        <br>
+    <div class="d-flex justify-center">
+        <v-icon size="56" class="display-1" color="deep-purple-accent-2">
+            mdi-account-circle 
+        </v-icon>
+    </div>
+    <v-card-title class="display-1 mb-5">Login</v-card-title> <!-- Added margin bottom -->
+    <v-card-text>
+        <v-text-field v-model="email" label="Email" prepend-icon="mdi-email"
+            :class="{ 'error-outline': showLoginError }" @keyup.enter="login" />
+        <v-text-field v-model="password" label="Password" :type="showPassword ? 'text' : 'password'"
             prepend-icon="mdi-lock" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
-            @click:append="showPassword = !showPassword" :class="{ 'error-outline': showLoginError }" />
-          <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
-        </v-card-text>
+            @click:append="showPassword = !showPassword" :class="{ 'error-outline': showLoginError }"
+            @keyup.enter="login" />
+        <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
+    </v-card-text>
 
-        <v-divider></v-divider>
-        <v-card-actions>
-          <v-btn color="deep-purple-accent-2" @click="login">Login</v-btn>
-          <router-link :to="{ name: 'RegisterPage' }">
+    <v-divider></v-divider>
+    <v-card-actions>
+        <v-btn class="ml-3" color="deep-purple-accent-2" @click="login">Login</v-btn>
+        <router-link :to="{ name: 'RegisterPage' }">
             <v-btn color="deep-purple-accent-2">New User?</v-btn>
-          </router-link>
-        </v-card-actions>
-      </v-card>
+        </router-link>
+    </v-card-actions>
+</v-card>
+
       <br>
     </v-content>
 
@@ -63,7 +71,7 @@ export default {
       token: Cookies.get('login_token') || '', // Retrieve token from Cookies
       showSnackbar: false,
 
-      
+
     };
   },
   created() {
@@ -102,14 +110,13 @@ export default {
           this.checkLoginStatus();
 
           this.showSnackbar = true; // Show the Snackbar
+
           setTimeout(() => {
-            this.$router.push({ name: 'Home' });
+            window.location = '/'; // Directly navigate to home and refresh
           }, 1000);
 
-          // Redirect to the home page
-          // this.$router.push({ name: 'Home' });
-
         })
+
         .catch(error => {
           console.error('Error logging in', error);
 
@@ -131,6 +138,7 @@ export default {
 
       console.log('Logging in...');
     },
+
     //Check login status (mostly for testing purposes on this page)
     async checkLoginStatus() {
       const url = 'http://localhost:8000/api/check_login_status';
@@ -167,6 +175,9 @@ export default {
 .error-message {
   color: red;
   margin-top: 10px;
+  font-size: medium;
+  text-align: left;
+  margin-right: 10px;
 }
 
 .error-outline {
@@ -175,7 +186,11 @@ export default {
 
 .centered-text {
   display: block;
-  text-align: center;
   font-size: medium;
+}
+
+.display-1 {
+  font-size: 1.25rem;
+  text-align: center;
 }
 </style>
