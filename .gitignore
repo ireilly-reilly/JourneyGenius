@@ -8,3 +8,4 @@ package.json
 /journey-genius-ui/openai-env/__pycache__/
 /openai-env/__pycache__/
 *.csv
+venv
