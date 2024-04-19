@@ -125,7 +125,7 @@
     </v-row>
 
     <!-- Accommodation Preferences Section -->
-    <v-row justify="center" class="mt-4">
+    <!-- <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8">
         <v-card class="pa-4">
           <h3 class="headline text-deep-purple-accent-2">Accommodation Preferences</h3>
@@ -138,7 +138,7 @@
           </v-form>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row> -->
 
     <!-- Transportation Preferences Section -->
     <!-- <v-row justify="center" class="mt-4">
