@@ -9,6 +9,9 @@
 #   this function requires
 
 from flask import Flask, jsonify, request, Blueprint, make_response, Response
+from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from app import db
+from app import User
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
@@ -172,9 +175,26 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 
 #     return response_message_array
 
+#Returns item if 1, returns first item if more than one
+def parse_data(data):
+    if isinstance(data, list):
+        if len(data) > 1:
+            return data[0]
+        else:
+            return data[0]
+    else:
+        return data
+
 
 @shoppingRecommendation_bp.route('/run_ML_model_shopping_recommendations', methods=['POST'])
+@jwt_required()
 def recommend():
+    current_user_id = get_jwt_identity()
+    # Get the user from the database
+    user = User.query.filter_by(id=current_user_id).first()
+
+    #target_shopping will looke like: 'Shopping Mall' or 'Clothing Store'
+    target_shopping = parse_data(user.fav_shopping)
     try:
         data = request.json
         target_place = "Southland Mall" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE

@@ -170,7 +170,7 @@
 <script>
 import { defineComponent } from 'vue';
 import axios from 'axios';
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
 export default defineComponent({
   data() {

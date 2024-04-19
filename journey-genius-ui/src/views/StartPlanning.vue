@@ -105,6 +105,7 @@
 <script>
 
 import { defineComponent } from 'vue';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 import VueGoogleAutocomplete from "vue-google-autocomplete";
 import LoadingScreen from '@/components/LoadingScreen.vue';
@@ -357,13 +358,23 @@ export default defineComponent({
         .then(response => {
           console.log('scrape_hotels response', response.data);
           this.progress = 10;
-          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
+          const jwtToken = Cookies.get('login_token');
+          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData, { 
+            headers: {
+              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            }
+          });
         })
         .then(response => {
           this.restaurantData = response.data;
           this.progress = 20;
           console.log('run_ML_model_recommendations restaurant response:', response.data);
-          return axios.post('http://localhost:8000/api/run_ML_model_activity_recommendations', requestData);
+          const jwtToken = Cookies.get('login_token');
+          return axios.post('http://localhost:8000/api/run_ML_model_activity_recommendations', requestData, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            }
+          });
         })
         .then(response => {
           this.activityData = response.data;
@@ -375,13 +386,23 @@ export default defineComponent({
           this.landmarkData = response.data;
           this.progress = 60;
           console.log('run_ML_model_recommendations landmarks response:', response.data);
-          return axios.post('http://localhost:8000/api/run_ML_model_shopping_recommendations', requestData);
+          const jwtToken = Cookies.get('login_token');
+          return axios.post('http://localhost:8000/api/run_ML_model_shopping_recommendations', requestData, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            }
+          });
         })
         .then(response => {
           this.shoppingData = response.data;
           this.progress = 80;
           console.log('run_ML_model_recommendations shopping response:', response.data);
-          return axios.post('http://localhost:8000/api/run_ML_model_hotel_recommendations', requestData)
+          const jwtToken = Cookies.get('login_token');
+          return axios.post('http://localhost:8000/api/run_ML_model_hotel_recommendations', requestData, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            }
+          })
         })
         .then(response => {
           this.hotelData = response.data;

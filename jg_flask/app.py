@@ -12,16 +12,11 @@ from dotenv import load_dotenv
 
 
 #Blueprint imports
-from TFIDF_ML_Restaurants_Blueprint import restaurantRecommendation_bp
-from GetRestaurantsPlacesAPI import getRestaurant_bp
-from TFIDF_ML_Activities_Blueprint import activitiesRecommendation_bp
-from GetActivitiesPlacesAPI import getActivity_bp
-from TFIDF_ML_Landmarks_Blueprint import landmarksRecommendation_bp
-from GetLandmarksPlacesAPI import getLandMark_bp
-from TFIDF_ML_Shopping_Blueprint import shoppingRecommendation_bp
-from GetShoppingPlacesAPI import getShopping_bp
 
-from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
+from GetRestaurantsPlacesAPI import getRestaurant_bp
+from GetActivitiesPlacesAPI import getActivity_bp
+from GetLandmarksPlacesAPI import getLandMark_bp
+from GetShoppingPlacesAPI import getShopping_bp
 from GetHotelsPlacesAPI import getHotels_bp
 from OpenAI_CityDescription_bp import cityDescription_bp
 from OpenAI_CitySlogan_bp import citySlogan_bp
@@ -60,21 +55,15 @@ migrate = Migrate(app, db)
 
 
 #Register blueprints TODO Refactor into bluprints to make it nicer!
-app.register_blueprint(restaurantRecommendation_bp, url_prefix='/api')
-app.register_blueprint(getRestaurant_bp, url_prefix='/api')
-app.register_blueprint(activitiesRecommendation_bp, url_prefix='/api')
-app.register_blueprint(getActivity_bp, url_prefix='/api')
-app.register_blueprint(landmarksRecommendation_bp, url_prefix='/api')
-app.register_blueprint(getLandMark_bp, url_prefix='/api')
-app.register_blueprint(shoppingRecommendation_bp, url_prefix='/api')
-app.register_blueprint(getShopping_bp, url_prefix='/api')
 
+app.register_blueprint(getRestaurant_bp, url_prefix='/api')
+app.register_blueprint(getActivity_bp, url_prefix='/api')
+app.register_blueprint(getLandMark_bp, url_prefix='/api')
+app.register_blueprint(getShopping_bp, url_prefix='/api')
 app.register_blueprint(getHotels_bp, url_prefix='/api')
-app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
 app.register_blueprint(cityDescription_bp, url_prefix='/api')
 app.register_blueprint(citySlogan_bp, url_prefix='/api')
 app.register_blueprint(FetchSelectedInformation_bp, url_prefix='/api')
-
 app.register_blueprint(FetchAddress_bp, url_prefix='/api')
 # app.register_blueprint(saved_trips_bp, url_prefix='/api')
 
@@ -168,10 +157,20 @@ from SuperuserAccounts import superuser_accounts_bp
 from SavedTrips_bp import saved_trips_bp
 from SuperuserAnalytics_bp import superuser_analytics_bp
 from UserProfiling_bp import user_profiling_bp
+from TFIDF_ML_Restaurants_Blueprint import restaurantRecommendation_bp
+from TFIDF_ML_Activities_Blueprint import activitiesRecommendation_bp
+from TFIDF_ML_Shopping_Blueprint import shoppingRecommendation_bp
+from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
+from TFIDF_ML_Landmarks_Blueprint import landmarksRecommendation_bp
 app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
 app.register_blueprint(saved_trips_bp, url_prefix='/api')
 app.register_blueprint(superuser_analytics_bp, url_prefix='/api')
 app.register_blueprint(user_profiling_bp, url_prefix='/api/user_profiling')
+app.register_blueprint(restaurantRecommendation_bp, url_prefix='/api')
+app.register_blueprint(activitiesRecommendation_bp, url_prefix='/api')
+app.register_blueprint(shoppingRecommendation_bp, url_prefix='/api')
+app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
+app.register_blueprint(landmarksRecommendation_bp, url_prefix='/api')
 
 #This is a command line prompt to create an initial super user
 #Used like this: flask create_super_user
