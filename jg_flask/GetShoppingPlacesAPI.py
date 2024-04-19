@@ -1,8 +1,10 @@
 from flask import Blueprint, request, jsonify
 import googlemaps
+from googlemaps.exceptions import ApiError
 import csv
 import os
 from dotenv import load_dotenv
+
 
 # MODIFIED BLUEPRINT
 getShopping_bp = Blueprint('getShopping_bp', __name__)
@@ -109,53 +111,54 @@ def scrape_shopping():
                     last_row = rows[-1]
                     last_number = int(last_row[0])
                     Number = last_number + 1
+        try:
+            # Use a loop to fetch multiple pages of results
+            while results_fetched < desired_result_count:
+                # Define Search as needed, including the next_page_token if available
+                places_result = gmaps.places_nearby(
+                    location=location,
+                    radius=radius,
+                    open_now=open_now,
+                    type=type,
+                    # keyword=keyword,
+                    page_token=next_page_token
+                )
+                
+                chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres']  # Add more chain names as needed
 
-        # Use a loop to fetch multiple pages of results
-        while results_fetched < desired_result_count:
-            # Define Search as needed, including the next_page_token if available
-            places_result = gmaps.places_nearby(
-                location=location,
-                radius=radius,
-                open_now=open_now,
-                type=type,
-                # keyword=keyword,
-                page_token=next_page_token
-            )
-            
-            chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres']  # Add more chain names as needed
 
+                for place in places_result['results']:
+                    my_place_id = place['place_id']
+                    if my_place_id in processed_place_ids:
+                        continue
+                    processed_place_ids.add(my_place_id)
+                    place_details = gmaps.place(place_id=my_place_id, fields=['name', 'type', 'price_level', 'formatted_address', 'address_component', 'geometry'])
+                    name = place_details['result']['name']
+                    if any(chain_name in name for chain_name in chain_restaurant_names):
+                        continue
+                    price_range = place_details['result'].get('price_level', '')
+                    types = ', '.join(place_details['result']['types'])
+                    address_components = place_details['result'].get('address_components', [])
+                    address = place_details['result']['formatted_address']
+                    postal_code = next((component['long_name'] for component in address_components if 'postal_code' in component['types']), '')
+                    city = next((component['long_name'] for component in address_components if 'locality' in component['types']), '')
+                    state = next((component['long_name'] for component in address_components if 'administrative_area_level_1' in component['types']), '')
+                    country = next((component['long_name'] for component in address_components if 'country' in component['types']), '')
+                    latitude = place_details['result']['geometry']['location']['lat']
+                    longitude = place_details['result']['geometry']['location']['lng']
+                    # print(latitude)
+                    # print(longitude)
+                    writer.writerow([Number, my_place_id, name, price_range, types, f"{address} {postal_code}", postal_code, city, state, country, latitude, longitude])
+                    # print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
 
-            for place in places_result['results']:
-                my_place_id = place['place_id']
-                if my_place_id in processed_place_ids:
-                    continue
-                processed_place_ids.add(my_place_id)
-                place_details = gmaps.place(place_id=my_place_id, fields=['name', 'type', 'price_level', 'formatted_address', 'address_component', 'geometry'])
-                name = place_details['result']['name']
-                if any(chain_name in name for chain_name in chain_restaurant_names):
-                    continue
-                price_range = place_details['result'].get('price_level', '')
-                types = ', '.join(place_details['result']['types'])
-                address_components = place_details['result'].get('address_components', [])
-                address = place_details['result']['formatted_address']
-                postal_code = next((component['long_name'] for component in address_components if 'postal_code' in component['types']), '')
-                city = next((component['long_name'] for component in address_components if 'locality' in component['types']), '')
-                state = next((component['long_name'] for component in address_components if 'administrative_area_level_1' in component['types']), '')
-                country = next((component['long_name'] for component in address_components if 'country' in component['types']), '')
-                latitude = place_details['result']['geometry']['location']['lat']
-                longitude = place_details['result']['geometry']['location']['lng']
-                # print(latitude)
-                # print(longitude)
-                writer.writerow([Number, my_place_id, name, price_range, types, f"{address} {postal_code}", postal_code, city, state, country, latitude, longitude])
-                # print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
-
-                results_fetched += 1
-                Number += 1
-                if results_fetched >= desired_result_count:
+                    results_fetched += 1
+                    Number += 1
+                    if results_fetched >= desired_result_count:
+                        break
+                next_page_token = places_result.get('next_page_token', None)
+                if not next_page_token or results_fetched >= desired_result_count:
                     break
-            next_page_token = places_result.get('next_page_token', None)
-            if not next_page_token or results_fetched >= desired_result_count:
-                break
-
+        except ApiError as e:
+            print("This is the problem (shops): ", e)
+            pass
     return "Shopping data scraped successfully!"
-
