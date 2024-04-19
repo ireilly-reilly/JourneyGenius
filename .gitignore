@@ -7,5 +7,6 @@ package.json
 /jg_flask/__pycache__/
 /journey-genius-ui/openai-env/__pycache__/
 /openai-env/__pycache__/
+/journey-genius-data-scraping/
 *.csv
 venv
