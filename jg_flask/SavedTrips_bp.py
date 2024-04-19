@@ -7,6 +7,13 @@ from app import app
 #Create the blueprint object
 saved_trips_bp = Blueprint('saved_trips_bp', __name__, url_prefix='/api')
 
+# Arrays to temporarily store trip data
+restaurant_data = []
+activity_data = []
+landmark_data = []
+shopping_data = []
+hotel_data = []
+
 #Route to save trip to database
 @saved_trips_bp.route('/save_trip_to_user', methods=['POST'])
 def save_trip_to_user():
@@ -26,12 +33,24 @@ def save_trip_to_user():
         latitude=data['lat'],
         longitude=data['long'],
         city_description=data['cityDescription'],
-        city_slogan=data['citySlogan']
+        city_slogan=data['citySlogan'],
+        generated_activities=activity_data,
+        generated_landmarks=landmark_data,
+        generated_foods=restaurant_data,
+        generated_shops=shopping_data,
+        generated_hotels=hotel_data,
         # Add other fields as needed
     )
 
     db.session.add(trip)
     db.session.commit()
+
+    #Clear the temp arrays after saving trip data
+    restaurant_data.clear()
+    activity_data.clear()
+    landmark_data.clear()
+    shopping_data.clear()
+    hotel_data.clear()
     return jsonify({'message': 'Trip saved successfully'})
 
 #Route to fetch saved trips for the current user
@@ -53,7 +72,6 @@ def get_saved_trips():
         'activities': trip.activities,
         'state' : trip.state,
         'dates' : trip.dates,
-        'budget' : trip.budget,
         #'imageSrc': trip.image_src  # Assuming you have an image source field in your Trip model
         # Add more fields as needed
     } for trip in saved_trips]
@@ -105,3 +123,17 @@ def get_saved_itinerary(trip_id):
         return jsonify({'savedTrip': serialized_trip}), 200
     else:
         return jsonify({'error': 'Saved trip not found or unauthorized to access'}), 404
+
+#Route to save trip data temporarily
+@saved_trips_bp.route('/save_trip_data_temporarily', methods=['POST'])
+def save_trip_data_temporarily():
+    data = request.json  # Get the trip data from the request
+
+    # Store the received data into arrays
+    restaurant_data.extend(data['restaurantData'])
+    activity_data.extend(data['activityData'])
+    landmark_data.extend(data['landmarkData'])
+    shopping_data.extend(data['shoppingData'])
+    hotel_data.extend(data['hotelData'])
+
+    return jsonify({'message': 'Trip data stored temporarily in flask'})
