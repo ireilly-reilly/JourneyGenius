@@ -25,9 +25,10 @@ from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
 from GetHotelsPlacesAPI import getHotels_bp
 from OpenAI_CityDescription_bp import cityDescription_bp
 from OpenAI_CitySlogan_bp import citySlogan_bp
-from FetchSelectedInformation_bp import FetchSelectedInformation_bp
+from FetchSelectedInformation_PHOTOS_bp import FetchSelectedInformation_bp
 # from GetSavedTrip import saved_trips_bp
 
+from FetchSelectedAddress_bp import FetchAddress_bp
 
 
 
@@ -73,6 +74,8 @@ app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
 app.register_blueprint(cityDescription_bp, url_prefix='/api')
 app.register_blueprint(citySlogan_bp, url_prefix='/api')
 app.register_blueprint(FetchSelectedInformation_bp, url_prefix='/api')
+
+app.register_blueprint(FetchAddress_bp, url_prefix='/api')
 # app.register_blueprint(saved_trips_bp, url_prefix='/api')
 
 
@@ -114,6 +117,9 @@ class User(db.Model):
     fav_shopping = db.Column(db.JSON)
     fav_accomodations = db.Column(db.JSON)
 
+    #For super user functions
+    freeze_flag = db.Column(db.Integer)
+
 #SuperUser Table Model:
 class SuperUser(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -142,6 +148,7 @@ class Trip(db.Model):
     shops = db.Column(db.JSON)       # Example: ["local markets", "boutiques"]
     foods = db.Column(db.JSON)       # Example: ["Italian cuisine", "street food"]
     hotels = db.Column(db.JSON)      # Example: ["luxury resorts", "budget hotels"]
+    
 
     #Arrays of all generated data
     generated_activities = db.Column(db.JSON)
@@ -299,6 +306,7 @@ def get_user_profile():
 
     user_data = {
         'firstName': user.firstname,
+        
         
     }
 
