@@ -1,10 +1,10 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import click
 from flask import Flask, jsonify, request, session, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
-from flask_jwt_extended import JWTManager, create_access_token, jwt_required, get_jwt_identity
+from flask_jwt_extended import JWTManager, create_access_token, create_refresh_token, jwt_required, get_jwt_identity
 import secrets
 import os
 from flask_migrate import Migrate
@@ -234,14 +234,16 @@ def LoginUser():
 
     if user and bcrypt.check_password_hash(user.password, password):
         #Generate a JWT token
-        access_token = create_access_token(identity=user.id)
+        access_token = create_access_token(identity=user.id, expires_delta=timedelta(minutes=360))
+        refresh_token = create_refresh_token(identity=user.id)
+        print(refresh_token)
         user.last_login = datetime.utcnow().replace(microsecond=0)
         db.session.commit()
         print("Logging in user... User ID in session: ", user.id)
         
-        return jsonify({'access_token': access_token, 'user_id': user.id}), 200
+        return jsonify({'access_token': access_token, 'refresh_token': refresh_token, 'user_id': user.id}), 200
     else:
-        return jsonify({'error': 'Invalid username or password'}), 401 #TODO change to 401 later 
+        return jsonify({'error': 'Invalid username or password'}), 401 
     
 
 #Route to login superuser
@@ -277,6 +279,14 @@ def check_login_status():
     current_user_id = get_jwt_identity()
     print(current_user_id)
     return jsonify({'message': 'User is logged in', 'user_id': current_user_id}), 200
+
+#Route to issue a new access_token (refreshes token)
+@app.route('/api/refresh_token', methods=['POST'])
+@jwt_required(refresh=True)
+def refresh_token():
+    current_user_id = get_jwt_identity()
+    access_token = create_access_token(identity=current_user_id)
+    return jsonify({'access_token': access_token}), 200
 
 #Route to logout user
 @app.route('/api/LogoutUser', methods=['POST'])
