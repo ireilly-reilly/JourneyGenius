@@ -354,13 +354,11 @@ export default defineComponent({
           console.log('scrape_shopping response', response.data);
           return axios.post('http://localhost:8000/api/scrape_hotels', requestData);
         })
-        
         .then(response => {
           console.log('scrape_hotels response', response.data);
           this.progress = 10;
           return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData);
         })
-
         .then(response => {
           this.restaurantData = response.data;
           this.progress = 20;
@@ -390,10 +388,20 @@ export default defineComponent({
           this.progress = 100;
           console.log('run_ML_model_recommendations hotels response:', response.data);
         })
+        .then(() => {
+          // After fetching all recommendations, prepare the data to send to Flask
+          const tripData = {
+            restaurantData: this.restaurantData.recommended_places,
+            activityData: this.activityData.recommended_places,
+            landmarkData: this.landmarkData.recommended_places,
+            shoppingData: this.shoppingData.recommended_places,
+            hotelData: this.hotelData.recommended_places,
+            // Add other relevant data properties if needed
+        };
 
-
-
-
+        // Send the trip data to the Flask backend
+        return axios.post('http://localhost:8000/api/save_trip_data_temporarily', tripData);
+      })
         .then(() => {
           this.isLoading = false;
           this.$router.push({
@@ -410,13 +418,25 @@ export default defineComponent({
               endDateData: JSON.stringify(this.formattedEndDate),
               stateData: JSON.stringify(this.state),
             }
+
+            
           });
+          console.log('----------Generated Data to show to user-----------');
+          console.log("Activities: ", this.activityData);
+          console.log("Landmarks: ", this.landmarkData);
+          console.log("Restaurants: ", this.restaurantData);
+          console.log("Shopping: ", this.shoppingData);
+          console.log("Hotels: ", this.hotelData);
         })
         .catch(error => {
           // Hide loading screen overlay on error
           this.isLoading = false;
           console.error(error);
         });
+    },
+    saveGeneratedDataToTrip(data){
+      //This function saves all the data that is generated for a trip to that trip in the database to pulled later.
+     
     },
 
 

@@ -29,7 +29,7 @@
             </v-row>
 
             <br>
-            <h2 class="section-title text-center"> Discover {{ this.$store.state.city }} - Overview</h2>
+            <h2 class="section-title text-center">Discover {{ this.$store.state.city }} - Overview</h2>
 
 
             <!-- Section with Image and Left Section -->
@@ -79,9 +79,8 @@
                                 <li v-for="shop in shops" :key="shop">{{ shop }}</li>
                             </ul>
                         </div>
-
-                        <!-- Hotel Spot Section -->
-                        <div class="section-content">
+                         <!-- Hotel Spot Section -->
+                         <div class="section-content">
                             <h3>Accomodation</h3>
                             <ul>
                                 <li v-for="hotel in hotels" :key="hotel">{{ hotel }}</li>
@@ -112,8 +111,8 @@
                 <br>
                 <div style="position: relative; overflow: hidden; border-radius: 8px;">
                     <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y&center=' +
-                this.$store.state.lat + ',' + this.$store.state.long + '&zoom=15&maptype=roadmap'" allowfullscreen
-                        referrerpolicy="no-referrer-when-downgrade"></iframe>
+                        this.$store.state.lat + ',' + this.$store.state.long + '&zoom=15&maptype=roadmap'"
+                        allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
                 <br>
                 <v-row justify="center">
@@ -208,6 +207,9 @@ export default {
         const citySlogan = this.$store.state.citySlogan;
         const latitude = this.$store.state.lat;
         const longitude = this.$store.state.long;
+
+        console.log("-----------------FROM MOUNTED-------------------------")
+        console.log("Activities: ", this.$store.state.activities);
 
         // console.log("Lets see if this works!")
         // console.log("it works?" + this.$store.state.lat)
