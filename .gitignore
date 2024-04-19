@@ -3,3 +3,5 @@ package-lock.json
 package.json
 .env
 /jg_flask/migrations/
+/jg_flask/__pycache__/
+/journey-genius-ui/openai-env/__pycache__/
