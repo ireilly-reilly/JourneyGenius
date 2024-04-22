@@ -3,7 +3,7 @@
 
     <div class="text-center">
       <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-        <span class="centered-text">Successfully Deleted.</span>
+        <span class="centered-text">Successfully Deleted Trip.</span>
       </v-snackbar>
     </div>
 
