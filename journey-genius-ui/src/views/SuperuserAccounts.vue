@@ -1,35 +1,29 @@
 <template>
-    <div class="user-accounts-page dark-mode">
-        <v-app-bar app color="grey">
+    <div class="user-accounts-page">
+        <v-app-bar app color="grey lighten-2">
             <v-toolbar-title>Journey Genius - Admin</v-toolbar-title>
             <!-- Buttons that link to other parts of the site -->
             <div class="d-flex align-center ml-16">
-                <v-btn v-for="button in buttons" :key="button.to" flat color="white" :to="button.to">
+                <v-btn v-for="button in buttons" :key="button.to" text color="white" :to="button.to">
                     {{ button.text }}
                 </v-btn>
             </div>
 
             <v-spacer></v-spacer>
 
-            <v-btn text @click="logout">
+            <v-btn text color="white" @click="logout">
                 <span style="margin-right: 5px;">Logout</span>
-                <v-icon right>mdi-exit-to-app</v-icon></v-btn>
+                <v-icon right color="white">mdi-exit-to-app</v-icon>
+            </v-btn>
         </v-app-bar>
-        <h1>User Accounts</h1>
+        <h1 style="color: black;">User Accounts</h1>
         <br>
 
         <!-- Search bar -->
-        <v-text-field v-model="searchQuery" label="Search" outlined dense></v-text-field>
+        <v-text-field v-model="searchQuery" label="Search" outlined dense color="black"></v-text-field>
 
         <!-- Sort bar -->
-        <v-select v-model="sortBy" :items="sortOptions" label="Sort By" outlined dense></v-select>
-
-        <!-- Labels for the table columns -->
-        <!-- <v-row class="mb-2">
-            <v-col v-for="header in headers" :key="header.value" cols="auto">
-                <strong>{{ header.text }}</strong>
-            </v-col>
-        </v-row> -->
+        <v-select v-model="sortBy" :items="sortOptions" label="Sort By" outlined dense color="black"></v-select>
 
         <!-- User accounts table -->
         <table class="user-accounts-table">
@@ -46,8 +40,8 @@
                 <tr v-for="user in sortedUsers" :key="user.DatabaseID" @click="selectUser(user)">
                     <td>{{ user.DatabaseID }}</td>
                     <td>{{ user.FirstName }}</td>
-                    <td>{{ user.LastName }}</td>
-                    <td>{{ user.Email }}</td>
+                    <td>{{ user.LastName }}</td
+                    ><td>{{ user.Email }}</td>
                     <td>{{ user.LastLoggedIn }}</td>
                 </tr>
             </tbody>
@@ -133,10 +127,10 @@
                                     <td>{{ props.item.tripName }}</td>
                                     <td>{{ props.item.tripDescription }}</td>
                                     <td>
-                                        <v-btn color="primary" @click="editTrip(props.item)">Edit</v-btn>
+                                        <v-btn color="deep-purple-accent-2" @click="editTrip(props.item)">Edit</v-btn>
                                     </td>
                                     <td>
-                                        <v-btn color="primary" @click="deleteTrip(props.item)">Delete</v-btn>
+                                        <v-btn color="deep-purple-accent-2" @click="deleteTrip(props.item)">Delete</v-btn>
                                     </td>
                                 </template>
                             </v-data-table>
@@ -148,17 +142,14 @@
                     <v-btn color="deep-purple-accent-2" class="mr-4">Freeze</v-btn>
                     <v-btn color="deep-purple-accent-2" class="mr-4">Delete</v-btn>
                     <v-btn color="deep-purple-accent-2">Reset Password</v-btn>
-                    <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ?
-                        'Save' :
-                        'Edit Profile' }}</v-btn>
+                    <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Profile' }}</v-btn>
                     <v-btn color="deep-purple-accent-2" @click="closeDialog">Close</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
-
-
     </div>
 </template>
+
 
 <!-- i would add this under the data table -->
 <!-- :sort-by="sortBy" -->
@@ -344,34 +335,36 @@ export default {
 <style scoped>
 .user-accounts-page {
     padding: 20px;
-    background-color: #333;
-    color: white;
+    background-color: #FFF;
+    color: black;
 }
 
 .user-accounts-page h1 {
     margin-bottom: 20px;
+    color: black;
 }
 
 .user-accounts-page .v-text-field,
 .user-accounts-page .v-select {
     margin-bottom: 10px;
+    color: black;
 }
 
 .user-accounts-page .v-data-table {
     background-color: white;
+    color: black;
 }
 
 .user-accounts-page .v-data-table .v-data-table-header th {
-    color: white;
+    color: black;
 }
 
 .user-accounts-page .v-data-table .v-data-table-body tr:nth-child(odd) {
-    background-color: rgb(51, 44, 44);
+    background-color: #f2f2f2;
 }
 
 .user-accounts-page .v-data-table .v-data-table-body tr:hover {
-    background-color: #171515;
-    position: relative; /* Changed from fixed to relative */
+    background-color: #ddd;
 }
 
 .user-accounts-table {
@@ -397,7 +390,7 @@ export default {
 }
 
 .user-accounts-table tbody tr:hover {
-    background-color: #ddd;
+    background-color: #D1C4E9
 }
 
 .v-card-title.headline {
@@ -413,9 +406,4 @@ export default {
     justify-content: flex-end;
     margin-top: 16px;
 }
-
-/* .v-btn {
-    font-size: 18px;
-    margin-top: 16px;
-} */
 </style>

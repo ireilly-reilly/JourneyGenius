@@ -12,30 +12,30 @@
 
       <v-card width="500" class="mx-auto mt-9">
         <br>
-    <div class="d-flex justify-center">
-        <v-icon size="56" class="display-1" color="deep-purple-accent-2">
-            mdi-account-circle 
-        </v-icon>
-    </div>
-    <v-card-title class="display-1 mb-5">Login</v-card-title> <!-- Added margin bottom -->
-    <v-card-text>
-        <v-text-field v-model="email" label="Email" prepend-icon="mdi-email"
+        <div class="d-flex justify-center">
+          <v-icon size="56" class="display-1" color="deep-purple-accent-2">
+            mdi-account-circle
+          </v-icon>
+        </div>
+        <v-card-title class="display-1 mb-5">Login</v-card-title> <!-- Added margin bottom -->
+        <v-card-text>
+          <v-text-field v-model="email" label="Email" prepend-icon="mdi-email"
             :class="{ 'error-outline': showLoginError }" @keyup.enter="login" />
-        <v-text-field v-model="password" label="Password" :type="showPassword ? 'text' : 'password'"
+          <v-text-field v-model="password" label="Password" :type="showPassword ? 'text' : 'password'"
             prepend-icon="mdi-lock" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="showPassword = !showPassword" :class="{ 'error-outline': showLoginError }"
             @keyup.enter="login" />
-        <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
-    </v-card-text>
+          <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
+        </v-card-text>
 
-    <v-divider></v-divider>
-    <v-card-actions>
-        <v-btn class="ml-3" color="deep-purple-accent-2" @click="login">Login</v-btn>
-        <router-link :to="{ name: 'RegisterPage' }">
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn class="ml-3" color="deep-purple-accent-2" @click="login">Login</v-btn>
+          <router-link :to="{ name: 'RegisterPage' }">
             <v-btn color="deep-purple-accent-2">New User?</v-btn>
-        </router-link>
-    </v-card-actions>
-</v-card>
+          </router-link>
+        </v-card-actions>
+      </v-card>
 
       <br>
     </v-content>
@@ -186,6 +186,7 @@ export default {
 
 .centered-text {
   display: block;
+  text-align: center;
   font-size: medium;
 }
 
