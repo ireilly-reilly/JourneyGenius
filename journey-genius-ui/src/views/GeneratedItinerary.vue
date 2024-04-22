@@ -2,7 +2,7 @@
     <v-app>
         <v-container>
             <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-                <span class="text-center">Trip Successfully Saved!</span>
+                <span class="centered-text">Trip Successfully Saved!</span>
             </v-snackbar>
 
             <!-- Title and Information Section -->
@@ -166,12 +166,12 @@
                             Itinerary Details
                         </v-btn>
                     </router-link>
-                    <router-link to="/SavedTrips">
+                    <!-- <router-link to="/SavedTrips"> -->
                         <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-4" @click="saveTrip"
                             style="min-width: 150px;">
                             Save Trip
                         </v-btn>
-                    </router-link>
+                    <!-- </router-link> -->
                 </v-col>
             </v-row>
         </v-container>
@@ -317,6 +317,15 @@ export default {
 
     },
     methods: {
+        // redirect() {
+        //   this.showSnackbar = true; // Show the Snackbar
+
+        //   setTimeout(() => {
+        //     window.location = '/'; // Directly navigate to home and refresh
+        //   }, 1000);
+
+        // },
+
         saveTrip() {
 
             console.log("From saveTrip() function: ")
@@ -376,6 +385,10 @@ export default {
                 .catch(error => {
                     console.error('Error saving trip:', error);
                 });
+                // Wait for 3 seconds before navigating
+                setTimeout(() => {
+                        this.$router.push('/SavedTrips');
+                    }, 2000); 
         },
     },
 
@@ -448,5 +461,11 @@ export default {
 .estimated-costs .section-content h3 {
     font-size: 1.5em;
     margin-bottom: 8px;
+}
+
+.centered-text {
+  display: block;
+  text-align: center;
+  font-size: medium;
 }
 </style>
