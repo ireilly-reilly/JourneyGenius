@@ -15,8 +15,6 @@ from dotenv import load_dotenv
 
 # from GetRestaurantsPlacesAPI import getRestaurant_bp
 from GetLandmarksPlacesAPI import getLandMark_bp
-from GetShoppingPlacesAPI import getShopping_bp
-from GetHotelsPlacesAPI import getHotels_bp
 from OpenAI_CityDescription_bp import cityDescription_bp
 from OpenAI_CitySlogan_bp import citySlogan_bp
 from FetchSelectedInformation_PHOTOS_bp import FetchSelectedInformation_bp
@@ -57,8 +55,7 @@ migrate = Migrate(app, db)
 
 # app.register_blueprint(getRestaurant_bp, url_prefix='/api')
 app.register_blueprint(getLandMark_bp, url_prefix='/api')
-app.register_blueprint(getShopping_bp, url_prefix='/api')
-app.register_blueprint(getHotels_bp, url_prefix='/api')
+
 app.register_blueprint(cityDescription_bp, url_prefix='/api')
 app.register_blueprint(citySlogan_bp, url_prefix='/api')
 app.register_blueprint(FetchSelectedInformation_bp, url_prefix='/api')
@@ -158,6 +155,10 @@ from UserProfiling_bp import user_profiling_bp
 
 from GetRestaurantsPlacesAPI import getRestaurant_bp
 from GetActivitiesPlacesAPI import getActivity_bp
+from GetShoppingPlacesAPI import getShopping_bp
+from GetHotelsPlacesAPI import getHotels_bp
+
+
 
 from TFIDF_ML_Restaurants_Blueprint import restaurantRecommendation_bp
 from TFIDF_ML_Activities_Blueprint import activitiesRecommendation_bp
@@ -173,6 +174,8 @@ app.register_blueprint(user_profiling_bp, url_prefix='/api/user_profiling')
 
 app.register_blueprint(getRestaurant_bp, url_prefix='/api')
 app.register_blueprint(getActivity_bp, url_prefix='/api')
+app.register_blueprint(getShopping_bp, url_prefix='/api')
+app.register_blueprint(getHotels_bp, url_prefix='/api')
 
 app.register_blueprint(restaurantRecommendation_bp, url_prefix='/api')
 app.register_blueprint(activitiesRecommendation_bp, url_prefix='/api')
