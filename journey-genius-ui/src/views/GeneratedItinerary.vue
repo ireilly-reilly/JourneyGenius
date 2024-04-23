@@ -171,7 +171,7 @@
                             style="min-width: 150px;">
                             Save Trip
                         </v-btn>
-                    </router-link>
+                    <!-- </router-link> -->
 
                     <!-- </router-link> -->
                 </v-col>
@@ -503,6 +503,8 @@ export default {
     display: flex;
     justify-content: center;
     /* Aligns children to the right */
+}
+
 .centered-text {
   display: block;
   text-align: center;
