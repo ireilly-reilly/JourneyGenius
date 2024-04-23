@@ -60,12 +60,6 @@ def scrape_shopping():
     
 
     ############################################## We can change this keyword in the future ##############################################
-    # keyword = 'mexican' 
- 
-    
-
-
-    ############# I RECOMMEND PUTTING THE RELATIVE PATH IN FOR LOCATING THE CSV (E.G. /JourneyGenius/journey-genius-datascraping/activity....) - Ethan
     def parse_data(data):
         if isinstance(data, list):
             return [item.lower() for item in data]  # Convert each item in the list to lowercase
