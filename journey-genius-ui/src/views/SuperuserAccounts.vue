@@ -57,7 +57,7 @@
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="deep-purple-accent-2" text @click="closeConfirmationDialog">No</v-btn>
+                      <v-btn color="deep-purple-accent-2" text @click="confirmationDialogVisible = false">No</v-btn>
                       <v-btn color="red darken-1" text @click="confirmDeleteUser(index)">Yes</v-btn>
                     </v-card-actions>
                   </v-card>
@@ -166,7 +166,7 @@
                     <!-- Freeze, Delete, Reset Password Buttons -->
                     <v-btn color="deep-purple-accent-2" class="mr-4" @click="freezeAccount">{{ selectedUser && selectedUser.FreezeFlag === 1 ? 'Unfreeze' : 'Freeze' }}</v-btn>
                         
-                    <v-btn color="deep-purple-accent-2" class="mr-4" @click="showConfirmationDialog">Delete</v-btn>
+                    <v-btn color="deep-purple-accent-2" class="mr-4" @click="confirmationDialogVisible = true">Delete</v-btn>
                     <v-btn color="deep-purple-accent-2">Reset Password</v-btn>
                     <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Profile' }}</v-btn>
                     <v-btn color="deep-purple-accent-2" @click="closeDialog">Close</v-btn>
@@ -373,13 +373,6 @@ export default {
                 console.error('Error updating account freeze status:', error);
             });
         },
-        showConfirmationDialog() {
-            //this.dialogVisible = false;
-            this.confirmationDialogVisible = true;
-        },
-        closeConfirmationDialog(){
-            this.confirmationDialogVisible = false;
-        },
         confirmDeleteUser(index) {
             const userId = this.selectedUser.DatabaseID;
 
@@ -392,7 +385,7 @@ export default {
                     axios.delete(`http://localhost:8000/api/delete_user_account/${userId}`)
                         .then(response => {
                             console.log('User account deleted successfully:', response.data);
-                            // Once the user account is deleted, close the confirmation dialog
+                            //Once the user account is deleted, close the confirmation dialog
                             this.confirmationDialogVisible = false;
                             this.dialogVisible = false;
                             this.fetchUserAccounts();
