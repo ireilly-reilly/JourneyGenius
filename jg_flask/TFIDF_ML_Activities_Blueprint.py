@@ -180,7 +180,7 @@ def recommend():
     target_activities = parse_data(user.fav_activities)
     try:
         data = request.json
-        target_place = "Mackay Stadium" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = "Greater Nevada Field" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')

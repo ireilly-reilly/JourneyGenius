@@ -9,6 +9,8 @@ import numpy as np
 import os
 from openai import OpenAI
 from dotenv import load_dotenv
+from typing import Dict
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -204,6 +206,8 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 
 #     return response_message_array
 
+
+
 #Returns item if 1, returns first item if more than one
 def parse_data(data):
     if isinstance(data, list):
@@ -213,6 +217,60 @@ def parse_data(data):
             return data[0]
     else:
         return data
+    
+stateMappings: Dict[str, str] = {
+    'AL': 'Alabama',
+    'AK': 'Alaska',
+    'AZ': 'Arizona',
+    'AR': 'Arkansas',
+    'CA': 'California',
+    'CO': 'Colorado',
+    'CT': 'Connecticut',
+    'DE': 'Delaware',
+    'FL': 'Florida',
+    'GA': 'Georgia',
+    'HI': 'Hawaii',
+    'ID': 'Idaho',
+    'IL': 'Illinois',
+    'IN': 'Indiana',
+    'IA': 'Iowa',
+    'KS': 'Kansas',
+    'KY': 'Kentucky',
+    'LA': 'Louisiana',
+    'ME': 'Maine',
+    'MD': 'Maryland',
+    'MA': 'Massachusetts',
+    'MI': 'Michigan',
+    'MN': 'Minnesota',
+    'MS': 'Mississippi',
+    'MO': 'Missouri',
+    'MT': 'Montana',
+    'NE': 'Nebraska',
+    'NV': 'Nevada',
+    'NH': 'New Hampshire',
+    'NJ': 'New Jersey',
+    'NM': 'New Mexico',
+    'NY': 'New York',
+    'NC': 'North Carolina',
+    'ND': 'North Dakota',
+    'OH': 'Ohio',
+    'OK': 'Oklahoma',
+    'OR': 'Oregon',
+    'PA': 'Pennsylvania',
+    'RI': 'Rhode Island',
+    'SC': 'South Carolina',
+    'SD': 'South Dakota',
+    'TN': 'Tennessee',
+    'TX': 'Texas',
+    'UT': 'Utah',
+    'VT': 'Vermont',
+    'VA': 'Virginia',
+    'WA': 'Washington',
+    'WV': 'West Virginia',
+    'WI': 'Wisconsin',
+    'WY': 'Wyoming'
+}
+
 
 
 @restaurantRecommendation_bp.route('/run_ML_model_restaurant_recommendations', methods=['POST'])
@@ -222,12 +280,45 @@ def recommend():
     # Get the user from the database
     user = User.query.filter_by(id=current_user_id).first()
 
-    #target_foods will looke like: 'Asian' or 'Mexican'
+    # Target_foods will looke like: 'Asian' or 'Mexican'
     target_foods = parse_data(user.fav_foods)
     
+    # Grab city name from front end
     try:
         data = request.json
-        target_place = "China King" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        city = str(data.get('desired_city'))
+        state = str(data.get('desired_state'))
+        print(city + ", " + stateMappings[state])
+
+
+    except Exception as e:
+        print("Can't get city:", e)
+
+    # User Profiling output
+    if target_foods == 'Asian':
+
+        df = pd.read_csv(restaurant_csv_file_path)
+
+        # df = df.dropna(subset=['City'])
+
+        # first_row = df[df['City'].str.contains(city)]
+        first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state])].iloc[0]
+        if not first_row.empty:
+            first_row_with_city = first_row
+            target_foods = str(first_row_with_city['Place'])
+            # Now you can use first_row_with_city for further processing
+        else:
+            print("No rows found for the specified city.")
+        
+        
+        # for target in target_foods:
+        #     target_foods = "Szechuan Garden"
+
+
+    try:
+        data = request.json
+        target_place = target_foods #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        print(target_place)
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
@@ -276,8 +367,10 @@ def recommend():
     
         # Use this for the recommended places without the description!
         return jsonify({'recommended_places': place_names[:5]})
+    
 
     except Exception as e:
         # Log the exception for debugging purposes
         print(f"Error processing request: {e}")
         return jsonify({'error': 'An unexpected error occurred'}), 500
+
