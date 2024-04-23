@@ -19,17 +19,17 @@
           </h3>
 
           <!-- "Start Planning" button with conditional rendering -->
-          <router-link v-if="isLoggedIn" to="/StartPlanning">
-            <v-btn rounded="lg" size="large" color="deep-purple-accent-2" class="white--text mt-6">
+          <!-- <router-link v-if="isLoggedIn" to="/StartPlanning"> -->
+            <v-btn rounded="lg" size="large" color="deep-purple-accent-2" class="white--text mt-6" @click="goToStartPlanning()">
               Start Planning
             </v-btn>
-          </router-link>
+          <!-- </router-link> -->
 
-          <router-link v-else to="/LoginPage">
+          <!-- <router-link v-else to="/LoginPage">
             <v-btn rounded="lg" size="large" color="deep-purple-accent-2" class="white--text mt-6">
               Start Planning
             </v-btn>
-          </router-link>
+          </router-link> -->
 
           <br>
           <br>
@@ -39,11 +39,11 @@
       <!-- Display greeting message -->
       <v-row v-if="isLoggedIn" align="center" justify="center" class="my-3">
         <v-col cols="12" md="10" lg="8" class="text-center">
-          <h2 class="display-1 font-weight-black">{{ greetingMessage }} <br/>Welcome to
+          <h2 class="display-1 font-weight-black">{{ greetingMessage }} <br />Welcome to
             <span class="display-1 text-deep-purple-accent-2">Journey Genius!</span>
           </h2>
-                  <!-- Additional smaller text -->
-                  <h3 class="subtitle-1 text-grey-darken-2">
+          <!-- Additional smaller text -->
+          <h3 class="subtitle-1 text-grey-darken-2">
             This application serves as your dedicated travel curator, crafting distinctive itineraries
           </h3>
           <h3 class="subtitle-1 text-grey-darken-2">
@@ -212,6 +212,23 @@ export default defineComponent({
     this.getUserInfoAndGenerateGreeting();
   },
   methods: {
+
+    goToStartPlanning() {
+      const targetRoute = this.isLoggedIn ? '/StartPlanning' : '/LoginPage';
+
+      this.$router.push(targetRoute).then(() => {
+        // After navigation has completed, scroll to the top of the page
+        this.$nextTick(() => {
+          window.scrollTo(0, 0);
+        });
+      }).catch(err => {
+        // Handle errors, if any
+        console.error("Navigation Error:", err);
+      });
+    },
+
+
+
     async checkLoginStatus() {
       const url = 'http://localhost:8000/api/check_login_status';
 
