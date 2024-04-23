@@ -57,42 +57,45 @@ def scrape_restaurants():
     type = 'restaurant' 
     
     ############################################## We can change this keyword in the future ##############################################
-    #Returns item if 1, returns first item if more than one
     def parse_data(data):
         if isinstance(data, list):
-            if len(data) > 1:
-                return data[0]
-            else:
-                return data[0]
+            return data  # Ensure it returns a list directly
+        elif isinstance(data, str):
+            return data.split(', ')  # Split string into a list of categories
         else:
-            return data
+            return [str(data)]  # Wrap other types into a list
+
+
     
     current_user_id = get_jwt_identity()
 
     # Get the user from the database
     user = User.query.filter_by(id=current_user_id).first()
+    print("Favorite Foods:", user.fav_foods)
 
 
     #target_foods will looke like: 'Asian' or 'Mexican'
-    target_category = parse_data(user.fav_foods)
+    target_categories = parse_data(user.fav_foods)
+    # print("Entire Target Category: " + target_category)
 
 
     # Desired result count here
     desired_result_count = 10
+    
+    # Loop through each category in the list
+    for target_category in target_categories:
+        target_category = target_category.strip()  # Clean up any extra spaces
+        print("Processing Category:", target_category)
 
-    if target_category == 'Asian':
-        target_category = "chinese"
 
-    # if target_category == 'Mexican':
-    #     target_category = "Mexican"
+        # Custom adjustments based on category
+        if target_category == 'Asian':
+            keyword = "chinese"
+        else:
+            keyword = target_category  # Default to using the category directly
 
-    # if target_category == 'Asian' and 'Mexican':
-    #     target_category = []
-    #     target_category = ["Mexican", 'Asian']
+        print(f"Current Keyword: {keyword}")
 
-    # for target in target_category:
-        keyword = target_category       
-        print(keyword)
 
         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
         CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
@@ -177,8 +180,9 @@ def scrape_restaurants():
                     next_page_token = places_result.get('next_page_token', None)
                     if not next_page_token or results_fetched >= desired_result_count:
                         break
-
+                    
             except ApiError as e:
                 print("This is the problem (restaurants): ", e)
                 pass
-        return "Restaurant data scraped successfully!"
+            
+    return "Restaurant data scraped successfully!"

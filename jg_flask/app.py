@@ -14,7 +14,6 @@ from dotenv import load_dotenv
 #Blueprint imports
 
 # from GetRestaurantsPlacesAPI import getRestaurant_bp
-from GetActivitiesPlacesAPI import getActivity_bp
 from GetLandmarksPlacesAPI import getLandMark_bp
 from GetShoppingPlacesAPI import getShopping_bp
 from GetHotelsPlacesAPI import getHotels_bp
@@ -57,7 +56,6 @@ migrate = Migrate(app, db)
 #Register blueprints TODO Refactor into bluprints to make it nicer!
 
 # app.register_blueprint(getRestaurant_bp, url_prefix='/api')
-app.register_blueprint(getActivity_bp, url_prefix='/api')
 app.register_blueprint(getLandMark_bp, url_prefix='/api')
 app.register_blueprint(getShopping_bp, url_prefix='/api')
 app.register_blueprint(getHotels_bp, url_prefix='/api')
@@ -159,6 +157,8 @@ from SuperuserAnalytics_bp import superuser_analytics_bp
 from UserProfiling_bp import user_profiling_bp
 
 from GetRestaurantsPlacesAPI import getRestaurant_bp
+from GetActivitiesPlacesAPI import getActivity_bp
+
 from TFIDF_ML_Restaurants_Blueprint import restaurantRecommendation_bp
 from TFIDF_ML_Activities_Blueprint import activitiesRecommendation_bp
 from TFIDF_ML_Shopping_Blueprint import shoppingRecommendation_bp
@@ -172,6 +172,8 @@ app.register_blueprint(superuser_analytics_bp, url_prefix='/api')
 app.register_blueprint(user_profiling_bp, url_prefix='/api/user_profiling')
 
 app.register_blueprint(getRestaurant_bp, url_prefix='/api')
+app.register_blueprint(getActivity_bp, url_prefix='/api')
+
 app.register_blueprint(restaurantRecommendation_bp, url_prefix='/api')
 app.register_blueprint(activitiesRecommendation_bp, url_prefix='/api')
 app.register_blueprint(shoppingRecommendation_bp, url_prefix='/api')
