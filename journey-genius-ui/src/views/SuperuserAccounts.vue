@@ -47,11 +47,36 @@
             </tbody>
         </table>
 
+        <!-- Dialog for confirming user account delete-->
+        <v-dialog v-model="confirmationDialogVisible" max-width="650">
+                  <v-card>
+                    <v-card-title class="headline"
+                      style="padding-left: 25px; padding-top: 15px;">Confirmation</v-card-title>
+                    <v-card-text>
+                      Are you sure you want to delete this User? This action cannot be undone.
+                    </v-card-text>
+                    <v-card-actions>
+                      <v-spacer></v-spacer>
+                      <v-btn color="deep-purple-accent-2" text @click="closeConfirmationDialog">No</v-btn>
+                      <v-btn color="red darken-1" text @click="confirmDeleteUser(index)">Yes</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </v-dialog>
         <!-- Dialog for displaying and editing user details -->
         <v-dialog v-model="dialogVisible" max-width="700px">
             <v-card>
                 <v-card-title class="headline">User Information</v-card-title>
+                
                 <v-card-text>
+                    <!-- Additional row for Frozen status -->
+            <v-row v-if="selectedUser && selectedUser.FreezeFlag === 1">
+                <v-col cols="3">
+                    <strong>Freeze Status:</strong>
+                </v-col>
+                <v-col cols="9">
+                    <span style="color: red;">Frozen</span>
+                </v-col>
+            </v-row>
                     <!-- ID, Last Name, First Name, Email -->
                     <v-row>
                         <v-col cols="12">
@@ -141,7 +166,7 @@
                     <!-- Freeze, Delete, Reset Password Buttons -->
                     <v-btn color="deep-purple-accent-2" class="mr-4" @click="freezeAccount">{{ selectedUser && selectedUser.FreezeFlag === 1 ? 'Unfreeze' : 'Freeze' }}</v-btn>
                         
-                    <v-btn color="deep-purple-accent-2" class="mr-4">Delete</v-btn>
+                    <v-btn color="deep-purple-accent-2" class="mr-4" @click="showConfirmationDialog">Delete</v-btn>
                     <v-btn color="deep-purple-accent-2">Reset Password</v-btn>
                     <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Profile' }}</v-btn>
                     <v-btn color="deep-purple-accent-2" @click="closeDialog">Close</v-btn>
@@ -164,6 +189,7 @@ export default {
         return {
             selectedUser: null, // Newly added property to store selected user
             dialogVisible: false, // Property to control dialog visibility
+            confirmationDialogVisible: false,
             isEditingUser: false, // Flag to indicate whether user information is being edited
             tripHeaders: [
                 { text: 'Trip ID', value: 'tripID' },
@@ -330,23 +356,56 @@ export default {
             }
         },
         freezeAccount() {
-    const userId = this.selectedUser.DatabaseID; // Assuming you have a property 'DatabaseID' in your selectedUser object
+            const userId = this.selectedUser.DatabaseID; // Assuming you have a property 'DatabaseID' in your selectedUser object
 
-    // Toggle the freeze flag based on its current value
-    const newFreezeFlag = this.selectedUser.FreezeFlag === 1 ? 0 : 1;
+            // Toggle the freeze flag based on its current value
+            const newFreezeFlag = this.selectedUser.FreezeFlag === 1 ? 0 : 1;
 
-    // Send a PUT request to update the freeze flag in the database
-    axios.put(`http://localhost:8000/api/user_accounts/${userId}/freeze`, { freezeFlag: newFreezeFlag })
-    .then(response => {
-        console.log('Account freeze status updated successfully:', response.data);
+            // Send a PUT request to update the freeze flag in the database
+            axios.put(`http://localhost:8000/api/user_accounts/${userId}/freeze`, { freezeFlag: newFreezeFlag })
+            .then(response => {
+                console.log('Account freeze status updated successfully:', response.data);
         
-        // Update the freeze flag locally
-        this.selectedUser.FreezeFlag = newFreezeFlag;
-    })
-    .catch(error => {
-        console.error('Error updating account freeze status:', error);
-    });
-},
+                // Update the freeze flag locally
+                this.selectedUser.FreezeFlag = newFreezeFlag;
+            })
+            .catch(error => {
+                console.error('Error updating account freeze status:', error);
+            });
+        },
+        showConfirmationDialog() {
+            //this.dialogVisible = false;
+            this.confirmationDialogVisible = true;
+        },
+        closeConfirmationDialog(){
+            this.confirmationDialogVisible = false;
+        },
+        confirmDeleteUser(index) {
+            const userId = this.selectedUser.DatabaseID;
+
+            // Step 1: Delete all trips associated with the user
+            axios.delete(`http://localhost:8000/api/delete_user_trips/${userId}`)
+                .then(response => {
+                    console.log('Trips deleted successfully:', response.data);
+            
+                    // Step 2: Delete the user account
+                    axios.delete(`http://localhost:8000/api/delete_user_account/${userId}`)
+                        .then(response => {
+                            console.log('User account deleted successfully:', response.data);
+                            // Once the user account is deleted, close the confirmation dialog
+                            this.confirmationDialogVisible = false;
+                            this.dialogVisible = false;
+                            this.fetchUserAccounts();
+
+                        })
+                        .catch(error => {
+                            console.error('Error deleting user account:', error);
+                        });
+                })
+                .catch(error => {
+                    console.error('Error deleting trips:', error);
+                });
+        },
     },
 };
 </script>
