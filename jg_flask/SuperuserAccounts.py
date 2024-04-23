@@ -105,3 +105,24 @@ def reset_user_password(user_id):
             return jsonify({'error': 'User not found'}), 404
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+    # Route to update user profile
+@superuser_accounts_bp.route('/edit_user_account/<int:user_id>', methods=['PUT'])
+def update_user_profile(user_id):
+    data = request.json
+    print(data)
+
+    # Check if user exists
+    user = User.query.get(user_id)
+    if not user:
+        return jsonify({'message': 'User not found'}), 404
+
+    # Update user profile
+    user.firstname = data.get('FirstName', user.firstname)
+    user.lastname = data.get('LastName', user.lastname)
+    user.email = data.get('Email', user.email)
+
+    # Save changes to database
+    db.session.commit()
+
+    return jsonify({'message': 'User profile updated successfully'}), 200

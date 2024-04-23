@@ -7,9 +7,13 @@
     <v-snackbar v-model="showFreezeSnackbar" color="deep-purple-accent-2" top>
             <span class="centered-text">Freeze status updated successfully.</span>
     </v-snackbar>
-    <!-- Freeze User snackbar -->
+    <!-- Delete User snackbar -->
     <v-snackbar v-model="showDeleteUserSnackbar" color="deep-purple-accent-2" top>
             <span class="centered-text">Account deleted successfully.</span>
+    </v-snackbar>
+    <!-- Edit User profile snackbar -->
+    <v-snackbar v-model="editUserProfileSnackbar" color="deep-purple-accent-2" top>
+            <span class="centered-text">User information updated successfully.</span>
     </v-snackbar>
     <div class="user-accounts-page">
         <v-app-bar app color="grey lighten-2">
@@ -228,9 +232,11 @@ export default {
             showPasswordSnackbar: false,
             showFreezeSnackbar: false,
             showDeleteUserSnackbar: false,
+            editUserProfileSnackbar: false,
             newPassword: '',
             confirmPassword: '',
             selectedUser: null, // Newly added property to store selected user
+            editedUser: null,
             dialogVisible: false, // Property to control dialog visibility
             confirmationDialogVisible: false,
             resetPasswordDialogVisible: false,
@@ -329,25 +335,31 @@ export default {
 
         // Method to toggle editing mode
         toggleEditingUser() {
-            this.isEditingUser = !this.isEditingUser;
-            console.log(this.isEditingUser)
+            if (this.isEditingUser) {
+                // Save changes to user profile
+                this.saveUserChanges();
+            } else {
+                this.isEditingUser = true;
+            }
         },
 
 
         // Have fun doing this, Isaac!!!!!!!! FIGHT ON!!!!
         // Method to save user changes
         saveUserChanges() {
-            // Send request to update user information
-            // For example, using axios:
-            axios.put(`http://localhost:8000/api/user_accounts/${this.selectedUser.DatabaseID}`, this.selectedUser)
+            // Send PUT request to update user profile
+            axios.put(`http://localhost:8000/api/edit_user_account/${this.selectedUser.DatabaseID}`, this.editedUser)
                 .then(response => {
-                    // Handle success
-                    console.log('User information updated:', response.data);
-                    this.isEditing = false; // Exit editing mode
+                    console.log('User profile updated successfully:', response.data);
+                    // Update selectedUser with changes from editedUser
+                    this.selectedUser = { ...this.editedUser };
+                    this.isEditingUser = false; // Exit edit mode
+                    this.fetchUserAccounts();
+                    this.editUserProfileSnackbar = true;
                 })
                 .catch(error => {
+                    console.error('Error updating user profile:', error);
                     // Handle error
-                    console.error('Error updating user information', error);
                 });
         },
 
