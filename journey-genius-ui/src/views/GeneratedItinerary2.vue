@@ -1,7 +1,7 @@
 <template>
     <v-container fluid class="no-border">
         <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-            <span class="text-center">Trip Saved Successfully</span>
+            <span class="centered-text">Trip Successfully Saved!</span>
         </v-snackbar>
         <v-row>
             <v-col v-for="(day, index) in itinerary" :key="index" cols="12">
@@ -68,6 +68,13 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
+
+            <!-- <router-link to="/SavedTrips"> -->
+            <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
+                style="min-width: 150px;">
+                Save Trip
+            </v-btn>
+            <!-- </router-link> -->
         </v-col>
     </v-row>
 </template>
@@ -346,6 +353,7 @@ export default {
             return daysDifference;
         },
         saveTrip() {
+
             console.log("From saveTrip() function: ")
 
             //Get userID from cookies
@@ -390,16 +398,23 @@ export default {
             console.log("Trip Data from vuex in ready to send:")
             console.log(tripData)
 
+
             // Send data to Python backend
             axios.post('http://localhost:8000/api/save_trip_to_user', tripData)
                 .then(response => {
                     console.log('Trip saved successfully:', response.data);
                     this.showSnackbar = true;
+                    console.log("The snackbar boolean is:  " + this.showSnackbar)
+
                     // Optionally, you can perform any further actions here
                 })
                 .catch(error => {
                     console.error('Error saving trip:', error);
                 });
+            // Wait for 3 seconds before navigating
+            setTimeout(() => {
+                this.$router.push('/SavedTrips');
+            }, 2000);
         },
         // Other methods for itinerary display, if any
     },
@@ -431,6 +446,12 @@ export default {
 
 
 <style scoped>
+.centered-text {
+    display: block;
+    text-align: center;
+    font-size: medium;
+}
+
 .description-height {
     height: 100px;
     /* Set a fixed height for the descriptions */

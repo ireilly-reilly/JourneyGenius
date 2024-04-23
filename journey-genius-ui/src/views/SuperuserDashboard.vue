@@ -1,26 +1,27 @@
 <template>
-  <div class="dashboard-page dark-mode">
-    <v-app-bar app color="grey">
-      <v-toolbar-title>Journey Genius - Admin</v-toolbar-title>
+  <div class="dashboard-page">
+    <v-app-bar app color="grey lighten-2">
+      <v-toolbar-title class="white--text">Journey Genius - Admin</v-toolbar-title>
       <!-- Buttons that link to other parts of the site -->
       <div class="d-flex align-center ml-16">
-        <v-btn v-for="button in buttons" :key="button.to" flat color="white" :to="button.to">
+        <v-btn v-for="button in buttons" :key="button.to" text color="white" :to="button.to">
           {{ button.text }}
         </v-btn>
       </div>
       <v-spacer></v-spacer>
-      <v-btn text @click="logout">
+      <v-btn text color="white" @click="logout">
         <span style="margin-right: 5px;">Logout</span>
-        <v-icon right>mdi-exit-to-app</v-icon>
+        <v-icon right color="white">mdi-exit-to-app</v-icon>
       </v-btn>
     </v-app-bar>
 
-    <h1 style="font-size: 2.5rem;">Dashboard Welcome</h1>
+    <h1 style="font-size: 2.5rem; color: black;">Dashboard Welcome</h1>
 
     <!-- Welcome message -->
     <div class="welcome-message">
-      <h1>Welcome, {{ adminName }}</h1>
+      <h1>Welcome, <span text color="#7C4DFF">{{ adminName }}</span></h1>
     </div>
+
 
     <!-- Status section -->
     <div class="status-section">
@@ -31,7 +32,7 @@
           <p>{{ tfidfStatus }}</p>
           <p>{{ tfidfUpdatedStatus }}</p>
           <div>
-            <v-icon class="mr-2">{{ tfidfIcon }}</v-icon>
+            <v-icon class="mr-2" color="black">{{ tfidfIcon }}</v-icon>
             <v-btn @click="updateStatus('tfidf')">Update</v-btn>
           </div>
         </div>
@@ -42,7 +43,7 @@
           <p>{{ authenticationStatus }}</p>
           <p>{{ authenticationUpdatedStatus }}</p>
           <div>
-            <v-icon class="mr-2">{{ authenticationIcon }}</v-icon>
+            <v-icon class="mr-2" color="black">{{ authenticationIcon }}</v-icon>
             <v-btn @click="updateStatus('authentication')">Update</v-btn>
           </div>
         </div>
@@ -53,7 +54,7 @@
           <p>{{ scrapingStatus }}</p>
           <p>{{ scrapingUpdatedStatus }}</p>
           <div>
-            <v-icon class="mr-2">{{ scrapingIcon }}</v-icon>
+            <v-icon class="mr-2" color="black">{{ scrapingIcon }}</v-icon>
             <v-btn @click="updateStatus('scraping')">Update</v-btn>
           </div>
         </div>
@@ -61,6 +62,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -141,12 +143,12 @@ export default {
           Authorization: `Bearer ${token}` // If your backend requires authentication
         }
       })
-      .then(response => {
-        this.adminName = response.data.name; // Assuming the name is returned in the response data
-      })
-      .catch(error => {
-        console.error('Error fetching super user name', error);
-      });
+        .then(response => {
+          this.adminName = response.data.name; // Assuming the name is returned in the response data
+        })
+        .catch(error => {
+          console.error('Error fetching super user name', error);
+        });
     },
   },
   mounted() {
@@ -163,10 +165,10 @@ export default {
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #333;
-  /* Dark background color */
-  color: white;
-  /* Light text color */
+  background-color: #FFF;
+  /* Light background color */
+  color: black;
+  /* Dark text color */
 }
 
 .welcome-message {
@@ -175,6 +177,8 @@ export default {
 
 .status-section {
   text-align: left;
+  color: black;
+  /* Ensure text color is suitable for a light theme */
 }
 
 .status-item {

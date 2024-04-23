@@ -3,7 +3,7 @@
 
     <div class="text-center">
       <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-        <span class="centered-text">Successfully Deleted.</span>
+        <span class="centered-text">Successfully Deleted Trip.</span>
       </v-snackbar>
     </div>
 
@@ -74,7 +74,7 @@
                     <v-btn size="large" color="white" class="mr-4" @click="getSavedTripDetails(index)">
                       Open Itinerary <v-icon class="ml-1" right>mdi-map-marker</v-icon>
                     </v-btn>
-                    <v-btn size="large" color="white" @click="showConfirmationDialog">
+                    <v-btn size="large" color="white" @click="showConfirmationDialog(index)">
                       Delete Trip <v-icon class="ml-1" right>mdi-delete</v-icon>
                     </v-btn>
                   </v-row>
@@ -129,6 +129,7 @@ export default {
       dialogVisible: false,
       sortKey: '',
       budget: [],
+      tripToDeleteIndex: null,
       
 
       sortOptions: [
@@ -147,6 +148,7 @@ export default {
   mounted() {
     this.fetchSavedTrips();
     // console.log('Sort Options:', this.sortOptions); // Check if sortOptions are populated correctly
+    //console.log(this.savedTrips);
   },
 
   computed: {
@@ -225,51 +227,54 @@ export default {
       })
         .then(response => {
           this.savedTrips = response.data.savedTrips;
+          console.log(this.savedTrips);
         })
         .catch(error => {
           console.error('Error fetching saved trips:', error);
         });
     },
-    confirmDelete(index) {
+    confirmDelete() {
       // const isConfirmed = window.confirm('Are you sure you want to delete this trip?');
 
       // if (isConfirmed) {
 
-      const jwtToken = Cookies.get('login_token');
-      const trip_id = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
-      axios.delete(`http://localhost:8000/api/delete_trip/${trip_id}`, {
+        const jwtToken = Cookies.get('login_token');
+        const trip_id = this.savedTrips[this.tripToDeleteIndex].id; // Assuming each trip object has an 'id' property
+        //console.log("Index from delete trip: ", index);
+        //console.log("id from delete trip: ", this.savedTrips[index].id);
+        axios.delete(`http://localhost:8000/api/delete_trip/${trip_id}`, {
         headers: {
-          Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
         }
-      })
-        .then(response => {
-          if (response.status === 200) {
-            // Remove the deleted trip from the savedTrips array
-            this.showSnackbar = true;
-            const deletedIndex = this.savedTrips.findIndex(trip => trip.id === trip_id);
-            if (deletedIndex !== -1) {
-              this.savedTrips.splice(deletedIndex, 1);
-            }
-            this.dialogVisible = false;
-
-          } else {
-            throw new Error('Failed to delete trip');
-          }
         })
-        .catch(error => {
-          console.error('Error deleting trip:', error);
-          alert('Failed to delete trip. Please try again.');
-        });
+          .then(response => {
+            if (response.status === 200) {
+              // Remove the deleted trip from the savedTrips array
+              const deletedIndex = this.savedTrips.findIndex(trip => trip.id === trip_id);
+              if (deletedIndex !== -1) {
+                this.savedTrips.splice(deletedIndex, 1);
+                this.dialogVisible = false;
+              }
+            } else {
+              throw new Error('Failed to delete trip');
+            }
+          })
+          .catch(error => {
+            console.error('Error deleting trip:', error);
+            alert('Failed to delete trip. Please try again.');
+          });
       // }
     },
-    showConfirmationDialog() {
+    showConfirmationDialog(index) {
       this.dialogVisible = true;
+      this.tripToDeleteIndex = index;
     },
     getSavedTripDetails(index) {
       const jwtToken = Cookies.get('login_token');
       const tripId = this.savedTrips[index].id; // Assuming each trip object has an 'id' property
       console.log("token: " + jwtToken)
-      console.log("tripId: " + tripId)
+      console.log("From getSavedTripDetails: Index: ", index);
+      console.log("From getSavedTripDetails: tripId: " + tripId)
 
 
       axios.get(`http://localhost:8000/api/fetch_saved_itinerary/${tripId}`, {

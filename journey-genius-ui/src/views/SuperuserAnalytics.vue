@@ -1,23 +1,23 @@
 <template>
-  <div class="analytics-page dark-mode">
-    <v-app-bar app color="grey">
-      <v-toolbar-title>Journey Genius - Admin</v-toolbar-title>
-      <!-- Buttons that link to other parts of the site -->
-      <div class="d-flex align-center ml-16">
-        <v-btn v-for="button in buttons" :key="button.to" flat color="white" :to="button.to">
-          {{ button.text }}
-        </v-btn>
-      </div>
+  <div class="analytics-page">
+    <v-app-bar app color="grey lighten-2">
+            <v-toolbar-title>Journey Genius - Admin</v-toolbar-title>
+            <!-- Buttons that link to other parts of the site -->
+            <div class="d-flex align-center ml-16">
+                <v-btn v-for="button in buttons" :key="button.to" text color="white" :to="button.to">
+                    {{ button.text }}
+                </v-btn>
+            </div>
 
-      <v-spacer></v-spacer>
+            <v-spacer></v-spacer>
 
-      <v-btn text @click="logout">
-        <span style="margin-right: 5px;">Logout</span>
-        <v-icon right>mdi-exit-to-app</v-icon></v-btn>
+            <v-btn text color="white" @click="logout">
+                <span style="margin-right: 5px;">Logout</span>
+                <v-icon right color="white">mdi-exit-to-app</v-icon>
+            </v-btn>
+        </v-app-bar>
 
-    </v-app-bar>
-
-    <h1>Analytics</h1>
+    <h1 style="color: black;">Analytics</h1>
 
     <v-container>
       <v-row>
@@ -55,6 +55,7 @@
     </v-container>
   </div>
 </template>
+
 
 <script>
 import axios from 'axios';
@@ -99,64 +100,61 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 .analytics-page {
   padding: 20px;
-  background-color: #333;
-  /* Dark background color */
-  color: #dcdcdc;
-  /* Light text color */
+  background-color: #FFF; /* Light background color */
+  /* color: white; Dark text color */
+
 }
 
 .stat-card {
   text-align: center;
   padding: 20px;
-  background-color: #444;
-  /* Darker background color */
+  background-color: #FFF; /* Light background color */
   border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Soft shadow for a subtle depth */
 }
 
 .stat-number {
   font-size: 32px;
   font-weight: bold;
+  color: #7C4DFF; /* Dark gray text for numbers */
 }
 
 .changelog-card {
   margin-top: 20px;
   text-align: center;
-  background-color: #444;
-  /* Darker background color */
+  background-color: #FFF; /* Light background color */
   border-radius: 8px;
   padding: 20px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Consistent styling with stat cards */
 }
 
 .v-app-bar {
-  background-color: #333;
-  /* Dark background color */
-  color: #dcdcdc;
-  /* Light text color */
+  background-color: #FFF; /* Light background color */
+  color: black; /* Dark text color */
 }
 
 .v-btn {
-  color: #fff;
-  /* White text color */
+  color: black; /* Black text color */
 }
 
 .v-btn:hover {
-  background-color: rgba(255, 255, 255, 0.1);
-  /* Lighten button color on hover */
+  background-color: rgba(0,0,0,0.05); /* Slight darkening on hover */
 }
 
 .v-btn:active {
-  background-color: rgba(255, 255, 255, 0.2);
-  /* Darken button color on click */
+  background-color: rgba(0,0,0,0.1); /* Further darkening on active click */
 }
 
 .v-toolbar-title {
   font-weight: bold;
+  color: black; /* Ensure text color is consistent */
 }
 
 .v-card-title {
   font-weight: bold;
+  color: black; /* Dark text for visibility against light background */
 }
 </style>
