@@ -1,10 +1,26 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 from app import db  # Import your SQLAlchemy instance
 from app import User  # Import your User model
 from app import Trip
+from app import bcrypt
 
 #Create the blueprint object
 superuser_accounts_bp = Blueprint('superuser_accounts', __name__, url_prefix='/api')
+
+# # Custom function to check if the user is a superuser
+# def require_superuser():
+#     if not getattr(g, 'user', None) or not g.user.is_superuser:
+#         return jsonify({'error': 'Access denied. Superuser privileges required.'}), 403
+
+# # Add before_request hook to check if the user is a superuser for certain routes
+# @superuser_accounts_bp.before_request
+# def before_request():
+#     if request.endpoint in ['superuser_accounts.get_user_accounts',
+#                             'superuser_accounts.freeze_user_account',
+#                             'superuser_accounts.delete_trips',
+#                             'superuser_accounts.delete_user_account']:
+#         return require_superuser()
+
 
 #Route to fetch user accounts
 @superuser_accounts_bp.route('/user_accounts', methods=['GET'])
@@ -64,6 +80,27 @@ def delete_user_account(user_id):
             db.session.delete(user)
             db.session.commit()
             return jsonify({'message': 'User account deleted successfully'}), 200
+        else:
+            return jsonify({'error': 'User not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+@superuser_accounts_bp.route('/reset_user_password/<int:user_id>', methods=['PUT'])
+def reset_user_password(user_id):
+    try:
+        # Retrieve the user from the database
+        user = User.query.get(user_id)
+        if user:
+            # Get the new password from the request
+            new_password = request.json.get('newPassword')
+
+            # Hash the new password using bcrypt
+            hashed_password = bcrypt.generate_password_hash(new_password).decode('utf-8')
+
+            # Update the user's password with the hashed password
+            user.password = hashed_password
+            db.session.commit()
+            return jsonify({'message': 'User password reset successfully'}), 200
         else:
             return jsonify({'error': 'User not found'}), 404
     except Exception as e:

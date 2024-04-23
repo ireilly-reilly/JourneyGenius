@@ -130,10 +130,7 @@ export default {
             }
             if (error.response.status === 403) {
               this.loginErrorMessage = 'Your account has been frozen. Please contact support for assistance.';
-            } else {
-              console.error('Login failed: Server error.');
-              this.loginErrorMessage = 'Error logging in.';
-            }
+            } 
           } else {
             this.loginErrorMessage = 'Network error or server unreachable.';
           }

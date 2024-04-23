@@ -258,23 +258,16 @@ def LoginSuperUser():
     email = data.get('email')
     password = data.get('password')
 
-
     if not email or not password:
         return jsonify({'error': 'Username and password are required'}), 400
 
     super_user = SuperUser.query.filter_by(email=email).first()
-    if super_user:
-        stored_password_hash = super_user.password
-
-    print(bcrypt.check_password_hash(super_user.password, password))
     if super_user and bcrypt.check_password_hash(super_user.password, password):
         #Generate a JWT token
-        access_token = create_access_token(identity=super_user.id)
-        print("Logging in user... User ID in session: ", super_user.id)
-        
+        access_token = create_access_token(identity=super_user.id)   
         return jsonify({'access_token': access_token}), 200
     else:
-        return jsonify({'error': 'Invalid username or password'}), 401 #TODO change to 401 later
+        return jsonify({'error': 'Invalid username or password'}), 401
 
 #Route to check login status
 @app.route('/api/check_login_status', methods=['GET'])

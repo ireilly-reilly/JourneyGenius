@@ -1,4 +1,16 @@
 <template>
+    <!-- Password change snackbar -->
+    <v-snackbar v-model="showPasswordSnackbar" color="deep-purple-accent-2" top>
+            <span class="centered-text">Password changed successfully.</span>
+    </v-snackbar>
+    <!-- Freeze User snackbar -->
+    <v-snackbar v-model="showFreezeSnackbar" color="deep-purple-accent-2" top>
+            <span class="centered-text">Freeze status updated successfully.</span>
+    </v-snackbar>
+    <!-- Freeze User snackbar -->
+    <v-snackbar v-model="showDeleteUserSnackbar" color="deep-purple-accent-2" top>
+            <span class="centered-text">Account deleted successfully.</span>
+    </v-snackbar>
     <div class="user-accounts-page">
         <v-app-bar app color="grey lighten-2">
             <v-toolbar-title>Journey Genius - Admin</v-toolbar-title>
@@ -47,6 +59,32 @@
             </tbody>
         </table>
 
+        <!-- Dialog for resetting a user password-->
+<v-dialog v-model="resetPasswordDialogVisible" max-width="650">
+    <v-card>
+        <v-card-title class="headline" style="padding-left: 25px; padding-top: 15px;">Reset User Password</v-card-title>
+        <v-card-text>
+            <span style="color: red;">Important: This action should only be done with user consent!</span>
+            <v-spacer></v-spacer>
+            Passwords must contain 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.
+        </v-card-text>
+        <v-card-text>
+            Enter new password:
+            <v-text-field v-model="newPassword" label="New Password" type="password" :class="{ 'error-outline': showLoginError }" @keyup.enter="login" />
+            <v-spacer></v-spacer>
+            Confirm new password:
+            <v-text-field v-model="confirmPassword" label="Confirm Password" type="password" :class="{ 'error-outline': showLoginError }" @keyup.enter="login" />
+            <span v-if="passwordsDoNotMatch" class="error-message">Passwords do not match.</span>
+            <v-spacer></v-spacer>
+            <span v-if="!this.validatePassword(this.newPassword)" class="error-message">Password does not meet requirements.</span>
+        </v-card-text>
+        <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="deep-purple-accent-2" text @click="resetPasswordDialogVisible = false">Cancel</v-btn>
+            <v-btn color="red darken-1" text @click="resetPassword">Reset Password</v-btn>
+        </v-card-actions>
+    </v-card>
+</v-dialog>
         <!-- Dialog for confirming user account delete-->
         <v-dialog v-model="confirmationDialogVisible" max-width="650">
                   <v-card>
@@ -167,7 +205,7 @@
                     <v-btn color="deep-purple-accent-2" class="mr-4" @click="freezeAccount">{{ selectedUser && selectedUser.FreezeFlag === 1 ? 'Unfreeze' : 'Freeze' }}</v-btn>
                         
                     <v-btn color="deep-purple-accent-2" class="mr-4" @click="confirmationDialogVisible = true">Delete</v-btn>
-                    <v-btn color="deep-purple-accent-2">Reset Password</v-btn>
+                    <v-btn color="deep-purple-accent-2" @click="resetPasswordDialogVisible = true">Reset Password</v-btn>
                     <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Profile' }}</v-btn>
                     <v-btn color="deep-purple-accent-2" @click="closeDialog">Close</v-btn>
                 </v-card-actions>
@@ -187,9 +225,15 @@ import axios from 'axios';
 export default {
     data() {
         return {
+            showPasswordSnackbar: false,
+            showFreezeSnackbar: false,
+            showDeleteUserSnackbar: false,
+            newPassword: '',
+            confirmPassword: '',
             selectedUser: null, // Newly added property to store selected user
             dialogVisible: false, // Property to control dialog visibility
             confirmationDialogVisible: false,
+            resetPasswordDialogVisible: false,
             isEditingUser: false, // Flag to indicate whether user information is being edited
             tripHeaders: [
                 { text: 'Trip ID', value: 'tripID' },
@@ -244,6 +288,9 @@ export default {
                     user.Email.toLowerCase().includes(query)
                 );
             });
+        },
+        passwordsDoNotMatch() {
+            return this.newPassword !== this.confirmPassword;
         },
         sortedUsers() {
             let sortedUsers = this.filteredUsers.slice(); // Create a copy of filtered users array
@@ -365,6 +412,7 @@ export default {
             axios.put(`http://localhost:8000/api/user_accounts/${userId}/freeze`, { freezeFlag: newFreezeFlag })
             .then(response => {
                 console.log('Account freeze status updated successfully:', response.data);
+                this.showFreezeSnackbar = true;
         
                 // Update the freeze flag locally
                 this.selectedUser.FreezeFlag = newFreezeFlag;
@@ -389,6 +437,7 @@ export default {
                             this.confirmationDialogVisible = false;
                             this.dialogVisible = false;
                             this.fetchUserAccounts();
+                            this.showDeleteUserSnackbar = true;
 
                         })
                         .catch(error => {
@@ -399,6 +448,40 @@ export default {
                     console.error('Error deleting trips:', error);
                 });
         },
+        validatePassword(password) {
+            const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+])[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+            return regex.test(password);
+        },
+        resetPassword() {
+            if (this.newPassword !== this.confirmPassword) {
+                // Show an error message or handle the mismatched passwords
+                console.log("Passwords do not match");
+                return;
+            }
+            //this.validatePassword(this.newPassword);
+            if (!this.validatePassword(this.newPassword)) {
+                return;
+            }
+            // Send a PUT request to update the user's password
+            const userId = this.selectedUser.DatabaseID; // Assuming you have a property 'DatabaseID' in your selectedUser object
+            axios.put(`http://localhost:8000/api/reset_user_password/${userId}`, { newPassword: this.newPassword })
+                .then(response => {
+                    console.log('User password reset successfully:', response.data);
+                    // Close the reset password dialog
+                    this.resetPasswordDialogVisible = false;
+                    this.showPasswordSnackbar = true;
+                })
+                .catch(error => {
+                    console.error('Error resetting user password:', error);
+                    // Show an error message or handle the error
+                });
+        },
+        showPasswordError() {
+        return this.newPassword && !this.validatePassword(this.newPassword);
+    },
+    passwordErrorMessage() {
+        return 'Password must contain 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.';
+    },
     },
 };
 </script>
