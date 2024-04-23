@@ -59,11 +59,11 @@ def scrape_restaurants():
     ############################################## We can change this keyword in the future ##############################################
     def parse_data(data):
         if isinstance(data, list):
-            return data  # Ensure it returns a list directly
+            return [item.lower() for item in data]  # Convert each item in the list to lowercase
         elif isinstance(data, str):
-            return data.split(', ')  # Split string into a list of categories
+            return [item.lower() for item in data.split(', ')]  # Split string into a list of categories and convert each to lowercase
         else:
-            return [str(data)]  # Wrap other types into a list
+            return [str(data).lower()]  # Convert data to string, wrap in a list, and convert to lowercase
 
 
     
@@ -89,7 +89,7 @@ def scrape_restaurants():
 
 
         # Custom adjustments based on category
-        if target_category == 'Asian':
+        if target_category == 'asian':
             keyword = "chinese"
         else:
             keyword = target_category  # Default to using the category directly

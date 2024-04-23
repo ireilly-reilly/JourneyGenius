@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 # MODIFIED BLUEPRINT
 getActivity_bp = Blueprint('getActivity_bp', __name__)
 
+
 @getActivity_bp.route('/scrape_activities', methods=['POST'])
 @jwt_required()
 def scrape_activities():
@@ -63,11 +64,12 @@ def scrape_activities():
     ############################################## We can change this keyword in the future ##############################################
     def parse_data(data):
         if isinstance(data, list):
-            return data  # Ensure it returns a list directly
+            return [item.lower() for item in data]  # Convert each item in the list to lowercase
         elif isinstance(data, str):
-            return data.split(', ')  # Split string into a list of categories
+            return [item.lower() for item in data.split(', ')]  # Split string into a list of categories and convert each to lowercase
         else:
-            return [str(data)]  # Wrap other types into a list
+            return [str(data).lower()]  # Convert data to string, wrap in a list, and convert to lowercase
+
         
         
     current_user_id = get_jwt_identity()
@@ -89,12 +91,13 @@ def scrape_activities():
 
 
         # Custom adjustments based on category
-        # if target_category == 'Asian':
-        #     keyword = "chinese"
-        # else:
-        #     keyword = target_category 
-        
-        type = target_category
+        if target_category == 'amusement park':
+            type = "amusement_park"
+        elif target_category == 'art gallery':
+            type = 'art_gallery'
+        else:
+            type = target_category 
+
         print(f"Current Keyword: {type}")
 
         #Dynamic Filepath
