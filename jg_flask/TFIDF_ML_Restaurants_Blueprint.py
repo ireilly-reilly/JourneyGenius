@@ -47,7 +47,9 @@ data['Features'] = data['Types'] + ' ' + data['Address'] + ' ' + data['Price Ran
 
 # Create a TF-IDF vectorizer to convert text features into numerical vectors
 tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+print(tfidf_vectorizer)
 tfidf_matrix = tfidf_vectorizer.fit_transform(data['Features'])
+print(tfidf_matrix)
 
 # Compute the cosine similarity between places based on their feature vectors
 cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
@@ -71,65 +73,6 @@ def haversine(lat1, lon1, lat2, lon2):
     distance = R * c
 
     return distance
-
-    #print(f"Received target_place: {target_place}")
-    #print(f"Received input_lat: {input_lat}")
-    #print(f"Received input_lon: {input_lon}")
-    #print(f"Received input_price: {input_price}")
-    #print("Variables successfully passed by parameter :)")
-    #print()
-    #print(data.head())  # Print the first few rows
-    #print(data.info())  # Print column names and data types
-    #print()
-# Function to get recommendations by text similarity, location, and price range
-
-
-
-# def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
-
-
-#     # Get the index of the input place
-#     idx = data[data['Place'] == target_place].index
-#     #print(idx)
-#     #print(data['Place'].unique())
-
-
-#     if len(idx) == 0:
-#         return {'error': f'Place "{target_place}" not found'}, 404
-
-#     idx = idx[0]  # Get the first index if multiple matches exist
-
-#     print(target_place)
-#     print("idx:", idx)
-#     print("Type of idx:", type(idx))
-
-#     # Extract the price range of the input place as an integer
-#     input_price = int(data['Price Range'][idx])
-    
-#     # Extract the latitude and longitude of the input place
-#     input_lat = data['Latitude'].iloc[idx]
-#     input_lon = data['Longitude'].iloc[idx]
-#     #print(input_lat)
-#     #print(input_lon)
-
-#     # Calculate geographical distances and text-based similarities
-#     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
-#     text_similarities = cosine_sim[idx]
-
-#     # Calculate price differences
-#     price_differences = [abs(input_price - price) for price in data['Price Range']]
-
-    # # Combine text similarity, geographical distance, and price difference into a composite score
-    # composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
-    #                     for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
-
-    # # Sort places by composite similarity score
-    # sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
-
-#     # Return the top 10 similar places as a list of dictionaries
-#     recommendations = [{'place': place} for place in sorted_places[1:6]]
-#     return {'recommendations': recommendations}
-
 
 # Modified code snippet to get recommendations with location and price
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
@@ -159,8 +102,21 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     price_differences = [abs(input_price - price) for price in data['Price Range']]
 
     # Combine text similarity, geographical distance, and price difference into a composite score
-    composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
+
+
+    # MOST ACCURATE LOCATION WISE AND KINDA USER PREFERENCE (3/5 CORRECT IN MEDIUM RANGE)
+    # composite_scores = [0.01 * (1 - text_sim) + 0.6 * (1 - dist / max(distances)) + 0.2 * (1 - price_diff / max(price_differences))
+                        # for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+
+    # Calculate semantic similarity using word embeddings
+    semantic_similarity = [calculate_semantic_similarity(restaurant_description, preferred_type_embedding) for restaurant_description in restaurant_descriptions]
+
+# Assign a weight to the semantic similarity component
+    weighted_semantic_similarity = [0.5 * similarity for similarity in semantic_similarity]
+
+    composite_scores = [0.01 * (1 - text_sim) + 0.6 * (1 - dist / max(distances)) + 0.8 * (1 - price_diff / max(price_differences))
                         for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+
 
     # Sort places by composite similarity score
     sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
@@ -168,8 +124,6 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     # Return the top 10 similar places as a list of dictionaries
     recommendations = [{'place': place} for place in sorted_places[1:6]]
     return {'recommendations': recommendations}
-
-
 
 
 
@@ -288,6 +242,9 @@ def recommend():
         data = request.json
         city = str(data.get('desired_city'))
         state = str(data.get('desired_state'))
+        target_lat_str = data.get('target_lat_str')
+        target_lon_str = data.get('target_lon_str')
+        desired_price_range_str = data.get('desired_price_range_str')
         print(city + ", " + stateMappings[state])
 
 
@@ -299,29 +256,40 @@ def recommend():
 
         df = pd.read_csv(restaurant_csv_file_path)
 
-        # df = df.dropna(subset=['City'])
+        try:
+            # Try to find a restaurant with the desired price range
+            first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & (df['Price Range'] == desired_price_range_str)].iloc[0]
+        except IndexError:
+            try:
+                # If no restaurants are found with the desired price range, try defaulting to 2
+                first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & (df['Price Range'] == 2)].iloc[0]
+            except IndexError as e:
+                print("No restaurants found for the specified city with the default price range.")
+                # Handle the case where no restaurants are found with the default price range
+                # You may want to return an error message or handle this scenario accordingly
+                message = {
+                    message : "nothing in it bruh"
+                }
+                return jsonify(message)
 
-        # first_row = df[df['City'].str.contains(city)]
-        first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state])].iloc[0]
+        # Process the first row found
         if not first_row.empty:
             first_row_with_city = first_row
             target_foods = str(first_row_with_city['Place'])
             # Now you can use first_row_with_city for further processing
         else:
             print("No rows found for the specified city.")
-        
-        
-        # for target in target_foods:
-        #     target_foods = "Szechuan Garden"
 
 
     try:
-        data = request.json
+        # data = request.json
         target_place = target_foods #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         print(target_place)
-        target_lat_str = data.get('target_lat_str')
-        target_lon_str = data.get('target_lon_str')
-        desired_price_range_str = data.get('desired_price_range_str')
+        # target_lat_str = data.get('target_lat_str')
+        # target_lon_str = data.get('target_lon_str')
+        # desired_price_range_str = data.get('desired_price_range_str')
+        print(target_lat_str)
+        print(target_lon_str)
         # print(target_place)
         # print(target_lat_str)
         # print(target_lon_str)
