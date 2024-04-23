@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from app import db  # Import your SQLAlchemy instance
 from app import User  # Import your User model
 
@@ -19,6 +19,7 @@ def get_user_accounts():
             'LastName': user.lastname,
             'Email': user.email,
             'LastLoggedIn': user.last_login,
+            'FreezeFlag': user.freeze_flag,
             # 'SavedTrips': user.saved_trips,  # Assuming you have this attribute in your User model
             # 'LastLoggedIn': user.last_logged_in  # Assuming you have this attribute in your User model
         } for user in users]
@@ -26,4 +27,11 @@ def get_user_accounts():
         return jsonify(user_accounts), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-    
+
+#Route to freeze user account
+@superuser_accounts_bp.route('/user_accounts/<int:user_id>/freeze', methods=['PUT'])
+def freeze_user_account(user_id):
+    user = User.query.get_or_404(user_id)
+    user.freeze_flag = request.json.get('freezeFlag')
+    db.session.commit()
+    return jsonify({'message': 'Account freeze status updated in database', 'freezeFlag': user.freeze_flag}), 200

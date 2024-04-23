@@ -231,20 +231,24 @@ def LoginUser():
         return jsonify({'error': 'Username and password are required'}), 400
 
     user = User.query.filter_by(email=email).first()
+    if user:
+        if user.freeze_flag == 1:
+            return jsonify({'error': 'Your account is frozen. Please contact support for assistance.'}), 403
 
-    if user and bcrypt.check_password_hash(user.password, password):
-        #Generate a JWT token
-        access_token = create_access_token(identity=user.id, expires_delta=timedelta(minutes=360))
-        refresh_token = create_refresh_token(identity=user.id)
-        print(refresh_token)
-        user.last_login = datetime.utcnow().replace(microsecond=0)
-        db.session.commit()
-        print("Logging in user... User ID in session: ", user.id)
+        if bcrypt.check_password_hash(user.password, password):
+            #Generate a JWT token
+            access_token = create_access_token(identity=user.id, expires_delta=timedelta(minutes=360))
+            refresh_token = create_refresh_token(identity=user.id)
+            print(refresh_token)
+            user.last_login = datetime.utcnow().replace(microsecond=0)
+            db.session.commit()
+            print("Logging in user... User ID in session: ", user.id)
         
-        return jsonify({'access_token': access_token, 'refresh_token': refresh_token, 'user_id': user.id}), 200
+            return jsonify({'access_token': access_token, 'refresh_token': refresh_token, 'user_id': user.id}), 200
+        else:
+            return jsonify({'error': 'Invalid username or password'}), 401 
     else:
-        return jsonify({'error': 'Invalid username or password'}), 401 
-    
+        return jsonify({'error': 'Invalid username or password'}), 401
 
 #Route to login superuser
 @app.route('/api/LoginSuperUser', methods = ['POST'])

@@ -139,7 +139,8 @@
                 </v-card-text>
                 <v-card-actions>
                     <!-- Freeze, Delete, Reset Password Buttons -->
-                    <v-btn color="deep-purple-accent-2" class="mr-4">Freeze</v-btn>
+                    <v-btn color="deep-purple-accent-2" class="mr-4" @click="freezeAccount">{{ selectedUser && selectedUser.FreezeFlag === 1 ? 'Unfreeze' : 'Freeze' }}</v-btn>
+                        
                     <v-btn color="deep-purple-accent-2" class="mr-4">Delete</v-btn>
                     <v-btn color="deep-purple-accent-2">Reset Password</v-btn>
                     <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Profile' }}</v-btn>
@@ -203,7 +204,7 @@ export default {
     },
     mounted() {
         this.fetchUserAccounts();
-        this.fetchSavedTrips();
+        //this.fetchSavedTrips();
     },
     computed: {
         filteredUsers() {
@@ -328,6 +329,24 @@ export default {
                 this.sortDesc = false;
             }
         },
+        freezeAccount() {
+    const userId = this.selectedUser.DatabaseID; // Assuming you have a property 'DatabaseID' in your selectedUser object
+
+    // Toggle the freeze flag based on its current value
+    const newFreezeFlag = this.selectedUser.FreezeFlag === 1 ? 0 : 1;
+
+    // Send a PUT request to update the freeze flag in the database
+    axios.put(`http://localhost:8000/api/user_accounts/${userId}/freeze`, { freezeFlag: newFreezeFlag })
+    .then(response => {
+        console.log('Account freeze status updated successfully:', response.data);
+        
+        // Update the freeze flag locally
+        this.selectedUser.FreezeFlag = newFreezeFlag;
+    })
+    .catch(error => {
+        console.error('Error updating account freeze status:', error);
+    });
+},
     },
 };
 </script>
