@@ -79,8 +79,8 @@
                                 <li v-for="shop in shops" :key="shop">{{ shop }}</li>
                             </ul>
                         </div>
-                         <!-- Hotel Spot Section -->
-                         <div class="section-content">
+                        <!-- Hotel Spot Section -->
+                        <div class="section-content">
                             <h3>Accomodation</h3>
                             <ul>
                                 <li v-for="hotel in hotels" :key="hotel">{{ hotel }}</li>
@@ -172,8 +172,31 @@
                             Save Trip
                         </v-btn>
                     </router-link>
+
                 </v-col>
+
             </v-row>
+            <v-col class="button-container">
+                <v-btn size="large" color="#EF5350" class="white--text mt-6 ml-4" style="min-width: 150px;"
+                @click="confirmDiscard">
+                Discard Trip
+            </v-btn>
+
+            <v-dialog v-model="dialog" persistent max-width="650">
+                <v-card>
+                    <br>
+                    <v-card-title style="padding-left: 25px; padding-top: 15px;">Confirm Action</v-card-title>
+                    <v-card-text>Are you sure you want to discard this trip? This will redirect you to the start
+                        planning page and you will lose all progress.</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="deep-purple-accent-2" text @click="closeDialog">Cancel</v-btn>
+                        <v-btn color="red darken-1" text @click="discardTrip">Confirm</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+            </v-col>
+
         </v-container>
     </v-app>
 </template>
@@ -187,6 +210,8 @@ export default {
     data() {
         return {
             showSnackbar: false,
+            dialog: false,
+
         }
     },
 
@@ -317,6 +342,16 @@ export default {
 
     },
     methods: {
+        confirmDiscard() {
+            this.dialog = true;
+        },
+        closeDialog() {
+            this.dialog = false;
+        },
+        discardTrip() {
+            this.dialog = false;
+            this.$router.push('/StartPlanning');
+        },
         saveTrip() {
 
             console.log("From saveTrip() function: ")
@@ -448,5 +483,11 @@ export default {
 .estimated-costs .section-content h3 {
     font-size: 1.5em;
     margin-bottom: 8px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    /* Aligns children to the right */
 }
 </style>
