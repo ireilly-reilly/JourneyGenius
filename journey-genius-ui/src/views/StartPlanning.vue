@@ -351,7 +351,11 @@ export default defineComponent({
           })
         .then(response => {
           console.log('scrape_restaurants response:', response.data);
-          return axios.post('http://localhost:8000/api/scrape_activities', requestData);
+          return axios.post('http://localhost:8000/api/scrape_activities', requestData, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            }
+          });
         })
         .then(response => {
           console.log('scrape_activities response', response.data);
