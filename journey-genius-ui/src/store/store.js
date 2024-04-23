@@ -1,8 +1,12 @@
 // store/index.js
 
 import { createStore } from "vuex";
+import createPersistedState from 'vuex-persistedstate';
+
 
 const store = createStore({
+  plugins: [createPersistedState()],
+
   state: {
     city: null,
     st: null,
@@ -35,6 +39,7 @@ const store = createStore({
       longitude: null,
       city_slogan: null
     },
+    
   },
   // directly update the state properties when committed 
   // We currently only use mutations for the Itinerary Page (the checkboxes are stored in vuex using mutation)
