@@ -36,7 +36,7 @@
     <!-- Two buttons on the bottom -->
     <v-row justify="center" class="mt-4">
         <v-col cols="12" md="8" class="text-center">
-            <router-link to="/SavedItinerary">
+            <router-link to="/GeneratedItinerary">
                 <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
                     style="min-width: 150px;">
                     Itinerary Overview
@@ -44,6 +44,31 @@
             </router-link>
 
             <!-- Call method to save trip to database here-->
+            <router-link to="/SavedTrips">
+                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
+                    style="min-width: 150px;">
+                    Save Trip
+                </v-btn>
+            </router-link>
+            <v-btn size="large" color="#EF5350" class="white--text mt-6 ml-4" style="min-width: 150px;"
+                @click="confirmDiscard">
+                Discard Trip
+            </v-btn>
+
+            <v-dialog v-model="dialog" persistent max-width="650">
+                <v-card>
+                    <br>
+                    <v-card-title style="padding-left: 25px; padding-top: 15px;">Confirm Action</v-card-title>
+                    <v-card-text>Are you sure you want to discard this trip? This will redirect you to the start
+                        planning page and you will lose all progress.</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="deep-purple-accent-2" text @click="closeDialog">Cancel</v-btn>
+                        <v-btn color="red darken-1" text @click="discardTrip">Confirm</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
+
             <!-- <router-link to="/SavedTrips"> -->
             <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
                 style="min-width: 150px;">
@@ -62,6 +87,7 @@ export default {
         return {
             itinerary: [],
             showSnackbar: false,
+            dialog: false,
 
         };
     },
@@ -255,8 +281,20 @@ export default {
 
     },
     mounted() {
+
     },
     methods: {
+        confirmDiscard() {
+            this.dialog = true;
+        },
+        closeDialog() {
+            this.dialog = false;
+        },
+        discardTrip() {
+            this.dialog = false;
+            this.$router.push('/StartPlanning');
+        },
+
         getTimelineColor(index) {
             // Define colors for each day
             const colors = ['primary', 'info', 'success', 'error', 'warning'];

@@ -32,166 +32,164 @@ import SuperuserLayout from '@/layouts/SuperuserLayout.vue'
 
 
 
-
-const routes = [
-  {
-    path: '/',
-    layout: DefaultLayout,
-    name: 'Home',
-    component: Home,
-    // meta: { layout: 'DefaultLayout' }, // Use DefaultLayout for this route
-  },
-  {
-    path: '/loading',
-    name: 'dummy',
-    //component: NavBar,
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    // component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  },
-  {
-    path: '/UserProfiling',
-    name: 'UserProfiling',
-    component: UserProfiling,
-  },
-  {
-    path: '/StartPlanning',
-    name: 'StartPlanning',
-    component: StartPlanning,
-  },
-  {
-    path: '/SavedTrips',
-    name: 'SavedTrips',
-    component: SavedTrips,
-    props: true
-  },
-  {
-    path: '/LoginPage',
-    name: 'LoginPage', 
-    component: LoginPage, 
-  },
-  {
-    path: '/register',
-    name: 'RegisterPage', 
-    component: RegisterPage, 
-  },
-  {
-    path: '/Itinerary',
-    name: 'Itinerary',
-    component: Itinerary,
-  },
-  {
-    path: '/MoreActivitiesPage',
-    name: 'MoreActivitiesPage',
-    component: MoreActivitiesPage,
-  },
-  {
-    path: '/MoreDiningPage',
-    name: 'MoreDiningPage',
-    component: MoreDiningPage,
-  },
-  {
-    path: '/MoreLandmarksPage',
-    name: 'MoreLandmarksPage',
-    component: MoreLandmarksPage,
-  },
-  {
-    path: '/MoreShoppingPage',
-    name: 'MoreShoppingPage',
-    component: MoreShoppingPage,
-  },
-  {
-    path: '/Itinerary2',
-    name: 'Itinerary2',
-    component: Itinerary2,
-  },
-  {
-    path: '/GeneratedItinerary',
-    name: 'GeneratedItinerary',
-    component: GeneratedItinerary,
-    props: true
-  },
-  {
-    path: '/GeneratedItinerary2',
-    name: 'GeneratedItinerary2',
-    component: GeneratedItinerary2,
-  },
-  {
-    path: '/LoggingOut',
-    name: 'LoggingOut',
-    component: LoggingOut,
-  },
-  {
-    path: '/EmailVerification',
-    name: 'EmailVerification',
-    component: EmailVerification,
-  },
-  {
-    path: '/SuperuserPassword',
-    // layout: SuperuserLayout,
-    name: 'SuperuserPassword',
-    component: SuperuserPassword,
-    meta: { requiresSuperuser: true } 
-  }, // Superuser page  }
-  {
-    path: '/SuperuserLogin',
-    // layout: SuperuserLayout,
-    name: 'SuperuserLogin',
-    component: SuperuserLogin,
-    meta: { requiresSuperuser: true } 
-  },
-  {
-    path: '/SuperuserDashboard',
-    // layout: SuperuserLayout,
-    name: 'SuperuserDashboard',
-    component: SuperuserDashboard,
-    meta: { requiresSuperuser: true } 
-  },
-  {
-    path: '/SuperuserAccounts',
-    // layout: SuperuserLayout,
-    name: 'SuperuserAccounts',
-    component: SuperuserAccounts,
-    meta: { requiresSuperuser: true } 
-  },
-  {
-    path: '/SuperuserAccountDetails',
-    // layout: SuperuserLayout,
-    name: 'SuperuserAccountDetails',
-    component: SuperuserAccountDetails,
-    meta: { requiresSuperuser: true } 
-  },
-  {
-    path: '/SuperuserAnalytics',
-    // layout: SuperuserLayout,
-    name: 'SuperuserAnalytics',
-    component: SuperuserAnalytics,
-    meta: { requiresSuperuser: true } 
-  },
-  {
-    path: '/SavedItinerary',
-    name: 'SavedItinerary',
-    component: SavedItinerary,
-    props: true,
-  },
-  {
-    path: '/SavedItinerary2',
-    name: 'SavedItinerary2',
-    component: SavedItinerary2,
-    props: true,
-  },
-]
-
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes,
+  routes: [
+    {
+      path: '/',
+      layout: DefaultLayout,
+      name: 'Home',
+      component: Home,
+      // meta: { layout: 'DefaultLayout' }, // Use DefaultLayout for this route
+    },
+    {
+      path: '/loading',
+      name: 'dummy',
+      //component: NavBar,
+    },
+    {
+      path: '/about',
+      name: 'about',
+      // route level code-splitting
+      // this generates a separate chunk (about.[hash].js) for this route
+      // which is lazy-loaded when the route is visited.
+      // component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
+    },
+    {
+      path: '/UserProfiling',
+      name: 'UserProfiling',
+      component: UserProfiling,
+    },
+    {
+      path: '/StartPlanning',
+      name: 'StartPlanning',
+      component: StartPlanning,
+    },
+    {
+      path: '/SavedTrips',
+      name: 'SavedTrips',
+      component: SavedTrips,
+      props: true
+    },
+    {
+      path: '/LoginPage',
+      name: 'LoginPage', 
+      component: LoginPage, 
+    },
+    {
+      path: '/register',
+      name: 'RegisterPage', 
+      component: RegisterPage, 
+    },
+    {
+      path: '/Itinerary',
+      name: 'Itinerary',
+      component: Itinerary,
+    },
+    {
+      path: '/MoreActivitiesPage',
+      name: 'MoreActivitiesPage',
+      component: MoreActivitiesPage,
+    },
+    {
+      path: '/MoreDiningPage',
+      name: 'MoreDiningPage',
+      component: MoreDiningPage,
+    },
+    {
+      path: '/MoreLandmarksPage',
+      name: 'MoreLandmarksPage',
+      component: MoreLandmarksPage,
+    },
+    {
+      path: '/MoreShoppingPage',
+      name: 'MoreShoppingPage',
+      component: MoreShoppingPage,
+    },
+    {
+      path: '/Itinerary2',
+      name: 'Itinerary2',
+      component: Itinerary2,
+    },
+    {
+      path: '/GeneratedItinerary',
+      name: 'GeneratedItinerary',
+      component: GeneratedItinerary,
+      props: true
+    },
+    {
+      path: '/GeneratedItinerary2',
+      name: 'GeneratedItinerary2',
+      component: GeneratedItinerary2,
+    },
+    {
+      path: '/LoggingOut',
+      name: 'LoggingOut',
+      component: LoggingOut,
+    },
+    {
+      path: '/EmailVerification',
+      name: 'EmailVerification',
+      component: EmailVerification,
+    },
+    {
+      path: '/SuperuserPassword',
+      // layout: SuperuserLayout,
+      name: 'SuperuserPassword',
+      component: SuperuserPassword,
+      meta: { requiresSuperuser: true } 
+    }, // Superuser page  }
+    {
+      path: '/SuperuserLogin',
+      // layout: SuperuserLayout,
+      name: 'SuperuserLogin',
+      component: SuperuserLogin,
+      meta: { requiresSuperuser: true } 
+    },
+    {
+      path: '/SuperuserDashboard',
+      // layout: SuperuserLayout,
+      name: 'SuperuserDashboard',
+      component: SuperuserDashboard,
+      meta: { requiresSuperuser: true } 
+    },
+    {
+      path: '/SuperuserAccounts',
+      // layout: SuperuserLayout,
+      name: 'SuperuserAccounts',
+      component: SuperuserAccounts,
+      meta: { requiresSuperuser: true } 
+    },
+    {
+      path: '/SuperuserAccountDetails',
+      // layout: SuperuserLayout,
+      name: 'SuperuserAccountDetails',
+      component: SuperuserAccountDetails,
+      meta: { requiresSuperuser: true } 
+    },
+    {
+      path: '/SuperuserAnalytics',
+      // layout: SuperuserLayout,
+      name: 'SuperuserAnalytics',
+      component: SuperuserAnalytics,
+      meta: { requiresSuperuser: true } 
+    },
+    {
+      path: '/SavedItinerary',
+      name: 'SavedItinerary',
+      component: SavedItinerary,
+      props: true,
+    },
+    {
+      path: '/SavedItinerary2',
+      name: 'SavedItinerary2',
+      component: SavedItinerary2,
+      props: true,
+    },
+  ],
   scrollBehavior (to, from, savedPosition) {
-    return { x: 0, y: 0 }
+    console.log("Scrolling!")
+    return { top: 0, left: 0 }
   }
 })
 
