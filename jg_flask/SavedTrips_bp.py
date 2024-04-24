@@ -18,7 +18,7 @@ hotel_data = []
 @saved_trips_bp.route('/save_trip_to_user', methods=['POST'])
 def save_trip_to_user():
     data = request.json  # Get the trip data from the request
-
+    print(data)
     trip = Trip(
         user_id=data['userID'],  # Assuming you are passing the user_id along with trip data
         activities=data['activities'],
@@ -34,11 +34,11 @@ def save_trip_to_user():
         longitude=data['long'],
         city_description=data['cityDescription'],
         city_slogan=data['citySlogan'],
-        generated_activities=activity_data,
-        generated_landmarks=landmark_data,
-        generated_foods=restaurant_data,
-        generated_shops=shopping_data,
-        generated_hotels=hotel_data,
+        generated_activities=data['generated_activities'],
+        generated_landmarks=data['generated_landmarks'],
+        generated_foods=data['generated_foods'],
+        generated_shops=data['generated_shops'],
+        generated_hotels=data['generated_hotels'],
         # Add other fields as needed
     )
 
@@ -131,6 +131,11 @@ def get_saved_itinerary(trip_id):
             'latitude': saved_trip.latitude,
             'longitude': saved_trip.longitude,
             'city_slogan': saved_trip.city_slogan,
+            'generated_activities' : saved_trip.generated_activities,
+            'generated_shops' : saved_trip.generated_shops,
+            'generated_hotels' : saved_trip.generated_hotels,
+            'generated_landmarks' : saved_trip.generated_landmarks,
+            'generated_foods' : saved_trip.generated_foods,
         }
         return jsonify({'savedTrip': serialized_trip}), 200
     else:

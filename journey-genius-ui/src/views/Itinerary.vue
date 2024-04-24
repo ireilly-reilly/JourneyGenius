@@ -265,10 +265,7 @@ export default defineComponent({
         };
     },
 
-    // mounted() {
-    //     const state = this.$store.state.stateData;
-    //     const city = this.$store.state.city;
-    // },
+
 
     methods: {
         formatDate(date) {
