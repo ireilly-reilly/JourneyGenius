@@ -36,20 +36,17 @@
     <!-- Two buttons on the bottom -->
     <v-row justify="center" class="mt-4">
         <v-col cols="12" md="8" class="text-center">
-            <!-- <router-link to="/GeneratedItinerary"> -->
             <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="send"
                 style="min-width: 150px;">
                 Itinerary Overview
             </v-btn>
-            <!-- </router-link> -->
 
-            <!-- Call method to save trip to database here-->
-            <router-link to="/SavedTrips">
-                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
-                    style="min-width: 150px;">
-                    Save Trip
-                </v-btn>
-            </router-link>
+
+            <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
+                style="min-width: 150px;">
+                Save Trip
+            </v-btn>
+
             <v-btn size="large" color="#EF5350" class="white--text mt-6 ml-4" style="min-width: 150px;"
                 @click="confirmDiscard">
                 Discard Trip
@@ -68,13 +65,6 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-
-            <!-- <router-link to="/SavedTrips"> -->
-            <!-- <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
-                style="min-width: 150px;">
-                Save Trip
-            </v-btn> -->
-            <!-- </router-link> -->
         </v-col>
     </v-row>
 </template>
@@ -281,21 +271,24 @@ export default {
 
     },
     mounted() {
-
+        // Accessing the variables from the Vuex store
+        const activities = this.$store.state.activities;
+        const landmarks = this.$store.state.landmarks;
+        const foods = this.$store.state.foods;
+        const shops = this.$store.state.shops;
+        const hotels = this.$store.state.hotels;
+        const datesData = this.$store.state.datesData;
+        const budget = this.$store.state.budget;
+        const stateData = this.$store.state.stateData;
+        const city = this.$store.state.city;
+        const lat = this.$store.state.lat;
+        const long = this.$store.state.long;
+        const cityDescription = this.$store.state.cityDescription;
+        const citySlogan = this.$store.state.citySlogan;
+        const latitude = this.$store.state.lat;
+        const longitude = this.$store.state.long;
     },
     methods: {
-        send() {
-            this.$router.push({ name: 'GeneratedItinerary' }).catch(err => {
-                console.error(err);
-            }).then(() => {
-                // This setTimeout ensures that the push operation completes before the reload
-                setTimeout(() => {
-                    window.location.reload();
-                }, 1); // Adjust timing as needed
-            });
-
-        },
-
         confirmDiscard() {
             this.dialog = true;
         },
@@ -307,6 +300,16 @@ export default {
             this.$router.push('/StartPlanning');
         },
 
+        send() {
+            this.$router.push({ name: 'GeneratedItinerary' }).catch(err => {
+                console.error(err);
+            }).then(() => {
+                // This setTimeout ensures that the push operation completes before the reload
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1); // Adjust timing as needed
+            });
+        },
         getTimelineColor(index) {
             // Define colors for each day
             const colors = ['primary', 'info', 'success', 'error', 'warning'];
@@ -389,6 +392,8 @@ export default {
             const citySlogan = this.$store.state.citySlogan;
             const latitude = this.$store.state.lat;
             const longitude = this.$store.state.long;
+
+            console.log(activities);
 
             //Condensing to sendable form
             const tripData = {
