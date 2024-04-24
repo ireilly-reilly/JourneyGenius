@@ -89,8 +89,18 @@ def scrape_restaurants():
 
 
         # Custom adjustments based on category
-        if target_category == 'asian':
-            keyword = "chinese"
+        if target_category == 'east asian':
+            keyword = "chinese vietnamese"
+        elif target_category == 'south asian':
+            keyword = "indian thai"
+        elif target_category == 'east asian 2':
+            keyword = "japanese korean"
+        elif target_category == 'specialty food types':
+            keyword = "seafood sushi steakhouse buffet"
+        elif target_category == 'european & mediterranean':
+            keyword = "italian french pizzeria mediterranean"
+        elif target_category == 'dietary-focused':
+            keyword = "vegan vegetarian"
         else:
             keyword = target_category  # Default to using the category directly
 

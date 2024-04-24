@@ -95,6 +95,10 @@ def scrape_activities():
             type = "amusement_park"
         elif target_category == 'art gallery':
             type = 'art_gallery'
+        elif target_category == 'tourist spots':
+            type = 'tourist_attraction'
+        elif target_category == 'night club':
+            type = 'night_club'
         else:
             type = target_category 
 
