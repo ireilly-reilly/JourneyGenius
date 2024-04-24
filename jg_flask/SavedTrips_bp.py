@@ -76,6 +76,10 @@ def get_saved_trips():
         'city': trip.city,
         'city_description': trip.city_description,
         'activities': trip.activities,
+        'landmarks': trip.landmarks,
+        'shops': trip.shops,
+        'foods': trip.hotels,
+        'hotels': trip.hotels,
         'state' : trip.state,
         'dates' : trip.dates,
         'budget' : trip.budget,
@@ -141,7 +145,7 @@ def get_saved_itinerary(trip_id):
     else:
         return jsonify({'error': 'Saved trip not found or unauthorized to access'}), 404
 
-#Route to save trip data temporarily
+#Route to save trip data temporarily (depracated!)
 @saved_trips_bp.route('/save_trip_data_temporarily', methods=['POST'])
 def save_trip_data_temporarily():
     data = request.json  # Get the trip data from the request
@@ -154,3 +158,25 @@ def save_trip_data_temporarily():
     hotel_data.extend(data['hotelData'])
 
     return jsonify({'message': 'Trip data stored temporarily in flask'})
+
+#Route to update selected options for a trip
+@saved_trips_bp.route('/update_trip_selections/<int:trip_id>', methods=['PUT'])
+def update_trip_selections(trip_id):
+    data = request.json
+
+    #Get trip via id from database
+    trip = Trip.query.get(trip_id)
+    if not trip:
+        return jsonify({'message': 'Trip not found'}), 404
+
+    #Set selections
+    trip.activities = data.get('activities', trip.activities)
+    trip.landmarks = data.get('landmarks', trip.landmarks)
+    trip.foods = data.get('foods', trip.foods)
+    trip.shops = data.get('shops', trip.shops)
+    trip.hotels = data.get('hotels', trip.hotels)
+
+    #Save changes to database
+    db.session.commit()
+
+    return jsonify({'message': 'User selections updated successfully'}), 200

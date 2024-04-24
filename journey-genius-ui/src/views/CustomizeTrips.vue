@@ -5,6 +5,10 @@
             <!-- Header -->
             <v-row justify="center" class="mt-4">
                 <v-col cols="12" md="8" class="text-center">
+                    <!-- User Selections changed snackbar -->
+                    <v-snackbar v-model="showSelectionChangesSnackbar" color="deep-purple-accent-2" top>
+                        <span class="centered-text">Trip selections changed successfully.</span>
+                    </v-snackbar>
                     <h2 style="font-size: 2.5rem;" class="headline text-deep-purple-accent-2">
                         Plan Your Next Adventure in
                     </h2>
@@ -179,6 +183,8 @@ import LoadingScreenShort from '@/components/LoadingScreenShort.vue';
 export default defineComponent({
     data() {
         return {
+            showSelectionChangesSnackbar: false,
+
             activities: [],
             landmarks: [],
             foods: [],
@@ -267,12 +273,6 @@ export default defineComponent({
             isLoading: false,
         };
     },
-
-    // mounted() {
-    //     const state = this.$store.state.stateData;
-    //     const city = this.$store.state.city;
-    // },
-
     methods: {
         formatDate(date) {
             const options = { month: 'long', day: 'numeric', year: 'numeric' };
@@ -365,11 +365,52 @@ export default defineComponent({
             }
 
             // Loading Screen
-            this.isLoading = true;
+            // this.isLoading = true;
+            //const newTripObject = this.$store.state.tripObject;
+
+            this.$store.state.tripObject.activities = this.selectedActivities;
+            this.$store.state.tripObject.foods = this.selectedFoods;
+            this.$store.state.tripObject.landmarks = this.selectedLandmarks;
+            this.$store.state.tripObject.shops = this.selectedShops;
+            this.$store.state.tripObject.hotels = this.selectedHotels;
+
+            const new_selections = {
+                activities: this.selectedActivities,
+                foods: this.selectedFoods,
+                landmarks: this.selectedLandmarks,
+                shops: this.selectedShops,
+                hotels: this.selectedHotels,
+            };
+            //console.log(tripObjectCopy);  // Ensure the copy has the expected data
+            //console.log("Vuex tripObject: ", this.$store.state.tripObject);
+
+            axios.put(`http://localhost:8000/api/update_trip_selections/${this.$store.state.tripObject.id}`,new_selections)
+            .then(response => {
+                console.log('New selections saved to database.', response.data);
+                this.showSelectionChangesSnackbar = true;
+                console.log('Snackbar', showSelectionChangesSnackbar);
+                })
+                .catch(error => {
+                    console.error('Error saving changes to database:', error);
+                    // Handle error
+                });
+
+            this.$router.push({ name: 'SavedItinerary', params: { tripObject: this.$store.state.tripObject } });
         }
 
     },
     mounted() {
+
+        this.selectedActivities = this.$store.state.tripObject.activities;
+        this.selectedFoods = this.$store.state.tripObject.foods;
+        this.selectedLandmarks = this.$store.state.tripObject.landmarks;
+        this.selectedShops = this.$store.state.tripObject.shops;
+        this.selectedHotels = this.$store.state.tripObject.hotels;
+        // console.log('Selected activities from customize trip mounted: ', this.selectedActivities);
+        // console.log('Selected foods from customize trip mounted: ', this.selectedFoods);
+        // console.log('Selected landmarks from customize trip mounted: ', this.selectedLandmarks);
+        // console.log('Selected shops from customize trip mounted: ', this.selectedShops);
+        // console.log('Selected hotels from customize trip mounted: ', this.selectedHotels);
         // const activityData = JSON.parse(this.$route.query.activityData);
         // if (activityData && activityData.recommended_places) {
         //     this.activities = activityData.recommended_places;
