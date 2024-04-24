@@ -32,6 +32,7 @@ import SuperuserLayout from '@/layouts/SuperuserLayout.vue'
 
 import CustomizeTrips from '@/views/CustomizeTrips.vue'
 import CustomizeItinerary from '@/views/CustomizeItinerary.vue'
+import UserAccount from "../views/UserAccount.vue"
 
 
 
@@ -199,6 +200,12 @@ const router = createRouter({
       path: '/CustomizeItinerary',
       name: 'CustomizeItinerary',
       component: CustomizeItinerary,
+      props: true,
+    },
+    {
+      path: '/UserAccount',
+      name: 'UserAccount',
+      component: UserAccount,
       props: true,
     }
 
