@@ -5,6 +5,7 @@ from app import Trip
 from app import AdminChangeLogEntry
 import csv
 from io import StringIO
+import datetime
 
 superuser_analytics_bp = Blueprint('superuser_analytics', __name__)
 
@@ -42,8 +43,13 @@ def export_changelog_csv():
     
     #Write each row of data to the CSV file
     for entry in changelog_entries:
-        csv_writer.writerow([entry.entry_id, entry.timestamp, entry.super_id, entry.action, entry.affected_user_id])
-        print(entry.timestamp)
+        # Convert the timestamp to a datetime object
+        timestamp_datetime = datetime.datetime.strptime(entry.timestamp, '%Y-%m-%d %H:%M:%S')
+
+        # Format the datetime object as a string in a format recognized by Excel
+        formatted_timestamp = timestamp_datetime.strftime('%Y-%m-%d %H:%M:%S')
+        
+        csv_writer.writerow([entry.entry_id, formatted_timestamp, entry.super_id, entry.action, entry.affected_user_id])
 
     # Set up response headers
     headers = {
