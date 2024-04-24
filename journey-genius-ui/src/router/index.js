@@ -29,6 +29,7 @@ import SavedItinerary2 from '../views/SavedItinerary2.vue'
 
 import DefaultLayout from '@/layouts/DefaultLayout.vue'
 import SuperuserLayout from '@/layouts/SuperuserLayout.vue'
+import CustomizeTrips from '@/views/CustomizeTrips.vue'
 
 
 
@@ -186,6 +187,13 @@ const router = createRouter({
       component: SavedItinerary2,
       props: true,
     },
+    {
+      path: '/CustomizeTrips',
+      name: 'CustomizeTrips',
+      component: CustomizeTrips,
+      props: true,
+    },
+
   ],
   scrollBehavior (to, from, savedPosition) {
     console.log("Scrolling!")

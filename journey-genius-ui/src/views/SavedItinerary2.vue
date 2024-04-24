@@ -36,12 +36,10 @@
     <!-- Two buttons on the bottom -->
     <v-row justify="center" class="mt-4">
         <v-col cols="12" md="8" class="text-center">
-            <router-link to="/SavedItinerary">
-                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
-                    style="min-width: 150px;">
-                    Itinerary Overview
-                </v-btn>
-            </router-link>
+            <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="send"
+                style="min-width: 150px;">
+                Itinerary Overview
+            </v-btn>
 
             <!-- Call method to save trip to database here-->
             <router-link to="/SavedTrips">
@@ -202,12 +200,27 @@ export default {
 
     mounted() {
         // console.log("HEY!!!")
-        const tripObject = this.$route.params.tripObject;
+        // const tripObject = this.$route.params.tripObject;
+        const tripObject = this.$store.state.tripObject;
+
         // console.log("This is the saved object: " + tripObject)
         // console.log("activities: " + this.$store.state.tripObject.activities)
 
     },
     methods: {
+        send() {
+            const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
+            console.log(tripObjectCopy);  // Ensure the copy has the expected data
+
+            // Push to the new route
+            this.$router.push({ name: 'SavedItinerary', params: { tripObject: tripObjectCopy } }).catch(err => {
+                console.error(err);
+            }).then(() => {
+                // Force reload the page to reset everything
+                window.location.reload();
+            });
+        },
+
         getTimelineColor(index) {
             // Define colors for each day
             const colors = ['primary', 'info', 'success', 'error', 'warning'];
