@@ -126,3 +126,53 @@ def update_user_profile(user_id):
     db.session.commit()
 
     return jsonify({'message': 'User profile updated successfully'}), 200
+
+#Route to fetch saved trips for the current user
+@superuser_accounts_bp.route('/fetch_user_trips/<int:user_id>', methods=['GET'])
+def get_saved_trips(user_id):
+    # Query the database for saved trips associated with the current user
+    saved_trips = Trip.query.filter_by(user_id=user_id).all()
+    # Check if there are no trips saved
+    if not saved_trips:
+        return jsonify({'message': 'No trips saved.'}), 200
+
+    # Serialize the trip objects into JSON format
+    serialized_trips = [{
+        'id': trip.id,
+        'city': trip.city,
+        'city_description': trip.city_description,
+        'activities': trip.activities,
+        'state' : trip.state,
+        'dates' : trip.dates,
+        'budget' : trip.budget,
+        'foods' : trip.foods,
+        'shops' : trip.shops,
+        'landmarks' : trip.landmarks,
+        'hotels' : trip.hotels,
+        'city_slogan' : trip.city_slogan,
+        'generated_activities' : trip.generated_activities,
+        'generated_shops' : trip.generated_shops,
+        'generated_landmarks' : trip.generated_landmarks,
+        'generated_hotels' : trip.generated_hotels,
+        'generated_foods' : trip.generated_foods,
+        'latitude' : trip.latitude,
+        'longitude' : trip.longitude,
+        #'imageSrc': trip.image_src  # Assuming you have an image source field in your Trip model
+        # Add more fields as needed
+    } for trip in saved_trips]
+    return jsonify({'savedTrips': serialized_trips}), 200
+
+#Route to delete single trip associated with a user
+@superuser_accounts_bp.route('delete_single_user_trip/<int:trip_id>', methods=['DELETE'])
+def delete_single_trip(trip_id):
+    try:
+        trip = Trip.query.get(trip_id)
+        if trip:
+            #Delete the trip
+            db.session.delete(trip)
+            db.session.commit()
+            return jsonify({'message': 'User trip deleted successfully'}), 200
+        else:
+            return jsonify({'error': 'Trip not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
