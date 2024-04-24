@@ -93,21 +93,7 @@
         </v-card-actions>
     </v-card>
 </v-dialog>
-        <!-- Dialog for confirming user account delete-->
-        <v-dialog v-model="confirmationDialogVisible" max-width="650">
-                  <v-card>
-                    <v-card-title class="headline"
-                      style="padding-left: 25px; padding-top: 15px;">Confirmation</v-card-title>
-                    <v-card-text>
-                      Are you sure you want to delete this User? This action cannot be undone.
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="deep-purple-accent-2" text @click="confirmationDialogVisible = false">No</v-btn>
-                      <v-btn color="red darken-1" text @click="confirmDeleteUser(index)">Yes</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+        
 
                 <!-- Dialog for confirming individual user trip delete-->
         <v-dialog v-model="confirmDeleteTripDialog" max-width="650">
@@ -119,8 +105,8 @@
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="deep-purple-accent-2" text @click="confirmDeleteTripDialog = false">No</v-btn>
-                      <v-btn color="red darken-1" text @click="confirmDeleteTrip">Yes</v-btn>
+                      <v-btn color="deep-purple-accent-2" text @click="confirmDeleteTripDialog = false">Cancel</v-btn>
+                      <v-btn color="red darken-1" text @click="confirmDeleteTrip">Delete Trip</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
@@ -229,11 +215,11 @@
                     <td>{{ trip.city }}</td>
                     <td>{{ trip.state }}</td
                     ><td>{{ trip.dates }}</td>
-                    <td>
-                    <v-btn color="deep-purple-accent-2" @click="editTrip(props.item)">Edit</v-btn>
-                </td>
+                    <!-- <td> -->
+                    <!-- <v-btn color="deep-purple-accent-2" @click="editTrip(props.item)">Edit</v-btn> -->
+                <!-- </td> -->
                 <td>
-                    <v-btn color="deep-purple-accent-2" @click="confirmDeleteTrip">Delete</v-btn>
+                    <v-btn color="deep-purple-accent-2" @click="">Details</v-btn>
                 </td>
                     <!-- <td>{{ trip.budget }}</td> -->
                 </tr>
@@ -249,10 +235,10 @@
                 </v-card-text>
                 <v-card-actions>
                     <!-- Freeze, Delete, Reset Password Buttons -->
-                    <v-btn color="deep-purple-accent-2" class="mr-4" @click="freezeAccount">{{ selectedUser && selectedUser.FreezeFlag === 1 ? 'Unfreeze' : 'Freeze' }}</v-btn>
+                    <v-btn color="red darken-1" class="mr-4" @click="freezeAccount">{{ selectedUser && selectedUser.FreezeFlag === 1 ? 'Unfreeze User' : 'Freeze User' }}</v-btn>
                         
-                    <v-btn color="deep-purple-accent-2" class="mr-4" @click="confirmationDialogVisible = true">Delete</v-btn>
-                    <v-btn color="deep-purple-accent-2" @click="resetPasswordDialogVisible = true">Reset Password</v-btn>
+                    <v-btn color="red darken-1" class="mr-4" @click="confirmationDialogVisible = true">Delete User</v-btn>
+                    <v-btn color="red darken-1" @click="resetPasswordDialogVisible = true">Reset Password</v-btn>
                     <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Profile' }}</v-btn>
                     <v-btn color="deep-purple-accent-2" @click="closeDialog">Close</v-btn>
                 </v-card-actions>
@@ -270,15 +256,11 @@
                     </v-card-text>
                     <v-card-actions>
                       <v-spacer></v-spacer>
-                      <v-btn color="deep-purple-accent-2" text @click="confirmationDialogVisible = false">No</v-btn>
-                      <v-btn color="red darken-1" text @click="confirmDeleteUser(index)">Yes</v-btn>
+                      <v-btn color="deep-purple-accent-2" text @click="confirmationDialogVisible = false">Cancel</v-btn>
+                      <v-btn color="red darken-1" text @click="confirmDeleteUser(index)">Delete User</v-btn>
                     </v-card-actions>
                   </v-card>
                 </v-dialog>
-
-
-
-
 
         <!-- Dialog for displaying and editing trip details -->
         <v-dialog v-model="tripDetailsDialog" max-width="800px">
@@ -493,7 +475,7 @@
 
                 </v-card-text>
                 <v-card-actions>
-                    <v-btn color="deep-purple-accent-2" class="mr-4" @click="confirmDeleteTripDialog = true">Delete</v-btn>
+                    <v-btn color="red darken-1" class="mr-4" @click="confirmDeleteTripDialog = true">Delete Trip</v-btn>
                     <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Trip' }}</v-btn>
                     <v-btn color="deep-purple-accent-2" @click="tripDetailsDialog = false">Close</v-btn>
                 </v-card-actions>
@@ -538,8 +520,9 @@ export default {
                 { text: 'State', value: 'state' },
                 { text: 'Dates', value: 'dates' },
                 //{ text: 'Budget', value: 'budget' },
-                { text: 'Edit', value: 'edit', sortable: false },
-                { text: 'Delete', value: 'delete', sortable: false }
+                // { text: 'Edit', value: 'edit', sortable: false },
+                // { text: 'Delete', value: 'delete', sortable: false }
+                { text: 'Details', value: 'details', sortable: false }
             ],
 
 
