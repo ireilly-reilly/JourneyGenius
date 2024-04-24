@@ -79,6 +79,11 @@ def get_saved_trips():
         'state' : trip.state,
         'dates' : trip.dates,
         'budget' : trip.budget,
+        'generated_activities' : trip.generated_activities,
+        'generated_shops' : trip.generated_shops,
+        'generated_hotels' : trip.generated_hotels,
+        'generated_landmarks' : trip.generated_landmarks,
+        'generated_foods' : trip.generated_foods,
         #'imageSrc': trip.image_src  # Assuming you have an image source field in your Trip model
         # Add more fields as needed
     } for trip in saved_trips]
