@@ -114,7 +114,7 @@ def scrape_shopping():
             
             # Only write the header row if the file is empty (or doesn't exist)
             if not csv_exists:
-                writer.writerow(['Number', 'Id', 'Place', 'Price Range', 'Types', 'Address', 'Postal Code', 'City', 'State', 'Country', 'Latitude', 'Longitude'])
+                writer.writerow(['Number', 'Id', 'Place', 'Price Range', 'Category', 'Types', 'Address', 'Postal Code', 'City', 'State', 'Country', 'Latitude', 'Longitude'])
 
             # Initialize a variable to store the next_page_token
             next_page_token = None
@@ -174,7 +174,7 @@ def scrape_shopping():
                         longitude = place_details['result']['geometry']['location']['lng']
                         # print(latitude)
                         # print(longitude)
-                        writer.writerow([Number, my_place_id, name, price_range, types, f"{address} {postal_code}", postal_code, city, state, country, latitude, longitude])
+                        writer.writerow([Number, my_place_id, name, price_range, type, types, f"{address} {postal_code}", postal_code, city, state, country, latitude, longitude])
                         # print(f"Name: {name}, Price Range: {price_range}, Types: {types}, Address: {address}, Postal Code: {postal_code}, City: {city}, State: {state}, Country: {country}, Latitude: {latitude}, Longitude: {longitude}")
 
                         results_fetched += 1

@@ -113,9 +113,9 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 
     for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences):
         # Calculate the score, considering safe division
-        score = (1 - text_sim)
-        score += (1 - dist / max_distance)
-        score += (1 - price_diff / max_price_difference)
+        score = (0.01 * (1 - text_sim))
+        score += (0.6 * (1 - dist / max_distance))
+        score += (0.2 * (1 - price_diff / max_price_difference))
         composite_scores.append(score)
 
 

@@ -10,6 +10,7 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 from typing import Dict
+import spacy
 
 
 # Load environment variables from .env file
@@ -20,6 +21,9 @@ api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialize OpenAI client
 client = OpenAI(api_key=api_key)
+
+# Load the pre-trained spaCy model
+nlp = spacy.load("en_core_web_md")  
 
 #Blueprint declaration
 restaurantRecommendation_bp = Blueprint('restaurantRecommendation_bp', __name__)
@@ -47,9 +51,7 @@ data['Features'] = data['Types'] + ' ' + data['Address'] + ' ' + data['Price Ran
 
 # Create a TF-IDF vectorizer to convert text features into numerical vectors
 tfidf_vectorizer = TfidfVectorizer(stop_words='english')
-print(tfidf_vectorizer)
 tfidf_matrix = tfidf_vectorizer.fit_transform(data['Features'])
-print(tfidf_matrix)
 
 # Compute the cosine similarity between places based on their feature vectors
 cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
@@ -73,6 +75,15 @@ def haversine(lat1, lon1, lat2, lon2):
     distance = R * c
 
     return distance
+
+
+# Calculate semantic similarity between two strings
+def calculate_semantic_similarity(text1, text2):
+    doc1 = nlp(text1)
+    doc2 = nlp(text2)
+    similarity_score = doc1.similarity(doc2)
+    return similarity_score
+
 
 # Modified code snippet to get recommendations with location and price
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
@@ -108,14 +119,35 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     # composite_scores = [0.01 * (1 - text_sim) + 0.6 * (1 - dist / max(distances)) + 0.2 * (1 - price_diff / max(price_differences))
                         # for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
 
-    # Calculate semantic similarity using word embeddings
-    semantic_similarity = [calculate_semantic_similarity(restaurant_description, preferred_type_embedding) for restaurant_description in restaurant_descriptions]
-
-# Assign a weight to the semantic similarity component
-    weighted_semantic_similarity = [0.5 * similarity for similarity in semantic_similarity]
-
     composite_scores = [0.01 * (1 - text_sim) + 0.6 * (1 - dist / max(distances)) + 0.8 * (1 - price_diff / max(price_differences))
                         for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
+    
+    # Calculate semantic similarity using word embeddings
+    print(data['Types'])
+    print("Target Place: " + target_place)
+    # print("Distances:", distances)
+    # print("Price Differences:", price_differences)
+
+
+    # Iterate through the rows of the DataFrame
+    for index, row in data.iterrows():
+        # Extract relevant columns (e.g., restaurant name, description)
+        # Concatenate the text data from these columns
+        text_data = " ".join([str(row["Place"]), str(row[""])])
+
+    
+    
+
+    # semantic_similarities = [calculate_semantic_similarity(target_place, restaurant_type) for restaurant_type in data['Place']]
+    # print("Semantic Similarities:", semantic_similarities)
+    # semantic_similarities = [calculate_semantic_similarity(restaurant_csv_file_path, restaurant_type) for restaurant_type in data['Types']]
+
+    # # Calculate price differences
+    # price_differences = [abs(input_price - price) for price in data['Price Range']]
+
+    # # Combine text similarity, geographical distance, price difference, and semantic similarity into a composite score
+    # composite_scores = [(0.01 * (1 - text_sim) + (0.6 * (1 - dist / max(distances))) + (0.8 * (1 - price_diff / max(price_differences))) + (0.5 * (1 - semantic_sim / max(semantic_similarities))))
+    #                     for text_sim, dist, price_diff, semantic_sim in zip(text_similarities, distances, price_differences, semantic_similarities)]
 
 
     # Sort places by composite similarity score
@@ -124,8 +156,6 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     # Return the top 10 similar places as a list of dictionaries
     recommendations = [{'place': place} for place in sorted_places[1:6]]
     return {'recommendations': recommendations}
-
-
 
 
 # def descriptionGeneration(recommended_places):
@@ -236,6 +266,7 @@ def recommend():
 
     # Target_foods will looke like: 'Asian' or 'Mexican'
     target_foods = parse_data(user.fav_foods)
+    print(target_foods)
     
     # Grab city name from front end
     try:
@@ -252,7 +283,7 @@ def recommend():
         print("Can't get city:", e)
 
     # User Profiling output
-    if target_foods == 'Asian':
+    if target_foods == 'East Asian':
 
         df = pd.read_csv(restaurant_csv_file_path)
 
@@ -276,6 +307,7 @@ def recommend():
         if not first_row.empty:
             first_row_with_city = first_row
             target_foods = str(first_row_with_city['Place'])
+            print(target_foods)
             # Now you can use first_row_with_city for further processing
         else:
             print("No rows found for the specified city.")
@@ -284,7 +316,7 @@ def recommend():
     try:
         # data = request.json
         target_place = target_foods #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
-        print(target_place)
+        print("target place" + target_place)
         # target_lat_str = data.get('target_lat_str')
         # target_lon_str = data.get('target_lon_str')
         # desired_price_range_str = data.get('desired_price_range_str')
@@ -342,3 +374,8 @@ def recommend():
         print(f"Error processing request: {e}")
         return jsonify({'error': 'An unexpected error occurred'}), 500
 
+
+
+
+
+# TO FIX THE PROBLEM YOU CAN REDO THE CSV FILES SO THERE'S ANOTHER COLUMN STATING WHAT KIND OF CATEGORY IT IS SO THEN THE TF-IDF CAN GO THROUGH THOSE
