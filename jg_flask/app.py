@@ -152,6 +152,14 @@ class Trip(db.Model):
     foods_images = db.Column(db.JSON)       # Example: ["food1.jpg", "food2.png"]
     hotels_images = db.Column(db.JSON)      # Example: ["hotel1.jpg", "https://example.com/hotel2.png"]
 
+#Model for the super user changelog
+class AdminChangeLogEntry(db.Model):
+    entry_id = db.Column(db.Integer, primary_key=True)
+    timestamp = db.Column(db.String(50))
+    super_id = db.Column(db.Integer)
+    action = db.Column(db.String(200))
+    affected_user_id = db.Column(db.Integer)
+
 #Blueprints requiring database info go here because of circular import issues (idk why)
 from SuperuserAccounts import superuser_accounts_bp
 from SavedTrips_bp import saved_trips_bp

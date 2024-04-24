@@ -492,6 +492,7 @@
 
 <script>
 import axios from 'axios';
+import Cookies from 'js-cookie'
 export default {
     data() {
         return {
@@ -631,8 +632,13 @@ export default {
         // Have fun doing this, Isaac!!!!!!!! FIGHT ON!!!!
         // Method to save user changes
         saveUserChanges() {
+            const token = Cookies.get('login_token');
             // Send PUT request to update user profile
-            axios.put(`http://localhost:8000/api/edit_user_account/${this.selectedUser.DatabaseID}`, this.editedUser)
+            axios.put(`http://localhost:8000/api/edit_user_account/${this.selectedUser.DatabaseID}`, this.editedUser, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
                 .then(response => {
                     console.log('User profile updated successfully:', response.data);
                     // Update selectedUser with changes from editedUser
@@ -647,7 +653,12 @@ export default {
                 });
         },
         fetchUserTrips() {
-            axios.get(`http://localhost:8000/api/fetch_user_trips/${this.selectedUser.DatabaseID}`)
+            const token = Cookies.get('login_token');
+            axios.get(`http://localhost:8000/api/fetch_user_trips/${this.selectedUser.DatabaseID}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
             .then(response => {
                 this.savedTrips = response.data.savedTrips;
             })
@@ -665,7 +676,12 @@ export default {
             const trip_id = this.selectedTrip.id;
 
             //Delete Trip from user
-            axios.delete(`http://localhost:8000/api/delete_single_user_trip/${trip_id}`)
+            const token = Cookies.get('login_token');
+            axios.delete(`http://localhost:8000/api/delete_single_user_trip/${trip_id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
                 .then(response => {
                     //Once the trip is successfully deleted, close the dialog
                     console.log('User trip deleted successfully:', response.data);
@@ -681,8 +697,13 @@ export default {
         },
 
         fetchUserAccounts() {
+            const token = Cookies.get('login_token');
             // Assuming your Flask backend is running on http://localhost:8000
-            axios.get('http://localhost:8000/api/user_accounts')
+            axios.get('http://localhost:8000/api/user_accounts', {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
                 .then(response => {
                     this.users = response.data;
                     console.log('User accounts data:', response.data);
@@ -711,9 +732,13 @@ export default {
 
             // Toggle the freeze flag based on its current value
             const newFreezeFlag = this.selectedUser.FreezeFlag === 1 ? 0 : 1;
-
+            const token = Cookies.get('login_token');
             // Send a PUT request to update the freeze flag in the database
-            axios.put(`http://localhost:8000/api/user_accounts/${userId}/freeze`, { freezeFlag: newFreezeFlag })
+            axios.put(`http://localhost:8000/api/user_accounts/${userId}/freeze`, { freezeFlag: newFreezeFlag }, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
             .then(response => {
                 console.log('Account freeze status updated successfully:', response.data);
                 this.showFreezeSnackbar = true;
@@ -727,14 +752,22 @@ export default {
         },
         confirmDeleteUser(index) {
             const userId = this.selectedUser.DatabaseID;
-
+            const token = Cookies.get('login_token');
             // Step 1: Delete all trips associated with the user
-            axios.delete(`http://localhost:8000/api/delete_user_trips/${userId}`)
+            axios.delete(`http://localhost:8000/api/delete_user_trips/${userId}`, {
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
                 .then(response => {
                     console.log('Trips deleted successfully:', response.data);
             
                     // Step 2: Delete the user account
-                    axios.delete(`http://localhost:8000/api/delete_user_account/${userId}`)
+                    axios.delete(`http://localhost:8000/api/delete_user_account/${userId}`, {
+                        headers: {
+                            Authorization: `Bearer ${token}`,
+                        },
+                    })
                         .then(response => {
                             console.log('User account deleted successfully:', response.data);
                             //Once the user account is deleted, close the confirmation dialog
@@ -768,7 +801,12 @@ export default {
             }
             // Send a PUT request to update the user's password
             const userId = this.selectedUser.DatabaseID; // Assuming you have a property 'DatabaseID' in your selectedUser object
-            axios.put(`http://localhost:8000/api/reset_user_password/${userId}`, { newPassword: this.newPassword })
+            const token = Cookies.get('login_token');
+            axios.put(`http://localhost:8000/api/reset_user_password/${userId}`, { newPassword: this.newPassword }, {
+                headers: {
+                Authorization: `Bearer ${token}`,
+                },
+            })
                 .then(response => {
                     console.log('User password reset successfully:', response.data);
                     // Close the reset password dialog

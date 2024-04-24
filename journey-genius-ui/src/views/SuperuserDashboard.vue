@@ -15,7 +15,7 @@
       </v-btn>
     </v-app-bar>
 
-    <h1 style="font-size: 2.5rem; color: black;">Dashboard Welcome</h1>
+    <h1 style="color: black;">Dashboard</h1>
 
     <!-- Welcome message -->
     <div class="welcome-message">
