@@ -2,9 +2,11 @@
     <v-app>
       <v-content>
         <v-card width="500" class="mx-auto mt-9">
-          <v-card-title>Create an Account</v-card-title>
+          <br>
+          <v-card-title class="text-center text-h5">Create an Account</v-card-title>
+          <br>
           <v-card-text>
-            <v-text-field v-model="email" label="Email" prepend-icon="mdi-account-circle"/>
+            <v-text-field v-model="email" label="Email" prepend-icon="mdi-email"/>
             <v-text-field v-model="firstname" label="First Name" prepend-icon="mdi-account-circle"/>
             <v-text-field v-model="lastname" label="Last Name" prepend-icon="mdi-account-circle"/>
             <v-text-field 

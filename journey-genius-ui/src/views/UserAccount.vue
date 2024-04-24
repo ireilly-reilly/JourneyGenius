@@ -1,9 +1,10 @@
 <template>
     <v-container>
       <v-card class="mx-auto pa-5" max-width="500">
-        <v-card-title class="justify-center text-h5">
+        <v-card-title class="text-center text-h5">
           User Information
         </v-card-title>
+        <br>
         <v-card-text>
           <v-form>
             <v-text-field
@@ -31,7 +32,7 @@
         </v-card-text>
         <v-card-actions class="justify-center">
           <v-btn icon @click="editInfo = !editInfo">
-            <v-icon>{{ editInfo ? 'mdi-close' : 'mdi-pencil' }}</v-icon>
+            <v-icon color="deep-purple-accent-2">{{ editInfo ? 'mdi-close' : 'mdi-pencil' }}</v-icon>
           </v-btn>
           <v-btn
             v-if="editInfo"
