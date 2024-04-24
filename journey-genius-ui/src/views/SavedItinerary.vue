@@ -182,9 +182,9 @@ export default {
     mounted() {
         const tripObject = this.$store.state.tripObject;
         // this.$store.commit('updateTripObject', this.tripObject);
-        console.log("This is the saved object: " + tripObject)
+        // console.log("This is the saved object: " + tripObject)
         // console.log("hotels: " + this.$store.state.tripObject.hotels)
-
+        console.log("Generated Activities:" + this.$store.state.tripObject.generated_activities)
 
 
 

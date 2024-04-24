@@ -196,11 +196,11 @@ def recommend():
     target_accomodations = parse_data(user.fav_accomodations)
     try:
         data = request.json
-        target_place = 'Indianapolis Marriott Downtown' #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = 'Reno' 
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
-        #print(target_place)
+        print(target_place)
         #print(target_lat_str)
         #print(target_lon_str)
         #print(desired_price_range_str)

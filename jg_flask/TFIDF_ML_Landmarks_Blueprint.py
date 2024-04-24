@@ -156,7 +156,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 def recommend():
     try:
         data = request.json
-        target_place = "Ed Fountain Park" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = "Red Rock Canyon National Conservation Area" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')

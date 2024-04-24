@@ -411,13 +411,23 @@ export default defineComponent({
         // this.endDateData = endDateData;
     },
     created() {
-        // Retrieve Trip Details
+        
+        // THIS IS ALL OF THE USER SELECTED OPTIONS
+        // const tripObject = this.$route.params.tripObject;
+        // const activityData = this.$store.state.tripObject.activities;
+        // const landmarkData = this.$store.state.tripObject.landmarks;
+        // const restaurantData = this.$store.state.tripObject.foods;
+        // const shoppingData = this.$store.state.tripObject.shops;
+        // const hotelData = this.$store.state.tripObject.hotels;
+
+        // THIS IS ALL OF THE SAVED GENERATED OPTIONS
         const tripObject = this.$route.params.tripObject;
-        const activityData = this.$store.state.tripObject.activities;
-        const landmarkData = this.$store.state.tripObject.landmarks;
-        const restaurantData = this.$store.state.tripObject.foods;
-        const shoppingData = this.$store.state.tripObject.shops;
-        const hotelData = this.$store.state.tripObject.hotels;
+        const activityData = this.$store.state.tripObject.generated_activities;
+        const landmarkData = this.$store.state.tripObject.generated_landmarks;
+        const restaurantData = this.$store.state.tripObject.generated_foods;
+        const shoppingData = this.$store.state.tripObject.generated_shops;
+        const hotelData = this.$store.state.tripObject.generated_hotels;
+
 
         this.activities = activityData;
         this.landmarks = landmarkData;

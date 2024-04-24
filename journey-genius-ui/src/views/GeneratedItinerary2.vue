@@ -36,12 +36,12 @@
     <!-- Two buttons on the bottom -->
     <v-row justify="center" class="mt-4">
         <v-col cols="12" md="8" class="text-center">
-            <router-link to="/GeneratedItinerary">
-                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
-                    style="min-width: 150px;">
-                    Itinerary Overview
-                </v-btn>
-            </router-link>
+            <!-- <router-link to="/GeneratedItinerary"> -->
+            <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="send"
+                style="min-width: 150px;">
+                Itinerary Overview
+            </v-btn>
+            <!-- </router-link> -->
 
             <!-- Call method to save trip to database here-->
             <router-link to="/SavedTrips">
@@ -70,10 +70,10 @@
             </v-dialog>
 
             <!-- <router-link to="/SavedTrips"> -->
-            <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
+            <!-- <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
                 style="min-width: 150px;">
                 Save Trip
-            </v-btn>
+            </v-btn> -->
             <!-- </router-link> -->
         </v-col>
     </v-row>
@@ -284,6 +284,18 @@ export default {
 
     },
     methods: {
+        send() {
+            this.$router.push({ name: 'GeneratedItinerary' }).catch(err => {
+                console.error(err);
+            }).then(() => {
+                // This setTimeout ensures that the push operation completes before the reload
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1); // Adjust timing as needed
+            });
+
+        },
+
         confirmDiscard() {
             this.dialog = true;
         },
