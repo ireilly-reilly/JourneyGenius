@@ -33,6 +33,7 @@
         <v-card-actions class="justify-center">
           <v-btn icon @click="editInfo = !editInfo">
             <v-icon color="deep-purple-accent-2">{{ editInfo ? 'mdi-close' : 'mdi-pencil' }}</v-icon>
+            <span :class="{'ml-3': !editInfo}">{{ editInfo ? '' : 'Edit' }}</span>
           </v-btn>
           <v-btn
             v-if="editInfo"
@@ -85,4 +86,3 @@
     outline: none !important;
   }
   </style>
-  
