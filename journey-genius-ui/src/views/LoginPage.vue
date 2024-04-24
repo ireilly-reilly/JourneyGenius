@@ -127,10 +127,10 @@ export default {
             if (error.response.status === 401) {
               console.error('Login failed: Incorrect username or password.');
               this.loginErrorMessage = 'Incorrect username or password.';
-            } else {
-              console.error('Login failed: Server error.');
-              this.loginErrorMessage = 'Error logging in.';
             }
+            if (error.response.status === 403) {
+              this.loginErrorMessage = 'Your account has been frozen. Please contact support for assistance.';
+            } 
           } else {
             this.loginErrorMessage = 'Network error or server unreachable.';
           }

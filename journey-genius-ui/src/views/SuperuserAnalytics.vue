@@ -47,7 +47,7 @@
           <v-card class="changelog-card">
             <v-card-title>View Admin Changelog</v-card-title>
             <v-card-actions>
-              <v-btn @click="viewAdminChangelog" color="deep-purple-accent-2">View Changelog (PDF)</v-btn>
+              <v-btn @click="downloadAdminChangelog" color="deep-purple-accent-2">Download Changelog (CSV)</v-btn>
             </v-card-actions>
           </v-card>
         </v-col>
@@ -79,9 +79,32 @@ export default {
     this.fetchAnalyticsData();
   },
   methods: {
-    viewAdminChangelog() {
-      // Implement logic to open PDF for admin changelog
-      alert('Opening admin changelog PDF');
+    async downloadAdminChangelog() {
+      try {
+        // Make a GET request to the Flask route to download the CSV file
+        const response = await axios.get('http://localhost:8000/api/export_changelog_csv', {
+          responseType: 'blob' // Important to specify the response type as 'blob'
+        });
+
+        // Create a blob from the response data
+        const blob = new Blob([response.data], { type: 'text/csv' });
+
+        // Create a temporary anchor element to trigger the download
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', 'admin_changelog.csv');
+        document.body.appendChild(link);
+
+        // Click the link to start the download
+        link.click();
+
+        // Cleanup
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(link);
+      } catch (error) {
+        console.error('Error downloading admin changelog:', error);
+      }
     },
     async fetchAnalyticsData() {
         try {

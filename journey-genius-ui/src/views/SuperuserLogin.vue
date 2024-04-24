@@ -93,7 +93,7 @@ export default {
           this.showSnackbar = true; // Show the Snackbar
           setTimeout(() => {
             this.$router.push({ name: 'SuperuserDashboard' });
-          }, 3000);
+          }, 1000);
 
           // Redirect to the home page
           // this.$router.push({ name: 'Home' });
