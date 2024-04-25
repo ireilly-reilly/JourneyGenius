@@ -16,7 +16,16 @@
               prepend-icon="mdi-lock"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="showPassword = !showPassword"/>
+            <v-text-field 
+              v-model="confirmPassword"
+              label="Confirm Password" 
+              :type="showPassword ? 'text' : 'password'"
+              prepend-icon="mdi-lock"
+              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              @click:append="showPassword = !showPassword"/>
               <div v-if="RegistrationErrorMessage" class="error-message">{{ RegistrationErrorMessage }}</div>
+              
+            <span v-if="passwordsDoNotMatch" class="error-message">Passwords do not match.</span>
           </v-card-text>
   
           <v-divider></v-divider>
@@ -56,8 +65,14 @@
         lastname: '',
         password: '',
         RegistrationErrorMessage: '',
-        message: ''
+        message: '',
+        confirmPassword: '',
       };
+    },
+    computed: {
+        passwordsDoNotMatch() {
+            return this.password !== this.confirmPassword;
+        },
     },
     methods: {
       //Checks to see if the email address is valid
@@ -73,6 +88,7 @@
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return passwordRegex.test(password);
       },
+      
 
       //Register account with flask server database
       register() {
@@ -89,6 +105,11 @@
         if (!this.isValidPassword(this.password)) {
           this.RegistrationErrorMessage = 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.';
           return;
+        }
+        if (this.password !== this.confirmPassword) {
+            // Show an error message or handle the mismatched passwords
+            console.log("Passwords do not match");
+            return;
         }
 
         // Check if both username and password are provided
