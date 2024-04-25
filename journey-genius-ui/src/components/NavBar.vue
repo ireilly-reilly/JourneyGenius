@@ -1,5 +1,5 @@
 <template>
-<nav>
+  <nav>
     <v-toolbar flat app>
       <!-- Title -->
       <v-toolbar-title class="text-uppercase grey--text mr-5">
@@ -24,13 +24,7 @@
     </v-toolbar>
 
     <!-- Navigation Drawer -->
-    <v-navigation-drawer
-      v-model="drawer"
-      location="right"
-      temporary
-      class="custom-drawer-height"
-
-    >
+    <v-navigation-drawer v-model="drawer" location="right" temporary>
       <v-list dense>
         <!-- Items for logged out users -->
         <v-list-item v-if="!isLoggedIn" @click="login" prepend-icon="mdi-login">
@@ -40,12 +34,20 @@
           <v-list-item-title>Create Account</v-list-item-title>
         </v-list-item>
 
-        <!-- Items for logged in users -->
-        <v-list-item
-            subtitle= "email"
-            title= "test"
-          ></v-list-item>
-          <br>
+        <!-- User information display for logged-in users -->
+        <v-list-item v-if="isLoggedIn" class="py-1">
+          <v-list-item-content>
+            <v-list-item-title class="user-name">
+  {{ userInfo.firstName }} {{ userInfo.lastName }}
+</v-list-item-title>
+
+            <v-list-item-subtitle class="text-caption">
+              {{ userInfo.email }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <br>
+        <hr>
         <v-list-item v-if="isLoggedIn" @click="userProfile" prepend-icon="mdi-account-edit">
           <v-list-item-title>Edit User Profile</v-list-item-title>
         </v-list-item>
@@ -65,7 +67,11 @@ export default {
   data() {
     return {
       isLoggedIn: false,
-      firstname: '',
+      userInfo: {
+        firstName: '',
+        lastName: '',
+        email: ''
+      },
       buttons: [
         { text: 'Home', to: '/' },
       ],
@@ -74,11 +80,11 @@ export default {
   },
   mounted() {
     this.checkLoginStatus();
-    this.getUserInfoAndGenerateGreeting();
+    this.fetchUserInfo();
 
   },
   methods: {
-    async getUserInfoAndGenerateGreeting() {
+    async fetchUserInfo() {
       const url = 'http://localhost:8000/api/user_account/fetch_user_info';
       const jwtToken = Cookies.get('login_token')
       axios.get(url, {
@@ -87,8 +93,8 @@ export default {
         }
       })
         .then(response => {
-          this.firstname = response.data.firstName;
-          // this.generateGreetingMessage(firstname)
+          this.userInfo = response.data;
+          console.log(this.userInfo)
         })
         .catch(error => {
           console.error('Error fetching user data:', error);
@@ -124,7 +130,7 @@ export default {
     userProfile() {
       this.$router.push({ name: 'UserAccount' });
     },
-    
+
     checkLoginStatus() {
       const token = Cookies.get('login_token');
       // If the token is available, it means the user is logged in
@@ -143,3 +149,9 @@ export default {
   },
 };
 </script>
+<style>
+.user-name {
+  font-size: 75px; /* Adjust this value as needed to make it bigger */
+  color: #651FFF; 
+}
+</style>
