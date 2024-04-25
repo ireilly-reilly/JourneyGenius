@@ -46,8 +46,8 @@
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <br v-if="isLoggedIn">
-        <hr class="mb-4">
+        <br>
+        <hr class="mb-4" v-if="isLoggedIn">
         <v-list-item v-if="isLoggedIn" @click="userProfile" prepend-icon="mdi-account-edit">
           <v-list-item-title>Edit User Profile</v-list-item-title>
         </v-list-item>
