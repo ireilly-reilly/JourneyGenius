@@ -38,15 +38,15 @@
         <v-list-item v-if="isLoggedIn" class="py-1">
           <v-list-item-content>
             <v-list-item-title class="user-name">
-  {{ userInfo.firstName }} {{ userInfo.lastName }}
-</v-list-item-title>
+              {{ userInfo.firstName }} {{ userInfo.lastName }}
+            </v-list-item-title>
 
             <v-list-item-subtitle class="text-caption">
               {{ userInfo.email }}
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <br>
+        <br v-if="isLoggedIn">
         <hr class="mb-4">
         <v-list-item v-if="isLoggedIn" @click="userProfile" prepend-icon="mdi-account-edit">
           <v-list-item-title>Edit User Profile</v-list-item-title>
@@ -151,7 +151,8 @@ export default {
 </script>
 <style>
 .user-name {
-  font-size: 75px; /* Adjust this value as needed to make it bigger */
-  color: #651FFF; 
+  font-size: 75px;
+  /* Adjust this value as needed to make it bigger */
+  color: #651FFF;
 }
 </style>
