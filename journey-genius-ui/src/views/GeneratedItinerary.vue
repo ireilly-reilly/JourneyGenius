@@ -110,7 +110,7 @@
                 </p>
                 <br>
                 <div style="position: relative; overflow: hidden; border-radius: 8px;">
-                    <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y&center=' +
+                    <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU&center=' +
                         this.$store.state.lat + ',' + this.$store.state.long + '&zoom=15&maptype=roadmap'"
                         allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
