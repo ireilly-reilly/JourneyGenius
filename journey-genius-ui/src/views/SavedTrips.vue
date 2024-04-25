@@ -254,6 +254,8 @@ export default {
               if (deletedIndex !== -1) {
                 this.savedTrips.splice(deletedIndex, 1);
                 this.dialogVisible = false;
+                this.showSnackbar = true;
+
               }
             } else {
               throw new Error('Failed to delete trip');

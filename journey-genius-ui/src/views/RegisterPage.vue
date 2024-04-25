@@ -2,9 +2,11 @@
     <v-app>
       <v-content>
         <v-card width="500" class="mx-auto mt-9">
-          <v-card-title>Create an Account</v-card-title>
+          <br>
+          <v-card-title class="text-center text-h5">Create an Account</v-card-title>
+          <br>
           <v-card-text>
-            <v-text-field v-model="email" label="Email" prepend-icon="mdi-account-circle"/>
+            <v-text-field v-model="email" label="Email" prepend-icon="mdi-email"/>
             <v-text-field v-model="firstname" label="First Name" prepend-icon="mdi-account-circle"/>
             <v-text-field v-model="lastname" label="Last Name" prepend-icon="mdi-account-circle"/>
             <v-text-field 
@@ -14,7 +16,16 @@
               prepend-icon="mdi-lock"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
               @click:append="showPassword = !showPassword"/>
+            <v-text-field 
+              v-model="confirmPassword"
+              label="Confirm Password" 
+              :type="showPassword ? 'text' : 'password'"
+              prepend-icon="mdi-lock"
+              :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              @click:append="showPassword = !showPassword"/>
               <div v-if="RegistrationErrorMessage" class="error-message">{{ RegistrationErrorMessage }}</div>
+              
+            <span v-if="passwordsDoNotMatch" class="error-message">Passwords do not match.</span>
           </v-card-text>
   
           <v-divider></v-divider>
@@ -54,8 +65,14 @@
         lastname: '',
         password: '',
         RegistrationErrorMessage: '',
-        message: ''
+        message: '',
+        confirmPassword: '',
       };
+    },
+    computed: {
+        passwordsDoNotMatch() {
+            return this.password !== this.confirmPassword;
+        },
     },
     methods: {
       //Checks to see if the email address is valid
@@ -71,6 +88,7 @@
         const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
         return passwordRegex.test(password);
       },
+      
 
       //Register account with flask server database
       register() {
@@ -87,6 +105,11 @@
         if (!this.isValidPassword(this.password)) {
           this.RegistrationErrorMessage = 'Password must contain at least 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.';
           return;
+        }
+        if (this.password !== this.confirmPassword) {
+            // Show an error message or handle the mismatched passwords
+            console.log("Passwords do not match");
+            return;
         }
 
         // Check if both username and password are provided

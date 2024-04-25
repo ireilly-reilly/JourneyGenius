@@ -165,6 +165,7 @@ from SuperuserAccounts import superuser_accounts_bp
 from SavedTrips_bp import saved_trips_bp
 from SuperuserAnalytics_bp import superuser_analytics_bp
 from UserProfiling_bp import user_profiling_bp
+from UserAccount_bp import user_account_bp
 from TFIDF_ML_Restaurants_Blueprint import restaurantRecommendation_bp
 from TFIDF_ML_Activities_Blueprint import activitiesRecommendation_bp
 from TFIDF_ML_Shopping_Blueprint import shoppingRecommendation_bp
@@ -174,6 +175,7 @@ app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
 app.register_blueprint(saved_trips_bp, url_prefix='/api')
 app.register_blueprint(superuser_analytics_bp, url_prefix='/api')
 app.register_blueprint(user_profiling_bp, url_prefix='/api/user_profiling')
+app.register_blueprint(user_account_bp, url_prefix='/api/user_account')
 app.register_blueprint(restaurantRecommendation_bp, url_prefix='/api')
 app.register_blueprint(activitiesRecommendation_bp, url_prefix='/api')
 app.register_blueprint(shoppingRecommendation_bp, url_prefix='/api')

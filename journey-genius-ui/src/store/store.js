@@ -22,6 +22,11 @@ const store = createStore({
     cityDescription: null,
     citySlogan: null,
     tripLength: null,
+    generated_activities: null,
+    generated_hotels: null,
+    generated_shops: null,
+    generated_foods: null,      
+    generated_landmarks: null,
     
     tripObject: {
       id: null,
@@ -37,7 +42,13 @@ const store = createStore({
       budget: null,
       latitude: null,
       longitude: null,
-      city_slogan: null
+      city_slogan: null,
+      generated_activities: null,
+      generated_hotels: null,
+      generated_shops: null,
+      generated_foods: null,
+      generated_landmarks: null,
+
     },
     
   },
@@ -116,6 +127,23 @@ const store = createStore({
     },
     updateTripObject(state, tripObject) {
       state.tripObject = tripObject;
+    },
+
+
+    updateGeneratedActivities(state, generated_activities){
+      state.generated_activities = generated_activities;
+    },
+    updateGeneratedLandmarks(state, generated_landmarks){
+      state.generated_landmarks = generated_landmarks;
+    },
+    updateGeneratedShops(state, generated_shops){
+      state.generated_shops = generated_shops;
+    },
+    updateGeneratedFoods(state, generated_foods){
+      state.generated_foods = generated_foods;
+    },
+    updateGeneratedHotels(state, generated_hotels){
+      state.generated_hotels = generated_hotels;
     }
 
 
