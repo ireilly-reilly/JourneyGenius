@@ -1,5 +1,5 @@
 <template>
-  <nav>
+<nav>
     <v-toolbar flat app>
       <!-- Title -->
       <v-toolbar-title class="text-uppercase grey--text mr-5">
@@ -16,19 +16,39 @@
 
       <v-spacer></v-spacer>
 
-      <!-- Render login/logout button dynamically based on isLoggedIn -->
-      <router-link v-if="!isLoggedIn" to="/LoginPage">
-        <v-btn color="grey darken-2" flat>
-          <span style="margin-right: 5px;">Login</span>
-          <v-icon right>mdi-exit-to-app</v-icon>
-        </v-btn>
-      </router-link>
-
-      <v-btn v-else color="grey darken-2" flat @click="logout">
-        <span style="margin-right: 5px;">Logout</span>
-        <v-icon right>mdi-exit-to-app</v-icon>
+      <!-- Login/Account Details Button -->
+      <v-btn color="grey darken-2" flat @click="drawer = !drawer">
+        <span style="margin-right: 5px;">{{ isLoggedIn ? 'Account' : 'Login' }}</span>
+        <v-icon right>mdi-account-circle</v-icon>
       </v-btn>
     </v-toolbar>
+
+    <!-- Navigation Drawer -->
+    <v-navigation-drawer
+      v-model="drawer"
+      location="right"
+      temporary
+      class="custom-drawer-height"
+
+    >
+      <v-list dense>
+        <!-- Items for logged out users -->
+        <v-list-item v-if="!isLoggedIn" @click="login" prepend-icon="mdi-login">
+          <v-list-item-title>Login</v-list-item-title>
+        </v-list-item>
+        <v-list-item v-if="!isLoggedIn" @click="register" prepend-icon="mdi-account-plus">
+          <v-list-item-title>Create Account</v-list-item-title>
+        </v-list-item>
+
+        <!-- Items for logged in users -->
+        <v-list-item v-if="isLoggedIn" @click="userProfile" prepend-icon="mdi-account-edit">
+          <v-list-item-title>Edit User Profile</v-list-item-title>
+        </v-list-item>
+        <v-list-item v-if="isLoggedIn" @click="logout" prepend-icon="mdi-logout">
+          <v-list-item-title>Logout</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
   </nav>
 </template>
 
@@ -43,8 +63,7 @@ export default {
       buttons: [
         { text: 'Home', to: '/' },
       ],
-      token: Cookies.get('login_token'),
-      isPageRefreshed: false, // Flag to track if the page has been refreshed
+      drawer: false, // Control the navigation drawer
     };
   },
   mounted() {
@@ -60,41 +79,39 @@ export default {
       axios.post(url)
         .then(response => {
           console.log('Logout successful!', response);
-          this.message = 'Logout successful.';
           this.isLoggedIn = false;
           this.$router.push({ name: 'LoggingOut' });
         })
         .catch(error => {
           console.error('Error logging out', error);
-          this.message = 'Error logging out.';
         });
 
       this.buttons = [
         { text: 'Home', to: '/' },
       ];
     },
+    register() {
+      this.$router.push({ name: 'RegisterPage' });
+    },
+    login() {
+      this.$router.push({ name: 'LoginPage' });
+    },
+    userProfile() {
+      this.$router.push({ name: 'UserAccount' });
+    },
+    
     checkLoginStatus() {
       const token = Cookies.get('login_token');
-      console.log('jwt token from navbar: ', token)
       // If the token is available, it means the user is logged in
       if (token) {
-        console.log('User logged in');
         this.isLoggedIn = true;
-        console.log(this.isLoggedIn);
-
-        // Update the navigation buttons for logged-in users
         this.buttons = [
           { text: 'Home', to: '/' },
-          { text: 'User Profiling', to: '/UserProfiling' },
+          { text: 'Trip Preferences', to: '/UserProfiling' },
           { text: 'Plan Trip', to: '/StartPlanning' },
           { text: 'Saved Trips', to: '/SavedTrips' }
         ];
-        // Set a flag indicating successful login
-        this.$emit('loginSuccess');
-
       } else {
-        // If the token is not available, the user is not logged in
-        console.log('Token not available.');
         this.isLoggedIn = false;
       }
     },
