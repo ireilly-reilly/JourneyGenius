@@ -41,6 +41,11 @@
         </v-list-item>
 
         <!-- Items for logged in users -->
+        <v-list-item
+            subtitle= "email"
+            title= "test"
+          ></v-list-item>
+          <br>
         <v-list-item v-if="isLoggedIn" @click="userProfile" prepend-icon="mdi-account-edit">
           <v-list-item-title>Edit User Profile</v-list-item-title>
         </v-list-item>
@@ -60,6 +65,7 @@ export default {
   data() {
     return {
       isLoggedIn: false,
+      firstname: '',
       buttons: [
         { text: 'Home', to: '/' },
       ],
@@ -68,8 +74,27 @@ export default {
   },
   mounted() {
     this.checkLoginStatus();
+    this.getUserInfoAndGenerateGreeting();
+
   },
   methods: {
+    async getUserInfoAndGenerateGreeting() {
+      const url = 'http://localhost:8000/api/user_account/fetch_user_info';
+      const jwtToken = Cookies.get('login_token')
+      axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+      })
+        .then(response => {
+          this.firstname = response.data.firstName;
+          // this.generateGreetingMessage(firstname)
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+        });
+    },
+
     logout() {
       const url = 'http://localhost:8000/api/LogoutUser';
       Cookies.remove('login_token');
