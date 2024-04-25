@@ -212,6 +212,13 @@ export default defineComponent({
     },
   },
 
+  mounted() {
+    const amountOfSelections = JSON.parse(this.$route.query.amountOfSelections);
+    const descriptionToggle = JSON.parse(this.$route.query.descriptionToggle);
+    // console.log(amountOfSelections)
+    // console.log(descriptionToggle)
+  },
+
   methods: {
     // Google Places API Dropdown
     getAddressData: function (addressData) {

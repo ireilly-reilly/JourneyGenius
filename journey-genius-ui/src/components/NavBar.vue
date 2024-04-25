@@ -139,7 +139,7 @@ export default {
         this.buttons = [
           { text: 'Home', to: '/' },
           { text: 'Trip Preferences', to: '/UserProfiling' },
-          { text: 'Plan Trip', to: '/StartPlanning' },
+          { text: 'Plan Trip', to: '/TripSettings' },
           { text: 'Saved Trips', to: '/SavedTrips' }
         ];
       } else {
