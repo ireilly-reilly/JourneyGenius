@@ -34,6 +34,9 @@ import CustomizeTrips from '../views/CustomizeTrips.vue'
 import CustomizeItinerary from '../views/CustomizeItinerary.vue'
 import UserAccount from "../views/UserAccount.vue"
 
+import Cookies from 'js-cookie'
+import axios from 'axios'
+
 
 
 const router = createRouter({
@@ -63,16 +66,19 @@ const router = createRouter({
       path: '/UserProfiling',
       name: 'UserProfiling',
       component: UserProfiling,
+      meta: { requiresAuth: true },
     },
     {
       path: '/StartPlanning',
       name: 'StartPlanning',
       component: StartPlanning,
+      meta: { requiresAuth: true },
     },
     {
       path: '/SavedTrips',
       name: 'SavedTrips',
       component: SavedTrips,
+      meta: { requiresAuth: true },
       props: true
     },
     {
@@ -89,42 +95,50 @@ const router = createRouter({
       path: '/Itinerary',
       name: 'Itinerary',
       component: Itinerary,
+      meta: { requiresAuth: true } // Requires authentication to access
     },
     {
       path: '/MoreActivitiesPage',
       name: 'MoreActivitiesPage',
       component: MoreActivitiesPage,
+      meta: { requiresAuth: true },
     },
     {
       path: '/MoreDiningPage',
       name: 'MoreDiningPage',
       component: MoreDiningPage,
+      meta: { requiresAuth: true },
     },
     {
       path: '/MoreLandmarksPage',
       name: 'MoreLandmarksPage',
       component: MoreLandmarksPage,
+      meta: { requiresAuth: true },
     },
     {
       path: '/MoreShoppingPage',
       name: 'MoreShoppingPage',
       component: MoreShoppingPage,
+      meta: { requiresAuth: true },
     },
     {
       path: '/Itinerary2',
       name: 'Itinerary2',
       component: Itinerary2,
+      meta: { requiresAuth: true },
     },
     {
       path: '/GeneratedItinerary',
       name: 'GeneratedItinerary',
       component: GeneratedItinerary,
+      meta: { requiresAuth: true }, // Requires authentication to access
       props: true
     },
     {
       path: '/GeneratedItinerary2',
       name: 'GeneratedItinerary2',
       component: GeneratedItinerary2,
+      meta: { requiresAuth: true },
     },
     {
       path: '/LoggingOut',
@@ -135,6 +149,7 @@ const router = createRouter({
       path: '/EmailVerification',
       name: 'EmailVerification',
       component: EmailVerification,
+      meta: { requiresAuth: true },
     },
     {
       path: '/SuperuserPassword',
@@ -148,64 +163,74 @@ const router = createRouter({
       // layout: SuperuserLayout,
       name: 'SuperuserLogin',
       component: SuperuserLogin,
-      meta: { requiresSuperuser: true } 
+      meta: { requiresSuperuser: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/SuperuserDashboard',
       // layout: SuperuserLayout,
       name: 'SuperuserDashboard',
       component: SuperuserDashboard,
-      meta: { requiresSuperuser: true } 
+      meta: { requiresSuperuser: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/SuperuserAccounts',
       // layout: SuperuserLayout,
       name: 'SuperuserAccounts',
       component: SuperuserAccounts,
-      meta: { requiresSuperuser: true } 
+      meta: { requiresSuperuser: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/SuperuserAccountDetails',
       // layout: SuperuserLayout,
       name: 'SuperuserAccountDetails',
       component: SuperuserAccountDetails,
-      meta: { requiresSuperuser: true } 
+      meta: { requiresSuperuser: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/SuperuserAnalytics',
       // layout: SuperuserLayout,
       name: 'SuperuserAnalytics',
       component: SuperuserAnalytics,
-      meta: { requiresSuperuser: true } 
+      meta: { requiresSuperuser: true },
+      meta: { requiresAuth: true },
     },
     {
       path: '/SavedItinerary',
       name: 'SavedItinerary',
       component: SavedItinerary,
+      meta: { requiresAuth: true },
       props: true,
     },
     {
       path: '/SavedItinerary2',
       name: 'SavedItinerary2',
       component: SavedItinerary2,
+      meta: { requiresAuth: true },
       props: true,
     },
     {
       path: '/CustomizeTrips',
       name: 'CustomizeTrips',
       component: CustomizeTrips,
+      meta: { requiresAuth: true },
       props: true,
     },
     {
       path: '/CustomizeItinerary',
       name: 'CustomizeItinerary',
       component: CustomizeItinerary,
+      meta: { requiresAuth: true },
       props: true,
     },
     {
       path: '/UserAccount',
       name: 'UserAccount',
       component: UserAccount,
+      meta: { requiresAuth: true },
       props: true,
     }
 
@@ -215,6 +240,64 @@ const router = createRouter({
     return { top: 0, left: 0 }
   }
 })
+
+router.beforeEach(async (to, from, next) => {
+  // Check if the route requires authentication
+  if (to.meta.requiresAuth) {
+    try {
+      // Wait for the result of isAuthenticated()
+      const authenticated = await isAuthenticated();
+      console.log("Authenticated:", authenticated);
+
+      if (!authenticated) {
+        // If not authenticated, redirect to login page
+        next('/LoginPage');
+      } else {
+        // If authenticated, allow access to the route
+        next();
+      }
+    } catch (error) {
+      console.error('Error checking authentication:', error);
+      // If an error occurs, redirect to login page or handle accordingly
+      next('/LoginPage');
+    }
+  } else {
+    // If the route does not require authentication, allow access
+    next();
+  }
+});
+
+async function isAuthenticated() {
+  // Get the login_token cookie
+  const loginToken = Cookies.get('login_token');
+  console.log('loginToken:', loginToken);
+
+  // If loginToken is undefined, null, or an empty string, user is not logged in
+  if (!loginToken || loginToken === '' || loginToken === undefined) {
+    console.log('Reached this point');
+    return false;
+  } else {
+    try {
+      // Make an API call to verify the token's identity
+      const response = await axios.post('http://localhost:8000/api/verify-token', {}, {
+        headers: {
+          Authorization: `Bearer ${loginToken}`, // Use loginToken here
+        },
+      });
+
+      // Check if the API call was successful and the user is authenticated
+      if (response.data.authenticated) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      console.error('Error verifying token:', error);
+      // If there's an error, return false (user is not authenticated)
+      return false;
+    }
+  }
+}
 
 
 export default router
