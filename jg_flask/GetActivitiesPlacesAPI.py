@@ -59,7 +59,7 @@ def scrape_activities():
 
     ############################################## We can change this keyword in the future ##############################################
     # keyword = 'mexican' 
-    desired_result_count = 10
+    desired_result_count = 1
     # Desired result count here
 
     #Dynamic Filepath

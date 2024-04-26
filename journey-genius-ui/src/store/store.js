@@ -27,6 +27,12 @@ const store = createStore({
     generated_shops: null,
     generated_foods: null,      
     generated_landmarks: null,
+    cityPictures: null,
+    activityPictures: null,
+    landmarkPictures: null,
+    shopPictures: null,
+    foodPictures: null,
+    hotelPictures: null,
     
     tripObject: {
       id: null,
@@ -144,7 +150,26 @@ const store = createStore({
     },
     updateGeneratedHotels(state, generated_hotels){
       state.generated_hotels = generated_hotels;
-    }
+    },
+
+    updateCityPictures(state, cityPictures){
+      state.cityPictures = cityPictures;
+    },
+    updateActivityPictures(state, activityPictures){
+      state.activityPictures = activityPictures;
+    },
+    updateLandmarkPictures(state, landmarkPictures){
+      state.landmarkPictures = landmarkPictures;
+    },
+    updateFoodPictures(state, foodPictures){
+      state.foodPictures = foodPictures;
+    },
+    updateShopPictures(state, shopPictures){
+      state.shopPictures = shopPictures;
+    },
+    updateHotelPictures(state, hotelPictures){
+      state.hotelPictures = hotelPictures;
+    },
 
 
   },
