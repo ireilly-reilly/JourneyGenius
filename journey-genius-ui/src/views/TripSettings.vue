@@ -37,13 +37,11 @@
                     <p>Enable this to use OpenAI to generate descriptions for the selected options. Please note that
                         these descriptions are crafted to provide a broad overview rather than detailed specifics. This
                         approach ensures that you receive a general idea of what to expect.</p>
-                    <v-row justify="center" class="my-3">
-                        <v-col cols="12"> <!-- Ensure full width but centered content -->
-                            <div class="d-flex justify-center"> <!-- Flexbox to center the switch -->
-                                <v-switch v-model="descriptionToggle" color="deep-purple-accent-2"
+                    <v-row align="center" justify="center" class="my-3 align-center">
+                        <v-col cols="12" class="d-flex justify-center"> <!-- Using d-flex on v-col directly -->
+                                <v-switch v-model="descriptionToggle" color="deep-purple-accent-2" class="centered-text"
                                     :label="`Generate Descriptions: ${descriptionToggle ? 'On' : 'Off'}`"
                                     large></v-switch>
-                            </div>
                         </v-col>
                     </v-row>
                 </v-card>
@@ -55,7 +53,7 @@
         <!-- Estimated Loading Time -->
         <v-row justify="center">
             <v-col cols="12" md="8">
-                <v-card class="pa-4 mb-4">
+                <v-card class="pa-4 mb-4 justify-center">
                     <!-- Header aligned to the left -->
                     <h2 class="headline text-deep-purple-accent-2" style="text-align: left;">Estimated Loading Time</h2>
                     <p>The system calculates the expected loading time based on current settings. Enabling 'Description

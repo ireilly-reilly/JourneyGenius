@@ -2,9 +2,9 @@
   <nav>
     <v-toolbar flat app>
       <!-- Title -->
-      <v-toolbar-title class="text-uppercase grey--text mr-5">
+      <v-toolbar-title class="text-uppercase grey--text mr-5" @click="titleClicked">
         <span class="font-weight-light">Journey</span>
-        <span>Genius</span>
+        <span class="mouse-hover">Genius</span>
       </v-toolbar-title>
 
       <!-- Buttons that link to other parts of the site -->
@@ -101,6 +101,11 @@ export default {
         });
     },
 
+    titleClicked() {
+      this.$router.push({ name: 'Home' });
+    }, 
+
+
     logout() {
       const url = 'http://localhost:8000/api/LogoutUser';
       Cookies.remove('login_token');
@@ -155,4 +160,8 @@ export default {
   /* Adjust this value as needed to make it bigger */
   color: #651FFF;
 }
+.mouse-hover:hover {
+  color: #651FFF; /* Assuming you want Vuetify's deep-purple accent color */
+}
+
 </style>
