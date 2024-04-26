@@ -15,17 +15,20 @@
               :type="showPassword ? 'text' : 'password'"
               prepend-icon="mdi-lock"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              @keyup.enter="register"
               @click:append="showPassword = !showPassword"/>
+              
             <v-text-field 
               v-model="confirmPassword"
               label="Confirm Password" 
               :type="showPassword ? 'text' : 'password'"
               prepend-icon="mdi-lock"
               :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
+              @keyup.enter="register"
               @click:append="showPassword = !showPassword"/>
               <div v-if="RegistrationErrorMessage" class="error-message">{{ RegistrationErrorMessage }}</div>
               
-            <span v-if="passwordsDoNotMatch" class="error-message">Passwords do not match.</span>
+            <span v-if="passwordsDoNotMatch" class="error-message"> {{ passwordErrorMessage }}</span>
           </v-card-text>
   
           <v-divider></v-divider>
@@ -65,6 +68,7 @@
         lastname: '',
         password: '',
         RegistrationErrorMessage: '',
+        passwordErrorMessage: '',
         message: '',
         confirmPassword: '',
       };
@@ -109,6 +113,7 @@
         if (this.password !== this.confirmPassword) {
             // Show an error message or handle the mismatched passwords
             console.log("Passwords do not match");
+            this.passwordErrorMessage = 'Passwords do not match.'
             return;
         }
 

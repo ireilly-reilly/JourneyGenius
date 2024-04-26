@@ -1,4 +1,16 @@
 <template>
+  <!-- Navigation Drawer -->
+  <v-navigation-drawer v-model="drawer" location="right" temporary>
+    <v-list dense>
+      <v-list-item @click="logout" prepend-icon="mdi-logout">
+        <v-list-item-title>Logout</v-list-item-title>
+      </v-list-item>
+      <v-list-item @click="home" prepend-icon="mdi-account-edit">
+        <v-list-item-title>Return to Home</v-list-item-title>
+      </v-list-item>
+    </v-list>
+  </v-navigation-drawer>
+
   <div class="dashboard-page">
     <v-app-bar app color="grey lighten-2">
       <v-toolbar-title class="white--text">Journey Genius - Admin</v-toolbar-title>
@@ -9,9 +21,9 @@
         </v-btn>
       </div>
       <v-spacer></v-spacer>
-      <v-btn text color="white" @click="logout">
-        <span style="margin-right: 5px;">Logout</span>
-        <v-icon right color="white">mdi-exit-to-app</v-icon>
+      <v-btn text color="white" @click="drawer = !drawer">
+        <span style="margin-right: 5px;">Account</span>
+        <v-icon right color="white">mdi-account-circle</v-icon>
       </v-btn>
     </v-app-bar>
 
@@ -70,6 +82,7 @@ import Cookies from 'js-cookie';
 export default {
   data() {
     return {
+      drawer: false, // Control the navigation drawer
       adminName: "Admin Name", // Assuming this is dynamically set
       tfidfStatus: "Status", // Assuming these statuses are dynamically set
       authenticationStatus: "Status",
@@ -98,6 +111,24 @@ export default {
     },
   },
   methods: {
+    home() {
+      const url = 'http://localhost:8000/api/LogoutUser';
+      Cookies.remove('login_token');
+
+      axios.post(url)
+        .then(response => {
+          console.log('Logout successful!', response);
+          this.message = 'Logout successful.';
+          this.isLoggedIn = false;
+          setTimeout(() => {
+            window.location = '/'; // Directly navigate to home and refresh
+          }, 1000);
+        })
+        .catch(error => {
+          console.error('Error logging out', error);
+          this.message = 'Error logging out.';
+        })
+    },
     logout() {
       const url = 'http://localhost:8000/api/LogoutUser';
       Cookies.remove('login_token');
