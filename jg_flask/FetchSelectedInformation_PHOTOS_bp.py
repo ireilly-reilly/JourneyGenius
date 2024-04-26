@@ -47,18 +47,22 @@ def process_restaurant_data():
         
         print(photo_urls)
 
-        response_data = {
-            'message': 'Location data and photo URLs retrieved successfully (restaurants)',
-            'location_ids': place_ids,
-            'photo_urls': photo_urls
-        }
+        # response_data = {
+        #     'message': 'Location data and photo URLs retrieved successfully (restaurants)',
+        #     'location_ids': place_ids,
+        #     'photo_urls': photo_urls
+        # }
+        response_data = [
+            photo_urls
+        ]
 
-        return jsonify(response_data), 200
+        return jsonify(photo_urls), 200
 
     except Exception as e:
         error_message = str(e)
         print("Error retrieving photos:", error_message)
-        return jsonify({'error': 'An error occurred while retrieving the photos', 'message': error_message})
+        # return jsonify({'error': 'An error occurred while retrieving the photos', 'message': error_message})
+        return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
 
 def fetch_single_photo(place_id):
     try:
@@ -69,12 +73,15 @@ def fetch_single_photo(place_id):
         if 'photos' in place_details['result']:
             photo_reference = place_details['result']['photos'][1]['photo_reference']  # Assuming photo reference is at index 1
             # Construct photo URL
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference={photo_reference}&key={api_key}"
             print(f"Photo URL: {photo_url}")
 
             return photo_url
         else:
             print("No photo found for the place.")
+            fail = f"https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+            return fail
+            # return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
             return None
     except ApiError as e:
         print(f"Error fetching photo: {e}")
@@ -117,12 +124,12 @@ def process_activity_data():
             'photo_urls': photo_urls
         }
 
-        return jsonify(response_data), 200
+        return jsonify(photo_urls), 200
 
     except Exception as e:
         error_message = str(e)
         print("Error retrieving photos:", error_message)
-        return jsonify({'error': 'An error occurred while retrieving the photos', 'message': error_message})
+        return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
 
 def fetch_single_photo(place_id):
     try:
@@ -133,12 +140,15 @@ def fetch_single_photo(place_id):
         if 'photos' in place_details['result']:
             photo_reference = place_details['result']['photos'][1]['photo_reference']  # Assuming photo reference is at index 1
             # Construct photo URL
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference={photo_reference}&key={api_key}"
             print(f"Photo URL: {photo_url}")
 
             return photo_url
         else:
             print("No photo found for the place.")
+            fail = f"https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+            return fail
+
             return None
     except ApiError as e:
         print(f"Error fetching photo: {e}")
@@ -154,6 +164,7 @@ def process_landmark_data():
         data = request.json
         landmarks = data.get('landmarks')
         print(landmarks)
+        
 
         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
         CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
@@ -181,12 +192,12 @@ def process_landmark_data():
             'photo_urls': photo_urls
         }
 
-        return jsonify(response_data), 200
+        return jsonify(photo_urls), 200
 
     except Exception as e:
         error_message = str(e)
         print("Error retrieving photos:", error_message)
-        return jsonify({'error': 'An error occurred while retrieving the photos', 'message': error_message})
+        return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
 
 def fetch_single_photo(place_id):
     try:
@@ -197,12 +208,16 @@ def fetch_single_photo(place_id):
         if 'photos' in place_details['result']:
             photo_reference = place_details['result']['photos'][1]['photo_reference']  # Assuming photo reference is at index 1
             # Construct photo URL
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference={photo_reference}&key={api_key}"
             print(f"Photo URL: {photo_url}")
 
             return photo_url
         else:
             print("No photo found for the place.")
+            fail = f"https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+            return fail
+            return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
+
             return None
     except ApiError as e:
         print(f"Error fetching photo: {e}")
@@ -245,12 +260,12 @@ def process_shopping_data():
             'photo_urls': photo_urls
         }
 
-        return jsonify(response_data), 200
+        return jsonify(photo_urls), 200
 
     except Exception as e:
         error_message = str(e)
         print("Error retrieving photos:", error_message)
-        return jsonify({'error': 'An error occurred while retrieving the photos', 'message': error_message})
+        return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
 
 def fetch_single_photo(place_id):
     try:
@@ -261,12 +276,15 @@ def fetch_single_photo(place_id):
         if 'photos' in place_details['result']:
             photo_reference = place_details['result']['photos'][1]['photo_reference']  # Assuming photo reference is at index 1
             # Construct photo URL
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference={photo_reference}&key={api_key}"
             print(f"Photo URL: {photo_url}")
 
             return photo_url
         else:
             print("No photo found for the place.")
+            fail = f"https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+            return fail
+            return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
             return None
     except ApiError as e:
         print(f"Error fetching photo: {e}")
@@ -309,28 +327,32 @@ def process_hotel_data():
             'photo_urls': photo_urls
         }
 
-        return jsonify(response_data), 200
+        return jsonify(photo_urls), 200
 
     except Exception as e:
         error_message = str(e)
         print("Error retrieving photos:", error_message)
-        return jsonify({'error': 'An error occurred while retrieving the photos', 'message': error_message})
+        return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
 
 def fetch_single_photo(place_id):
     try:
         # Make a request to fetch place details
         place_details = gmaps.place(place_id)
 
+
         # Extract photo URL from the response
         if 'photos' in place_details['result']:
             photo_reference = place_details['result']['photos'][1]['photo_reference']  # Assuming photo reference is at index 1
             # Construct photo URL
-            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference={photo_reference}&key={api_key}"
+            photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference={photo_reference}&key={api_key}"
             print(f"Photo URL: {photo_url}")
 
             return photo_url
         else:
             print("No photo found for the place.")
+            fail = f"https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+            return fail
+            return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
             return None
     except ApiError as e:
         print(f"Error fetching photo: {e}")

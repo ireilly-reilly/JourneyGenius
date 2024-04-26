@@ -280,7 +280,8 @@ export default {
         // Make an HTTP POST request to your Python server
         axios.post('http://localhost:8000/api/restaurant_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Food Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateFoodPictures', response.data);
             })
             .catch(error => {
                 console.error('Error sending data to Python server (restaurant):', error);
@@ -288,7 +289,9 @@ export default {
 
         axios.post('http://localhost:8000/api/activity_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Activity Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateActivityPictures', response.data);
+
             })
             .catch(error => {
                 console.error('Error sending data to Python server (activity):', error);
@@ -296,7 +299,8 @@ export default {
 
         axios.post('http://localhost:8000/api/landmark_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Landmark Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateLandmarkPictures', response.data);
             })
             .catch(error => {
                 console.error('Error sending data to Python server (landmark):', error);
@@ -304,7 +308,8 @@ export default {
 
         axios.post('http://localhost:8000/api/shopping_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Shopping Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateShopPictures', response.data);
             })
             .catch(error => {
                 console.error('Error sending data to Python server (shopping):', error);
@@ -312,7 +317,8 @@ export default {
 
         axios.post('http://localhost:8000/api/hotel_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Hotel Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateHotelPictures', response.data);
             })
             .catch(error => {
                 console.error('Error sending data to Python server (hotel):', error);
@@ -354,7 +360,7 @@ export default {
         },
         discardTrip() {
             this.dialog = false;
-            this.$router.push('/StartPlanning');
+            this.$router.push('/TripSettings');
         },
         previousStep() {
             this.$router.push('/CustomizeItinerary');
