@@ -1,24 +1,36 @@
 <template>
     <!-- Password change snackbar -->
     <v-snackbar v-model="showPasswordSnackbar" color="deep-purple-accent-2" top>
-            <span class="centered-text">Password changed successfully.</span>
+        <span class="centered-text">Password changed successfully.</span>
     </v-snackbar>
     <!-- Freeze User snackbar -->
     <v-snackbar v-model="showFreezeSnackbar" color="deep-purple-accent-2" top>
-            <span class="centered-text">Freeze status updated successfully.</span>
+        <span class="centered-text">Freeze status updated successfully.</span>
     </v-snackbar>
     <!-- Delete User snackbar -->
     <v-snackbar v-model="showDeleteUserSnackbar" color="deep-purple-accent-2" top>
-            <span class="centered-text">Account deleted successfully.</span>
+        <span class="centered-text">Account deleted successfully.</span>
     </v-snackbar>
     <!-- Edit User profile snackbar -->
     <v-snackbar v-model="editUserProfileSnackbar" color="deep-purple-accent-2" top>
-            <span class="centered-text">User information updated successfully.</span>
+        <span class="centered-text">User information updated successfully.</span>
     </v-snackbar>
     <!-- Delete single trip snackbar -->
     <v-snackbar v-model="showTripDeletedSnackbar" color="deep-purple-accent-2" top>
-            <span class="centered-text">Trip deleted successfully.</span>
+        <span class="centered-text">Trip deleted successfully.</span>
     </v-snackbar>
+    <!-- Navigation Drawer -->
+    <v-navigation-drawer v-model="drawer" location="right" temporary>
+        <v-list dense>
+            <v-list-item @click="logout" prepend-icon="mdi-logout">
+                <v-list-item-title>Logout</v-list-item-title>
+            </v-list-item>
+            <v-list-item @click="home" prepend-icon="mdi-account-edit">
+                <v-list-item-title>Return to Home</v-list-item-title>
+            </v-list-item>
+        </v-list>
+    </v-navigation-drawer>
+
     <div class="user-accounts-page">
         <v-app-bar app color="grey lighten-2">
             <v-toolbar-title>Journey Genius - Admin</v-toolbar-title>
@@ -31,9 +43,9 @@
 
             <v-spacer></v-spacer>
 
-            <v-btn text color="white" @click="logout">
-                <span style="margin-right: 5px;">Logout</span>
-                <v-icon right color="white">mdi-exit-to-app</v-icon>
+            <v-btn text color="white" @click="drawer = !drawer">
+                <span style="margin-right: 5px;">Account</span>
+        <v-icon right color="white">mdi-account-circle</v-icon>
             </v-btn>
         </v-app-bar>
         <h1 style="color: black;">User Accounts</h1>
@@ -43,7 +55,7 @@
         <v-text-field v-model="searchQuery" label="Search" outlined dense color="black"></v-text-field>
 
         <!-- Sort bar -->
-        <v-select v-model="sortBy" :items="sortOptions" label="Sort By" outlined dense color="black"></v-select>
+        <!-- <v-select v-model="sortBy" :items="sortOptions" label="Sort By" outlined dense color="black"></v-select> -->
 
         <!-- User accounts table -->
         <table class="user-accounts-table">
@@ -60,71 +72,76 @@
                 <tr v-for="user in sortedUsers" :key="user.DatabaseID" @click="selectUser(user)">
                     <td>{{ user.DatabaseID }}</td>
                     <td>{{ user.FirstName }}</td>
-                    <td>{{ user.LastName }}</td
-                    ><td>{{ user.Email }}</td>
+                    <td>{{ user.LastName }}</td>
+                    <td>{{ user.Email }}</td>
                     <td>{{ user.LastLoggedIn }}</td>
                 </tr>
             </tbody>
         </table>
 
         <!-- Dialog for resetting a user password-->
-<v-dialog v-model="resetPasswordDialogVisible" max-width="650">
-    <v-card>
-        <v-card-title class="headline" style="padding-left: 25px; padding-top: 15px;">Reset User Password</v-card-title>
-        <v-card-text>
-            <span style="color: red;">Important: This action should only be done with user consent!</span>
-            <v-spacer></v-spacer>
-            Passwords must contain 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.
-        </v-card-text>
-        <v-card-text>
-            Enter new password:
-            <v-text-field v-model="newPassword" label="New Password" type="password" :class="{ 'error-outline': showLoginError }" @keyup.enter="login" />
-            <v-spacer></v-spacer>
-            Confirm new password:
-            <v-text-field v-model="confirmPassword" label="Confirm Password" type="password" :class="{ 'error-outline': showLoginError }" @keyup.enter="login" />
-            <span v-if="passwordsDoNotMatch" class="error-message">Passwords do not match.</span>
-            <v-spacer></v-spacer>
-            <span v-if="!this.validatePassword(this.newPassword)" class="error-message">Password does not meet requirements.</span>
-        </v-card-text>
-        <v-card-actions>
-            <v-spacer></v-spacer>
-            <v-btn color="deep-purple-accent-2" text @click="resetPasswordDialogVisible = false">Cancel</v-btn>
-            <v-btn color="red darken-1" text @click="resetPassword">Reset Password</v-btn>
-        </v-card-actions>
-    </v-card>
-</v-dialog>
-        
+        <v-dialog v-model="resetPasswordDialogVisible" max-width="650">
+            <v-card>
+                <v-card-title class="headline" style="padding-left: 25px; padding-top: 15px;">Reset User
+                    Password</v-card-title>
+                <v-card-text>
+                    <span style="color: red;">Important: This action should only be done with user consent!</span>
+                    <v-spacer></v-spacer>
+                    Passwords must contain 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be
+                    at least 8 characters long.
+                </v-card-text>
+                <v-card-text>
+                    Enter new password:
+                    <v-text-field v-model="newPassword" label="New Password" type="password"
+                        :class="{ 'error-outline': showLoginError }" @keyup.enter="login" />
+                    <v-spacer></v-spacer>
+                    Confirm new password:
+                    <v-text-field v-model="confirmPassword" label="Confirm Password" type="password"
+                        :class="{ 'error-outline': showLoginError }" @keyup.enter="login" />
+                    <span v-if="passwordsDoNotMatch" class="error-message">Passwords do not match.</span>
+                    <v-spacer></v-spacer>
+                    <span v-if="!this.validatePassword(this.newPassword)" class="error-message">Password does not meet
+                        requirements.</span>
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="deep-purple-accent-2" text @click="resetPasswordDialogVisible = false">Cancel</v-btn>
+                    <v-btn color="red darken-1" text @click="resetPassword">Reset Password</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
-                <!-- Dialog for confirming individual user trip delete-->
+
+        <!-- Dialog for confirming individual user trip delete-->
         <v-dialog v-model="confirmDeleteTripDialog" max-width="650">
-                  <v-card>
-                    <v-card-title class="headline"
-                      style="padding-left: 25px; padding-top: 15px;">Confirmation</v-card-title>
-                    <v-card-text>
-                      Are you sure you want to delete this user's trip? This action cannot be undone.
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="deep-purple-accent-2" text @click="confirmDeleteTripDialog = false">Cancel</v-btn>
-                      <v-btn color="red darken-1" text @click="confirmDeleteTrip">Delete Trip</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+            <v-card>
+                <v-card-title class="headline"
+                    style="padding-left: 25px; padding-top: 15px;">Confirmation</v-card-title>
+                <v-card-text>
+                    Are you sure you want to delete this user's trip? This action cannot be undone.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="deep-purple-accent-2" text @click="confirmDeleteTripDialog = false">Cancel</v-btn>
+                    <v-btn color="red darken-1" text @click="confirmDeleteTrip">Delete Trip</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
         <!-- Dialog for displaying and editing user details -->
         <v-dialog v-model="dialogVisible" max-width="700px">
             <v-card>
                 <v-card-title class="headline">User Information</v-card-title>
-                
+
                 <v-card-text>
                     <!-- Additional row for Frozen status -->
-            <v-row v-if="selectedUser && selectedUser.FreezeFlag === 1">
-                <v-col cols="3">
-                    <strong>Freeze Status:</strong>
-                </v-col>
-                <v-col cols="9">
-                    <span style="color: red;">Frozen</span>
-                </v-col>
-            </v-row>
+                    <v-row v-if="selectedUser && selectedUser.FreezeFlag === 1">
+                        <v-col cols="3">
+                            <strong>Freeze Status:</strong>
+                        </v-col>
+                        <v-col cols="9">
+                            <span style="color: red;">Frozen</span>
+                        </v-col>
+                    </v-row>
                     <!-- ID, Last Name, First Name, Email -->
                     <v-row>
                         <v-col cols="12">
@@ -191,55 +208,59 @@
                     </v-row>
                     <br>
                     <!-- Saved Trips -->
-<v-card class="mt-4">
-    <v-card-title class="headline">Saved Trips</v-card-title>
-    <v-card-text>
-
-        
-        
-
-<!-- User Trips table -->
-<table class="user-accounts-table">
-            <thead>
-                <tr>
-                    <th v-for="tripHeaders in tripHeaders" :key="tripHeaders.value" @click="sortByColumn(tripHeaders.value)">
-                        <strong>{{ tripHeaders.text }}</strong>
-                        <span v-if="sortBy === tripHeaders.value"
-                            :class="[sortDesc ? 'mdi mdi-arrow-down' : 'mdi mdi-arrow-up']"></span>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="trip in savedTrips" :key="trip.id" @click="selectTrip(trip)">
-                    <td>{{ trip.id }}</td>
-                    <td>{{ trip.city }}</td>
-                    <td>{{ trip.state }}</td
-                    ><td>{{ trip.dates }}</td>
-                    <!-- <td> -->
-                    <!-- <v-btn color="deep-purple-accent-2" @click="editTrip(props.item)">Edit</v-btn> -->
-                <!-- </td> -->
-                <td>
-                    <v-btn color="deep-purple-accent-2" @click="">Details</v-btn>
-                </td>
-                    <!-- <td>{{ trip.budget }}</td> -->
-                </tr>
-            </tbody>
-        </table>
+                    <v-card class="mt-4">
+                        <v-card-title class="headline">Saved Trips</v-card-title>
+                        <v-card-text>
 
 
 
 
-    </v-card-text>
-</v-card>
+                            <!-- User Trips table -->
+                            <table class="user-accounts-table">
+                                <thead>
+                                    <tr>
+                                        <th v-for="tripHeaders in tripHeaders" :key="tripHeaders.value"
+                                            @click="sortByColumn(tripHeaders.value)">
+                                            <strong>{{ tripHeaders.text }}</strong>
+                                            <span v-if="sortBy === tripHeaders.value"
+                                                :class="[sortDesc ? 'mdi mdi-arrow-down' : 'mdi mdi-arrow-up']"></span>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="trip in savedTrips" :key="trip.id" @click="selectTrip(trip)">
+                                        <td>{{ trip.id }}</td>
+                                        <td>{{ trip.city }}</td>
+                                        <td>{{ trip.state }}</td>
+                                        <td>{{ trip.dates }}</td>
+                                        <!-- <td> -->
+                                        <!-- <v-btn color="deep-purple-accent-2" @click="editTrip(props.item)">Edit</v-btn> -->
+                                        <!-- </td> -->
+                                        <td>
+                                            <v-btn color="deep-purple-accent-2" @click="">Details</v-btn>
+                                        </td>
+                                        <!-- <td>{{ trip.budget }}</td> -->
+                                    </tr>
+                                </tbody>
+                            </table>
+
+
+
+
+                        </v-card-text>
+                    </v-card>
 
                 </v-card-text>
                 <v-card-actions>
                     <!-- Freeze, Delete, Reset Password Buttons -->
-                    <v-btn color="red darken-1" class="mr-4" @click="freezeAccount">{{ selectedUser && selectedUser.FreezeFlag === 1 ? 'Unfreeze User' : 'Freeze User' }}</v-btn>
-                        
-                    <v-btn color="red darken-1" class="mr-4" @click="confirmationDialogVisible = true">Delete User</v-btn>
+                    <v-btn color="red darken-1" class="mr-4" @click="freezeAccount">{{ selectedUser &&
+                        selectedUser.FreezeFlag === 1 ? 'Unfreeze User' : 'Freeze User' }}</v-btn>
+
+                    <v-btn color="red darken-1" class="mr-4" @click="confirmationDialogVisible = true">Delete
+                        User</v-btn>
                     <v-btn color="red darken-1" @click="resetPasswordDialogVisible = true">Reset Password</v-btn>
-                    <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Profile' }}</v-btn>
+                    <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ?
+                        'Save' : 'Edit Profile' }}</v-btn>
                     <v-btn color="deep-purple-accent-2" @click="closeDialog">Close</v-btn>
                 </v-card-actions>
             </v-card>
@@ -248,25 +269,25 @@
 
         <!-- Dialog for confirming user account delete-->
         <v-dialog v-model="confirmationDialogVisible" max-width="650">
-                  <v-card>
-                    <v-card-title class="headline"
-                      style="padding-left: 25px; padding-top: 15px;">Confirmation</v-card-title>
-                    <v-card-text>
-                      Are you sure you want to delete this User? This action cannot be undone.
-                    </v-card-text>
-                    <v-card-actions>
-                      <v-spacer></v-spacer>
-                      <v-btn color="deep-purple-accent-2" text @click="confirmationDialogVisible = false">Cancel</v-btn>
-                      <v-btn color="red darken-1" text @click="confirmDeleteUser(index)">Delete User</v-btn>
-                    </v-card-actions>
-                  </v-card>
-                </v-dialog>
+            <v-card>
+                <v-card-title class="headline"
+                    style="padding-left: 25px; padding-top: 15px;">Confirmation</v-card-title>
+                <v-card-text>
+                    Are you sure you want to delete this User? This action cannot be undone.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="deep-purple-accent-2" text @click="confirmationDialogVisible = false">Cancel</v-btn>
+                    <v-btn color="red darken-1" text @click="confirmDeleteUser(index)">Delete User</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
 
         <!-- Dialog for displaying and editing trip details -->
         <v-dialog v-model="tripDetailsDialog" max-width="800px">
             <v-card>
                 <v-card-title class="headline">Trip Information</v-card-title>
-                
+
                 <v-card-text>
                     <!-- ID, City, State, Dates, Edit, Delete -->
                     <v-row>
@@ -476,7 +497,7 @@
                 </v-card-text>
                 <v-card-actions>
                     <v-btn color="red darken-1" class="mr-4" @click="confirmDeleteTripDialog = true">Delete Trip</v-btn>
-                    <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Trip' }}</v-btn>
+                    <!-- <v-btn color="deep-purple-accent-2" class="ml-auto" @click="toggleEditingUser">{{ isEditingUser ? 'Save' : 'Edit Trip' }}</v-btn> -->
                     <v-btn color="deep-purple-accent-2" @click="tripDetailsDialog = false">Close</v-btn>
                 </v-card-actions>
             </v-card>
@@ -496,6 +517,7 @@ import Cookies from 'js-cookie'
 export default {
     data() {
         return {
+            drawer: false, // Control the navigation drawer
             showPasswordSnackbar: false,
             showFreezeSnackbar: false,
             showDeleteUserSnackbar: false,
@@ -594,6 +616,32 @@ export default {
         },
     },
     methods: {
+        home() {
+            // this.$router.push({ name: 'Home' });
+            setTimeout(() => {
+            window.location = '/'; // Directly navigate to home and refresh
+          }, 1000);
+        },
+        logout() {
+            const url = 'http://localhost:8000/api/LogoutUser';
+            Cookies.remove('login_token');
+
+            axios.post(url)
+                .then(response => {
+                    console.log('Logout successful!', response);
+                    this.message = 'Logout successful.';
+                    this.isLoggedIn = false;
+                    this.$router.push({ name: 'SuperuserLogin' });
+                })
+                .catch(error => {
+                    console.error('Error logging out', error);
+                    this.message = 'Error logging out.';
+                })
+            this.buttons = [
+                { text: 'SuperuserLogin', to: '/SuperuserLogin' },
+            ];
+
+        },
         // Method to set selected user and open dialog
         selectUser(user) {
             this.selectedUser = { ...user }; // Create a copy of the user object
@@ -635,10 +683,10 @@ export default {
             const token = Cookies.get('login_token');
             // Send PUT request to update user profile
             axios.put(`http://localhost:8000/api/edit_user_account/${this.selectedUser.DatabaseID}`, this.editedUser, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
                 .then(response => {
                     console.log('User profile updated successfully:', response.data);
                     // Update selectedUser with changes from editedUser
@@ -655,16 +703,16 @@ export default {
         fetchUserTrips() {
             const token = Cookies.get('login_token');
             axios.get(`http://localhost:8000/api/fetch_user_trips/${this.selectedUser.DatabaseID}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-            .then(response => {
-                this.savedTrips = response.data.savedTrips;
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
-            .catch(error => {
-                console.error('Error fetching saved trips:', error);
-            });
+                .then(response => {
+                    this.savedTrips = response.data.savedTrips;
+                })
+                .catch(error => {
+                    console.error('Error fetching saved trips:', error);
+                });
         },
 
         editTrip(trip) {
@@ -678,10 +726,10 @@ export default {
             //Delete Trip from user
             const token = Cookies.get('login_token');
             axios.delete(`http://localhost:8000/api/delete_single_user_trip/${trip_id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
                 .then(response => {
                     //Once the trip is successfully deleted, close the dialog
                     console.log('User trip deleted successfully:', response.data);
@@ -689,7 +737,7 @@ export default {
                     this.tripDetailsDialog = false;
                     this.showTripDeletedSnackbar = true;
                     this.fetchUserTrips;
-                    
+
                 })
                 .catch(error => {
                     console.error('Error deleting trip:', error);
@@ -700,10 +748,10 @@ export default {
             const token = Cookies.get('login_token');
             // Assuming your Flask backend is running on http://localhost:8000
             axios.get('http://localhost:8000/api/user_accounts', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
+            })
                 .then(response => {
                     this.users = response.data;
                     console.log('User accounts data:', response.data);
@@ -735,20 +783,20 @@ export default {
             const token = Cookies.get('login_token');
             // Send a PUT request to update the freeze flag in the database
             axios.put(`http://localhost:8000/api/user_accounts/${userId}/freeze`, { freezeFlag: newFreezeFlag }, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-            .then(response => {
-                console.log('Account freeze status updated successfully:', response.data);
-                this.showFreezeSnackbar = true;
-        
-                // Update the freeze flag locally
-                this.selectedUser.FreezeFlag = newFreezeFlag;
+                headers: {
+                    Authorization: `Bearer ${token}`,
+                },
             })
-            .catch(error => {
-                console.error('Error updating account freeze status:', error);
-            });
+                .then(response => {
+                    console.log('Account freeze status updated successfully:', response.data);
+                    this.showFreezeSnackbar = true;
+
+                    // Update the freeze flag locally
+                    this.selectedUser.FreezeFlag = newFreezeFlag;
+                })
+                .catch(error => {
+                    console.error('Error updating account freeze status:', error);
+                });
         },
         confirmDeleteUser(index) {
             const userId = this.selectedUser.DatabaseID;
@@ -761,7 +809,7 @@ export default {
             })
                 .then(response => {
                     console.log('Trips deleted successfully:', response.data);
-            
+
                     // Step 2: Delete the user account
                     axios.delete(`http://localhost:8000/api/delete_user_account/${userId}`, {
                         headers: {
@@ -804,7 +852,7 @@ export default {
             const token = Cookies.get('login_token');
             axios.put(`http://localhost:8000/api/reset_user_password/${userId}`, { newPassword: this.newPassword }, {
                 headers: {
-                Authorization: `Bearer ${token}`,
+                    Authorization: `Bearer ${token}`,
                 },
             })
                 .then(response => {
@@ -819,11 +867,11 @@ export default {
                 });
         },
         showPasswordError() {
-        return this.newPassword && !this.validatePassword(this.newPassword);
-    },
-    passwordErrorMessage() {
-        return 'Password must contain 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.';
-    },
+            return this.newPassword && !this.validatePassword(this.newPassword);
+        },
+        passwordErrorMessage() {
+            return 'Password must contain 1 uppercase letter, 1 lowercase letter, 1 number, 1 special character, and be at least 8 characters long.';
+        },
     },
 };
 </script>
