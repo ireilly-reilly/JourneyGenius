@@ -2,9 +2,9 @@
   <nav>
     <v-toolbar flat app>
       <!-- Title -->
-      <v-toolbar-title class="text-uppercase grey--text mr-5">
+      <v-toolbar-title class="text-uppercase grey--text mr-5" @click="titleClicked">
         <span class="font-weight-light">Journey</span>
-        <span>Genius</span>
+        <span class="mouse-hover">Genius</span>
       </v-toolbar-title>
 
       <!-- Buttons that link to other parts of the site -->
@@ -46,8 +46,8 @@
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-        <br v-if="isLoggedIn">
-        <hr class="mb-4">
+        <br>
+        <hr class="mb-4" v-if="isLoggedIn">
         <v-list-item v-if="isLoggedIn" @click="userProfile" prepend-icon="mdi-account-edit">
           <v-list-item-title>Edit User Profile</v-list-item-title>
         </v-list-item>
@@ -101,6 +101,11 @@ export default {
         });
     },
 
+    titleClicked() {
+      this.$router.push({ name: 'Home' });
+    }, 
+
+
     logout() {
       const url = 'http://localhost:8000/api/LogoutUser';
       Cookies.remove('login_token');
@@ -139,7 +144,7 @@ export default {
         this.buttons = [
           { text: 'Home', to: '/' },
           { text: 'Trip Preferences', to: '/UserProfiling' },
-          { text: 'Plan Trip', to: '/StartPlanning' },
+          { text: 'Plan Trip', to: '/TripSettings' },
           { text: 'Saved Trips', to: '/SavedTrips' }
         ];
       } else {
@@ -155,4 +160,8 @@ export default {
   /* Adjust this value as needed to make it bigger */
   color: #651FFF;
 }
+.mouse-hover:hover {
+  color: #651FFF; /* Assuming you want Vuetify's deep-purple accent color */
+}
+
 </style>

@@ -38,6 +38,9 @@ import Cookies from 'js-cookie'
 import axios from 'axios'
 
 
+import TripSettings from "../views/TripSettings.vue"
+import InfoPage from "../views/InfoPage.vue"
+
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
@@ -226,6 +229,18 @@ const router = createRouter({
       component: UserAccount,
       meta: { requiresAuth: true },
       props: true,
+    },
+    {
+      path: '/TripSettings',
+      name: 'TripSettings',
+      component: TripSettings,
+      props: true,
+    },
+    {
+      path: '/InfoPage',
+      name: 'InfoPage',
+      component: InfoPage,
+      props: true,
     }
 
   ],
@@ -235,64 +250,8 @@ const router = createRouter({
   }
 })
 
-// router.beforeEach(async (to, from, next) => {
-//   // Check if the route requires authentication
-//   if (to.meta.requiresAuth) {
-//     try {
-//       // Wait for the result of isAuthenticated()
-//       const authenticated = await isAuthenticated();
-//       console.log("Authenticated:", authenticated);
 
-//       if (!authenticated) {
-//         // If not authenticated, redirect to login page
-//         next('/LoginPage');
-//       } else {
-//         // If authenticated, allow access to the route
-//         next();
-//       }
-//     } catch (error) {
-//       console.error('Error checking authentication:', error);
-//       // If an error occurs, redirect to login page or handle accordingly
-//       next('/LoginPage');
-//     }
-//   } else {
-//     // If the route does not require authentication, allow access
-//     next();
-//   }
-// });
-
-// async function isAuthenticated() {
-//   // Get the login_token cookie
-//   const loginToken = Cookies.get('login_token');
-//   console.log('loginToken:', loginToken);
-
-//   // If loginToken is undefined, null, or an empty string, user is not logged in
-//   if (!loginToken || loginToken === '' || loginToken === undefined) {
-//     console.log('Reached this point');
-//     return false;
-//   } else {
-//     try {
-//       // Make an API call to verify the token's identity
-//       const response = await axios.post('http://localhost:8000/api/verify-token', {}, {
-//         headers: {
-//           Authorization: `Bearer ${loginToken}`, // Use loginToken here
-//         },
-//       });
-
-//       // Check if the API call was successful and the user is authenticated
-//       if (response.data.authenticated) {
-//         return true;
-//       } else {
-//         return false;
-//       }
-//     } catch (error) {
-//       console.error('Error verifying token:', error);
-//       // If there's an error, return false (user is not authenticated)
-//       return false;
-//     }
-//   }
-// }
-
+//Check to see if URL requires authorization at each request
 router.beforeEach(async (to, from, next) => {
   if (to.meta.requiresAuth) {
     try {
@@ -300,20 +259,19 @@ router.beforeEach(async (to, from, next) => {
       console.log('Authenticated:', authenticated);
 
       if (!authenticated) {
-        next('/LoginPage');
+        next('/LoginPage'); //Redirect to user login page
       } else {
         if (to.meta.requiresSuperuser) {
           const isSuperuser = await isSuperuserAuthenticated();
           console.log('Superuser:', isSuperuser);
 
           if (!isSuperuser) {
-            // Redirect to unauthorized page or handle appropriately
-            next('/');
+            next('/'); //Redirect to home page 
           } else {
-            next();
+            next(); //Continue
           }
         } else {
-          next();
+          next(); //Continue
         }
       }
     } catch (error) {
@@ -325,6 +283,7 @@ router.beforeEach(async (to, from, next) => {
   }
 });
 
+//Authenticates regular user
 async function isAuthenticated() {
   const loginToken = Cookies.get('login_token');
   console.log('loginToken:', loginToken);
@@ -352,6 +311,7 @@ async function isAuthenticated() {
   }
 }
 
+//Authenticates superuser
 async function isSuperuserAuthenticated() {
   const superToken = Cookies.get('super_token');
   console.log('superToken:', superToken);
