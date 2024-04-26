@@ -209,16 +209,45 @@ export default {
     },
     methods: {
         send() {
-            const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
-            console.log(tripObjectCopy);  // Ensure the copy has the expected data
+            // const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
+            // console.log(tripObjectCopy);  // Ensure the copy has the expected data
 
-            // Push to the new route
-            this.$router.push({ name: 'SavedItinerary', params: { tripObject: tripObjectCopy } }).catch(err => {
-                console.error(err);
-            }).then(() => {
-                // Force reload the page to reset everything
-                window.location.reload();
-            });
+            // // Push to the new route
+            // this.$router.push({ name: 'SavedItinerary', params: { tripObject: tripObjectCopy } }).catch(err => {
+            //     console.error(err);
+            // }).then(() => {
+            //     // Force reload the page to reset everything
+            //     window.location.reload();
+            // });
+            this.$store.state.tripObject.activities = this.selectedActivities;
+            this.$store.state.tripObject.foods = this.selectedFoods;
+            this.$store.state.tripObject.landmarks = this.selectedLandmarks;
+            this.$store.state.tripObject.shops = this.selectedShops;
+            this.$store.state.tripObject.hotels = this.selectedHotels;
+
+            const new_selections = {
+                activities: this.selectedActivities,
+                foods: this.selectedFoods,
+                landmarks: this.selectedLandmarks,
+                shops: this.selectedShops,
+                hotels: this.selectedHotels,
+            };
+            //console.log(tripObjectCopy);  // Ensure the copy has the expected data
+            //console.log("Vuex tripObject: ", this.$store.state.tripObject);
+
+            axios.put(`http://localhost:8000/api/update_trip_selections/${this.$store.state.tripObject.id}`,new_selections)
+            .then(response => {
+                console.log('New selections saved to database.', response.data);
+                console.log('Snackbar', showSelectionChangesSnackbar);
+                })
+                .catch(error => {
+                    console.error('Error saving changes to database:', error);
+                    // Handle error
+                });
+            setTimeout(() => {
+            window.location = '/SavedItinerary'; // Directly navigate to home and refresh
+          }, 1000);
+
         },
 
         getTimelineColor(index) {

@@ -368,7 +368,12 @@ export default defineComponent({
             }
 
             // Loading Screen
-            this.isLoading = true;
+            // this.isLoading = true;
+            setTimeout(() => {
+            window.location = '/GeneratedItinerary'; // Directly navigate to home and refresh
+          }, 1000);
+
+
         }
 
     },

@@ -1,14 +1,16 @@
 <template>
     <v-app>
         <v-container>
-            <LoadingScreenShort v-if="isLoading" />
+
+            <v-snackbar v-model="showSelectionChangesSnackbar" color="deep-purple-accent-2" top>
+                <span class="centered-text">Trip selections changed successfully.</span>
+            </v-snackbar>
+
             <!-- Header -->
             <v-row justify="center" class="mt-4">
                 <v-col cols="12" md="8" class="text-center">
                     <!-- User Selections changed snackbar -->
-                    <v-snackbar v-model="showSelectionChangesSnackbar" color="deep-purple-accent-2" top>
-                        <span class="centered-text">Trip selections changed successfully.</span>
-                    </v-snackbar>
+
                     <h2 style="font-size: 2.5rem;" class="headline text-deep-purple-accent-2">
                         Plan Your Next Adventure in
                     </h2>
@@ -140,8 +142,8 @@
             <v-col cols="12" md="8" class="text-center">
                 <hr />
 
-                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="showConfirmationDialog"
-                    style="min-width: 150px;">
+                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2"
+                    @click="showConfirmationDialog" style="min-width: 150px;">
                     Cancel Changes
                 </v-btn>
 
@@ -290,11 +292,11 @@ export default defineComponent({
 
         updateSelectedActivities() {
             this.$store.commit('updateActivities', this.selectedActivities);
-            console.log("Activities stored in Vuex: " + this.$store.state.activities); 
+            console.log("Activities stored in Vuex: " + this.$store.state.activities);
         },
         updateSelectedLandmarks() {
             this.$store.commit('updateLandmarks', this.selectedLandmarks);
-            console.log("Landmarks stored in Vuex: " + this.$store.state.landmarks); 
+            console.log("Landmarks stored in Vuex: " + this.$store.state.landmarks);
         },
         updateSelectedFoods() {
             this.$store.commit('updateFoods', this.selectedFoods);
@@ -302,11 +304,11 @@ export default defineComponent({
         },
         updateSelectedShops() {
             this.$store.commit('updateShops', this.selectedShops);
-            console.log("Shopping Spots stored in Vuex: " + this.$store.state.shops); 
+            console.log("Shopping Spots stored in Vuex: " + this.$store.state.shops);
         },
         updateSelectedHotels() {
             this.$store.commit('updateHotels', this.selectedHotels);
-            console.log("Hotels stored in Vuex: " + this.$store.state.hotels); 
+            console.log("Hotels stored in Vuex: " + this.$store.state.hotels);
         },
 
 
@@ -381,20 +383,43 @@ export default defineComponent({
                 shops: this.selectedShops,
                 hotels: this.selectedHotels,
             };
+            const updatedObject = {
+                id: this.$store.state.tripObject.id,
+                city: this.$store.state.tripObject.city,
+                city_description: this.$store.state.tripObject.city_description,
+                activities: this.$store.state.tripObject.activities,
+                landmarks: this.$store.state.tripObject.landmarks,
+                foods: this.$store.state.tripObject.foods,
+                shops: this.$store.state.tripObject.shops,
+                hotels: this.$store.state.tripObject.hotels,
+                state: this.$store.state.tripObject.state,
+                dates: this.$store.state.tripObject.dates,
+                budget: this.$store.state.tripObject.budget,
+                latitude: this.$store.state.tripObject.latitude,
+                longitude: this.$store.state.tripObject.longitude,
+                city_slogan: this.$store.state.tripObject.city_slogan,
+                generated_activities: this.$store.state.tripObject.generated_activities,
+                generated_hotels: this.$store.state.tripObject.generated_hotels,
+                generated_shops: this.$store.state.tripObject.generated_shops,
+                generated_foods: this.$store.state.tripObject.generated_foods,
+                generated_landmarks: this.$store.state.tripObject.generated_landmarks,
+            };
+            // this.$store.commit('updateTripObject', this.updatedObject);
+            // console.log(this.updatedObject)
+
             //console.log(tripObjectCopy);  // Ensure the copy has the expected data
             //console.log("Vuex tripObject: ", this.$store.state.tripObject);
 
-            axios.put(`http://localhost:8000/api/update_trip_selections/${this.$store.state.tripObject.id}`,new_selections)
-            .then(response => {
-                console.log('New selections saved to database.', response.data);
-                this.showSelectionChangesSnackbar = true;
-                console.log('Snackbar', showSelectionChangesSnackbar);
+            axios.put(`http://localhost:8000/api/update_trip_selections/${this.$store.state.tripObject.id}`, new_selections)
+                .then(response => {
+                    console.log('New selections saved to database.', response.data);
+                    console.log('Snackbar', showSelectionChangesSnackbar);
                 })
                 .catch(error => {
                     console.error('Error saving changes to database:', error);
                     // Handle error
                 });
-
+            this.showSelectionChangesSnackbar = true;
             this.$router.push({ name: 'SavedItinerary', params: { tripObject: this.$store.state.tripObject } });
         }
 
@@ -452,7 +477,7 @@ export default defineComponent({
         // this.endDateData = endDateData;
     },
     created() {
-        
+
         // THIS IS ALL OF THE USER SELECTED OPTIONS
         // const tripObject = this.$route.params.tripObject;
         // const activityData = this.$store.state.tripObject.activities;
@@ -477,7 +502,7 @@ export default defineComponent({
         this.hotels = hotelData;
     },
 
-   
+
 
     computed: {
         budgetString() {
@@ -519,8 +544,8 @@ export default defineComponent({
 
     },
     components: {
-    LoadingScreenShort,
-  },
+        LoadingScreenShort,
+    },
 
 });
 </script>
