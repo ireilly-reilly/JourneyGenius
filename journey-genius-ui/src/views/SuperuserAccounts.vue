@@ -632,7 +632,7 @@ export default {
         // Have fun doing this, Isaac!!!!!!!! FIGHT ON!!!!
         // Method to save user changes
         saveUserChanges() {
-            const token = Cookies.get('login_token');
+            const token = Cookies.get('super_token');
             // Send PUT request to update user profile
             axios.put(`http://localhost:8000/api/edit_user_account/${this.selectedUser.DatabaseID}`, this.editedUser, {
         headers: {
@@ -653,7 +653,7 @@ export default {
                 });
         },
         fetchUserTrips() {
-            const token = Cookies.get('login_token');
+            const token = Cookies.get('super_token');
             axios.get(`http://localhost:8000/api/fetch_user_trips/${this.selectedUser.DatabaseID}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -676,7 +676,7 @@ export default {
             const trip_id = this.selectedTrip.id;
 
             //Delete Trip from user
-            const token = Cookies.get('login_token');
+            const token = Cookies.get('super_token');
             axios.delete(`http://localhost:8000/api/delete_single_user_trip/${trip_id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -697,7 +697,7 @@ export default {
         },
 
         fetchUserAccounts() {
-            const token = Cookies.get('login_token');
+            const token = Cookies.get('super_token');
             // Assuming your Flask backend is running on http://localhost:8000
             axios.get('http://localhost:8000/api/user_accounts', {
         headers: {
@@ -732,7 +732,7 @@ export default {
 
             // Toggle the freeze flag based on its current value
             const newFreezeFlag = this.selectedUser.FreezeFlag === 1 ? 0 : 1;
-            const token = Cookies.get('login_token');
+            const token = Cookies.get('super_token');
             // Send a PUT request to update the freeze flag in the database
             axios.put(`http://localhost:8000/api/user_accounts/${userId}/freeze`, { freezeFlag: newFreezeFlag }, {
         headers: {
@@ -752,7 +752,7 @@ export default {
         },
         confirmDeleteUser(index) {
             const userId = this.selectedUser.DatabaseID;
-            const token = Cookies.get('login_token');
+            const token = Cookies.get('super_token');
             // Step 1: Delete all trips associated with the user
             axios.delete(`http://localhost:8000/api/delete_user_trips/${userId}`, {
                 headers: {
@@ -801,7 +801,7 @@ export default {
             }
             // Send a PUT request to update the user's password
             const userId = this.selectedUser.DatabaseID; // Assuming you have a property 'DatabaseID' in your selectedUser object
-            const token = Cookies.get('login_token');
+            const token = Cookies.get('super_token');
             axios.put(`http://localhost:8000/api/reset_user_password/${userId}`, { newPassword: this.newPassword }, {
                 headers: {
                 Authorization: `Bearer ${token}`,

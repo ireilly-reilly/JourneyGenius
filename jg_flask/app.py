@@ -343,17 +343,28 @@ def get_superuser_name():
 @app.route('/api/verify-token', methods=['POST'])
 @jwt_required()
 def verify_token():
-    # Get the JWT token from the request body
-    token = request.json.get('token')
-    print('Token:', token)
-    
-
     try:
         # Use get_jwt_identity() to get the identity from the JWT token
         current_user = get_jwt_identity()
         print("Reached this point")
         # If current_user is None, the token is not valid
         if current_user is None:
+            return jsonify({'authenticated': False}), 401
+        # If the token is valid, return a response indicating that the user is authenticated
+        return jsonify({'authenticated': True}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+    
+#Example route for verifying super user JWT token identity
+@app.route('/api/verify_super_token', methods=['POST'])
+@jwt_required()
+def verify_super_token():
+    try:
+        # Use get_jwt_identity() to get the identity from the JWT token
+        super_user = get_jwt_identity()
+        print("Reached this point")
+        # If current_user is None, the token is not valid
+        if super_user is None:
             return jsonify({'authenticated': False}), 401
         # If the token is valid, return a response indicating that the user is authenticated
         return jsonify({'authenticated': True}), 200

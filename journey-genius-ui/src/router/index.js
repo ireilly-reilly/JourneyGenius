@@ -163,40 +163,34 @@ const router = createRouter({
       // layout: SuperuserLayout,
       name: 'SuperuserLogin',
       component: SuperuserLogin,
-      meta: { requiresSuperuser: true },
-      meta: { requiresAuth: true },
     },
     {
       path: '/SuperuserDashboard',
       // layout: SuperuserLayout,
       name: 'SuperuserDashboard',
       component: SuperuserDashboard,
-      meta: { requiresSuperuser: true },
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresSuperuser: true }
     },
     {
       path: '/SuperuserAccounts',
       // layout: SuperuserLayout,
       name: 'SuperuserAccounts',
       component: SuperuserAccounts,
-      meta: { requiresSuperuser: true },
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresSuperuser: true }
     },
     {
       path: '/SuperuserAccountDetails',
       // layout: SuperuserLayout,
       name: 'SuperuserAccountDetails',
       component: SuperuserAccountDetails,
-      meta: { requiresSuperuser: true },
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresSuperuser: true }
     },
     {
       path: '/SuperuserAnalytics',
       // layout: SuperuserLayout,
       name: 'SuperuserAnalytics',
       component: SuperuserAnalytics,
-      meta: { requiresSuperuser: true },
-      meta: { requiresAuth: true },
+      meta: { requiresAuth: true, requiresSuperuser: true }
     },
     {
       path: '/SavedItinerary',
@@ -241,63 +235,150 @@ const router = createRouter({
   }
 })
 
+// router.beforeEach(async (to, from, next) => {
+//   // Check if the route requires authentication
+//   if (to.meta.requiresAuth) {
+//     try {
+//       // Wait for the result of isAuthenticated()
+//       const authenticated = await isAuthenticated();
+//       console.log("Authenticated:", authenticated);
+
+//       if (!authenticated) {
+//         // If not authenticated, redirect to login page
+//         next('/LoginPage');
+//       } else {
+//         // If authenticated, allow access to the route
+//         next();
+//       }
+//     } catch (error) {
+//       console.error('Error checking authentication:', error);
+//       // If an error occurs, redirect to login page or handle accordingly
+//       next('/LoginPage');
+//     }
+//   } else {
+//     // If the route does not require authentication, allow access
+//     next();
+//   }
+// });
+
+// async function isAuthenticated() {
+//   // Get the login_token cookie
+//   const loginToken = Cookies.get('login_token');
+//   console.log('loginToken:', loginToken);
+
+//   // If loginToken is undefined, null, or an empty string, user is not logged in
+//   if (!loginToken || loginToken === '' || loginToken === undefined) {
+//     console.log('Reached this point');
+//     return false;
+//   } else {
+//     try {
+//       // Make an API call to verify the token's identity
+//       const response = await axios.post('http://localhost:8000/api/verify-token', {}, {
+//         headers: {
+//           Authorization: `Bearer ${loginToken}`, // Use loginToken here
+//         },
+//       });
+
+//       // Check if the API call was successful and the user is authenticated
+//       if (response.data.authenticated) {
+//         return true;
+//       } else {
+//         return false;
+//       }
+//     } catch (error) {
+//       console.error('Error verifying token:', error);
+//       // If there's an error, return false (user is not authenticated)
+//       return false;
+//     }
+//   }
+// }
+
 router.beforeEach(async (to, from, next) => {
-  // Check if the route requires authentication
   if (to.meta.requiresAuth) {
     try {
-      // Wait for the result of isAuthenticated()
       const authenticated = await isAuthenticated();
-      console.log("Authenticated:", authenticated);
+      console.log('Authenticated:', authenticated);
 
       if (!authenticated) {
-        // If not authenticated, redirect to login page
         next('/LoginPage');
       } else {
-        // If authenticated, allow access to the route
-        next();
+        if (to.meta.requiresSuperuser) {
+          const isSuperuser = await isSuperuserAuthenticated();
+          console.log('Superuser:', isSuperuser);
+
+          if (!isSuperuser) {
+            // Redirect to unauthorized page or handle appropriately
+            next('/');
+          } else {
+            next();
+          }
+        } else {
+          next();
+        }
       }
     } catch (error) {
       console.error('Error checking authentication:', error);
-      // If an error occurs, redirect to login page or handle accordingly
       next('/LoginPage');
     }
   } else {
-    // If the route does not require authentication, allow access
     next();
   }
 });
 
 async function isAuthenticated() {
-  // Get the login_token cookie
   const loginToken = Cookies.get('login_token');
   console.log('loginToken:', loginToken);
 
-  // If loginToken is undefined, null, or an empty string, user is not logged in
   if (!loginToken || loginToken === '' || loginToken === undefined) {
-    console.log('Reached this point');
+    console.log('User not logged in');
     return false;
-  } else {
-    try {
-      // Make an API call to verify the token's identity
-      const response = await axios.post('http://localhost:8000/api/verify-token', {}, {
-        headers: {
-          Authorization: `Bearer ${loginToken}`, // Use loginToken here
-        },
-      });
+  }
 
-      // Check if the API call was successful and the user is authenticated
-      if (response.data.authenticated) {
-        return true;
-      } else {
-        return false;
+  try {
+    const response = await axios.post(
+      'http://localhost:8000/api/verify-token',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${loginToken}`
+        }
       }
-    } catch (error) {
-      console.error('Error verifying token:', error);
-      // If there's an error, return false (user is not authenticated)
-      return false;
-    }
+    );
+
+    return response.data.authenticated;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    return false;
   }
 }
+
+async function isSuperuserAuthenticated() {
+  const superToken = Cookies.get('super_token');
+  console.log('superToken:', superToken);
+
+  if (!superToken || superToken === '' || superToken === undefined) {
+    console.log('Superuser not logged in');
+    return false;
+  }
+
+  try {
+    const response = await axios.post(
+      'http://localhost:8000/api/verify_super_token',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${superToken}`
+        }
+      }
+    );
+
+    return response.data.authenticated;
+  } catch (error) {
+    console.error('Error verifying super token:', error);
+    return false;
+  }
+}
+
 
 
 export default router
