@@ -34,7 +34,7 @@ import CustomizeTrips from '../views/CustomizeTrips.vue'
 import CustomizeItinerary from '../views/CustomizeItinerary.vue'
 import UserAccount from "../views/UserAccount.vue"
 import TripSettings from "../views/TripSettings.vue"
-
+import InfoPage from "../views/InfoPage.vue"
 
 
 const router = createRouter({
@@ -213,6 +213,12 @@ const router = createRouter({
       path: '/TripSettings',
       name: 'TripSettings',
       component: TripSettings,
+      props: true,
+    },
+    {
+      path: '/InfoPage',
+      name: 'InfoPage',
+      component: InfoPage,
       props: true,
     }
 

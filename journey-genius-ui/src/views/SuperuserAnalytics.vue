@@ -98,10 +98,22 @@ export default {
   },
   methods: {
     home() {
-      // this.$router.push({ name: 'Home' });
-      setTimeout(() => {
+      const url = 'http://localhost:8000/api/LogoutUser';
+      Cookies.remove('login_token');
+
+      axios.post(url)
+        .then(response => {
+          console.log('Logout successful!', response);
+          this.message = 'Logout successful.';
+          this.isLoggedIn = false;
+          setTimeout(() => {
             window.location = '/'; // Directly navigate to home and refresh
           }, 1000);
+        })
+        .catch(error => {
+          console.error('Error logging out', error);
+          this.message = 'Error logging out.';
+        })
     },
 
     logout() {
