@@ -257,7 +257,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       const authenticated = await isAuthenticated();
       console.log('Authenticated:', authenticated);
-
+      
       if (!authenticated) {
         next('/LoginPage'); //Redirect to user login page
       } else {
