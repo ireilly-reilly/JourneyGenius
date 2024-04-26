@@ -83,6 +83,7 @@ export default {
 
           //Store the token in a secure manner (e.g., HttpOnly cookie) with expiration date
           Cookies.set('super_token', token, { secure: false, expires: expirationDate });
+          Cookies.set('login_token', token, { secure: false, expires: expirationDate });
           //console.log('Login token:', token) //Display token after cookies set
           console.log('User logged in successfully, login token: ', token)
           this.checkLoginStatus();
