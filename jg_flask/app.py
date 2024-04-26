@@ -274,7 +274,7 @@ def LoginSuperUser():
     super_user = SuperUser.query.filter_by(email=email).first()
     if super_user and bcrypt.check_password_hash(super_user.password, password):
         #Generate a JWT token
-        access_token = create_access_token(identity=super_user.id)   
+        access_token = create_access_token(identity=super_user.id, expires_delta=timedelta(minutes=360))   
         return jsonify({'access_token': access_token}), 200
     else:
         return jsonify({'error': 'Invalid username or password'}), 401
