@@ -132,6 +132,7 @@ export default {
     logout() {
       const url = 'http://localhost:8000/api/LogoutUser';
       Cookies.remove('login_token');
+      Cookies.remove('super_token');
 
       axios.post(url)
         .then(response => {
@@ -166,7 +167,7 @@ export default {
       }
     },
     fetchSuperuserName() {
-      const token = Cookies.get('login_token'); // Assuming you store login token in cookies
+      const token = Cookies.get('super_token'); // Assuming you store login token in cookies
       const url = 'http://localhost:8000/api/GetSuperuserName'; // Replace with your endpoint to fetch super user's name
 
       axios.get(url, {

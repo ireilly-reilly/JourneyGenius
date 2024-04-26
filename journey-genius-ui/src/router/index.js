@@ -33,6 +33,11 @@ import SuperuserLayout from '@/layouts/SuperuserLayout.vue'
 import CustomizeTrips from '../views/CustomizeTrips.vue'
 import CustomizeItinerary from '../views/CustomizeItinerary.vue'
 import UserAccount from "../views/UserAccount.vue"
+
+import Cookies from 'js-cookie'
+import axios from 'axios'
+
+
 import TripSettings from "../views/TripSettings.vue"
 import InfoPage from "../views/InfoPage.vue"
 
@@ -64,16 +69,19 @@ const router = createRouter({
       path: '/UserProfiling',
       name: 'UserProfiling',
       component: UserProfiling,
+      meta: { requiresAuth: true },
     },
     {
       path: '/StartPlanning',
       name: 'StartPlanning',
       component: StartPlanning,
+      meta: { requiresAuth: true },
     },
     {
       path: '/SavedTrips',
       name: 'SavedTrips',
       component: SavedTrips,
+      meta: { requiresAuth: true },
       props: true
     },
     {
@@ -90,42 +98,50 @@ const router = createRouter({
       path: '/Itinerary',
       name: 'Itinerary',
       component: Itinerary,
+      meta: { requiresAuth: true } // Requires authentication to access
     },
     {
       path: '/MoreActivitiesPage',
       name: 'MoreActivitiesPage',
       component: MoreActivitiesPage,
+      meta: { requiresAuth: true },
     },
     {
       path: '/MoreDiningPage',
       name: 'MoreDiningPage',
       component: MoreDiningPage,
+      meta: { requiresAuth: true },
     },
     {
       path: '/MoreLandmarksPage',
       name: 'MoreLandmarksPage',
       component: MoreLandmarksPage,
+      meta: { requiresAuth: true },
     },
     {
       path: '/MoreShoppingPage',
       name: 'MoreShoppingPage',
       component: MoreShoppingPage,
+      meta: { requiresAuth: true },
     },
     {
       path: '/Itinerary2',
       name: 'Itinerary2',
       component: Itinerary2,
+      meta: { requiresAuth: true },
     },
     {
       path: '/GeneratedItinerary',
       name: 'GeneratedItinerary',
       component: GeneratedItinerary,
+      meta: { requiresAuth: true }, // Requires authentication to access
       props: true
     },
     {
       path: '/GeneratedItinerary2',
       name: 'GeneratedItinerary2',
       component: GeneratedItinerary2,
+      meta: { requiresAuth: true },
     },
     {
       path: '/LoggingOut',
@@ -136,6 +152,7 @@ const router = createRouter({
       path: '/EmailVerification',
       name: 'EmailVerification',
       component: EmailVerification,
+      meta: { requiresAuth: true },
     },
     {
       path: '/SuperuserPassword',
@@ -149,64 +166,68 @@ const router = createRouter({
       // layout: SuperuserLayout,
       name: 'SuperuserLogin',
       component: SuperuserLogin,
-      meta: { requiresSuperuser: true } 
     },
     {
       path: '/SuperuserDashboard',
       // layout: SuperuserLayout,
       name: 'SuperuserDashboard',
       component: SuperuserDashboard,
-      meta: { requiresSuperuser: true } 
+      meta: { requiresAuth: true, requiresSuperuser: true }
     },
     {
       path: '/SuperuserAccounts',
       // layout: SuperuserLayout,
       name: 'SuperuserAccounts',
       component: SuperuserAccounts,
-      meta: { requiresSuperuser: true } 
+      meta: { requiresAuth: true, requiresSuperuser: true }
     },
     {
       path: '/SuperuserAccountDetails',
       // layout: SuperuserLayout,
       name: 'SuperuserAccountDetails',
       component: SuperuserAccountDetails,
-      meta: { requiresSuperuser: true } 
+      meta: { requiresAuth: true, requiresSuperuser: true }
     },
     {
       path: '/SuperuserAnalytics',
       // layout: SuperuserLayout,
       name: 'SuperuserAnalytics',
       component: SuperuserAnalytics,
-      meta: { requiresSuperuser: true } 
+      meta: { requiresAuth: true, requiresSuperuser: true }
     },
     {
       path: '/SavedItinerary',
       name: 'SavedItinerary',
       component: SavedItinerary,
+      meta: { requiresAuth: true },
       props: true,
     },
     {
       path: '/SavedItinerary2',
       name: 'SavedItinerary2',
       component: SavedItinerary2,
+      meta: { requiresAuth: true },
       props: true,
     },
     {
       path: '/CustomizeTrips',
       name: 'CustomizeTrips',
       component: CustomizeTrips,
+      meta: { requiresAuth: true },
       props: true,
     },
     {
       path: '/CustomizeItinerary',
       name: 'CustomizeItinerary',
       component: CustomizeItinerary,
+      meta: { requiresAuth: true },
       props: true,
     },
     {
       path: '/UserAccount',
       name: 'UserAccount',
       component: UserAccount,
+      meta: { requiresAuth: true },
       props: true,
     },
     {
@@ -228,6 +249,96 @@ const router = createRouter({
     return { top: 0, left: 0 }
   }
 })
+
+
+//Check to see if URL requires authorization at each request
+router.beforeEach(async (to, from, next) => {
+  if (to.meta.requiresAuth) {
+    try {
+      const authenticated = await isAuthenticated();
+      console.log('Authenticated:', authenticated);
+
+      if (!authenticated) {
+        next('/LoginPage'); //Redirect to user login page
+      } else {
+        if (to.meta.requiresSuperuser) {
+          const isSuperuser = await isSuperuserAuthenticated();
+          console.log('Superuser:', isSuperuser);
+
+          if (!isSuperuser) {
+            next('/'); //Redirect to home page 
+          } else {
+            next(); //Continue
+          }
+        } else {
+          next(); //Continue
+        }
+      }
+    } catch (error) {
+      console.error('Error checking authentication:', error);
+      next('/LoginPage');
+    }
+  } else {
+    next();
+  }
+});
+
+//Authenticates regular user
+async function isAuthenticated() {
+  const loginToken = Cookies.get('login_token');
+  console.log('loginToken:', loginToken);
+
+  if (!loginToken || loginToken === '' || loginToken === undefined) {
+    console.log('User not logged in');
+    return false;
+  }
+
+  try {
+    const response = await axios.post(
+      'http://localhost:8000/api/verify-token',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${loginToken}`
+        }
+      }
+    );
+
+    return response.data.authenticated;
+  } catch (error) {
+    console.error('Error verifying token:', error);
+    return false;
+  }
+}
+
+//Authenticates superuser
+async function isSuperuserAuthenticated() {
+  const superToken = Cookies.get('super_token');
+  console.log('superToken:', superToken);
+
+  if (!superToken || superToken === '' || superToken === undefined) {
+    console.log('Superuser not logged in');
+    return false;
+  }
+
+  try {
+    const response = await axios.post(
+      'http://localhost:8000/api/verify_super_token',
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${superToken}`
+        }
+      }
+    );
+
+    return response.data.authenticated;
+  } catch (error) {
+    console.error('Error verifying super token:', error);
+    return false;
+  }
+}
+
 
 
 export default router
