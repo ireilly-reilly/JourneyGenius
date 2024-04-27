@@ -162,7 +162,7 @@ def scrape_restaurants():
                         page_token=next_page_token
                     )
                     
-                    chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres']  # Add more chain names as needed
+                    chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres', 'Del Taco', 'Taco Bell', 'Panda Express']  # Add more chain names as needed
 
 
                     for place in places_result['results']:
