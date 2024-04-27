@@ -86,10 +86,12 @@ def calculate_semantic_similarity(text1, text2):
 
 
 # Modified code snippet to get recommendations with location and price
-def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price, input_keyword):
+def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price, input_keyword, State):
 
 
     # print("First initial target place that gets passed through: " + target_place)
+    print("input_lat in function: ", input_lat)
+    print("input_lon in function: ", input_lon)
 
     recommendations = []
 
@@ -118,15 +120,21 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     input_price = int(data.loc[idx, 'Price Range'])
     input_lat = data.loc[idx, 'Latitude']
     input_lon = data.loc[idx, 'Longitude']
+    input_fat = data.loc[idx, 'Latitude']
+    print("input_lat in function second time: ", input_fat)
+    print("input_lon in function second time: ", input_lon)
+
     fucker = data.loc[idx, 'Place']
     fuckcategoy = data.loc[idx, 'Category']
     # print("Function details for target place")
     # print(fucker)
     # print(fuckcategoy)
 
-
+    print("Inside function: ", State)
     # Filter the data based on the desired category
-    filtered_data = data[data['Category'] == input_keyword]
+    # filtered_data = (data[data['Category'] == input_keyword] & (data[data['State'] == State]))
+    filtered_data = data[(data['Category'] == input_keyword) & (data['State'] == State)]
+    print(filtered_data)
 
     # Calculate geographical distances and text-based similarities
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
@@ -153,7 +161,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 
     semantic_similarities = [calculate_semantic_similarity(restaurant_csv_file_path, restaurant_name) for restaurant_name in data['Place']]
    
-    composite_scores = [(0.01 * (1 - text_sim) + (0.6 * (1 - dist / max(distances))) + (0.8 * (1 - price_diff / max(price_differences))) + (0.5 * (1 - semantic_sim / max(semantic_similarities))))
+    composite_scores = [(0.01 * (1 - text_sim) + (2 * (1 - dist / max(distances))) + (0.8 * (1 - price_diff / max(price_differences))) + (0.3 * (1 - semantic_sim / max(semantic_similarities))))
                         for text_sim, dist, price_diff, semantic_sim in zip(text_similarities, distances, price_differences, semantic_similarities)]
 
 
@@ -420,9 +428,10 @@ def recommend():
             except ValueError as e:
                 print(f"Error converting latitude, longitude, or price range: {e}")
                 return jsonify({'error': 'Invalid parameter values'}), 400
-
-            recommended_places = get_recommendations_with_location_and_price(target_food, target_lat, target_lon, desired_price_range, keyword)
-
+            State = stateMappings[state]
+            print("before calling function: ", State)
+            recommended_places = get_recommendations_with_location_and_price(target_food, target_lat, target_lon, desired_price_range, keyword, State)
+            print(recommended_places)
             # place_names = recommended_places
 
 

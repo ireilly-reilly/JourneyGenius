@@ -112,7 +112,7 @@ def scrape_landmarks():
                     page_token=next_page_token
                 )
                 
-                chain_landmark_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres']  # Add more chain names as needed
+                chain_landmark_names = ['Barnes & Noble', 'Dutch Bros', 'Sand Harbor']  # Add more chain names as needed
 
 
                 for place in places_result['results']:

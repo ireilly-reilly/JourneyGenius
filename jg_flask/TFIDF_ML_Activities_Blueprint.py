@@ -81,7 +81,7 @@ def calculate_semantic_similarity(text1, text2):
 
 
 # Modified code snippet to get recommendations with location 
-def get_recommendations_with_location(target_place, input_lat, input_lon, input_keyword):
+def get_recommendations_with_location(target_place, input_lat, input_lon, input_keyword, State):
 
 
     # print("First initial target place that gets passed through: " + target_place)
@@ -119,8 +119,8 @@ def get_recommendations_with_location(target_place, input_lat, input_lon, input_
     # print(fuckcategoy)
 
 
-    # Filter the data based on the desired category
-    filtered_data = data[data['Category'] == input_keyword]
+    # Filter the data based on the desired category and locked in state
+    filtered_data = data[(data['Category'] == input_keyword) & (data['State'] == State)]
 
     # Calculate geographical distances and text-based similarities
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
@@ -145,7 +145,7 @@ def get_recommendations_with_location(target_place, input_lat, input_lon, input_
 
     semantic_similarities = [calculate_semantic_similarity(activity_csv_file_path, activity_name) for activity_name in data['Place']]
    
-    composite_scores = [(0.01 * (1 - text_sim) + (0.6 * (1 - dist / max(distances))) + (0.5 * (1 - semantic_sim / max(semantic_similarities))))
+    composite_scores = [(0.01 * (1 - text_sim) + (2 * (1 - dist / max(distances))) + (0.5 * (1 - semantic_sim / max(semantic_similarities))))
                         for text_sim, dist, semantic_sim in zip(text_similarities, distances, semantic_similarities)]
 
 
@@ -344,6 +344,8 @@ def recommend():
             keyword = 'tourist_attraction'
         elif target_category == 'night club':
             keyword = 'night_club'
+        elif target_category == 'casino':
+            keyword = 'casino'
         else:
             keyword = target_category 
 
@@ -400,8 +402,9 @@ def recommend():
             except ValueError as e:
                 print(f"Error converting latitude or longitude: {e}")
                 return jsonify({'error': 'Invalid parameter values'}), 400
-
-            recommended_places = get_recommendations_with_location(target_food, target_lat, target_lon, keyword)
+            State = stateMappings[state]
+            print("before calling function: ", State)
+            recommended_places = get_recommendations_with_location(target_food, target_lat, target_lon, keyword, State)
 
             # place_names = recommended_places
 

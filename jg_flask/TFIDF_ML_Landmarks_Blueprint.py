@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request, Blueprint, make_response, Response
 import pandas as pd
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import linear_kernel
+import spacy
 import numpy as np
 import os
 from openai import OpenAI
@@ -15,6 +16,9 @@ api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialize OpenAI client
 client = OpenAI(api_key=api_key)
+
+# Load the pre-trained spaCy model
+nlp = spacy.load("en_core_web_md")  
 
 #Blueprint declaration
 landmarksRecommendation_bp = Blueprint('landmarksRecommendation_bp', __name__)
@@ -66,8 +70,15 @@ def haversine(lat1, lon1, lat2, lon2):
 
     return distance
 
+# Calculate semantic similarity between two strings
+def calculate_semantic_similarity(text1, text2):
+    doc1 = nlp(text1)
+    doc2 = nlp(text2)
+    similarity_score = doc1.similarity(doc2)
+    return similarity_score
+
 # Function to get recommendations by text similarity, location, and price range
-def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price):
+def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price,):
 
     # Get the index of the input place
     idx = data[data['Place'] == target_place].index
@@ -105,12 +116,17 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     max_distance = max(distances) if max(distances) > 0 else 1  # Avoid division by zero
     max_price_difference = max(price_differences) if max(price_differences) > 0 else 1  # Avoid division by zero
 
-    for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences):
-        # Calculate the score, considering safe division
-        score = (1 - text_sim)
-        score += (1 - dist / max_distance)
-        score += (1 - price_diff / max_price_difference)
-        composite_scores.append(score)
+    # for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences):
+    #     # Calculate the score, considering safe division
+    #     score = (1 - text_sim)
+    #     score += (1 - dist / max_distance)
+    #     score += (1 - price_diff / max_price_difference)
+    #     composite_scores.append(score)
+
+    semantic_similarities = [calculate_semantic_similarity(landmark_csv_file_path, landmark_name) for landmark_name in data['Place']]
+   
+    composite_scores = [(0.01 * (1 - text_sim) + (0.6 * (1 - dist / max(distances))) + (0.5 * (1 - semantic_sim / max(semantic_similarities))))
+                        for text_sim, dist, semantic_sim in zip(text_similarities, distances, semantic_similarities)]
 
     # Sort places by composite similarity score
     sorted_places = [place for _, place in sorted(zip(composite_scores, data['Place']), reverse=True)]
@@ -156,7 +172,7 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 def recommend():
     try:
         data = request.json
-        target_place = "Ed Fountain Park" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
+        target_place = "Sand Harbor" #IN THE FUTURE WE WILL MAKE THE USER CHOOSE
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         desired_price_range_str = data.get('desired_price_range_str')
@@ -164,7 +180,6 @@ def recommend():
         #print(target_lat_str)
         #print(target_lon_str)
         #print(desired_price_range_str)
-        #print()
         #print("#################### TFIDF - Landmark Recommendations ####################")
         #print("Values from the frontend is successfully sent over :)")
         #print()
@@ -172,6 +187,7 @@ def recommend():
         # Check if latitude, longitude, and price range are not None
         if None in (target_lat_str, target_lon_str, desired_price_range_str):
             return jsonify({'error': 'Latitude, longitude, or price range is missing or invalid'}), 400
+        #print()
 
         # Convert latitude, longitude, and price range to float and int respectively
         try:
