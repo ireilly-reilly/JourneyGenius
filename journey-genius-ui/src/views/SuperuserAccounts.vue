@@ -187,6 +187,16 @@
                                 </v-col>
                             </v-row>
                         </v-col>
+                        <v-col cols="12">
+                            <v-row>
+                                <v-col cols="3">
+                                    <strong>Email Verified:</strong>
+                                </v-col>
+                                <v-col cols="9">
+                                    {{ selectedUser.email_verified }}
+                                </v-col>
+                            </v-row>
+                        </v-col>
                     </v-row>
                     <!-- Date Created -->
                     <v-row>

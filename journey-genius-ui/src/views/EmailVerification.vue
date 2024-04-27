@@ -20,22 +20,8 @@
                 </v-col>
               </v-row>
               <v-card-text>
-                <div v-if="!verificationComplete" class="text-container">
-                  <p class="caption">
-                    Please confirm that you want to use this as your Journey Genius account email address. Once it's done, you will be able to start planning!
-                  </p>
-                  <br />
-                  <v-btn
-                    rounded="lg"
-                    @click="verifyAndStartResendTimer"
-                    color="deep-purple-accent-2"
-                    class="mt-2 mr-2"
-                    size="large"
-                  >
-                    Verify Email
-                  </v-btn>
-                </div>
-                <div v-else class="text-container">
+                
+                <div class="text-container">
                   <p class="caption">
                     We have sent a verification link to your email. Click on the link to complete the verification process.
                   </p>
@@ -55,14 +41,14 @@
                         </template>
                         <template v-else>
                           Resend in {{ resendTimer }}s
-                          <v-progress-circular
+                          <!-- <v-progress-circular
                             indeterminate
                             size="20"
                             color="deep-purple-accent-1"
-                          ></v-progress-circular>
+                          ></v-progress-circular> -->
                         </template>
                       </v-btn>
-                      <router-link to="/">
+                      
                         <v-btn
                           variant="text"
                           @click="returnToSite"
@@ -73,7 +59,21 @@
                         >
                           Return to Site
                         </v-btn>
-                      </router-link>
+                      
+                      <!-- Dialog for confirming individual user trip delete-->
+        <v-dialog v-model="emailNotVerified" max-width="650">
+            <v-card>
+                <v-card-title class="headline"
+                    style="padding-left: 25px; padding-top: 15px;">Email Not Verified</v-card-title>
+                <v-card-text>
+                    Check your email for a verification link to access your account.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="deep-purple-accent-2" text @click="emailNotVerified = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
                     </v-col>
                   </v-row>
                 </div>
@@ -87,23 +87,37 @@
   </template>
   
   <script>
+import axios from 'axios';
+import Cookies from 'js-cookie'
+
   export default {
     data() {
       return {
         verificationComplete: false,
+        emailNotVerified: false,
         resendTimer: 0,
         resendDisabled: false,
+        email: '',
+        token: '',
       };
+    },
+    mounted(){
+      this.verifyAndStartResendTimer();
     },
     methods: {
       verifyAndStartResendTimer() {
-        // Simulate the email verification process
+        const token = Cookies.get('login_token');
+
+        
+
+
         setTimeout(() => {
+          
           this.verificationComplete = true;
   
           // Start the resend timer
           this.startResendTimer();
-        }, 2000);
+        }, );
       },
       startResendTimer() {
         this.resendDisabled = true;
@@ -124,6 +138,9 @@
         }, 2000);
       },
       resendEmail() {
+        const token = Cookies.get('login_token');
+
+
         this.resendDisabled = true;
         this.resendTimer = 60;
         const countdownInterval = setInterval(() => {
@@ -134,6 +151,20 @@
             clearInterval(countdownInterval);
           }
         }, 1000);
+        const { email } = this.$route.params;
+        axios.post(`http://localhost:8000/api/auth/resend_verification_email/${email}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+        .then(response => {
+                console.log('User email verified successfully:', response.data);
+                
+            })
+            .catch(error => {
+                console.error('Error fetching user info:', error);
+                // Show an error message or handle the error
+            });
   
         // Simulate sending a new verification email
         // Replace the following setTimeout with your actual email sending logic
@@ -141,9 +172,23 @@
           // ... (your email sending logic)
         }, 2000);
       },
-      returnToSite() {
-        // Add logic for returning to the site
-      },
+      async returnToSite() {
+  const { email } = this.$route.params;
+
+  try {
+    const response = await axios.get(`http://localhost:8000/api/auth/check_verification/${email}`);
+    
+    this.verificationComplete = true;
+    // Email is verified, navigate to the home page
+    this.$router.push({ path: '/' });
+  } catch (error) {
+    if (error.response && error.response.status === 401) {
+      this.emailNotVerified = true;
+    } else {
+      console.log('Error checking email verification', error);
+    }
+  }
+},
     },
   };
   </script>
