@@ -160,7 +160,7 @@ def scrape_activities():
                         page_token=next_page_token
                     )
                     
-                    chain_activity_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres']  # Add more chain names as needed
+                    chain_activity_names = ['Barnes & Noble', 'Dutch Bros', 'The Waterpark at Wild Island']  # Add more chain names as needed
 
 
                     for place in places_result['results']:
