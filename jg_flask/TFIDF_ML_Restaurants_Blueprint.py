@@ -88,11 +88,6 @@ def calculate_semantic_similarity(text1, text2):
 # Modified code snippet to get recommendations with location and price
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price, input_keyword, State):
 
-
-    # print("First initial target place that gets passed through: " + target_place)
-    print("input_lat in function: ", input_lat)
-    print("input_lon in function: ", input_lon)
-
     recommendations = []
 
     # for target in target_place:
@@ -121,8 +116,6 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     input_lat = data.loc[idx, 'Latitude']
     input_lon = data.loc[idx, 'Longitude']
     input_fat = data.loc[idx, 'Latitude']
-    print("input_lat in function second time: ", input_fat)
-    print("input_lon in function second time: ", input_lon)
 
     fucker = data.loc[idx, 'Place']
     fuckcategoy = data.loc[idx, 'Category']
@@ -134,7 +127,6 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     # Filter the data based on the desired category
     # filtered_data = (data[data['Category'] == input_keyword] & (data[data['State'] == State]))
     filtered_data = data[(data['Category'] == input_keyword) & (data['State'] == State)]
-    print(filtered_data)
 
     # Calculate geographical distances and text-based similarities
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
