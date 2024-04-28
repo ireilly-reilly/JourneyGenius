@@ -42,7 +42,7 @@
           <v-col cols="12" md="6" v-for="(trip, index) in savedTrips" :key="index">
             <v-hover v-slot="{ isHovering, props }">
               <v-card class="pa-4 mb-4 d-flex flex-column" v-bind="props">
-                <v-img :src="imageSrc" :alt="trip.location" class="mb-3"
+                <v-img :src="trip.city_image" :alt="trip.location" class="mb-3"
                   style="width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px;"></v-img>
 
                 <v-row align="center" class="mb-1">

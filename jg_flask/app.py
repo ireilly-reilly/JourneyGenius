@@ -157,6 +157,7 @@ class Trip(db.Model):
     shops_images = db.Column(db.JSON)       # Example: ["shop1.jpg", "shop2.png"]
     foods_images = db.Column(db.JSON)       # Example: ["food1.jpg", "food2.png"]
     hotels_images = db.Column(db.JSON)      # Example: ["hotel1.jpg", "https://example.com/hotel2.png"]
+    city_image = db.Column(db.JSON)
 
 #Model for the super user changelog
 class AdminChangeLogEntry(db.Model):
@@ -178,6 +179,7 @@ from TFIDF_ML_Shopping_Blueprint import shoppingRecommendation_bp
 from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
 from TFIDF_ML_Landmarks_Blueprint import landmarksRecommendation_bp
 from auth_bp import auth_bp
+from GetCityPhoto_bp import GetCityPhoto_bp
 app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
 app.register_blueprint(saved_trips_bp, url_prefix='/api')
 app.register_blueprint(superuser_analytics_bp, url_prefix='/api')
@@ -189,6 +191,7 @@ app.register_blueprint(shoppingRecommendation_bp, url_prefix='/api')
 app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
 app.register_blueprint(landmarksRecommendation_bp, url_prefix='/api')
 app.register_blueprint(auth_bp, url_prefix='/api/auth')
+app.register_blueprint(GetCityPhoto_bp, url_prefix='/api')
 
 
 

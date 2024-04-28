@@ -35,7 +35,7 @@
 
             <!-- Right Section: Image -->
             <v-col cols="12" md="8" class="image-container align-self-start">
-                <v-img src="@/assets/sfbridge2.jpeg" alt="San Francisco" class="fill-height align-self-start"
+                <v-img :src="savedTrip.city_image" :alt="savedTrip.city" class="fill-height align-self-start"
                     style="object-fit: cover; width: 100%; "></v-img>
 
 

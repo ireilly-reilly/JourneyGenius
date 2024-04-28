@@ -39,6 +39,7 @@ def save_trip_to_user():
         generated_foods=data['generated_foods'],
         generated_shops=data['generated_shops'],
         generated_hotels=data['generated_hotels'],
+        city_image=data['city_image'],
         # Add other fields as needed
     )
 
@@ -88,6 +89,7 @@ def get_saved_trips():
         'generated_hotels' : trip.generated_hotels,
         'generated_landmarks' : trip.generated_landmarks,
         'generated_foods' : trip.generated_foods,
+        'city_image': trip.city_image,
         #'imageSrc': trip.image_src  # Assuming you have an image source field in your Trip model
         # Add more fields as needed
     } for trip in saved_trips]
@@ -140,6 +142,7 @@ def get_saved_itinerary(trip_id):
             'generated_hotels' : saved_trip.generated_hotels,
             'generated_landmarks' : saved_trip.generated_landmarks,
             'generated_foods' : saved_trip.generated_foods,
+            'city_image': saved_trip.city_image,
         }
         return jsonify({'savedTrip': serialized_trip}), 200
     else:

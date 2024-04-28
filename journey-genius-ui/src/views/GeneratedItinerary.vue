@@ -37,7 +37,7 @@
 
                 <!-- Right Section: Image -->
                 <v-col cols="12" md="8" class="image-container align-self-start">
-                    <v-img src="@/assets/sfbridge2.jpeg" alt="San Francisco" class="fill-height align-self-start"
+                    <v-img :src="city_photo_url" :alt="this.$store.state.city" class="fill-height align-self-start"
                         style="object-fit: cover; width: 100%; "></v-img>
 
 
@@ -210,7 +210,7 @@ export default {
         return {
             showSnackbar: false,
             dialog: false,
-
+            city_photo_url: '',
         }
     },
 
@@ -276,7 +276,7 @@ export default {
             cityDescription,
             citySlogan
         };
-
+        this.getCityPhotoURL();
         // Make an HTTP POST request to your Python server
         axios.post('http://localhost:8000/api/restaurant_photo_data', data)
             .then(response => {
@@ -405,6 +405,7 @@ export default {
             const generated_shops = this.$store.state.generated_shops;
             const generated_foods = this.$store.state.generated_foods;
             const generated_landmarks = this.$store.state.generated_landmarks;
+            const city_image = this.city_photo_url;
 
             //Condensing to sendable form
             const tripData = {
@@ -427,6 +428,7 @@ export default {
                 generated_shops,
                 generated_foods,
                 generated_landmarks,
+                city_image,
             };
             console.log("Trip Data from vuex in ready to send:")
             console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
@@ -457,6 +459,23 @@ export default {
             setTimeout(() => {
                 this.$router.push('/SavedTrips');
             }, 2000);
+        },
+        getCityPhotoURL(){
+            const cityName = this.$store.state.city;
+            const city = {
+                cityName,
+            }
+            axios.post('http://localhost:8000/api/get_city_photo', city)
+            .then(response => {
+                const photoUrl = response.data.photo_url;
+                console.log('Received city photo URL:', photoUrl);
+
+            
+                this.city_photo_url = photoUrl; // Assuming 'photoUrl' is a data property in your component
+            })
+            .catch(error => {
+                console.error('Error fetching city photo URL:', error);
+            });
         },
     },
 
