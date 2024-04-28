@@ -50,7 +50,7 @@
                     <div class="section-content">
                         <h3>Activities</h3>
                         <ul>
-                            <li v-for="activity in $store.state.tripObject.activities" :key="activity">{{ activity }}
+                            <li v-for="activity in savedTrip.activities" :key="activity">{{ activity }}
                             </li>
                         </ul>
                     </div>
@@ -59,7 +59,7 @@
                     <div class="section-content">
                         <h3>Iconic Landmarks</h3>
                         <ul>
-                            <li v-for="landmark in $store.state.tripObject.landmarks" :key="landmark">{{ landmark }}
+                            <li v-for="landmark in savedTrip.landmarks" :key="landmark">{{ landmark }}
                             </li>
                         </ul>
                     </div>
@@ -68,7 +68,7 @@
                     <div class="section-content">
                         <h3>Places to Eat</h3>
                         <ul>
-                            <li v-for="food in $store.state.tripObject.foods" :key="food">{{ food }}</li>
+                            <li v-for="food in savedTrip.foods" :key="food">{{ food }}</li>
                         </ul>
                     </div>
 
@@ -76,7 +76,7 @@
                     <div class="section-content">
                         <h3>Shopping Spots</h3>
                         <ul>
-                            <li v-for="shop in $store.state.tripObject.shops" :key="shop">{{ shop }}</li>
+                            <li v-for="shop in savedTrip.shops" :key="shop">{{ shop }}</li>
                         </ul>
                     </div>
 
@@ -84,7 +84,7 @@
                     <div class="section-content">
                         <h3>Accomodation</h3>
                         <ul>
-                            <li v-for="hotel in $store.state.tripObject.hotels" :key="hotel">{{ hotel }}</li>
+                            <li v-for="hotel in savedTrip.hotels" :key="hotel">{{ hotel }}</li>
                         </ul>
                     </div>
                 </div>
@@ -179,8 +179,25 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 
 export default {
-    mounted() {
+    data() {
+        return {
+            tripId: null,
+            savedTripDetails: null,
+
+            trip_id: '',
+            savedTrip: [],
+
+        };
+    },
+    created(){
         const tripObject = this.$store.state.tripObject;
+        const trip_id = this.$store.state.tripObject.id;
+        this.fetchSavedTripDetails(trip_id);
+        console.log("Saved trip from database in savedItinerary mounted: ", this.savedTrip)
+    },
+    mounted() {
+        
+
         // this.$store.commit('updateTripObject', this.tripObject);
         // console.log("This is the saved object: " + tripObject)
         // console.log("hotels: " + this.$store.state.tripObject.hotels)
@@ -207,13 +224,7 @@ export default {
         //     });
     },
 
-    data() {
-        return {
-            tripId: null,
-            savedTripDetails: null,
-
-        };
-    },
+    
 
     methods: {
         sendItinerary2() {
@@ -225,7 +236,24 @@ export default {
             const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
             console.log(tripObjectCopy);  // Ensure the copy has the expected data
             this.$router.push({ name: 'CustomizeTrips', params: { tripObject: tripObjectCopy } });
-        }
+        },
+        fetchSavedTripDetails(trip_id) {
+            const jwtToken = Cookies.get('login_token');
+            //const url = '/fetch_saved_itinerary/<trip_id>'
+            // console.log("Token works: " + jwtToken);
+            axios.get(`http://localhost:8000/api/fetch_saved_itinerary/${trip_id}`, {
+                headers: {
+                Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+                }
+            })
+            .then(response => {
+                this.savedTrip = response.data.savedTrip;
+                console.log('Saved trip from database in savedItinerary2: ', this.savedTrip);
+            })
+            .catch(error => {
+                console.error('Error fetching saved trip:', error);
+            });
+        },
 
 
 
