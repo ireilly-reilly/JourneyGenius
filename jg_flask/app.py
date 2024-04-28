@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 import click
-from flask import Flask, jsonify, request, session, make_response
+from flask import Flask, jsonify, request, session, make_response, url_for
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from flask_bcrypt import Bcrypt
@@ -9,6 +9,10 @@ import secrets
 import os
 from flask_migrate import Migrate
 from dotenv import load_dotenv
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
+from python_http_client.exceptions import ForbiddenError
+import requests
 
 
 #Blueprint imports
@@ -99,6 +103,8 @@ class User(db.Model):
     password = db.Column(db.String(300), nullable=False)
     firstname = db.Column(db.String(40), nullable=False)
     lastname = db.Column(db.String(40), nullable=False)
+    verification_token = db.Column(db.String(40))
+    email_verified = db.Column(db.Boolean, default=False)
     last_login = db.Column(db.String(50))
     date_created = db.Column(db.String(50))
     fav_activities = db.Column(db.JSON)
@@ -171,6 +177,7 @@ from TFIDF_ML_Activities_Blueprint import activitiesRecommendation_bp
 from TFIDF_ML_Shopping_Blueprint import shoppingRecommendation_bp
 from TFIDF_ML_Hotels_Blueprint import hotelsRecommendation_bp
 from TFIDF_ML_Landmarks_Blueprint import landmarksRecommendation_bp
+from auth_bp import auth_bp
 app.register_blueprint(superuser_accounts_bp, url_prefix='/api')
 app.register_blueprint(saved_trips_bp, url_prefix='/api')
 app.register_blueprint(superuser_analytics_bp, url_prefix='/api')
@@ -181,6 +188,30 @@ app.register_blueprint(activitiesRecommendation_bp, url_prefix='/api')
 app.register_blueprint(shoppingRecommendation_bp, url_prefix='/api')
 app.register_blueprint(hotelsRecommendation_bp, url_prefix='/api')
 app.register_blueprint(landmarksRecommendation_bp, url_prefix='/api')
+app.register_blueprint(auth_bp, url_prefix='/api/auth')
+
+
+
+# #Testing SendGrid
+# message = Mail(
+#     from_email='test@verify.journeygenius.us',
+#     to_emails='pogo0123@hotmail.com',
+#     subject='Sending with Twilio SendGrid is Fun',
+#     html_content='<strong>and easy to do anywhere, even with Python</strong>')
+
+# try:
+#     sg = SendGridAPIClient(os.environ.get('SENDGRID_API_KEY'))
+#     response = sg.send(message)
+#     print(response.status_code)
+#     print(response.body)
+#     print(response.headers)
+# except ForbiddenError as e:
+#     print(f"Failed to send email: {str(e)}")
+# except Exception as e:
+#     print(f"An unexpected error occurred: {str(e)}")
+
+
+
 
 #This is a command line prompt to create an initial super user
 #Used like this: flask create_super_user
@@ -226,8 +257,25 @@ def RegisterUser():
 
     db.session.add(new_user)
     db.session.commit()
+    #Call send_verification_email route using url_for
+    send_verification_url = url_for('auth_bp.send_verification_email', _external=True)
 
-    return jsonify({'message': 'User registered successfully'}), 201
+    send_verification_data = {'email': email}
+
+    try:
+        response = requests.post(send_verification_url, json=send_verification_data)
+        print("Got to this point")#This does not print, issue is with previous line
+        response.raise_for_status()
+        return jsonify({'message': 'User registered successfully'}), 201
+    except Exception as e:
+        # Rollback the user creation if email sending fails
+        db.session.delete(new_user)
+        db.session.commit()
+        return jsonify({'error': f'Failed to register user: {str(e)}'}), 500
+
+
+
+    #return jsonify({'message': 'User registered successfully'}), 201
 
 #Route to login existing user
 @app.route('/api/LoginUser', methods = ['POST'])
@@ -321,6 +369,7 @@ def get_user_profile():
 
     user_data = {
         'firstName': user.firstname,
+        
         
         
     }

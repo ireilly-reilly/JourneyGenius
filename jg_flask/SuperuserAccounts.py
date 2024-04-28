@@ -50,6 +50,7 @@ def get_user_accounts():
             'Email': user.email,
             'LastLoggedIn': user.last_login,
             'FreezeFlag': user.freeze_flag,
+            'email_verified': user.email_verified,
             # 'SavedTrips': user.saved_trips,  # Assuming you have this attribute in your User model
             # 'LastLoggedIn': user.last_logged_in  # Assuming you have this attribute in your User model
         } for user in users]

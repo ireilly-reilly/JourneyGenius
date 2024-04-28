@@ -40,6 +40,8 @@ import axios from 'axios'
 
 import TripSettings from "../views/TripSettings.vue"
 import InfoPage from "../views/InfoPage.vue"
+import Unauthorized from '@/views/Unauthorized.vue'
+import VerifyEmail from "../views/VerifyEmail.vue"
 
 
 const router = createRouter({
@@ -149,9 +151,10 @@ const router = createRouter({
       component: LoggingOut,
     },
     {
-      path: '/EmailVerification',
+      path: '/EmailVerification/:email',
       name: 'EmailVerification',
       component: EmailVerification,
+      props: true,
       meta: { requiresAuth: true },
     },
     {
@@ -241,7 +244,18 @@ const router = createRouter({
       name: 'InfoPage',
       component: InfoPage,
       props: true,
-    }
+    },
+    {
+      path: '/Unauthorized',
+      name: 'Unauthorized',
+      component: Unauthorized,
+    },
+    {
+      path: '/VerifyEmail/:token/:email',
+      name: 'VerifyEmail',
+      component: VerifyEmail,
+      props: true,
+    },
 
   ],
   scrollBehavior (to, from, savedPosition) {
@@ -257,7 +271,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       const authenticated = await isAuthenticated();
       console.log('Authenticated:', authenticated);
-      
+
       if (!authenticated) {
         next('/LoginPage'); //Redirect to user login page
       } else {
@@ -266,7 +280,7 @@ router.beforeEach(async (to, from, next) => {
           console.log('Superuser:', isSuperuser);
 
           if (!isSuperuser) {
-            next('/'); //Redirect to home page 
+            next('/Unauthorized'); //Redirect to home page 
           } else {
             next(); //Continue
           }
