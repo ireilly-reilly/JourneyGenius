@@ -15,13 +15,7 @@
                         Planned for {{ combinedDates }} with a {{ budgetString }} budget trip.
                     </h1>
                     <p style="margin-top: 10px;">
-                        The activities you select will form your final itinerary. You are required to check at least one
-                        box
-                        in
-                        every category. Once you are content with the activities that have piqued your interest, proceed
-                        to
-                        the
-                        next step.
+                        Select at least one option from each category.
                     </p>
                     <br />
                     <hr />

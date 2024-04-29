@@ -14,26 +14,14 @@
       <v-col cols="12" md="8" class="text-center">
         <h2 style="font-size: 2.5rem;" class="headline text-deep-purple-accent-2">Saved Trips</h2>
         <p>
-          Explore and manage your saved adventures effortlessly on our "Saved Trips" page. Easily access
-          and review your curated itineraries, and if inspiration strikes or plans change, customize them
-          to suit your preferences. This hub is your go-to destination for comprehensive details about
-          your planned journeys, allowing you to delve into more information and make adjustments seamlessly.
-          Your personalized travel experiences are just a click away on the Saved Trips page.
+          View, modify, or delete your trips.
         </p>
         <br>
         <hr>
       </v-col>
     </v-row>
 
-    <v-row justify="center" v-if="savedTrips && savedTrips.length > 0">
-      <v-col cols="12" md="8">
-        <v-select v-model="sortKey" :items="sortOptions" label="Sort by" @change="sortTrips" outlined dense return-object></v-select>
-
-       
-          <!-- <v-select label="Sort by"
-          :items="['Recently Added', 'Date', 'State', 'City', 'Budget']" @change="sortTrips"></v-select> -->
-      </v-col>
-    </v-row>
+    
 
     <!-- Grid style Saved Trips Cards -->
     <v-row justify="center" v-if="savedTrips && savedTrips.length > 0">
