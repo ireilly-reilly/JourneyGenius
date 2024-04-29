@@ -22,7 +22,7 @@
                             <v-card class="activity-box" style="flex: 1;">
                                 <!-- Set a fixed height for the images -->
                                 <v-img :src="activity.image" alt="Activity Image" class="activity-img-with-border"
-                                    style="object-fit: cover; width: 100%; height: 100%;"></v-img>
+                                    style="object-fit: cover; width: 100%; height: 100px;"></v-img>
                                 <v-card-title>{{ activity.name }}</v-card-title>
                                 <v-card-subtitle class="pb-0">{{ activity.address }}</v-card-subtitle>
                                 <v-card-text class="description-height">{{ activity.description }}</v-card-text>

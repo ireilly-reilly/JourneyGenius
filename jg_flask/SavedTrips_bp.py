@@ -152,7 +152,17 @@ def get_saved_itinerary(trip_id):
 @saved_trips_bp.route('/save_trip_data_temporarily', methods=['POST'])
 def save_trip_data_temporarily():
     data = request.json  # Get the trip data from the request
+    # try:
+    #     # Store the received data into arrays
+    #     restaurant_data.extend(data['restaurantData'])
+    #     activity_data.extend(data['activityData'])
+    #     landmark_data.extend(data['landmarkData'])
+    #     shopping_data.extend(data['shoppingData'])
+    #     hotel_data.extend(data['hotelData'])
 
+    #     return jsonify({'message': 'Trip data stored temporarily in flask'}), 200
+    # except:
+    #     return jsonify({'error': 'Trip data stored temporarily in flask'}), 205
     # Store the received data into arrays
     restaurant_data.extend(data['restaurantData'])
     activity_data.extend(data['activityData'])
@@ -160,7 +170,7 @@ def save_trip_data_temporarily():
     shopping_data.extend(data['shoppingData'])
     hotel_data.extend(data['hotelData'])
 
-    return jsonify({'message': 'Trip data stored temporarily in flask'})
+    return jsonify({'message': 'Trip data stored temporarily in flask'}), 200
 
 #Route to update selected options for a trip
 @saved_trips_bp.route('/update_trip_selections/<int:trip_id>', methods=['PUT'])

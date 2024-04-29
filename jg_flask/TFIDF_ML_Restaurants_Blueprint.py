@@ -121,37 +121,37 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
 
 
 
-# def descriptionGeneration(recommended_places):
-#     # Ensure recommended_places is a list
-#     if not isinstance(recommended_places, list):
-#         recommended_places = [recommended_places]
+def descriptionGeneration(recommended_places):
+    # Ensure recommended_places is a list
+    if not isinstance(recommended_places, list):
+        recommended_places = [recommended_places]
 
-#     # Initialize an empty array to store descriptions
-#     response_message_array = []
+    # Initialize an empty array to store descriptions
+    response_message_array = []
 
-#     # Iterate over recommended_places and generate descriptions
-#     for place in recommended_places:
-#         # Compose a prompt using the current place
-#         prompt = f"Describe the restaurant {place} regarding its food from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Restaurant Name): (Then description)"
+    # Iterate over recommended_places and generate descriptions
+    for place in recommended_places:
+        # Compose a prompt using the current place
+        prompt = f"Describe the restaurant {place} regarding its food from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Restaurant Name): (Then description). Note: do not take score into consideration."
 
 
-#         # Generate descriptions using OpenAI
-#         response = client.chat.completions.create(
-#             model="gpt-4",
-#             messages=[
-#                 {"role": "system", "content": "You are an experienced food critic."},
-#                 {"role": "user", "content": prompt}
-#             ]
-#         )
+        # Generate descriptions using OpenAI
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an experienced food critic."},
+                {"role": "user", "content": prompt}
+            ]
+        )
         
-#         # Extract and append the description to response_message_array
-#         response_message = response.choices[0].message.content
-#         response_message_array.append(response_message)
+        # Extract and append the description to response_message_array
+        response_message = response.choices[0].message.content
+        response_message_array.append(response_message)
 
-#     # Print the array of descriptions
-#     #print(response_message_array)
+    # Print the array of descriptions
+    #print(response_message_array)
 
-#     return response_message_array
+    return response_message_array
 
 
 def parse_data(data):
@@ -239,7 +239,7 @@ def recommend():
     user = User.query.filter_by(id=current_user_id).first()
 
     target_categories = parse_data(user.fav_foods)
-
+    print("target categories: ", target_categories)
     iteration = 0
 
     # Grab city name from front end
@@ -286,6 +286,7 @@ def recommend():
 
         # print(f"Current Keyword: {keyword}")
         keywords.append(keyword)
+        print(keywords)
 
         try:
             # Try to find a restaurant with the desired price range
@@ -296,7 +297,7 @@ def recommend():
         except IndexError:
             try:
                 # If no restaurants are found with the desired price range, try defaulting to 2
-                first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & (df['Price Range'] == 2) & (df['Category'] == keyword)].iloc[0]
+                first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & (df['Price Range'] == 2) & (df['Types'] == 'restaurant')].iloc[0]
             except IndexError as e:
                 print("No restaurants found for the specified city with the default price range.")
                 # Handle the case where no restaurants are found with the default price range
@@ -346,6 +347,7 @@ def recommend():
                 return jsonify({'error': 'Invalid parameter values'}), 400
             State = stateMappings[state]
             print("before calling function: ", State)
+            print(target_food)
             recommended_places = get_recommendations_with_location_and_price(target_food, target_lat, target_lon, desired_price_range, keyword, State)
             print(recommended_places)
             print("recommended places type:", type(recommended_places))
@@ -361,6 +363,7 @@ def recommend():
             return jsonify({'error': 'An unexpected error occurred'}), 500
 
     ranked_recommendations = rank_recommendations(all_recommendations)
+    description = descriptionGeneration(ranked_recommendations)
 
     # Extract place names if you need to use just the names elsewhere
     place_names = [recommendation['place'] for recommendation in ranked_recommendations]

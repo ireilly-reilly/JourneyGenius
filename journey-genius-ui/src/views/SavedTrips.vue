@@ -31,7 +31,7 @@
             <v-hover v-slot="{ isHovering, props }">
               <v-card class="pa-4 mb-4 d-flex flex-column" v-bind="props">
                 <v-img :src="trip.city_image" :alt="trip.location" class="mb-3"
-                  style="width: 100%; border-top-left-radius: 8px; border-top-right-radius: 8px;"></v-img>
+                  style="width: 100%; height: 500px; border-top-left-radius: 8px; border-top-right-radius: 8px;"></v-img>
 
                 <v-row align="center" class="mb-1">
                   <v-col cols="12">

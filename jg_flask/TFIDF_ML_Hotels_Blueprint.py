@@ -163,37 +163,37 @@ def get_recommendations_with_location(target_place, input_lat, input_lon, State)
 
 
 
-# def descriptionGeneration(recommended_places):
-#     # Ensure recommended_places is a list
-#     if not isinstance(recommended_places, list):
-#         recommended_places = [recommended_places]
+def descriptionGeneration(recommended_places):
+    # Ensure recommended_places is a list
+    if not isinstance(recommended_places, list):
+        recommended_places = [recommended_places]
 
-#     # Initialize an empty array to store descriptions
-#     response_message_array = []
+    # Initialize an empty array to store descriptions
+    response_message_array = []
 
-#     # Iterate over recommended_places and generate descriptions
-#     for place in recommended_places:
-#         # Compose a prompt using the current place
-#         prompt = f"Describe the restaurant {place} regarding its food from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Restaurant Name): (Then description)"
+    # Iterate over recommended_places and generate descriptions
+    for place in recommended_places:
+        # Compose a prompt using the current place
+        prompt = f"Describe the hotel {place} regarding accommodation experience from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Hotel Name): (Then description)Note: do not take score into consideration."
 
 
-#         # Generate descriptions using OpenAI
-#         response = client.chat.completions.create(
-#             model="gpt-4",
-#             messages=[
-#                 {"role": "system", "content": "You are an experienced food critic."},
-#                 {"role": "user", "content": prompt}
-#             ]
-#         )
+        # Generate descriptions using OpenAI
+        response = client.chat.completions.create(
+            model="gpt-4",
+            messages=[
+                {"role": "system", "content": "You are an experienced food critic."},
+                {"role": "user", "content": prompt}
+            ]
+        )
         
-#         # Extract and append the description to response_message_array
-#         response_message = response.choices[0].message.content
-#         response_message_array.append(response_message)
+        # Extract and append the description to response_message_array
+        response_message = response.choices[0].message.content
+        response_message_array.append(response_message)
 
-#     # Print the array of descriptions
-#     #print(response_message_array)
+    # Print the array of descriptions
+    #print(response_message_array)
 
-#     return response_message_array
+    return response_message_array
 
 
 def parse_data(data):
@@ -256,47 +256,6 @@ stateMappings: Dict[str, str] = {
     'WI': 'Wisconsin',
     'WY': 'Wyoming'
 }
-
-# def rank_recommendations(target_place, input_keyword, recommended_places):
-#     def extract_features(recommended_places):
-#         # Extract features (place name and category)
-#         features = [place['place'] + ' ' + place['category'] for place in recommended_places]
-#         return features
-
-#     def vectorize(features):
-#         # Vectorize features using TF-IDF
-#         vectorizer = TfidfVectorizer()
-#         vectors = vectorizer.fit_transform(features)
-#         return vectors
-
-#     def rank_places(recommended_places, scores):
-#         # Sort recommended places based on scores
-#         ranked_places = [place for _, place in sorted(zip(scores, recommended_places), reverse=True)]
-#         return ranked_places
-
-#     # Extract features from recommended places
-#     recommended_features = extract_features(recommended_places)
-
-#     # Vectorize features
-#     recommended_vectors = vectorize(recommended_features)
-
-#     # Vectorize query (target place and keyword)
-#     query_features = [target_place + ' ' + input_keyword]
-#     query_vector = vectorize(query_features)
-
-#     # Calculate similarity scores between query and recommended places
-#     similarity_scores = cosine_sim(query_vector, recommended_vectors)
-
-#     # Flatten similarity scores
-#     similarity_scores = similarity_scores.flatten()
-
-#     # Rank recommended places based on scores
-#     ranked_places = rank_places(recommended_places, similarity_scores)
-
-#     # Limit to top 5 ranked places
-#     ranked_places = ranked_places[:5]
-
-#     return ranked_places
 
 
 
@@ -385,8 +344,8 @@ def recommend():
             print(f"Error processing request: {e}")
             return jsonify({'error': 'An unexpected error occurred'}), 500
 
-    # ranked_recommendations = rank_recommendations(target_foods, keywords, recommended_places)
+    description = descriptionGeneration(all_recommendations)
 
-    # Return the recommended places (limited to 5)
-    # return jsonify({'recommended_places': all_recommendations[:10]})
+    # Extract place names if you need to use just the names elsewhere
+
     return jsonify({'recommended_places': all_recommendations})

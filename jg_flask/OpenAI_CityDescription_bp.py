@@ -31,7 +31,7 @@ def descript_bp():
         print("Something's messed up:", e)
 
     # Compose a prompt using recommended places
-    prompt = "Describe the following following location in 3-4 sentences. Highlight what makes this location special: " + location
+    prompt = "Describe the following following location in 3-4 sentences; it must be 84 words. Highlight what makes this location special: " + location
 
     # Generate descriptions using OpenAI
     response = client.chat.completions.create(

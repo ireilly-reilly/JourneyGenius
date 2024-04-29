@@ -98,7 +98,7 @@ def scrape_shopping():
         print(f"Current Keyword: {type}")
 
         # Desired result count here
-        desired_result_count = 10
+        desired_result_count = 25
 
         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
         CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
@@ -150,7 +150,7 @@ def scrape_shopping():
                         page_token=next_page_token
                     )
                     
-                    chain_shopping_names = ['Walmart Supercenter', 'Target', 'Walgreens', 'Best Buy', 'CSV Pharmacy', 'Winco']  # Add more chain names as needed
+                    chain_shopping_names = ['Walmart Supercenter', 'Target', 'Walgreens', 'Best Buy', 'CSV Pharmacy', 'Winco', 'Patagonia Outlet', 'Marshalls', 'Nordstrom Rack', "Macy's", "JCPenny", "Gamestop", "Ross", "T.J. Maxx"]  # Add more chain names as needed
 
 
                     for place in places_result['results']:
