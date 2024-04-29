@@ -42,8 +42,8 @@ def RestaurantAddress_bp():
             print(f"Filtered subset for {food} in {state}:", subset)
             
             if not subset.empty:
-                for _, row in subset.iterrows():
-                    restaurant_addresses.append(row['Address'])
+                first_address = subset.iloc[0]['Address']  # Get the first address only
+                restaurant_addresses.append(first_address)
             else:
                 print(f"No addresses found for {food} in {state}")
 
@@ -96,8 +96,8 @@ def ActivityAddress_bp():
             print(f"Filtered subset for {activity} in {state}:", subset)
             
             if not subset.empty:
-                for _, row in subset.iterrows():
-                    activity_addresses.append(row['Address'])
+                first_address = subset.iloc[0]['Address']  # Get the first address only
+                activity_addresses.append(first_address)
             else:
                 print(f"No addresses found for {activity} in {state}")
 
@@ -148,8 +148,8 @@ def LandmarkAddress_bp():
             print(f"Filtered subset for {landmark} in {state}:", subset)
             
             if not subset.empty:
-                for _, row in subset.iterrows():
-                    landmark_addresses.append(row['Address'])
+                first_address = subset.iloc[0]['Address']  # Get the first address only
+                landmark_addresses.append(first_address)
             else:
                 print(f"No addresses found for {landmark} in {state}")
 
@@ -201,8 +201,8 @@ def ShoppingAddress_bp():
             print(f"Filtered subset for {shop} in {state}:", subset)
             
             if not subset.empty:
-                for _, row in subset.iterrows():
-                    shop_addresses.append(row['Address'])
+                first_address = subset.iloc[0]['Address']  # Get the first address only
+                shop_addresses.append(first_address)
             else:
                 print(f"No addresses found for {shop} in {state}")
 
@@ -254,8 +254,8 @@ def HotelAddress_bp():
             print(f"Filtered subset for {hotel} in {state}:", subset)
             
             if not subset.empty:
-                for _, row in subset.iterrows():
-                    hotel_addresses.append(row['Address'])
+                first_address = subset.iloc[0]['Address']  # Get the first address only
+                hotel_addresses.append(first_address)
             else:
                 print(f"No addresses found for {hotel} in {state}")
 
