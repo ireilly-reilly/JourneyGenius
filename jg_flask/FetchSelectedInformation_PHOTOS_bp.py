@@ -4,6 +4,8 @@ import os
 import googlemaps
 from googlemaps.exceptions import ApiError
 from dotenv import load_dotenv
+import re
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -24,7 +26,8 @@ FetchSelectedInformation_bp = Blueprint('FetchSelectedInformation_bp', __name__)
 def process_restaurant_data():
     try:
         data = request.json
-        foods = data.get('foods')
+        descriptions = data.get('foods')
+        foods = extract_name(descriptions)
         print(foods)
 
         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -42,19 +45,11 @@ def process_restaurant_data():
                 place_id = row['Id']
                 
                 photo_url = fetch_single_photo(place_id)
-                place_ids.append(place_id)
+                # place_ids.append(place_id)
                 photo_urls.append(photo_url)
         
         print(photo_urls)
 
-        # response_data = {
-        #     'message': 'Location data and photo URLs retrieved successfully (restaurants)',
-        #     'location_ids': place_ids,
-        #     'photo_urls': photo_urls
-        # }
-        response_data = [
-            photo_urls
-        ]
 
         return jsonify(photo_urls), 200
 
@@ -95,7 +90,8 @@ def fetch_single_photo(place_id):
 def process_activity_data():
     try:
         data = request.json
-        activities = data.get('activities')
+        descriptions = data.get('activities')
+        activities = extract_name(descriptions)
         print(activities)
 
         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -162,7 +158,8 @@ def fetch_single_photo(place_id):
 def process_landmark_data():
     try:
         data = request.json
-        landmarks = data.get('landmarks')
+        descriptions = data.get('landmarks')
+        landmarks = extract_name(descriptions)
         print(landmarks)
         
 
@@ -231,7 +228,8 @@ def fetch_single_photo(place_id):
 def process_shopping_data():
     try:
         data = request.json
-        shops = data.get('shops')
+        descriptions = data.get('shops')
+        shops = extract_name(descriptions)
         print(shops)
 
         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -298,7 +296,8 @@ def fetch_single_photo(place_id):
 def process_hotel_data():
     try:
         data = request.json
-        hotels = data.get('hotels')
+        descriptions = data.get('hotels')
+        hotels = extract_name(descriptions)
         print(hotels)
 
         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -358,3 +357,10 @@ def fetch_single_photo(place_id):
         print(f"Error fetching photo: {e}")
         return None
 
+def extract_name(descriptions):
+    restaurant_titles = []
+    for description in descriptions:
+        # Find the portion before the first colon and strip any extra spaces
+        title = re.split(r':', description, maxsplit=1)[0].strip()
+        restaurant_titles.append(title)
+    return restaurant_titles
