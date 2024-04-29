@@ -1,13 +1,13 @@
 <template>
   <v-container>
     <template>
-        <div class="text-center">
-          <!-- Other template markup -->
-          <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-            <span class="centered-text">Preferences Saved Successfully!</span>
-          </v-snackbar>
-        </div>
-      </template>
+      <div class="text-center">
+        <!-- Other template markup -->
+        <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+          <span class="centered-text">Preferences Saved Successfully!</span>
+        </v-snackbar>
+      </div>
+    </template>
     <!-- Your Header -->
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
@@ -24,28 +24,6 @@
       </v-col>
     </v-row>
 
-    <!-- Personal Information Section -->
-    <!-- <v-row justify="center" class="mt-4">
-      <v-col cols="12" md="8">
-        <v-card class="pa-4">
-          <h3 class="headline text-deep-purple-accent-2">Personal Information</h3>
-          <v-form>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="firstName" label="First Name"></v-text-field>
-              </v-col>
-              <v-col cols="12" md="6">
-                <v-text-field v-model="lastName" label="Last Name"></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field v-model="email" label="Email"></v-text-field>
-              </v-col>
-            </v-row>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row> -->
-
     <!-- Activities selection -->
     <v-row justify="center">
       <v-col cols="12" md="8">
@@ -54,17 +32,21 @@
           <p>Choose your favorite activities to customize your experience!</p>
 
           <v-row justify="center">
-          <v-col v-for="activity in activities" :key="activity.value" cols="4">
-            <v-btn class="activities-btn" stacked="" :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'"
-              @click="toggleActivity(activity)">
-              <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
-              <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
-              <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
-              <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
-              <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
-              <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
-              <div>{{ activity.label }}</div>
-            </v-btn>
+            <v-col v-for="activity in activities" :key="activity.value" cols="4">
+              <v-btn class="activities-btn" stacked=""
+                :color="activity.selected ? 'deep-purple' : 'deep-purple-accent-2'" @click="toggleActivity(activity)">
+                <v-icon v-if="activity.value === 'amusement_park'">mdi-popcorn</v-icon>
+                <v-icon v-if="activity.value === 'museum'">mdi-bank</v-icon>
+                <v-icon v-if="activity.value === 'art_gallery'">mdi-palette</v-icon>
+                <v-icon v-if="activity.value === 'zoo'">mdi-dog</v-icon>
+                <v-icon v-if="activity.value === 'aquarium'">mdi-fish</v-icon>
+                <v-icon v-if="activity.value === 'stadium'">mdi-football</v-icon>
+                <v-icon v-if="activity.value === 'casino'">mdi-cards-playing-outline</v-icon>
+                <v-icon v-if="activity.value === 'night_club'">mdi-dance-pole</v-icon>
+
+
+                <div>{{ activity.label }}</div>
+              </v-btn>
               <br>
             </v-col>
           </v-row>
@@ -84,14 +66,16 @@
             <v-col v-for="food in ethnicFoods" :key="food.value" cols="4">
               <v-btn class="food-btn" stacked="" :color="food.selected ? 'deep-purple' : 'deep-purple-accent-2'"
                 @click="toggleFood(food)">
-                <v-icon v-if="food.value === 'asian'">mdi-noodles</v-icon>
                 <v-icon v-if="food.value === 'american'">mdi-hamburger</v-icon>
-                <v-icon v-if="food.value === 'italian'">mdi-pizza</v-icon>
                 <v-icon v-if="food.value === 'mexican'">mdi-taco</v-icon>
-                <v-icon v-if="food.value === 'mediterranean'">mdi-fish</v-icon>
-                <v-icon v-if="food.value === 'vegan'">mdi-leaf</v-icon>
+                <v-icon v-if="food.value === 'european_mediterranean'">mdi-pasta</v-icon> 
+                <v-icon v-if="food.value === 'east_asian'">mdi-noodles</v-icon> 
+                <v-icon v-if="food.value === 'south_asian'">mdi-tea</v-icon>
+                <v-icon v-if="food.value === 'east_asian_2'">mdi-rice</v-icon>
+                <v-icon v-if="food.value === 'bar'">mdi-glass-cocktail</v-icon>
+                <v-icon v-if="food.value === 'specialty'">mdi-chef-hat</v-icon> 
+                <v-icon v-if="food.value === 'dietary_focused'">mdi-carrot</v-icon> 
                 <div>{{ food.label }}</div>
-                
               </v-btn>
               <br>
             </v-col>
@@ -113,7 +97,7 @@
                 @click="toggleShopping(shopping)">
                 <v-icon v-if="shopping.value === 'shopping_mall'">mdi-shopping</v-icon>
                 <v-icon v-if="shopping.value === 'clothing_store'">mdi-tshirt-crew</v-icon>
-                <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon>
+                <!-- <v-icon v-if="shopping.value === 'electronics_store'">mdi-cellphone</v-icon> -->
                 <v-icon v-if="shopping.value === 'book_store'">mdi-book</v-icon>
                 <div>{{ shopping.label }}</div>
               </v-btn>
@@ -123,38 +107,6 @@
         </v-card>
       </v-col>
     </v-row>
-
-    <!-- Accommodation Preferences Section -->
-    <!-- <v-row justify="center" class="mt-4">
-      <v-col cols="12" md="8">
-        <v-card class="pa-4">
-          <h3 class="headline text-deep-purple-accent-2">Accommodation Preferences</h3>
-          <v-form>
-            <v-radio-group v-model="selectedAccommodation">
-              <v-radio label="Hotels" value="hotels"></v-radio>
-              <v-radio label="Resorts" value="resorts"></v-radio>
-              <v-radio label="Vacation Rentals" value="vacationRentals"></v-radio>
-            </v-radio-group>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row> -->
-
-    <!-- Transportation Preferences Section -->
-    <!-- <v-row justify="center" class="mt-4">
-      <v-col cols="12" md="8">
-        <v-card class="pa-4">
-          <h3 class="headline text-deep-purple-accent-2">Transportation Preferences</h3>
-          <v-form>
-            <v-radio-group v-model="transportationPreference">
-              <v-radio label="Train" value="train"></v-radio>
-              <v-radio label="Rental Car" value="rentalCar"></v-radio>
-              <v-radio label="Ride Services" value="rideServices"></v-radio>
-            </v-radio-group>
-          </v-form>
-        </v-card>
-      </v-col>
-    </v-row> -->
   </v-container>
 
   <!-- Save button -->
@@ -175,7 +127,7 @@ import Cookies from 'js-cookie';
 export default defineComponent({
   data() {
     return {
-      
+
       selectedActivities: [],
       selectedFoods: [],
       selectedShopping: [],
@@ -187,27 +139,35 @@ export default defineComponent({
 
       activities: [
         { value: 'amusement_park', label: 'Amusement Park', selected: false },
-        { value: 'aquarium', label: 'Aquarium', selected: false },
-        { value: 'art_gallery', label: 'Art Gallery', selected: false },
         { value: 'museum', label: 'Museum', selected: false },
-        { value: 'stadium', label: 'Stadium', selected: false },
+        { value: 'art_gallery', label: 'Art Gallery', selected: false },
         { value: 'zoo', label: 'Zoo', selected: false },
+        { value: 'aquarium', label: 'Aquarium', selected: false },
+        { value: 'stadium', label: 'Stadium', selected: false },
+        { value: 'casino', label: 'Casino', selected: false },
+        { value: 'night_club', label: 'Night Club', selected: false },
+
         // Add more activities as needed
       ],
 
+
       ethnicFoods: [
-        { value: 'asian', label: 'Asian', selected: false },
         { value: 'american', label: 'American', selected: false },
-        { value: 'italian', label: 'Italian', selected: false },
         { value: 'mexican', label: 'Mexican', selected: false },
-        { value: 'mediterranean', label: 'Mediterranean', selected: false },
-        { value: 'vegan', label: 'Vegan', selected: false },
+        { value: 'european_mediterranean', label: 'European & Mediterranean', selected: false },
+        { value: 'east_asian', label: 'East Asian', selected: false },
+        { value: 'south_asian', label: 'South Asian', selected: false },
+        { value: 'east_asian_2', label: 'East Asian 2', selected: false }, // Consider renaming for clarity
+        { value: 'bar', label: 'Bar', selected: false },
+        { value: 'specialty', label: 'Specialty Food Types', selected: false },
+        { value: 'dietary_focused', label: 'Dietary-Focused', selected: false },
       ],
+
 
       shoppingOptions: [
         { value: 'shopping_mall', label: 'Shopping Mall', selected: false },
         { value: 'clothing_store', label: 'Clothing Store', selected: false },
-        { value: 'electronics_store', label: 'Electronics Store', selected: false },
+        // { value: 'electronics_store', label: 'Electronics Store', selected: false },
         { value: 'book_store', label: 'Book Store', selected: false },
         // Add more shopping options as needed
       ],
@@ -217,8 +177,8 @@ export default defineComponent({
     this.fetchUserPreferences();
     const token = Cookies.get('login_token');
     console.log('token from navbar: ', token)
-    
-    
+
+
   },
   methods: {
     toggleActivity(activity) {
@@ -278,35 +238,35 @@ export default defineComponent({
           Authorization: `Bearer ${token}`,
         },
       })
-      .then(response => {
-        // Handle response
-        console.log('Preferences saved successfully:', response.data);
-        this.showSnackbar = true;
-      })
-      .catch(error => {
-        // Handle error
-        console.error('Error saving preferences:', error);
-      });
+        .then(response => {
+          // Handle response
+          console.log('Preferences saved successfully:', response.data);
+          this.showSnackbar = true;
+        })
+        .catch(error => {
+          // Handle error
+          console.error('Error saving preferences:', error);
+        });
     },
     //Function to gather user preferences from database
     async fetchUserPreferences() {
       const token = Cookies.get('login_token');
       try {
         const response = await axios.get('http://localhost:8000/api/user_profiling/fetch_user_preferences', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         //Get user preferences from respone
         this.existingUserData = response.data;
 
         //Printing response data to console
         console.log('-----------FROM FETCHED DATA------------')
         console.log(this.existingUserData);
-        console.log('Activities: ',this.existingUserData.activities);
-        console.log('Foods: ',this.existingUserData.foods);
-        console.log('Shopping: ',this.existingUserData.shopping);
-        console.log('Accommodation: ',this.existingUserData.accommodation);
+        console.log('Activities: ', this.existingUserData.activities);
+        console.log('Foods: ', this.existingUserData.foods);
+        console.log('Shopping: ', this.existingUserData.shopping);
+        console.log('Accommodation: ', this.existingUserData.accommodation);
         console.log('-----------END FETCHED DATA------------')
 
         //Turning response data into arrays that can be used to update buttons to reflect previously selected preferences
@@ -348,9 +308,9 @@ export default defineComponent({
           } else if (options === this.shoppingOptions) {
             this.selectedShopping.push(option.label);
             option.selected = true;
-          
+
           }
-          
+
         }
       }
     },
