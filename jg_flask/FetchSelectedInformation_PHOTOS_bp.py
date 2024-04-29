@@ -36,27 +36,25 @@ def process_restaurant_data():
 
         df = pd.read_csv(restaurant_csv_file_path, encoding='utf-8') 
 
-        place_ids = []
+        processed_place_ids = set()  # Set to store processed place IDs
         photo_urls = []
+
         for food in foods:
-            subset = df.loc[df['Place'] == food, ['Id']]
+            subset = df.loc[df['Place'] == food, ['Id']].drop_duplicates()  # Ensure each ID is only considered once
 
             for index, row in subset.iterrows():
                 place_id = row['Id']
-                
-                photo_url = fetch_single_photo(place_id)
-                # place_ids.append(place_id)
-                photo_urls.append(photo_url)
-        
+                if place_id not in processed_place_ids:
+                    photo_url = fetch_single_photo(place_id)
+                    processed_place_ids.add(place_id)  # Add to the set of processed IDs
+                    photo_urls.append(photo_url)
+
         print(photo_urls)
-
-
         return jsonify(photo_urls), 200
 
     except Exception as e:
         error_message = str(e)
         print("Error retrieving photos:", error_message)
-        # return jsonify({'error': 'An error occurred while retrieving the photos', 'message': error_message})
         return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
 
 def fetch_single_photo(place_id):
@@ -66,18 +64,15 @@ def fetch_single_photo(place_id):
 
         # Extract photo URL from the response
         if 'photos' in place_details['result']:
-            photo_reference = place_details['result']['photos'][1]['photo_reference']  # Assuming photo reference is at index 1
+            photo_reference = place_details['result']['photos'][0]['photo_reference']  # Fetching the first photo
             # Construct photo URL
             photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference={photo_reference}&key={api_key}"
             print(f"Photo URL: {photo_url}")
-
             return photo_url
         else:
             print("No photo found for the place.")
-            fail = f"https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+            fail = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
             return fail
-            # return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
-            return None
     except ApiError as e:
         print(f"Error fetching photo: {e}")
         return None
@@ -236,28 +231,31 @@ def process_shopping_data():
         CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
         shopping_csv_file_path = os.path.join(CSV_FOLDER, 'shopping_data.csv')
 
-        df = pd.read_csv(shopping_csv_file_path, encoding='utf-8') 
+        df = pd.read_csv(shopping_csv_file_path, encoding='utf-8')
 
         place_ids = []
         photo_urls = []
-        for shops in shops:
-            subset = df.loc[df['Place'] == shops, ['Id']]
+        processed_places = set()  # Set to track processed places
 
-            for index, row in subset.iterrows():
-                place_id = row['Id']
-                
-                photo_url = fetch_single_photo(place_id)
-                place_ids.append(place_id)
-                photo_urls.append(photo_url)
+        # Ensure we only process unique shops, avoiding processing multiple entries for the same shop
+        unique_shops = df[df['Place'].isin(shops)]['Place'].drop_duplicates().tolist()
+
+        for shop in unique_shops:
+            # Get a unique place ID for each shop
+            subset = df.loc[df['Place'] == shop, 'Id'].drop_duplicates()
+
+            # Process the first place ID from the subset
+            if subset.empty:
+                print(f"No ID found for shop: {shop}")
+            else:
+                place_id = subset.iloc[0]
+                if place_id not in processed_places:
+                    processed_places.add(place_id)
+                    photo_url = fetch_single_photo(place_id)
+                    place_ids.append(place_id)
+                    photo_urls.append(photo_url)
         
         print(photo_urls)
-
-        response_data = {
-            'message': 'Location data and photo URLs retrieved successfully (shops)',
-            'location_ids': place_ids,
-            'photo_urls': photo_urls
-        }
-
         return jsonify(photo_urls), 200
 
     except Exception as e:
@@ -267,26 +265,25 @@ def process_shopping_data():
 
 def fetch_single_photo(place_id):
     try:
-        # Make a request to fetch place details
+        # Assuming gmaps and api_key are defined and imported correctly
         place_details = gmaps.place(place_id)
 
         # Extract photo URL from the response
-        if 'photos' in place_details['result']:
-            photo_reference = place_details['result']['photos'][1]['photo_reference']  # Assuming photo reference is at index 1
-            # Construct photo URL
+        if 'photos' in place_details['result'] and place_details['result']['photos']:
+            photo_reference = place_details['result']['photos'][0]['photo_reference']  # Fetch the first photo reference
             photo_url = f"https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&maxheight=400&photoreference={photo_reference}&key={api_key}"
             print(f"Photo URL: {photo_url}")
 
             return photo_url
         else:
             print("No photo found for the place.")
-            fail = f"https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
-            return fail
-            return jsonify("https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"), 200
-            return None
+            fail_url = "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+            return fail_url
+
     except ApiError as e:
         print(f"Error fetching photo: {e}")
-        return None
+        return "https://developers.google.com/static/maps/documentation/streetview/images/error-image-generic.png"
+
     
 
 
