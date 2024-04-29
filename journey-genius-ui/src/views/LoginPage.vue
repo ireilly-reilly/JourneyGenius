@@ -12,30 +12,30 @@
 
       <v-card width="500" class="mx-auto mt-9">
         <br>
-    <div class="d-flex justify-center">
-        <v-icon size="56" class="display-1" color="deep-purple-accent-2">
-            mdi-account-circle 
-        </v-icon>
-    </div>
-    <v-card-title class="display-1 mb-5">Login</v-card-title> <!-- Added margin bottom -->
-    <v-card-text>
-        <v-text-field v-model="email" label="Email" prepend-icon="mdi-email"
+        <div class="d-flex justify-center">
+          <v-icon size="56" class="display-1" color="deep-purple-accent-2">
+            mdi-account-circle
+          </v-icon>
+        </div>
+        <v-card-title class="display-1 mb-5">Login</v-card-title> <!-- Added margin bottom -->
+        <v-card-text>
+          <v-text-field v-model="email" label="Email" prepend-icon="mdi-email"
             :class="{ 'error-outline': showLoginError }" @keyup.enter="login" />
-        <v-text-field v-model="password" label="Password" :type="showPassword ? 'text' : 'password'"
+          <v-text-field v-model="password" label="Password" :type="showPassword ? 'text' : 'password'"
             prepend-icon="mdi-lock" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'"
             @click:append="showPassword = !showPassword" :class="{ 'error-outline': showLoginError }"
             @keyup.enter="login" />
-        <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
-    </v-card-text>
+          <div v-if="loginErrorMessage" class="error-message">{{ loginErrorMessage }}</div>
+        </v-card-text>
 
-    <v-divider></v-divider>
-    <v-card-actions>
-        <v-btn class="ml-3" color="deep-purple-accent-2" @click="login">Login</v-btn>
-        <router-link :to="{ name: 'RegisterPage' }">
+        <v-divider></v-divider>
+        <v-card-actions>
+          <v-btn class="ml-3" color="deep-purple-accent-2" @click="login">Login</v-btn>
+          <router-link :to="{ name: 'RegisterPage' }">
             <v-btn color="deep-purple-accent-2">New User?</v-btn>
-        </router-link>
-    </v-card-actions>
-</v-card>
+          </router-link>
+        </v-card-actions>
+      </v-card>
 
       <br>
     </v-content>
@@ -57,6 +57,7 @@
 //Imports
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { ref } from 'vue';
 
 export default {
   data() {
@@ -96,17 +97,16 @@ export default {
         .then(response => {
           const token = response.data.access_token;
           const databaseID = response.data.user_id;
+          const refresh_token = response.data.refresh_token;
           console.log('login token: ', token) //Display token after recieved
-          //Make cookies expire after 7 days
-          const expirationDate = new Date();
-          expirationDate.setDate(expirationDate.getDate() + 7);
 
           //Store the token in a secure manner (e.g., HttpOnly cookie) with expiration date
-          Cookies.set('login_token', token, { secure: false, expires: expirationDate });
-          Cookies.set('database_id', databaseID, { secure: false })
+          Cookies.set('login_token', token, { secure: false });
+          Cookies.set('database_id', databaseID, { secure: false });
+          Cookies.set('refresh_token', refresh_token, { secure: false });
           //console.log('Login token:', token) //Display token after cookies set
-          console.log('User logged in successfully, login token: ', token)
-          console.log('User ID from database: ', databaseID)
+          console.log('User logged in successfully, login token: ', token);
+          console.log('User ID from database: ', databaseID);
           this.checkLoginStatus();
 
           this.showSnackbar = true; // Show the Snackbar
@@ -127,10 +127,10 @@ export default {
             if (error.response.status === 401) {
               console.error('Login failed: Incorrect username or password.');
               this.loginErrorMessage = 'Incorrect username or password.';
-            } else {
-              console.error('Login failed: Server error.');
-              this.loginErrorMessage = 'Error logging in.';
             }
+            if (error.response.status === 403) {
+              this.loginErrorMessage = 'Your account has been frozen. Please contact support for assistance.';
+            } 
           } else {
             this.loginErrorMessage = 'Network error or server unreachable.';
           }
@@ -186,6 +186,7 @@ export default {
 
 .centered-text {
   display: block;
+  text-align: center;
   font-size: medium;
 }
 

@@ -1,8 +1,12 @@
 // store/index.js
 
 import { createStore } from "vuex";
+import createPersistedState from 'vuex-persistedstate';
+
 
 const store = createStore({
+  plugins: [createPersistedState()],
+
   state: {
     city: null,
     st: null,
@@ -18,6 +22,17 @@ const store = createStore({
     cityDescription: null,
     citySlogan: null,
     tripLength: null,
+    generated_activities: null,
+    generated_hotels: null,
+    generated_shops: null,
+    generated_foods: null,      
+    generated_landmarks: null,
+    cityPictures: null,
+    activityPictures: null,
+    landmarkPictures: null,
+    shopPictures: null,
+    foodPictures: null,
+    hotelPictures: null,
     
     tripObject: {
       id: null,
@@ -33,8 +48,15 @@ const store = createStore({
       budget: null,
       latitude: null,
       longitude: null,
-      city_slogan: null
+      city_slogan: null,
+      generated_activities: null,
+      generated_hotels: null,
+      generated_shops: null,
+      generated_foods: null,
+      generated_landmarks: null,
+
     },
+    
   },
   // directly update the state properties when committed 
   // We currently only use mutations for the Itinerary Page (the checkboxes are stored in vuex using mutation)
@@ -111,7 +133,43 @@ const store = createStore({
     },
     updateTripObject(state, tripObject) {
       state.tripObject = tripObject;
-    }
+    },
+
+
+    updateGeneratedActivities(state, generated_activities){
+      state.generated_activities = generated_activities;
+    },
+    updateGeneratedLandmarks(state, generated_landmarks){
+      state.generated_landmarks = generated_landmarks;
+    },
+    updateGeneratedShops(state, generated_shops){
+      state.generated_shops = generated_shops;
+    },
+    updateGeneratedFoods(state, generated_foods){
+      state.generated_foods = generated_foods;
+    },
+    updateGeneratedHotels(state, generated_hotels){
+      state.generated_hotels = generated_hotels;
+    },
+
+    updateCityPictures(state, cityPictures){
+      state.cityPictures = cityPictures;
+    },
+    updateActivityPictures(state, activityPictures){
+      state.activityPictures = activityPictures;
+    },
+    updateLandmarkPictures(state, landmarkPictures){
+      state.landmarkPictures = landmarkPictures;
+    },
+    updateFoodPictures(state, foodPictures){
+      state.foodPictures = foodPictures;
+    },
+    updateShopPictures(state, shopPictures){
+      state.shopPictures = shopPictures;
+    },
+    updateHotelPictures(state, hotelPictures){
+      state.hotelPictures = hotelPictures;
+    },
 
 
   },

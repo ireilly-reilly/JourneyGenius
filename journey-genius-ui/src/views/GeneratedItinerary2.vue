@@ -1,8 +1,9 @@
 <template>
     <v-container fluid class="no-border">
         <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-            <span class="text-center">Trip Saved Successfully</span>
+            <span class="centered-text">Trip Successfully Saved!</span>
         </v-snackbar>
+
         <v-row>
             <v-col v-for="(day, index) in itinerary" :key="index" cols="12">
                 <v-card class="activity-card" style="display: flex; flex-direction: column; height: 100%;">
@@ -36,20 +37,35 @@
     <!-- Two buttons on the bottom -->
     <v-row justify="center" class="mt-4">
         <v-col cols="12" md="8" class="text-center">
-            <router-link to="/SavedItinerary">
-                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
-                    style="min-width: 150px;">
-                    Itinerary Overview
-                </v-btn>
-            </router-link>
+            <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="send"
+                style="min-width: 150px;">
+                Itinerary Overview
+            </v-btn>
 
-            <!-- Call method to save trip to database here-->
-            <router-link to="/SavedTrips">
-                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
-                    style="min-width: 150px;">
-                    Save Trip
-                </v-btn>
-            </router-link>
+
+            <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
+                style="min-width: 150px;">
+                Save Trip
+            </v-btn>
+
+            <v-btn size="large" color="#EF5350" class="white--text mt-6 ml-4" style="min-width: 150px;"
+                @click="confirmDiscard">
+                Discard Trip
+            </v-btn>
+
+            <v-dialog v-model="dialog" persistent max-width="650">
+                <v-card>
+                    <br>
+                    <v-card-title style="padding-left: 25px; padding-top: 15px;">Confirm Action</v-card-title>
+                    <v-card-text>Are you sure you want to discard this trip? This will redirect you to the start
+                        planning page and you will lose all progress.</v-card-text>
+                    <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="deep-purple-accent-2" text @click="closeDialog">Cancel</v-btn>
+                        <v-btn color="red darken-1" text @click="discardTrip">Confirm</v-btn>
+                    </v-card-actions>
+                </v-card>
+            </v-dialog>
         </v-col>
     </v-row>
 </template>
@@ -62,18 +78,13 @@ export default {
         return {
             itinerary: [],
             showSnackbar: false,
+            dialog: false,
 
         };
     },
     created() {
 
         // Retrieve Trip Details
-        // const selectedActivities = this.$store.state.tripObject.activities;
-        // const selectedLandmarks = this.$store.state.tripObject.landmarks;
-        // const selectedFoods = this.$store.state.tripObject.foods;
-        // const selectedShops = this.$store.state.tripObject.shops;
-        // const selectedHotel = this.$store.state.tripObject.hotels;
-
         const selectedActivities = this.$store.state.activities;
         const selectedLandmarks = this.$store.state.landmarks;
         const selectedFoods = this.$store.state.foods;
@@ -90,6 +101,14 @@ export default {
         const citySlogan = this.$store.state.citySlogan;
         const latitude = this.$store.state.lat;
         const longitude = this.$store.state.long;
+
+        const activityPictures = this.$store.state.activityPictures;
+        const landmarkPictures = this.$store.state.landmarkPictures;
+        const restaurantPictures = this.$store.state.foodPictures;
+        const shopPictures = this.$store.state.shopPictures;
+        const hotelPictures = this.$store.state.hotelPictures;
+        const testPictures = ["https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATplDJYUmNgWAmOTRtpdC7sHLEwkiFdfLPKCR5Fw9W4YwZrbVmrdgozfXRzi6QuB1jgB0E71wLF2bWLlKL_OLNX6EYOdYN2_VsBKloPrZSA1Pal1KCXU4eYD62DPn2yfc6Wy_tC5ey2EJeKgSyGeT7l_ZvIQlti3VhDwXl0QQvLYIl53rd_m&key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU", "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATplDJYYREDcSgsgsN-77WDU1UelvGPGhvu_oIm2v-InKEpayljHsgO_Gn7dqxaD7exsEjIM69M0Y0qMakRTa49U6cSAKpynewP9qB1AmLshhvHXwwepngrttGtUVcTPCrfpIAeKKE4K8UM70Jj8ToQjeSrO6BKB5DCK6HdzkEEaWzDtxv9W&key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU", "https://lh3.googleusercontent.com/places/ANXAkqF7I9JwYBza0ii043xaMUvC7meIYOP3RZY_r9nHE-cOlWZrsXw61X3WFec-9S2ZEzDrihcui_DIYP63uAeSg-ziDzJGbWnObOw=s1600-w400", "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATplDJb_UhjMuVaN29dBJG-sfumlelryTQCcKWO49psEldGLBOGXPM3A4geRoTe7VXYjqsXZoZ6fr8w0lSiXZSIIbMSMaMp-wwafhjC-Py_dhQx1cw0XVwO3AzMAy9r14_EusMAmJfMFeRx3AFIrb-dTdzTFg74szLosHgN3hfsBUbp3cuMK&key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU", "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATplDJajxl0i7hpMeVuG_3KtgoKPcCuZH6Xurb2jEJUpnlu0EAuYoVEpHJbCeWk0LPCS2g9_y7lqxNxB0ZEHvFtUYVFox7IKi_2Bw8Gwj1cxAoz3hro8Mjp3HdnvS4ZZyScGZDlizvxTH_MrEl-vk8Z122F5xQb8HX27LEOzbBmELclaGPYy&key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU"]
+        console.log("Test Pictures", testPictures)
 
         const RestaurantAddress = []
         const ActivityAddress = []
@@ -136,10 +155,11 @@ export default {
 
 
         const selectedHotelString = selectedHotel.join(', '); // Use a comma and a space as the separator
-        console.log(selectedHotelString)
+        const hotelPictureString = hotelPictures.join(', ');
+        // console.log(selectedHotelString)
         // console.log("This is the activities array: " + selectedActivities)
         // console.log("This is the hotel array: " + selectedHotel)
-
+        // console.log("This is the foods picture array: ", restaurantPictures)
 
         // Round robin sorting function
         const getRoundRobinSlice = arrays => {
@@ -175,6 +195,7 @@ export default {
             });
         };
 
+        // Function to remove description and only keep the title
         const parseTitleFromString = (str) => {
             const parts = str.split(':');
             return parts[0].trim();
@@ -187,20 +208,26 @@ export default {
         const shopTitles = getActivityTitles(selectedShops);
         const hotelTitles = parseTitleFromString(selectedHotelString);
 
-
-
+        // Round robin sort for all of the selection options
         const sortedArray = getRoundRobinSlice([selectedActivities, selectedLandmarks, selectedFoods, selectedShops]);
         sortedArray.unshift(selectedHotelString);
-        console.log(sortedArray);
+        console.log("Sorted Array: ", sortedArray);
 
+        // Round robin sort for all of the pictures
+        const sortedPictures = getRoundRobinSlice([activityPictures, landmarkPictures, restaurantPictures, shopPictures]);
+        sortedPictures.unshift(hotelPictureString);
+        console.log("Sorted Pictures: ", sortedPictures);
+        // const sortedPictures2 = JSON.stringify(sortedPictures, null, 2);
+        // console.log("Sorted Pictures JSONIFY: ", JSON.stringify(sortedPictures, null, 2));
+
+
+        // Round robin sort for all of the titles
         const combinedArray = removeTitles(sortedArray);
-
-
         const combinedTitles = getRoundRobinSlice([activityTitles, landmarkTitles, foodTitles, shopTitles]);
         combinedTitles.unshift(hotelTitles);
         // console.log("Combined Description: " + combinedArray)
         // console.log("Combined Titles: " + combinedTitles)
-        console.log("Sorted array without titles: " + combinedArray);
+        // console.log("Sorted array without titles: " + combinedArray);
 
         const dateRangeString = this.$store.state.datesData;
 
@@ -218,12 +245,15 @@ export default {
 
         // Initialize index outside of the loop
         let currentIndex = -1;
+        let photoIndex = -1;
 
         // Loop through each day
         for (let i = 0; i < daysDifference; i++) {
             const currentDate = new Date(startDate);
             currentDate.setDate(startDate.getDate() + i);
             const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
+            const picture = this.restaurantPictures;
+            console.log(picture)
 
             // Calculate the number of descriptions for this day
             let descriptionsForThisDay = descriptionsPerDay;
@@ -238,25 +268,61 @@ export default {
             // Remove the sliced descriptions from the combinedArray
             combinedArray.splice(0, descriptionsForThisDay);
 
-
-
+            // Displays each day in a card format
             const daySection = {
                 title: dayTitle,
                 activities: descriptionsForDay.map(description => ({
                     name: combinedTitles[currentIndex += 1],
                     description: description,
-                    image: require('@/assets/boba2.jpeg') // Add your image logic here
+                    image: sortedPictures[photoIndex += 1]
+                    // image: testPictures[photoIndex += 1]
                 }))
             };
             // Update the current index
             this.itinerary.push(daySection);
         }
 
-
     },
     mounted() {
+        // Accessing the variables from the Vuex store
+        const activities = this.$store.state.activities;
+        const landmarks = this.$store.state.landmarks;
+        const foods = this.$store.state.foods;
+        const shops = this.$store.state.shops;
+        const hotels = this.$store.state.hotels;
+        const datesData = this.$store.state.datesData;
+        const budget = this.$store.state.budget;
+        const stateData = this.$store.state.stateData;
+        const city = this.$store.state.city;
+        const lat = this.$store.state.lat;
+        const long = this.$store.state.long;
+        const cityDescription = this.$store.state.cityDescription;
+        const citySlogan = this.$store.state.citySlogan;
+        const latitude = this.$store.state.lat;
+        const longitude = this.$store.state.long;
     },
     methods: {
+        confirmDiscard() {
+            this.dialog = true;
+        },
+        closeDialog() {
+            this.dialog = false;
+        },
+        discardTrip() {
+            this.dialog = false;
+            this.$router.push('/TripSettings');
+        },
+
+        send() {
+            this.$router.push({ name: 'GeneratedItinerary' }).catch(err => {
+                console.error(err);
+            }).then(() => {
+                // This setTimeout ensures that the push operation completes before the reload
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1); // Adjust timing as needed
+            });
+        },
         getTimelineColor(index) {
             // Define colors for each day
             const colors = ['primary', 'info', 'success', 'error', 'warning'];
@@ -315,6 +381,7 @@ export default {
             return daysDifference;
         },
         saveTrip() {
+
             console.log("From saveTrip() function: ")
 
             //Get userID from cookies
@@ -339,6 +406,8 @@ export default {
             const latitude = this.$store.state.lat;
             const longitude = this.$store.state.long;
 
+            console.log(activities);
+
             //Condensing to sendable form
             const tripData = {
                 userID,
@@ -359,16 +428,23 @@ export default {
             console.log("Trip Data from vuex in ready to send:")
             console.log(tripData)
 
+
             // Send data to Python backend
             axios.post('http://localhost:8000/api/save_trip_to_user', tripData)
                 .then(response => {
                     console.log('Trip saved successfully:', response.data);
                     this.showSnackbar = true;
+                    console.log("The snackbar boolean is:  " + this.showSnackbar)
+
                     // Optionally, you can perform any further actions here
                 })
                 .catch(error => {
                     console.error('Error saving trip:', error);
                 });
+            // Wait for 3 seconds before navigating
+            setTimeout(() => {
+                this.$router.push('/SavedTrips');
+            }, 2000);
         },
         // Other methods for itinerary display, if any
     },
@@ -400,6 +476,12 @@ export default {
 
 
 <style scoped>
+.centered-text {
+    display: block;
+    text-align: center;
+    font-size: medium;
+}
+
 .description-height {
     height: 100px;
     /* Set a fixed height for the descriptions */

@@ -19,7 +19,7 @@
           </h3>
 
           <!-- "Start Planning" button with conditional rendering -->
-          <router-link v-if="isLoggedIn" to="/StartPlanning">
+          <router-link v-if="isLoggedIn" to="/TripSettings" >
             <v-btn rounded="lg" size="large" color="deep-purple-accent-2" class="white--text mt-6">
               Start Planning
             </v-btn>
@@ -51,7 +51,7 @@
           </h3>
 
           <!-- "Start Planning" button with conditional rendering -->
-          <router-link v-if="isLoggedIn" to="/StartPlanning">
+          <router-link v-if="isLoggedIn" to="/TripSettings">
             <v-btn rounded="lg" size="large" color="deep-purple-accent-2" class="white--text mt-6">
               Start Planning
             </v-btn>

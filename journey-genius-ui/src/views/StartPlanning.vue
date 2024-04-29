@@ -215,6 +215,13 @@ export default defineComponent({
     },
   },
 
+  mounted() {
+    const amountOfSelections = JSON.parse(this.$route.query.amountOfSelections);
+    const descriptionToggle = JSON.parse(this.$route.query.descriptionToggle);
+    // console.log(amountOfSelections)
+    // console.log(descriptionToggle)
+  },
+
   methods: {
     // Google Places API Dropdown
     getAddressData: function (addressData) {
@@ -433,6 +440,21 @@ export default defineComponent({
           console.log('run_ML_model_recommendations hotels response:', response.data);
         })
         .then(() => {
+          this.$store.commit('updateGeneratedActivities', this.activityData.recommended_places);
+          this.$store.commit('updateGeneratedFoods', this.restaurantData.recommended_places);
+          this.$store.commit('updateGeneratedLandmarks', this.landmarkData.recommended_places);
+          this.$store.commit('updateGeneratedShops', this.shoppingData.recommended_places);
+          this.$store.commit('updateGeneratedHotels', this.hotelData.recommended_places);
+          
+          console.log("Activities stored in Vuex: " + this.$store.state.generated_activities); 
+          console.log("Foods stored in Vuex: " + this.$store.state.generated_foods); 
+          console.log("Landmarks stored in Vuex: " + this.$store.state.generated_landmarks); 
+          console.log("Shops stored in Vuex: " + this.$store.state.generated_shops); 
+          console.log("Hotels stored in Vuex: " + this.$store.state.generated_hotels); 
+
+
+
+
           // After fetching all recommendations, prepare the data to send to Flask
           const tripData = {
             restaurantData: this.restaurantData.recommended_places,

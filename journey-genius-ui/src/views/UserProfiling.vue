@@ -106,7 +106,7 @@
           </v-row>
         </v-card>
       </v-col>
-    </v-row>
+    </v-row
   </v-container>
 
   <!-- Save button -->

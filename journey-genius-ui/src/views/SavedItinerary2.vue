@@ -36,12 +36,10 @@
     <!-- Two buttons on the bottom -->
     <v-row justify="center" class="mt-4">
         <v-col cols="12" md="8" class="text-center">
-            <router-link to="/SavedItinerary">
-                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="previousStep"
-                    style="min-width: 150px;">
-                    Itinerary Overview
-                </v-btn>
-            </router-link>
+            <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="send"
+                style="min-width: 150px;">
+                Itinerary Overview
+            </v-btn>
 
             <!-- Call method to save trip to database here-->
             <router-link to="/SavedTrips">
@@ -64,7 +62,8 @@ export default {
         return {
             itinerary: [],
             showSnackbar: false,
-
+            //trip_id: '',
+            savedTrip: [],
         };
     },
 
@@ -72,127 +71,144 @@ export default {
 
         // Retrieve Trip Details
         const tripObject = this.$route.params.tripObject;
-        const selectedActivities = this.$store.state.tripObject.activities;
-        const selectedLandmarks = this.$store.state.tripObject.landmarks;
-        const selectedFoods = this.$store.state.tripObject.foods;
-        const selectedShops = this.$store.state.tripObject.shops;
-        const selectedHotel = this.$store.state.tripObject.hotels;
-        const selectedHotelString = selectedHotel.join(', '); // Use a comma and a space as the separator
-        console.log(selectedHotelString)
-        // console.log("This is the activities array: " + selectedActivities)
-        // console.log("This is the hotel array: " + selectedHotel)
-
-
-        // Round robin sorting function
-        const getRoundRobinSlice = arrays => {
-            let index = 0;
-            let output = [];
-
-            while (arrays.some(array => array.length > 0)) {
-                for (let i = 0; i < arrays.length; i++) {
-                    if (arrays[i].length > 0) {
-                        output.push(arrays[i].shift());
+        const trip_id = this.$store.state.tripObject.id;
+        this.fetchSavedTripDetails(trip_id);
+        setTimeout(() => {
+            console.log("1 second has passed!");
+            // Add your desired action to be executed after 1 second here
+            const selectedActivities = this.savedTrip.activities;
+            const selectedLandmarks = this.savedTrip.landmarks;
+            const selectedFoods = this.savedTrip.foods;
+            const selectedShops = this.savedTrip.shops;
+            const selectedHotel = this.savedTrip.hotels;
+            console.log("Saved activities from database from savedItinerary2: ", this.savedTrip.activities);
+            console.log("Activities from vuex: ", this.$store.state.tripObject.activities);
+            
+            
+            
+            //const selectedActivities = this.$store.state.tripObject.activities;
+            //const selectedLandmarks = this.$store.state.tripObject.landmarks;
+            //const selectedFoods = this.$store.state.tripObject.foods;
+            //const selectedShops = this.$store.state.tripObject.shops;
+            //const selectedHotel = this.$store.state.tripObject.hotels;
+            const selectedHotelString = selectedHotel.join(', '); // Use a comma and a space as the separator
+            console.log(selectedHotelString)
+            console.log("Trip id from savedItinerary2: ", trip_id);
+            // console.log("This is the activities array: " + selectedActivities)
+            // console.log("This is the hotel array: " + selectedHotel)
+            
+            
+            // Round robin sorting function
+            const getRoundRobinSlice = arrays => {
+                let index = 0;
+                let output = [];
+                
+                while (arrays.some(array => array.length > 0)) {
+                    for (let i = 0; i < arrays.length; i++) {
+                        if (arrays[i].length > 0) {
+                            output.push(arrays[i].shift());
+                        }
                     }
                 }
-            }
-
-            return output;
-        };
-
-        // Function used to parse the titles from the descriptions
-        const getActivityTitles = (activities) => {
-            return activities.map(activity => {
-                const title = activity.split(':')[0]; // Split at ":" and get the first part
-                return title.trim(); // Remove any leading or trailing whitespace
-            });
-        };
-
-        // Function to remove titles from each string in the array
-        const removeTitles = (array) => {
-            return array.map((item) => {
-                // Split the string at the first occurrence of ":"
-                const parts = item.split(':');
-                // Return the second part of the split string (the description) trimmed of any leading or trailing whitespace
-                return parts.length > 1 ? parts.slice(1).join(':').trim() : item.trim();
-            });
-        };
-
-        const parseTitleFromString = (str) => {
-            const parts = str.split(':');
-            return parts[0].trim();
-        };
-
-        // Separating the titles from the descriptions
-        const activityTitles = getActivityTitles(selectedActivities);
-        const landmarkTitles = getActivityTitles(selectedLandmarks);
-        const foodTitles = getActivityTitles(selectedFoods);
-        const shopTitles = getActivityTitles(selectedShops);
-        const hotelTitles = parseTitleFromString(selectedHotelString);
-
-
-
-        const sortedArray = getRoundRobinSlice([selectedActivities, selectedLandmarks, selectedFoods, selectedShops]);
-        sortedArray.unshift(selectedHotelString);
-        console.log(sortedArray);
-
-        const combinedArray = removeTitles(sortedArray);
-
-
-        const combinedTitles = getRoundRobinSlice([activityTitles, landmarkTitles, foodTitles, shopTitles]);
-        combinedTitles.unshift(hotelTitles);
-        // console.log("Combined Description: " + combinedArray)
-        // console.log("Combined Titles: " + combinedTitles)
-        console.log("Sorted array without titles: " + combinedArray);
-
-        const dateRangeString = this.$store.state.tripObject.dates;
-
-        // Parse date range
-        const [startDateString, endDateString] = dateRangeString.split(" - ");
-        const startDate = this.parseDateString(startDateString);
-        const endDate = this.parseDateString(endDateString);
-
-        // Calculate the trip duration
-        const daysDifference = this.calculateTripDuration(startDate, endDate);
-
-        // Calculate the number of descriptions per day
-        let descriptionsPerDay = Math.floor(combinedArray.length / daysDifference);
-        let remainingDescriptions = combinedArray.length % daysDifference;
-
-        // Initialize index outside of the loop
-        let currentIndex = -1;
-
-        // Loop through each day
-        for (let i = 0; i < daysDifference; i++) {
-            const currentDate = new Date(startDate);
-            currentDate.setDate(startDate.getDate() + i);
-            const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
-
-            // Calculate the number of descriptions for this day
-            let descriptionsForThisDay = descriptionsPerDay;
-            if (remainingDescriptions > 0) {
-                descriptionsForThisDay++;
-                remainingDescriptions--;
-            }
-
-            // Slice the descriptions for this day
-            const descriptionsForDay = combinedArray.slice(0, descriptionsForThisDay);
-
-            // Remove the sliced descriptions from the combinedArray
-            combinedArray.splice(0, descriptionsForThisDay);
-
-
-
-            const daySection = {
-                title: dayTitle,
-                activities: descriptionsForDay.map(description => ({
-                    name: combinedTitles[currentIndex += 1],
-                    description: description,
-                    image: require('@/assets/boba2.jpeg') // Add your image logic here
-                }))
+                
+                return output;
             };
-            // Update the current index
-            this.itinerary.push(daySection);
-        }
+            
+            // Function used to parse the titles from the descriptions
+            const getActivityTitles = (activities) => {
+                return activities.map(activity => {
+                    const title = activity.split(':')[0]; // Split at ":" and get the first part
+                    return title.trim(); // Remove any leading or trailing whitespace
+                });
+            };
+            
+            // Function to remove titles from each string in the array
+            const removeTitles = (array) => {
+                return array.map((item) => {
+                    // Split the string at the first occurrence of ":"
+                    const parts = item.split(':');
+                    // Return the second part of the split string (the description) trimmed of any leading or trailing whitespace
+                    return parts.length > 1 ? parts.slice(1).join(':').trim() : item.trim();
+                });
+            };
+            
+            const parseTitleFromString = (str) => {
+                const parts = str.split(':');
+                return parts[0].trim();
+            };
+            
+            // Separating the titles from the descriptions
+            const activityTitles = getActivityTitles(selectedActivities);
+            const landmarkTitles = getActivityTitles(selectedLandmarks);
+            const foodTitles = getActivityTitles(selectedFoods);
+            const shopTitles = getActivityTitles(selectedShops);
+            const hotelTitles = parseTitleFromString(selectedHotelString);
+            
+            
+            
+            const sortedArray = getRoundRobinSlice([selectedActivities, selectedLandmarks, selectedFoods, selectedShops]);
+            sortedArray.unshift(selectedHotelString);
+            console.log(sortedArray);
+            
+            const combinedArray = removeTitles(sortedArray);
+            
+            
+            const combinedTitles = getRoundRobinSlice([activityTitles, landmarkTitles, foodTitles, shopTitles]);
+            combinedTitles.unshift(hotelTitles);
+            // console.log("Combined Description: " + combinedArray)
+            // console.log("Combined Titles: " + combinedTitles)
+            console.log("Sorted array without titles: " + combinedArray);
+            
+            const dateRangeString = this.$store.state.tripObject.dates;
+            
+            // Parse date range
+            const [startDateString, endDateString] = dateRangeString.split(" - ");
+            const startDate = this.parseDateString(startDateString);
+            const endDate = this.parseDateString(endDateString);
+            
+            // Calculate the trip duration
+            const daysDifference = this.calculateTripDuration(startDate, endDate);
+            
+            // Calculate the number of descriptions per day
+            let descriptionsPerDay = Math.floor(combinedArray.length / daysDifference);
+            let remainingDescriptions = combinedArray.length % daysDifference;
+            
+            // Initialize index outside of the loop
+            let currentIndex = -1;
+            
+            // Loop through each day
+            for (let i = 0; i < daysDifference; i++) {
+                const currentDate = new Date(startDate);
+                currentDate.setDate(startDate.getDate() + i);
+                const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
+                
+                // Calculate the number of descriptions for this day
+                let descriptionsForThisDay = descriptionsPerDay;
+                if (remainingDescriptions > 0) {
+                    descriptionsForThisDay++;
+                    remainingDescriptions--;
+                }
+                
+                // Slice the descriptions for this day
+                const descriptionsForDay = combinedArray.slice(0, descriptionsForThisDay);
+                
+                // Remove the sliced descriptions from the combinedArray
+                combinedArray.splice(0, descriptionsForThisDay);
+                
+                
+                
+                const daySection = {
+                    title: dayTitle,
+                    activities: descriptionsForDay.map(description => ({
+                        name: combinedTitles[currentIndex += 1],
+                        description: description,
+                        image: require('@/assets/boba2.jpeg') // Add your image logic here
+                    }))
+                };
+                // Update the current index
+                this.itinerary.push(daySection);
+            }
+        }, 500);
 
 
     },
@@ -202,12 +218,56 @@ export default {
 
     mounted() {
         // console.log("HEY!!!")
-        const tripObject = this.$route.params.tripObject;
+        // const tripObject = this.$route.params.tripObject;
+        const tripObject = this.$store.state.tripObject;
+
         // console.log("This is the saved object: " + tripObject)
         // console.log("activities: " + this.$store.state.tripObject.activities)
 
     },
     methods: {
+        send() {
+            // const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
+            // console.log(tripObjectCopy);  // Ensure the copy has the expected data
+
+            // // Push to the new route
+            // this.$router.push({ name: 'SavedItinerary', params: { tripObject: tripObjectCopy } }).catch(err => {
+            //     console.error(err);
+            // }).then(() => {
+            //     // Force reload the page to reset everything
+            //     window.location.reload();
+            // });
+            this.$store.state.tripObject.activities = this.selectedActivities;
+            this.$store.state.tripObject.foods = this.selectedFoods;
+            this.$store.state.tripObject.landmarks = this.selectedLandmarks;
+            this.$store.state.tripObject.shops = this.selectedShops;
+            this.$store.state.tripObject.hotels = this.selectedHotels;
+
+            const new_selections = {
+                activities: this.selectedActivities,
+                foods: this.selectedFoods,
+                landmarks: this.selectedLandmarks,
+                shops: this.selectedShops,
+                hotels: this.selectedHotels,
+            };
+            //console.log(tripObjectCopy);  // Ensure the copy has the expected data
+            //console.log("Vuex tripObject: ", this.$store.state.tripObject);
+
+            axios.put(`http://localhost:8000/api/update_trip_selections/${this.$store.state.tripObject.id}`,new_selections)
+            .then(response => {
+                console.log('New selections saved to database.', response.data);
+                console.log('Snackbar', showSelectionChangesSnackbar);
+                })
+                .catch(error => {
+                    console.error('Error saving changes to database:', error);
+                    // Handle error
+                });
+            setTimeout(() => {
+            window.location = '/SavedItinerary'; // Directly navigate to home and refresh
+          }, 1000);
+
+        },
+
         getTimelineColor(index) {
             // Define colors for each day
             const colors = ['primary', 'info', 'success', 'error', 'warning'];
@@ -321,7 +381,23 @@ export default {
                     console.error('Error saving trip:', error);
                 });
         },
-        // Other methods for itinerary display, if any
+        fetchSavedTripDetails(trip_id) {
+            const jwtToken = Cookies.get('login_token');
+            //const url = '/fetch_saved_itinerary/<trip_id>'
+            // console.log("Token works: " + jwtToken);
+            axios.get(`http://localhost:8000/api/fetch_saved_itinerary/${trip_id}`, {
+                headers: {
+                Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+                }
+            })
+            .then(response => {
+                this.savedTrip = response.data.savedTrip;
+                console.log('Saved trip from database in savedItinerary2: ', this.savedTrip);
+            })
+            .catch(error => {
+                console.error('Error fetching saved trip:', error);
+            });
+        },
     },
     computed: {
         fontSizeClass() {

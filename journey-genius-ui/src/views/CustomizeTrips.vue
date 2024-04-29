@@ -1,18 +1,27 @@
 <template>
     <v-app>
         <v-container>
-            <LoadingScreenShort v-if="isLoading" />
+
+            <v-snackbar v-model="showSelectionChangesSnackbar" color="deep-purple-accent-2" top>
+                <span class="centered-text">Trip selections changed successfully.</span>
+            </v-snackbar>
+
             <!-- Header -->
             <v-row justify="center" class="mt-4">
                 <v-col cols="12" md="8" class="text-center">
+                    <!-- User Selections changed snackbar -->
+
                     <h2 style="font-size: 2.5rem;" class="headline text-deep-purple-accent-2">
                         Plan Your Next Adventure in
                     </h2>
                     <h1 style="font-size: 3.5rem;" class="headline text-deep-purple-accent-2">
-                        {{ cityData }}, {{ fullName }}
+                        <!-- {{ cityData }}, {{ fullName }} -->
+                        {{ this.$store.state.tripObject.city }}, {{ this.$store.state.tripObject.state }}
                     </h1>
                     <h1 style="font-size: 1rem;" class="headline text-deep-purple-accent-2">
-                        Planned for {{ combinedDates }} with a {{ budgetString }} budget trip.
+                        <!-- Planned for {{ combinedDates }} with a {{ budgetString }} budget trip. -->
+                        Planned for {{ this.$store.state.tripObject.dates }} with a {{
+                            this.$store.state.tripObject.budget }} budget trip.
                     </h1>
                     <p style="margin-top: 10px;">
                         The activities you select will form your final itinerary. You are required to check at least one
@@ -133,9 +142,9 @@
             <v-col cols="12" md="8" class="text-center">
                 <hr />
 
-                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2" @click="showConfirmationDialog"
-                    style="min-width: 150px;">
-                    Go Back
+                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-2"
+                    @click="showConfirmationDialog" style="min-width: 150px;">
+                    Cancel Changes
                 </v-btn>
 
                 <v-dialog v-model="dialogVisible" max-width="650">
@@ -143,7 +152,7 @@
                         <v-card-title class="headline"
                             style="padding-left: 25px; padding-top: 15px;">Confirmation</v-card-title>
                         <v-card-text>
-                            Are you sure you want to go back? This will restart your planning progress.
+                            Would you like to return to the itinerary overview page? Any unsaved changes will be lost.
                         </v-card-text>
                         <v-card-actions>
                             <v-spacer></v-spacer>
@@ -156,7 +165,7 @@
                 <!-- <router-link to="/GeneratedItinerary"> -->
                 <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="updateTravelInfo"
                     style="min-width: 150px;">
-                    Generate
+                    Save Changes
                 </v-btn>
                 <!-- </router-link> -->
             </v-col>
@@ -176,6 +185,8 @@ import LoadingScreenShort from '@/components/LoadingScreenShort.vue';
 export default defineComponent({
     data() {
         return {
+            showSelectionChangesSnackbar: false,
+
             activities: [],
             landmarks: [],
             foods: [],
@@ -264,9 +275,6 @@ export default defineComponent({
             isLoading: false,
         };
     },
-
-
-
     methods: {
         formatDate(date) {
             const options = { month: 'long', day: 'numeric', year: 'numeric' };
@@ -276,35 +284,33 @@ export default defineComponent({
             this.dialogVisible = true;
         },
         goBack() {
-            this.$router.push("/StartPlanning");
+            this.$router.push("/SavedItinerary");
         },
 
-        // Function to update the Vuex store with selected activities
+        //////////////////////////////// ISAAC!!! THIS IS THE SECTION WHERE YOU HAVE TO UPDATE THE USER SELECTION /////////////////////////////////////////////////////////
+        // Should change the saved trip object
+
         updateSelectedActivities() {
-            // console.log('Selected activities:', this.selectedActivities);
             this.$store.commit('updateActivities', this.selectedActivities);
-            console.log("Activities stored in Vuex: " + this.$store.state.activities); // Log the activities stored in Vuex
+            console.log("Activities stored in Vuex: " + this.$store.state.activities);
         },
-        // Function to update the Vuex store with selected landmarks
         updateSelectedLandmarks() {
             this.$store.commit('updateLandmarks', this.selectedLandmarks);
-            console.log("Landmarks stored in Vuex: " + this.$store.state.landmarks); // Log the landmarks stored in Vuex
+            console.log("Landmarks stored in Vuex: " + this.$store.state.landmarks);
         },
-        // Function to update the Vuex store with selected foods
         updateSelectedFoods() {
             this.$store.commit('updateFoods', this.selectedFoods);
-            console.log("Restaurants stored in Vuex: " + this.$store.state.foods); // Log the landmarks stored in Vuex
-
+            console.log("Restaurants stored in Vuex: " + this.$store.state.foods);
         },
-        // Function to update the Vuex store with selected shops
         updateSelectedShops() {
             this.$store.commit('updateShops', this.selectedShops);
-            console.log("Shopping Spots stored in Vuex: " + this.$store.state.shops); // Log the landmarks stored in Vuex
+            console.log("Shopping Spots stored in Vuex: " + this.$store.state.shops);
         },
         updateSelectedHotels() {
             this.$store.commit('updateHotels', this.selectedHotels);
-            console.log("Hotels stored in Vuex: " + this.$store.state.hotels); // Log the landmarks stored in Vuex
+            console.log("Hotels stored in Vuex: " + this.$store.state.hotels);
         },
+
 
         updateTravelInfo() {
             let isValid = true; // Assume input is valid unless proven otherwise
@@ -361,112 +367,144 @@ export default defineComponent({
             }
 
             // Loading Screen
-            this.isLoading = true;
+            // this.isLoading = true;
+            //const newTripObject = this.$store.state.tripObject;
 
-            // Generate City Summary + Slogan Section
-            const requestData = {
-                state: this.$store.state.stateData,
-                city: this.$store.state.city,
-            }
-            // console.log(requestData)
+            this.$store.state.tripObject.activities = this.selectedActivities;
+            this.$store.state.tripObject.foods = this.selectedFoods;
+            this.$store.state.tripObject.landmarks = this.selectedLandmarks;
+            this.$store.state.tripObject.shops = this.selectedShops;
+            this.$store.state.tripObject.hotels = this.selectedHotels;
 
-            console.log("Generating Description...")
-            axios.post('http://localhost:8000/api/generateDescription', requestData)
+            const new_selections = {
+                activities: this.selectedActivities,
+                foods: this.selectedFoods,
+                landmarks: this.selectedLandmarks,
+                shops: this.selectedShops,
+                hotels: this.selectedHotels,
+            };
+            const updatedObject = {
+                id: this.$store.state.tripObject.id,
+                city: this.$store.state.tripObject.city,
+                city_description: this.$store.state.tripObject.city_description,
+                activities: this.$store.state.tripObject.activities,
+                landmarks: this.$store.state.tripObject.landmarks,
+                foods: this.$store.state.tripObject.foods,
+                shops: this.$store.state.tripObject.shops,
+                hotels: this.$store.state.tripObject.hotels,
+                state: this.$store.state.tripObject.state,
+                dates: this.$store.state.tripObject.dates,
+                budget: this.$store.state.tripObject.budget,
+                latitude: this.$store.state.tripObject.latitude,
+                longitude: this.$store.state.tripObject.longitude,
+                city_slogan: this.$store.state.tripObject.city_slogan,
+                generated_activities: this.$store.state.tripObject.generated_activities,
+                generated_hotels: this.$store.state.tripObject.generated_hotels,
+                generated_shops: this.$store.state.tripObject.generated_shops,
+                generated_foods: this.$store.state.tripObject.generated_foods,
+                generated_landmarks: this.$store.state.tripObject.generated_landmarks,
+            };
+            // this.$store.commit('updateTripObject', this.updatedObject);
+            // console.log(this.updatedObject)
+
+            //console.log(tripObjectCopy);  // Ensure the copy has the expected data
+            //console.log("Vuex tripObject: ", this.$store.state.tripObject);
+
+            axios.put(`http://localhost:8000/api/update_trip_selections/${this.$store.state.tripObject.id}`, new_selections)
                 .then(response => {
-                    // console.log("City Description: ", response.data);
-                    this.$store.commit('updateCityDescription', response.data);
-                    console.log("City Description: " + response.data)
-                    return axios.post('http://localhost:8000/api/generateSlogan', requestData)
+                    console.log('New selections saved to database.', response.data);
+                    console.log('Snackbar', showSelectionChangesSnackbar);
                 })
-                .then(response => {
-                    this.$store.commit('updateCitySlogan', response.data);
-                    console.log("City Slogan " + response.data)
-                })
-                .then(response => {
-                    this.isLoading = false;
-                    this.$router.push({ name: 'GeneratedItinerary' });
-                })
+                .catch(error => {
+                    console.error('Error saving changes to database:', error);
+                    // Handle error
+                });
+            this.showSelectionChangesSnackbar = true;
+            this.$router.push({ name: 'SavedItinerary', params: { tripObject: this.$store.state.tripObject } });
         }
 
     },
     mounted() {
-        // Pulls information from the previous page.
-        const activityData = JSON.parse(this.$route.query.activityData);
-        // console.log(activityData)
-        if (activityData && activityData.recommended_places) {
-            this.activities = activityData.recommended_places;
-        }
 
-        const landmarkData = JSON.parse(this.$route.query.landmarkData);
-        // console.log(landmarkData)
-        if (landmarkData && landmarkData.recommended_places) {
-            this.landmarks = landmarkData.recommended_places;
-        }
+        this.selectedActivities = this.$store.state.tripObject.activities;
+        this.selectedFoods = this.$store.state.tripObject.foods;
+        this.selectedLandmarks = this.$store.state.tripObject.landmarks;
+        this.selectedShops = this.$store.state.tripObject.shops;
+        this.selectedHotels = this.$store.state.tripObject.hotels;
+        // console.log('Selected activities from customize trip mounted: ', this.selectedActivities);
+        // console.log('Selected foods from customize trip mounted: ', this.selectedFoods);
+        // console.log('Selected landmarks from customize trip mounted: ', this.selectedLandmarks);
+        // console.log('Selected shops from customize trip mounted: ', this.selectedShops);
+        // console.log('Selected hotels from customize trip mounted: ', this.selectedHotels);
+        // const activityData = JSON.parse(this.$route.query.activityData);
+        // if (activityData && activityData.recommended_places) {
+        //     this.activities = activityData.recommended_places;
+        // }
 
-        const restaurantData = JSON.parse(this.$route.query.restaurantData);
-        // console.log(restaurantData)
-        if (restaurantData && restaurantData.recommended_places) {
-            this.foods = restaurantData.recommended_places;
-        }
+        // const landmarkData = JSON.parse(this.$route.query.landmarkData);
+        // if (landmarkData && landmarkData.recommended_places) {
+        //     this.landmarks = landmarkData.recommended_places;
+        // }
 
-        const shoppingData = JSON.parse(this.$route.query.shoppingData);
-        // console.log(shoppingData)
-        if (shoppingData && shoppingData.recommended_places) {
-            this.shops = shoppingData.recommended_places;
-        }
+        // const restaurantData = JSON.parse(this.$route.query.restaurantData);
+        // if (restaurantData && restaurantData.recommended_places) {
+        //     this.foods = restaurantData.recommended_places;
+        // }
 
-        const hotelData = JSON.parse(this.$route.query.hotelData);
-        // console.log(hotelData)
-        if (hotelData && hotelData.recommended_places) {
-            this.hotels = hotelData.recommended_places;
-        }
+        // const shoppingData = JSON.parse(this.$route.query.shoppingData);
+        // if (shoppingData && shoppingData.recommended_places) {
+        //     this.shops = shoppingData.recommended_places;
+        // }
 
-        const cityData = JSON.parse(this.$route.query.cityData);
-        // console.log(cityData);
-        this.cityData = cityData; // Assign cityData to the component's property
+        // const hotelData = JSON.parse(this.$route.query.hotelData);
+        // if (hotelData && hotelData.recommended_places) {
+        //     this.hotels = hotelData.recommended_places;
+        // }
 
-        const state = JSON.parse(this.$route.query.stateData);
-        // console.log(state);
-        this.state = state;
+        // const cityData = JSON.parse(this.$route.query.cityData);
+        // this.cityData = cityData; 
 
-        const budgetData = JSON.parse(this.$route.query.budgetData);
-        // console.log(budgetData)
-        this.budgetData = budgetData;
+        // const state = JSON.parse(this.$route.query.stateData);
+        // this.state = state;
 
-        const startDateData = JSON.parse(this.$route.query.startDateData);
-        // console.log(startDateData)
-        this.startDateData = startDateData;
+        // const budgetData = JSON.parse(this.$route.query.budgetData);
+        // this.budgetData = budgetData;
 
-        const endDateData = JSON.parse(this.$route.query.endDateData);
-        // console.log(endDateData)
-        this.endDateData = endDateData;
+        // const startDateData = JSON.parse(this.$route.query.startDateData);
+        // this.startDateData = startDateData;
+
+        // const endDateData = JSON.parse(this.$route.query.endDateData);
+        // this.endDateData = endDateData;
+    },
+    created() {
+
+        // THIS IS ALL OF THE USER SELECTED OPTIONS
+        // const tripObject = this.$route.params.tripObject;
+        // const activityData = this.$store.state.tripObject.activities;
+        // const landmarkData = this.$store.state.tripObject.landmarks;
+        // const restaurantData = this.$store.state.tripObject.foods;
+        // const shoppingData = this.$store.state.tripObject.shops;
+        // const hotelData = this.$store.state.tripObject.hotels;
+
+        // THIS IS ALL OF THE SAVED GENERATED OPTIONS
+        const tripObject = this.$route.params.tripObject;
+        const activityData = this.$store.state.tripObject.generated_activities;
+        const landmarkData = this.$store.state.tripObject.generated_landmarks;
+        const restaurantData = this.$store.state.tripObject.generated_foods;
+        const shoppingData = this.$store.state.tripObject.generated_shops;
+        const hotelData = this.$store.state.tripObject.generated_hotels;
 
 
-        // this.$store.commit('updateBudget', this.budgetString);
-        //     console.log("Budget stored in Vuex: " + this.$store.state.budget); // Log the activities stored in Vuex
+        this.activities = activityData;
+        this.landmarks = landmarkData;
+        this.foods = restaurantData;
+        this.shops = shoppingData;
+        this.hotels = hotelData;
     },
 
-    // mutations: {
-    //     updateActivities(state, activities) {
-    //         console.log('Updating activities in Vuex:', activities);
-    //         state.activities = activities;
-    //     },
-    //     // Other mutations...
-    // },
+
 
     computed: {
-        // selectedActivities() {
-        //     return this.$store.state.activities;
-        // },
-        // selectedBudget() {
-        //     const store = useStore();
-        //     return store.getters.selectedBudget;
-        // },
-
-        // ...mapState({
-        //     selectedActivities: state => state.selectedActivities
-        // }),
-
         budgetString() {
             if (this.budgetData === 1) {
                 this.$store.commit('updateBudget', "cheap");
@@ -506,8 +544,8 @@ export default defineComponent({
 
     },
     components: {
-    LoadingScreenShort,
-  },
+        LoadingScreenShort,
+    },
 
 });
 </script>

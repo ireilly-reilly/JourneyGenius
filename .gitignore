@@ -10,3 +10,4 @@ package.json
 /journey-genius-data-scraping/
 *.csv
 venv
+sendgrid.env

@@ -1,25 +1,37 @@
 <template>
-  <div class="login-page dark-mode">
+  <div class="login-page">
+    <v-app-bar app color="grey lighten-2">
+      <v-toolbar-title>Journey Genius - Admin Portal</v-toolbar-title>
+      <!-- Buttons that link to other parts of the site -->
+      <div class="d-flex align-center ml-16">
+        <v-btn v-for="button in buttons" :key="button.to" text color="black" :to="button.to">
+          {{ button.text }}
+        </v-btn>
+      </div>
+      <v-spacer></v-spacer>
+    </v-app-bar>
+
     <div class="login-form">
       <div class="form-title">
-        <v-icon size="50" color="white">mdi-account-circle</v-icon>
-        <span>Login</span>
+        <v-icon size="50" color="deep-purple-accent-2">mdi-account-circle</v-icon>
+        <span>Admin Portal</span>
       </div>
       <div class="form-input">
-        <v-text-field v-model="email" label="Email" outlined color="white"></v-text-field>
+        <v-text-field v-model="email" label="Email" outlined color="black" @keyup.enter="login"></v-text-field>
       </div>
       <div class="form-input">
-        <v-text-field v-model="password" label="Password" outlined color="white" type="password"></v-text-field>
+        <v-text-field v-model="password" label="Password" outlined color="black" type="password" @keyup.enter="login"></v-text-field>
       </div>
       <div class="form-actions">
         <v-btn @click="login" color="deep-purple-accent-2">Login</v-btn>
       </div>
     </div>
-    <v-snackbar v-model="toast.show" :timeout="toast.timeout" color="deep-purple-accent-2">
-      {{ toast.message }}
+    <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
+      <span class="centered-text">Login Successful!</span>
     </v-snackbar>
   </div>
 </template>
+
 
 <script>
 //Imports
@@ -70,6 +82,7 @@ export default {
           expirationDate.setDate(expirationDate.getDate() + 7);
 
           //Store the token in a secure manner (e.g., HttpOnly cookie) with expiration date
+          Cookies.set('super_token', token, { secure: false, expires: expirationDate });
           Cookies.set('login_token', token, { secure: false, expires: expirationDate });
           //console.log('Login token:', token) //Display token after cookies set
           console.log('User logged in successfully, login token: ', token)
@@ -81,7 +94,7 @@ export default {
           this.showSnackbar = true; // Show the Snackbar
           setTimeout(() => {
             this.$router.push({ name: 'SuperuserDashboard' });
-          }, 3000);
+          }, 1000);
 
           // Redirect to the home page
           // this.$router.push({ name: 'Home' });
@@ -141,23 +154,14 @@ export default {
 </script>
 
 <style>
-/* body {
-  margin: 0;
-  padding: 0;
-  background-color: #333; 
-
-} */
-
 .login-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
-  background-color: #333;
-  /* Dark background color */
-  color: white;
-  /* Light text color */
+  background-color: #FFF; /* Light background color */
+  color: black; /* Dark text color */
 }
 
 .login-form {
@@ -165,7 +169,7 @@ export default {
   width: 100%;
   padding: 20px;
   border-radius: 5px;
-  background-color: #555;
+  background-color: #FFF; /* Light background color */
   text-align: center;
 }
 
@@ -195,5 +199,11 @@ export default {
 
 .error-outline {
   border-color: red;
+}
+
+.centered-text {
+  display: block;
+  text-align: center;
+  font-size: medium;
 }
 </style>

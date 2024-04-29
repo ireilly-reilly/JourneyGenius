@@ -135,6 +135,7 @@ USE useraccounts;
 GRANT ALL PRIVILEGES ON useraccounts.user TO 'JourneyGenius'@'localhost';
 GRANT ALL PRIVILEGES ON useraccounts.super_user TO 'JourneyGenius'@'localhost';
 GRANT ALL PRIVILEGES ON useraccounts.trip TO 'JourneyGenius'@'localhost';
+GRANT ALL PRIVILEGES ON useraccounts.admin_change_log_entry TO 'JourneyGenius'@'localhost';
 GRANT SELECT ON alembic_version TO 'JourneyGenius'@'localhost';
 FLUSH PRIVILEGES;
 ```

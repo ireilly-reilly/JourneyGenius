@@ -54,7 +54,7 @@ def scrape_landmarks():
     
     ############################################## We can change this keyword in the future ##############################################
     # keyword = 'mexican' 
-    desired_result_count = 10
+    desired_result_count = 1
     # Desired result count here
 
     BASE_DIR = os.path.abspath(os.path.dirname(__file__))

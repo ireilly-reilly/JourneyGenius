@@ -67,7 +67,6 @@ def scrape_shopping():
             return [item.lower() for item in data.split(', ')]  # Split string into a list of categories and convert each to lowercase
         else:
             return [str(data).lower()]  # Convert data to string, wrap in a list, and convert to lowercase
-
     current_user_id = get_jwt_identity()
 
     # Get the user from the database

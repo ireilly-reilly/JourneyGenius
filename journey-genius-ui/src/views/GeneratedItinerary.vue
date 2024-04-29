@@ -2,7 +2,7 @@
     <v-app>
         <v-container>
             <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
-                <span class="text-center">Trip Successfully Saved!</span>
+                <span class="centered-text">Trip Successfully Saved!</span>
             </v-snackbar>
 
             <!-- Title and Information Section -->
@@ -79,8 +79,8 @@
                                 <li v-for="shop in shops" :key="shop">{{ shop }}</li>
                             </ul>
                         </div>
-                         <!-- Hotel Spot Section -->
-                         <div class="section-content">
+                        <!-- Hotel Spot Section -->
+                        <div class="section-content">
                             <h3>Accomodation</h3>
                             <ul>
                                 <li v-for="hotel in hotels" :key="hotel">{{ hotel }}</li>
@@ -110,7 +110,7 @@
                 </p>
                 <br>
                 <div style="position: relative; overflow: hidden; border-radius: 8px;">
-                    <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y&center=' +
+                    <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU&center=' +
                         this.$store.state.lat + ',' + this.$store.state.long + '&zoom=15&maptype=roadmap'"
                         allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
                 </div>
@@ -152,12 +152,10 @@
             <!-- Three buttons on the bottom -->
             <v-row justify="center" class="mt-4">
                 <v-col cols="12" md="8" class="text-center">
-                    <router-link to="/Itinerary">
                         <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-4"
                             @click="previousStep" style="min-width: 150px;">
                             Customize
                         </v-btn>
-                    </router-link>
 
                     <!-- Render different buttons based on the origin page -->
                     <router-link to="/GeneratedItinerary2">
@@ -166,14 +164,38 @@
                             Itinerary Details
                         </v-btn>
                     </router-link>
-                    <router-link to="/SavedTrips">
-                        <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-4" @click="saveTrip"
-                            style="min-width: 150px;">
-                            Save Trip
-                        </v-btn>
-                    </router-link>
+                    <!-- <router-link to="/SavedTrips"> -->
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-4" @click="saveTrip"
+                        style="min-width: 150px;">
+                        Save Trip
+                    </v-btn>
+                    <!-- </router-link> -->
+
+                    <!-- </router-link> -->
                 </v-col>
+
             </v-row>
+            <v-col class="button-container">
+                <v-btn size="large" color="#EF5350" class="white--text mt-6 ml-4" style="min-width: 150px;"
+                    @click="confirmDiscard">
+                    Discard Trip
+                </v-btn>
+
+                <v-dialog v-model="dialog" persistent max-width="650">
+                    <v-card>
+                        <br>
+                        <v-card-title style="padding-left: 25px; padding-top: 15px;">Confirm Action</v-card-title>
+                        <v-card-text>Are you sure you want to discard this trip? This will redirect you to the start
+                            planning page and you will lose all progress.</v-card-text>
+                        <v-card-actions>
+                            <v-spacer></v-spacer>
+                            <v-btn color="deep-purple-accent-2" text @click="closeDialog">Cancel</v-btn>
+                            <v-btn color="red darken-1" text @click="discardTrip">Confirm</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
+            </v-col>
+
         </v-container>
     </v-app>
 </template>
@@ -187,6 +209,8 @@ export default {
     data() {
         return {
             showSnackbar: false,
+            dialog: false,
+
         }
     },
 
@@ -207,6 +231,11 @@ export default {
         const citySlogan = this.$store.state.citySlogan;
         const latitude = this.$store.state.lat;
         const longitude = this.$store.state.long;
+        const generated_activities = this.$store.state.generated_activities;
+        const generated_hotels = this.$store.state.generated_hotels;
+        const generated_shops = this.$store.state.generated_shops;
+        const generated_foods = this.$store.state.generated_foods;
+        const generated_landmarks = this.$store.state.generated_landmarks;
 
         console.log("-----------------FROM MOUNTED-------------------------")
         console.log("Activities: ", this.$store.state.activities);
@@ -251,7 +280,8 @@ export default {
         // Make an HTTP POST request to your Python server
         axios.post('http://localhost:8000/api/restaurant_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Food Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateFoodPictures', response.data);
             })
             .catch(error => {
                 console.error('Error sending data to Python server (restaurant):', error);
@@ -259,7 +289,9 @@ export default {
 
         axios.post('http://localhost:8000/api/activity_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Activity Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateActivityPictures', response.data);
+
             })
             .catch(error => {
                 console.error('Error sending data to Python server (activity):', error);
@@ -267,7 +299,8 @@ export default {
 
         axios.post('http://localhost:8000/api/landmark_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Landmark Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateLandmarkPictures', response.data);
             })
             .catch(error => {
                 console.error('Error sending data to Python server (landmark):', error);
@@ -275,7 +308,8 @@ export default {
 
         axios.post('http://localhost:8000/api/shopping_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Shopping Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateShopPictures', response.data);
             })
             .catch(error => {
                 console.error('Error sending data to Python server (shopping):', error);
@@ -283,7 +317,8 @@ export default {
 
         axios.post('http://localhost:8000/api/hotel_photo_data', data)
             .then(response => {
-                console.log(response.data); // Log response from Python server
+                console.log("Hotel Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateHotelPictures', response.data);
             })
             .catch(error => {
                 console.error('Error sending data to Python server (hotel):', error);
@@ -317,6 +352,29 @@ export default {
 
     },
     methods: {
+        confirmDiscard() {
+            this.dialog = true;
+        },
+        closeDialog() {
+            this.dialog = false;
+        },
+        discardTrip() {
+            this.dialog = false;
+            this.$router.push('/TripSettings');
+        },
+        previousStep() {
+            this.$router.push('/CustomizeItinerary');
+        },
+
+        // redirect() {
+        //   this.showSnackbar = true; // Show the Snackbar
+
+        //   setTimeout(() => {
+        //     window.location = '/'; // Directly navigate to home and refresh
+        //   }, 1000);
+
+        // },
+
         saveTrip() {
 
             console.log("From saveTrip() function: ")
@@ -342,6 +400,11 @@ export default {
             const citySlogan = this.$store.state.citySlogan;
             const latitude = this.$store.state.lat;
             const longitude = this.$store.state.long;
+            const generated_activities = this.$store.state.generated_activities;
+            const generated_hotels = this.$store.state.generated_hotels;
+            const generated_shops = this.$store.state.generated_shops;
+            const generated_foods = this.$store.state.generated_foods;
+            const generated_landmarks = this.$store.state.generated_landmarks;
 
             //Condensing to sendable form
             const tripData = {
@@ -358,11 +421,25 @@ export default {
                 lat,
                 long,
                 cityDescription,
-                citySlogan
+                citySlogan,
+                generated_activities,
+                generated_hotels,
+                generated_shops,
+                generated_foods,
+                generated_landmarks,
             };
             console.log("Trip Data from vuex in ready to send:")
-            console.log(tripData)
-
+            console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            console.log("Generated Activities: ")
+            console.log(this.$store.state.generated_activities)
+            console.log("Generated Foods: ")
+            console.log(this.$store.state.generated_foods)
+            console.log("Generated Shops: ")
+            console.log(this.$store.state.generated_shops)
+            console.log("Generated Landmarks: ")
+            console.log(this.$store.state.generated_landmarks)
+            console.log("Generated Hotels: ")
+            console.log(this.$store.state.generated_hotels)
 
             // Send data to Python backend
             axios.post('http://localhost:8000/api/save_trip_to_user', tripData)
@@ -376,6 +453,10 @@ export default {
                 .catch(error => {
                     console.error('Error saving trip:', error);
                 });
+            // Wait for 3 seconds before navigating
+            setTimeout(() => {
+                this.$router.push('/SavedTrips');
+            }, 2000);
         },
     },
 
@@ -448,5 +529,17 @@ export default {
 .estimated-costs .section-content h3 {
     font-size: 1.5em;
     margin-bottom: 8px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    /* Aligns children to the right */
+}
+
+.centered-text {
+    display: block;
+    text-align: center;
+    font-size: medium;
 }
 </style>

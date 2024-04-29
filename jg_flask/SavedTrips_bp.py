@@ -18,7 +18,7 @@ hotel_data = []
 @saved_trips_bp.route('/save_trip_to_user', methods=['POST'])
 def save_trip_to_user():
     data = request.json  # Get the trip data from the request
-
+    print(data)
     trip = Trip(
         user_id=data['userID'],  # Assuming you are passing the user_id along with trip data
         activities=data['activities'],
@@ -34,11 +34,11 @@ def save_trip_to_user():
         longitude=data['long'],
         city_description=data['cityDescription'],
         city_slogan=data['citySlogan'],
-        generated_activities=activity_data,
-        generated_landmarks=landmark_data,
-        generated_foods=restaurant_data,
-        generated_shops=shopping_data,
-        generated_hotels=hotel_data,
+        generated_activities=data['generated_activities'],
+        generated_landmarks=data['generated_landmarks'],
+        generated_foods=data['generated_foods'],
+        generated_shops=data['generated_shops'],
+        generated_hotels=data['generated_hotels'],
         # Add other fields as needed
     )
 
@@ -76,9 +76,18 @@ def get_saved_trips():
         'city': trip.city,
         'city_description': trip.city_description,
         'activities': trip.activities,
+        'landmarks': trip.landmarks,
+        'shops': trip.shops,
+        'foods': trip.hotels,
+        'hotels': trip.hotels,
         'state' : trip.state,
         'dates' : trip.dates,
         'budget' : trip.budget,
+        'generated_activities' : trip.generated_activities,
+        'generated_shops' : trip.generated_shops,
+        'generated_hotels' : trip.generated_hotels,
+        'generated_landmarks' : trip.generated_landmarks,
+        'generated_foods' : trip.generated_foods,
         #'imageSrc': trip.image_src  # Assuming you have an image source field in your Trip model
         # Add more fields as needed
     } for trip in saved_trips]
@@ -126,12 +135,17 @@ def get_saved_itinerary(trip_id):
             'latitude': saved_trip.latitude,
             'longitude': saved_trip.longitude,
             'city_slogan': saved_trip.city_slogan,
+            'generated_activities' : saved_trip.generated_activities,
+            'generated_shops' : saved_trip.generated_shops,
+            'generated_hotels' : saved_trip.generated_hotels,
+            'generated_landmarks' : saved_trip.generated_landmarks,
+            'generated_foods' : saved_trip.generated_foods,
         }
         return jsonify({'savedTrip': serialized_trip}), 200
     else:
         return jsonify({'error': 'Saved trip not found or unauthorized to access'}), 404
 
-#Route to save trip data temporarily
+#Route to save trip data temporarily (depracated!)
 @saved_trips_bp.route('/save_trip_data_temporarily', methods=['POST'])
 def save_trip_data_temporarily():
     data = request.json  # Get the trip data from the request
@@ -144,3 +158,25 @@ def save_trip_data_temporarily():
     hotel_data.extend(data['hotelData'])
 
     return jsonify({'message': 'Trip data stored temporarily in flask'})
+
+#Route to update selected options for a trip
+@saved_trips_bp.route('/update_trip_selections/<int:trip_id>', methods=['PUT'])
+def update_trip_selections(trip_id):
+    data = request.json
+
+    #Get trip via id from database
+    trip = Trip.query.get(trip_id)
+    if not trip:
+        return jsonify({'message': 'Trip not found'}), 404
+
+    #Set selections
+    trip.activities = data.get('activities', trip.activities)
+    trip.landmarks = data.get('landmarks', trip.landmarks)
+    trip.foods = data.get('foods', trip.foods)
+    trip.shops = data.get('shops', trip.shops)
+    trip.hotels = data.get('hotels', trip.hotels)
+
+    #Save changes to database
+    db.session.commit()
+
+    return jsonify({'message': 'User selections updated successfully'}), 200

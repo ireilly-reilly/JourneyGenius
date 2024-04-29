@@ -2,9 +2,9 @@
   <nav>
     <v-toolbar flat app>
       <!-- Title -->
-      <v-toolbar-title class="text-uppercase grey--text mr-5">
+      <v-toolbar-title class="text-uppercase grey--text mr-5" @click="titleClicked">
         <span class="font-weight-light">Journey</span>
-        <span>Genius</span>
+        <span class="mouse-hover">Genius</span>
       </v-toolbar-title>
 
       <!-- Buttons that link to other parts of the site -->
@@ -16,19 +16,46 @@
 
       <v-spacer></v-spacer>
 
-      <!-- Render login/logout button dynamically based on isLoggedIn -->
-      <router-link v-if="!isLoggedIn" to="/LoginPage">
-        <v-btn color="grey darken-2" flat>
-          <span style="margin-right: 5px;">Login</span>
-          <v-icon right>mdi-exit-to-app</v-icon>
-        </v-btn>
-      </router-link>
-
-      <v-btn v-else color="grey darken-2" flat @click="logout">
-        <span style="margin-right: 5px;">Logout</span>
-        <v-icon right>mdi-exit-to-app</v-icon>
+      <!-- Login/Account Details Button -->
+      <v-btn color="grey darken-2" flat @click="drawer = !drawer">
+        <span style="margin-right: 5px;">{{ isLoggedIn ? 'Account' : 'Login' }}</span>
+        <v-icon right>mdi-account-circle</v-icon>
       </v-btn>
     </v-toolbar>
+
+    <!-- Navigation Drawer -->
+    <v-navigation-drawer v-model="drawer" location="right" temporary>
+      <v-list dense>
+        <!-- Items for logged out users -->
+        <v-list-item v-if="!isLoggedIn" @click="login" prepend-icon="mdi-login">
+          <v-list-item-title>Login</v-list-item-title>
+        </v-list-item>
+        <v-list-item v-if="!isLoggedIn" @click="register" prepend-icon="mdi-account-plus">
+          <v-list-item-title>Create Account</v-list-item-title>
+        </v-list-item>
+
+        <!-- User information display for logged-in users -->
+        <v-list-item v-if="isLoggedIn" class="py-1">
+          <v-list-item-content>
+            <v-list-item-title class="user-name">
+              {{ userInfo.firstName }} {{ userInfo.lastName }}
+            </v-list-item-title>
+
+            <v-list-item-subtitle class="text-caption">
+              {{ userInfo.email }}
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <br>
+        <hr class="mb-4" v-if="isLoggedIn">
+        <v-list-item v-if="isLoggedIn" @click="userProfile" prepend-icon="mdi-account-edit">
+          <v-list-item-title>Edit User Profile</v-list-item-title>
+        </v-list-item>
+        <v-list-item v-if="isLoggedIn" @click="logout" prepend-icon="mdi-logout">
+          <v-list-item-title>Logout</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
   </nav>
 </template>
 
@@ -40,63 +67,101 @@ export default {
   data() {
     return {
       isLoggedIn: false,
+      userInfo: {
+        firstName: '',
+        lastName: '',
+        email: ''
+      },
       buttons: [
         { text: 'Home', to: '/' },
       ],
-      token: Cookies.get('login_token'),
-      isPageRefreshed: false, // Flag to track if the page has been refreshed
+      drawer: false, // Control the navigation drawer
     };
   },
   mounted() {
     this.checkLoginStatus();
+    this.fetchUserInfo();
+
   },
   methods: {
+    async fetchUserInfo() {
+      const url = 'http://localhost:8000/api/user_account/fetch_user_info';
+      const jwtToken = Cookies.get('login_token')
+      axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+      })
+        .then(response => {
+          this.userInfo = response.data;
+          console.log(this.userInfo)
+        })
+        .catch(error => {
+          console.error('Error fetching user data:', error);
+        });
+    },
+
+    titleClicked() {
+      this.$router.push({ name: 'Home' });
+    }, 
+
+
     logout() {
       const url = 'http://localhost:8000/api/LogoutUser';
       Cookies.remove('login_token');
       Cookies.remove('database_id');
+      Cookies.remove('refresh_token');
 
       axios.post(url)
         .then(response => {
           console.log('Logout successful!', response);
-          this.message = 'Logout successful.';
           this.isLoggedIn = false;
           this.$router.push({ name: 'LoggingOut' });
         })
         .catch(error => {
           console.error('Error logging out', error);
-          this.message = 'Error logging out.';
         });
 
       this.buttons = [
         { text: 'Home', to: '/' },
       ];
     },
+    register() {
+      this.$router.push({ name: 'RegisterPage' });
+    },
+    login() {
+      this.$router.push({ name: 'LoginPage' });
+    },
+    userProfile() {
+      this.$router.push({ name: 'UserAccount' });
+    },
+
     checkLoginStatus() {
       const token = Cookies.get('login_token');
-      console.log('jwt token from navbar: ', token)
       // If the token is available, it means the user is logged in
       if (token) {
-        console.log('User logged in');
         this.isLoggedIn = true;
-        console.log(this.isLoggedIn);
-
-        // Update the navigation buttons for logged-in users
         this.buttons = [
           { text: 'Home', to: '/' },
-          { text: 'User Profiling', to: '/UserProfiling' },
-          { text: 'Plan Trip', to: '/StartPlanning' },
+          { text: 'Trip Preferences', to: '/UserProfiling' },
+          { text: 'Plan Trip', to: '/TripSettings' },
           { text: 'Saved Trips', to: '/SavedTrips' }
         ];
-        // Set a flag indicating successful login
-        this.$emit('loginSuccess');
-
       } else {
-        // If the token is not available, the user is not logged in
-        console.log('Token not available.');
         this.isLoggedIn = false;
       }
     },
   },
 };
 </script>
+<style>
+.user-name {
+  font-size: 75px;
+  /* Adjust this value as needed to make it bigger */
+  color: #651FFF;
+}
+.mouse-hover:hover {
+  color: #651FFF; /* Assuming you want Vuetify's deep-purple accent color */
+}
+
+</style>

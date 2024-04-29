@@ -13,7 +13,8 @@
                         {{ this.$store.state.tripObject.city_slogan }}
                     </h2>
                     <h1 style="font-size: 1rem;" class="headline text-deep-purple-accent-2">
-                        Planned for {{ this.$store.state.tripObject.dates }} with a {{ this.$store.state.tripObject.budget }} budget trip.
+                        Planned for {{ this.$store.state.tripObject.dates }} with a {{
+                            this.$store.state.tripObject.budget }} budget trip.
                     </h1>
                     <br>
                     <p style="font-size: 1.125rem">
@@ -49,7 +50,8 @@
                     <div class="section-content">
                         <h3>Activities</h3>
                         <ul>
-                            <li v-for="activity in $store.state.tripObject.activities" :key="activity">{{ activity }}</li>
+                            <li v-for="activity in savedTrip.activities" :key="activity">{{ activity }}
+                            </li>
                         </ul>
                     </div>
 
@@ -57,7 +59,8 @@
                     <div class="section-content">
                         <h3>Iconic Landmarks</h3>
                         <ul>
-                            <li v-for="landmark in $store.state.tripObject.landmarks" :key="landmark">{{ landmark }}</li>
+                            <li v-for="landmark in savedTrip.landmarks" :key="landmark">{{ landmark }}
+                            </li>
                         </ul>
                     </div>
 
@@ -65,7 +68,7 @@
                     <div class="section-content">
                         <h3>Places to Eat</h3>
                         <ul>
-                            <li v-for="food in $store.state.tripObject.foods" :key="food">{{ food }}</li>
+                            <li v-for="food in savedTrip.foods" :key="food">{{ food }}</li>
                         </ul>
                     </div>
 
@@ -73,7 +76,7 @@
                     <div class="section-content">
                         <h3>Shopping Spots</h3>
                         <ul>
-                            <li v-for="shop in $store.state.tripObject.shops" :key="shop">{{ shop }}</li>
+                            <li v-for="shop in savedTrip.shops" :key="shop">{{ shop }}</li>
                         </ul>
                     </div>
 
@@ -81,7 +84,7 @@
                     <div class="section-content">
                         <h3>Accomodation</h3>
                         <ul>
-                            <li v-for="hotel in $store.state.tripObject.hotels" :key="hotel">{{ hotel }}</li>
+                            <li v-for="hotel in savedTrip.hotels" :key="hotel">{{ hotel }}</li>
                         </ul>
                     </div>
                 </div>
@@ -99,7 +102,8 @@
             <hr>
             <br>
 
-            <h2 class="section-title" style="text-align: center;">Explore {{ this.$store.state.tripObject.city }} - Map</h2>
+            <h2 class="section-title" style="text-align: center;">Explore {{ this.$store.state.tripObject.city }} - Map
+            </h2>
             <p style="text-align: center;">
                 Explore this interactive map showcasing the locations of your selected points of interest, encompassing
                 your
@@ -107,9 +111,10 @@
             </p>
             <br>
             <div style="position: relative; overflow: hidden; border-radius: 8px;">
-                <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;" :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyDGC5QtIMrpN1HXPJpamkDhgfVUkq9Jw8Y&center=' +
-                            this.$store.state.tripObject.latitude + ',' + this.$store.state.tripObject.longitude + '&zoom=15&maptype=roadmap'"
-                    allowfullscreen referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <iframe width="100%" height="300" frameborder="0" style="border: 0; border-radius: 8px;"
+                    :src="'https://www.google.com/maps/embed/v1/view?key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU&center=' +
+                        this.$store.state.tripObject.latitude + ',' + this.$store.state.tripObject.longitude + '&zoom=15&maptype=roadmap'" allowfullscreen
+                    referrerpolicy="no-referrer-when-downgrade"></iframe>
             </div>
             <br>
             <v-row justify="center">
@@ -144,8 +149,8 @@
         <!-- Three buttons on the bottom -->
         <v-row justify="center" class="mt-4">
             <v-col cols="12" md="8" class="text-center">
-                <router-link to="/Customize">
-                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-4" @click="previousStep"
+                <router-link to="/CustomizeTrips">
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 mr-4" @click="sendCustomize"
                         style="min-width: 150px;">
                         Customize
                     </v-btn>
@@ -153,12 +158,14 @@
 
                 <!-- Render different buttons based on the origin page -->
                 <!-- <router-link to="/SavedItinerary2"> -->
-                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6" @click="send" style="min-width: 150px;">
-                        Itinerary Details
-                    </v-btn>
+                <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6" @click="sendItinerary2"
+                    style="min-width: 150px;">
+                    Itinerary Details
+                </v-btn>
                 <!-- </router-link> -->
                 <router-link to="/SavedTrips">
-                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-4" style="min-width: 150px;">
+                    <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-4"
+                        style="min-width: 150px;">
                         Close
                     </v-btn>
                 </router-link>
@@ -169,13 +176,32 @@
 
 <script>
 import axios from 'axios';
+import Cookies from 'js-cookie';
+
 export default {
-    mounted() {
+    data() {
+        return {
+            tripId: null,
+            savedTripDetails: null,
+
+            trip_id: '',
+            savedTrip: [],
+
+        };
+    },
+    created(){
         const tripObject = this.$store.state.tripObject;
+        const trip_id = this.$store.state.tripObject.id;
+        this.fetchSavedTripDetails(trip_id);
+        console.log("Saved trip from database in savedItinerary mounted: ", this.savedTrip)
+    },
+    mounted() {
+        
+
         // this.$store.commit('updateTripObject', this.tripObject);
         // console.log("This is the saved object: " + tripObject)
         // console.log("hotels: " + this.$store.state.tripObject.hotels)
-        
+        console.log("Generated Activities:" + this.$store.state.tripObject.generated_activities)
 
 
 
@@ -198,19 +224,38 @@ export default {
         //     });
     },
 
-    data() {
-        return {
-            tripId: null,
-            savedTripDetails: null,
-            
-        };
-    },
+    
 
     methods: {
+        sendItinerary2() {
+            const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
+            console.log(tripObjectCopy);  // Ensure the copy has the expected data
+            this.$router.push({ name: 'SavedItinerary2', params: { tripObject: tripObjectCopy } });
+        },
+        sendCustomize() {
+            const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
+            console.log(tripObjectCopy);  // Ensure the copy has the expected data
+            this.$router.push({ name: 'CustomizeTrips', params: { tripObject: tripObjectCopy } });
+        },
+        fetchSavedTripDetails(trip_id) {
+            const jwtToken = Cookies.get('login_token');
+            //const url = '/fetch_saved_itinerary/<trip_id>'
+            // console.log("Token works: " + jwtToken);
+            axios.get(`http://localhost:8000/api/fetch_saved_itinerary/${trip_id}`, {
+                headers: {
+                Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+                }
+            })
+            .then(response => {
+                this.savedTrip = response.data.savedTrip;
+                console.log('Saved trip from database in savedItinerary2: ', this.savedTrip);
+            })
+            .catch(error => {
+                console.error('Error fetching saved trip:', error);
+            });
+        },
 
-        send() {
-            this.$router.push({ name: 'SavedItinerary2', params: { tripObject: this.$store.state.tripObject } });  
-        }
+
 
     },
 
