@@ -1,5 +1,9 @@
 <template>
   <v-container>
+    <!-- Password change snackbar -->
+    <v-snackbar v-model="errorSnackbar" color="deep-purple-accent-2" top>
+        <span class="centered-text">Error running recommendations, try updating preferences.</span>
+    </v-snackbar>
     <!-- Loading screen overlay -->
     <!-- <LoadingScreen v-if="isLoading" /> -->
     <loading-screen :is-loading="isLoading" :progress="progress" v-if="isLoading"></loading-screen>
@@ -156,6 +160,8 @@ export default defineComponent({
 
       preferences_flag: true,
       existingUserData: {},
+
+      errorSnackbar: false,
 
       // Data for budget selection
       budgets: [
@@ -397,6 +403,9 @@ export default defineComponent({
             }
           });
         })
+        .catch(error => {
+            this.errorSnackbar = true;
+        })
         .then(response => {
           this.restaurantData = response.data;
           this.progress = 20;
@@ -408,11 +417,17 @@ export default defineComponent({
             }
           });
         })
+        .catch(error => {
+            this.errorSnackbar = true;
+        })
         .then(response => {
           this.activityData = response.data;
           this.progress = 40;
           console.log('run_ML_model_recommendations activities response:', response.data);
           return axios.post('http://localhost:8000/api/run_ML_model_landmark_recommendations', requestData);
+        })
+        .catch(error => {
+            this.errorSnackbar = true;
         })
         .then(response => {
           this.landmarkData = response.data;
@@ -425,6 +440,9 @@ export default defineComponent({
             }
           });
         })
+        .catch(error => {
+            this.errorSnackbar = true;
+        })
         .then(response => {
           this.shoppingData = response.data;
           this.progress = 80;
@@ -436,10 +454,16 @@ export default defineComponent({
             }
           })
         })
+        .catch(error => {
+            this.errorSnackbar = true;
+        })
         .then(response => {
           this.hotelData = response.data;
           this.progress = 100;
           console.log('run_ML_model_recommendations hotels response:', response.data);
+        })
+        .catch(error => {
+            this.errorSnackbar = true;
         })
         .then(() => {
           this.$store.commit('updateGeneratedActivities', this.activityData.recommended_places);
@@ -469,6 +493,10 @@ export default defineComponent({
 
           // Send the trip data to the Flask backend
           return axios.post('http://localhost:8000/api/save_trip_data_temporarily', tripData);
+        })
+        .catch(error => {
+            this.errorSnackbar = true;
+            console.log("Save data temporarily error, continuing");
         })
         .then(() => {
           this.isLoading = false;
