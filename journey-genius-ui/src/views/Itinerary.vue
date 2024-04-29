@@ -355,6 +355,15 @@ export default defineComponent({
                 this.showHotelError = false;
             }
 
+            if (this.selectedHotels.length > 1){
+                this.hotelErrorMessage = "Please only select one housing option.";
+                this.showHotelError = true;
+                isValid = false;
+            }
+            else {
+                this.showHotelError = false;
+            }
+
             // If any input is not valid, exit the method
             if (!isValid) {
                 return;
