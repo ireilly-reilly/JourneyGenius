@@ -340,14 +340,25 @@ export default defineComponent({
                 this.showShoppingError = false;
             }
 
-            if (this.selectedHotels.length === 0) {
-                this.hotelErrorMessage = "Please select a housing option.";
-                // console.log("No work!")
+            if (this.selectedHotels.length > 1 || this.selectedHotels.length === 0 ){
+                this.hotelErrorMessage = "Please select one housing option.";
                 this.showHotelError = true;
                 isValid = false;
-            } else {
+            }
+            else {
                 this.showHotelError = false;
             }
+
+            // if (this.selectedHotels.length === 0) {
+            //     this.hotelErrorMessage = "Please select a housing option.";
+            //     // console.log("No work!")
+            //     this.showHotelError = true;
+            //     isValid = false;
+            // } else {
+            //     this.showHotelError = false;
+            // }
+
+            
 
             // If any input is not valid, exit the method
             if (!isValid) {

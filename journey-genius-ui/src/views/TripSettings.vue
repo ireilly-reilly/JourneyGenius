@@ -100,6 +100,7 @@
 </template>
 
 <script>
+
 import Cookies from 'js-cookie'
 import axios from 'axios'
 export default {
@@ -125,19 +126,13 @@ export default {
             this.estimatedTimeMessage = 'Estimated wait time is approximately 3 minutes.';
         },
         startPlanning() {
+            this.$store.commit('updateSelectionAmount', this.sliderValue);
+            this.$store.commit('updateDescriptionToggle', this.descriptionToggle);
+            
+            console.log(this.$store.state.sliderValue);             
+            console.log(this.$store.state.descriptionToggle);
+
             this.$router.push({ name: 'StartPlanning' });
-            console.log(this.sliderValue);
-            console.log(this.descriptionToggle);
-
-            this.$router.push({
-                name: 'StartPlanning',
-                query: {
-                    amountOfSelections: JSON.stringify(this.sliderValue),
-                    descriptionToggle: JSON.stringify(this.descriptionToggle),
-                }
-
-
-            });
 
         },
         async fetchUserProfiling(){

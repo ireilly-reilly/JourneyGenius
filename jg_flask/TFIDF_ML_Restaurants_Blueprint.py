@@ -87,87 +87,37 @@ def calculate_semantic_similarity(text1, text2):
 
 # Modified code snippet to get recommendations with location and price
 def get_recommendations_with_location_and_price(target_place, input_lat, input_lon, input_price, input_keyword, State):
-
     recommendations = []
-
-    # for target in target_place:
-        # Get the index of the target place
-    
     idx = data[(data['Place'].str.strip().str.lower() == target_place.lower().strip()) & (data['Category'].str.strip().str.lower().str.contains(input_keyword.lower().strip()))].index
 
-
-    # Check if idx is empty
     if idx.empty:
         print(f"No matching places found for {target_place}")
-        return {'error': f'Place "{target_place}" not found'}, 404
-    if len(idx) == 0:
-        print(f"No matching places found for {target_place}")
-        return {'error': f'Place "{target_place}" not found'}, 404
+        return []
 
+    idx = idx[0]
 
-    # Get the first index if multiple matches exist
-    idx = idx[0]  
-    # idx = idx[0] if isinstance(idx, pd.Series) else idx
-
-
-
-    # Extract the price range, latitude, and longitude of the target place
     input_price = int(data.loc[idx, 'Price Range'])
     input_lat = data.loc[idx, 'Latitude']
     input_lon = data.loc[idx, 'Longitude']
-    input_fat = data.loc[idx, 'Latitude']
 
-    fucker = data.loc[idx, 'Place']
-    fuckcategoy = data.loc[idx, 'Category']
-    # print("Function details for target place")
-    # print(fucker)
-    # print(fuckcategoy)
-
-    print("Inside function: ", State)
-    # Filter the data based on the desired category
-    # filtered_data = (data[data['Category'] == input_keyword] & (data[data['State'] == State]))
     filtered_data = data[(data['Category'] == input_keyword) & (data['State'] == State)]
-
-    # Calculate geographical distances and text-based similarities
-    distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
-    text_similarities = cosine_sim[idx]
-
-
-
-    # Calculate price differences
-    price_differences = [abs(input_price - price) for price in data['Price Range']]
-
-
-
-    # MOST ACCURATE LOCATION WISE AND KINDA USER PREFERENCE WITHOUT SEMANTIC SIMILARITY
-
-    # composite_scores = [0.1 * (1 - text_sim) + 0.05 * (1 - dist / max(distances)) + 0.85 * (1 - price_diff / max(price_differences))
-    # composite_scores = [(1 - text_sim) + (1 - dist / max(distances)) + (1 - price_diff / max(price_differences))
-    #                     for text_sim, dist, price_diff in zip(text_similarities, distances, price_differences)]
-
-
-
     
-    
-    # MOST ACCURATE LOCATION WISE AND KINDA USER PREFERENCE with SEMANTIC SIMILARITY
+    distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(filtered_data['Latitude'], filtered_data['Longitude'])]
+    text_similarities = [cosine_sim[idx][i] for i in filtered_data.index]
+    price_differences = [abs(input_price - price) for price in filtered_data['Price Range']]
+    semantic_similarities = [calculate_semantic_similarity(data.loc[i, 'Place'], target_place) for i in filtered_data.index]
 
-    semantic_similarities = [calculate_semantic_similarity(restaurant_csv_file_path, restaurant_name) for restaurant_name in data['Place']]
-   
-    composite_scores = [(0.01 * (1 - text_sim) + (2 * (1 - dist / max(distances))) + (0.8 * (1 - price_diff / max(price_differences))) + (0.3 * (1 - semantic_sim / max(semantic_similarities))))
+    max_distance = max(distances) if distances else 1
+    max_price_diff = max(price_differences) if price_differences else 1
+    max_semantic_sim = max(semantic_similarities) if semantic_similarities else 1
+
+    composite_scores = [(0.01 * (1 - text_sim) + 2 * (1 - dist / max_distance) + 0.8 * (1 - price_diff / max_price_diff) + 0.3 * (1 - semantic_sim / max_semantic_sim))
                         for text_sim, dist, price_diff, semantic_sim in zip(text_similarities, distances, price_differences, semantic_similarities)]
+    
+    sorted_data = sorted(zip(composite_scores, filtered_data['Place']), reverse=True)
+    recommendations = [{'place': place, 'score': score} for score, place in sorted_data[:5]]
 
-
-    # Sort places by composite similarity score
-    sorted_places = [place for _, place in sorted(zip(composite_scores, filtered_data['Place']), reverse=True)]
-
-    # Return the top 10 similar places as a list of dictionaries
-    try:
-        # recommendations = [{'place': place} for place in sorted_places[1:6]]
-        recommendations = [place for place in sorted_places[1:6]]
-
-        return recommendations
-    except Exception as e:
-        print("FUCK YOU: ", e)
+    return recommendations
 
 
 
@@ -265,46 +215,19 @@ stateMappings: Dict[str, str] = {
     'WY': 'Wyoming'
 }
 
-# def rank_recommendations(target_place, input_keyword, recommended_places):
-#     def extract_features(recommended_places):
-#         # Extract features (place name and category)
-#         features = [place['place'] + ' ' + place['category'] for place in recommended_places]
-#         return features
+def rank_recommendations(all_recommendations):
 
-#     def vectorize(features):
-#         # Vectorize features using TF-IDF
-#         vectorizer = TfidfVectorizer()
-#         vectors = vectorizer.fit_transform(features)
-#         return vectors
+    if not all_recommendations:
+        print("No recommendations to rank.")
+        return []
 
-#     def rank_places(recommended_places, scores):
-#         # Sort recommended places based on scores
-#         ranked_places = [place for _, place in sorted(zip(scores, recommended_places), reverse=True)]
-#         return ranked_places
+    # Sort the recommendations by the 'score' key in descending order
+    sorted_recommendations = sorted(all_recommendations, key=lambda x: x['score'], reverse=True)
 
-#     # Extract features from recommended places
-#     recommended_features = extract_features(recommended_places)
+    print("Sorted recommendations:", sorted_recommendations[:5])  
 
-#     # Vectorize features
-#     recommended_vectors = vectorize(recommended_features)
-
-#     # Vectorize query (target place and keyword)
-#     query_features = [target_place + ' ' + input_keyword]
-#     query_vector = vectorize(query_features)
-
-#     # Calculate similarity scores between query and recommended places
-#     similarity_scores = cosine_sim(query_vector, recommended_vectors)
-
-#     # Flatten similarity scores
-#     similarity_scores = similarity_scores.flatten()
-
-#     # Rank recommended places based on scores
-#     ranked_places = rank_places(recommended_places, similarity_scores)
-
-#     # Limit to top 5 ranked places
-#     ranked_places = ranked_places[:5]
-
-#     return ranked_places
+    # Return the top 5 recommendations
+    return sorted_recommendations[:5]
 
 
 
@@ -339,6 +262,7 @@ def recommend():
     # Initialize a list to store recommended places
     recommended_places = []
     all_recommendations = []
+    ranked_recommendations = []
 
     df = pd.read_csv(restaurant_csv_file_path)
     for target_category in target_categories:
@@ -424,6 +348,7 @@ def recommend():
             print("before calling function: ", State)
             recommended_places = get_recommendations_with_location_and_price(target_food, target_lat, target_lon, desired_price_range, keyword, State)
             print(recommended_places)
+            print("recommended places type:", type(recommended_places))
             # place_names = recommended_places
 
 
@@ -434,9 +359,11 @@ def recommend():
             # Log the exception for debugging purposes
             print(f"Error processing request: {e}")
             return jsonify({'error': 'An unexpected error occurred'}), 500
-    
-    # ranked_recommendations = rank_recommendations(target_foods, keywords, recommended_places)
 
-    # Return the recommended places (limited to 5)
-    # return jsonify({'recommended_places': all_recommendations[:10]})
-    return jsonify({'recommended_places': all_recommendations})
+    ranked_recommendations = rank_recommendations(all_recommendations)
+
+    # Extract place names if you need to use just the names elsewhere
+    place_names = [recommendation['place'] for recommendation in ranked_recommendations]
+    print("Place names from ranked recommendations:", place_names)
+
+    return jsonify({'recommended_places': place_names})

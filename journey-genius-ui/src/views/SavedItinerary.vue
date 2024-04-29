@@ -234,7 +234,7 @@ export default {
                 // This setTimeout ensures that the push operation completes before the reload
                 setTimeout(() => {
                     window.location.reload();
-                }, 1); // Adjust timing as needed
+                }, 3000); // Adjust timing as needed
             });;
         },
         sendCustomize() {

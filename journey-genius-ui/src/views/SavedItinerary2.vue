@@ -69,65 +69,65 @@ export default {
     },
 
     created() {
-        const activities = this.$store.state.tripObject.activities;
-        const landmarks = this.$store.state.tripObject.landmarks;
-        const foods = this.$store.state.tripObject.foods;
-        const shops = this.$store.state.tripObject.shops;
-        const hotels = this.$store.state.tripObject.hotels;
+        // const activities = this.$store.state.tripObject.activities;
+        // const landmarks = this.$store.state.tripObject.landmarks;
+        // const foods = this.$store.state.tripObject.foods;
+        // const shops = this.$store.state.tripObject.shops;
+        // const hotels = this.$store.state.tripObject.hotels;
 
-        const data = {
-            activities,
-            landmarks,
-            foods,
-            shops,
-            hotels,
-        };
+        // const data = {
+        //     activities,
+        //     landmarks,
+        //     foods,
+        //     shops,
+        //     hotels,
+        // };
 
-        axios.post('http://localhost:8000/api/restaurant_photo_data', data)
-            .then(response => {
-                console.log("Food Pictures", response.data); // Log response from Python server
-                this.$store.commit('updateFoodPictures', response.data);
-            })
-            .catch(error => {
-                console.error('Error sending data to Python server (restaurant):', error);
-            });
+        // axios.post('http://localhost:8000/api/restaurant_photo_data', data)
+        //     .then(response => {
+        //         console.log("Food Pictures", response.data); // Log response from Python server
+        //         this.$store.commit('updateFoodPictures', response.data);
+        //     })
+        //     .catch(error => {
+        //         console.error('Error sending data to Python server (restaurant):', error);
+        //     });
 
-        axios.post('http://localhost:8000/api/activity_photo_data', data)
-            .then(response => {
-                console.log("Activity Pictures", response.data); // Log response from Python server
-                this.$store.commit('updateActivityPictures', response.data);
+        // axios.post('http://localhost:8000/api/activity_photo_data', data)
+        //     .then(response => {
+        //         console.log("Activity Pictures", response.data); // Log response from Python server
+        //         this.$store.commit('updateActivityPictures', response.data);
 
-            })
-            .catch(error => {
-                console.error('Error sending data to Python server (activity):', error);
-            });
+        //     })
+        //     .catch(error => {
+        //         console.error('Error sending data to Python server (activity):', error);
+        //     });
 
-        axios.post('http://localhost:8000/api/landmark_photo_data', data)
-            .then(response => {
-                console.log("Landmark Pictures", response.data); // Log response from Python server
-                this.$store.commit('updateLandmarkPictures', response.data);
-            })
-            .catch(error => {
-                console.error('Error sending data to Python server (landmark):', error);
-            });
+        // axios.post('http://localhost:8000/api/landmark_photo_data', data)
+        //     .then(response => {
+        //         console.log("Landmark Pictures", response.data); // Log response from Python server
+        //         this.$store.commit('updateLandmarkPictures', response.data);
+        //     })
+        //     .catch(error => {
+        //         console.error('Error sending data to Python server (landmark):', error);
+        //     });
 
-        axios.post('http://localhost:8000/api/shopping_photo_data', data)
-            .then(response => {
-                console.log("Shopping Pictures", response.data); // Log response from Python server
-                this.$store.commit('updateShopPictures', response.data);
-            })
-            .catch(error => {
-                console.error('Error sending data to Python server (shopping):', error);
-            });
+        // axios.post('http://localhost:8000/api/shopping_photo_data', data)
+        //     .then(response => {
+        //         console.log("Shopping Pictures", response.data); // Log response from Python server
+        //         this.$store.commit('updateShopPictures', response.data);
+        //     })
+        //     .catch(error => {
+        //         console.error('Error sending data to Python server (shopping):', error);
+        //     });
 
-        axios.post('http://localhost:8000/api/hotel_photo_data', data)
-            .then(response => {
-                console.log("Hotel Pictures", response.data); // Log response from Python server
-                this.$store.commit('updateHotelPictures', response.data);
-            })
-            .catch(error => {
-                console.error('Error sending data to Python server (hotel):', error);
-            });
+        // axios.post('http://localhost:8000/api/hotel_photo_data', data)
+        //     .then(response => {
+        //         console.log("Hotel Pictures", response.data); // Log response from Python server
+        //         this.$store.commit('updateHotelPictures', response.data);
+        //     })
+        //     .catch(error => {
+        //         console.error('Error sending data to Python server (hotel):', error);
+        //     });
 
 
 
@@ -155,10 +155,10 @@ export default {
             console.log("Saved activities from database from savedItinerary2: ", this.savedTrip.activities);
             console.log("Activities from vuex: ", this.$store.state.tripObject.activities);
 
-            
+
             const selectedHotelString = selectedHotel.join(', '); // Use a comma and a space as the separator
-            const hotelPictureString = hotelPictures.join(', ');
-            
+            // const hotelPictureString = hotelPictures.join(', ');
+
 
             // Round robin sorting function
             const getRoundRobinSlice = arrays => {
@@ -242,6 +242,9 @@ export default {
                     this.$store.commit('updateHotelAddresses', response.data);
                 })
 
+            this.fetchPhotoData();
+
+
             const ActivityAddress = this.$store.state.activityAddresses;
             const LandmarkAddress = this.$store.state.landmarkAddresses;
             const RestaurantAddress = this.$store.state.foodAddresses;
@@ -249,16 +252,17 @@ export default {
             const HotelAddress = this.$store.state.hotelAddresses;
 
             // Round robin sort for all of the pictures
-            const sortedPictures = getRoundRobinSlice([activityPictures, landmarkPictures, restaurantPictures, shopPictures]);
-            sortedPictures.unshift(hotelPictureString);
+            const sortedPictures = getRoundRobinSlice([this.$store.state.hotelPictures, this.$store.state.activityPictures, this.$store.state.landmarkPictures, this.$store.state.foodPictures, this.$store.state.shopPictures]);
+            // sortedPictures.unshift(hotelPictureString);
+            
             console.log("Sorted Pictures: ", sortedPictures);
 
             // Round robin sort for all of the addresses
             // console.log("These are the addresses before sorting", ActivityAddress, LandmarkAddress, RestaurantAddress, ShoppingAddress, HotelAddress);
-            const hotelAddressString = HotelAddress.join(', ');
-            const sortedAddresses = getRoundRobinSlice([ActivityAddress, LandmarkAddress, RestaurantAddress, ShoppingAddress]);
+            const hotelAddressString = this.$store.state.hotelAddresses.join(', ');
+            const sortedAddresses = getRoundRobinSlice([this.$store.state.activityAddresses, this.$store.state.landmarkAddresses, this.$store.state.foodAddresses, this.$store.state.shopAddresses]);
             sortedAddresses.unshift(hotelAddressString);
-            console.log("Sorted Addresses: ", sortedAddresses )
+            console.log("Sorted Addresses: ", sortedAddresses)
 
             const sortedArray = getRoundRobinSlice([selectedActivities, selectedLandmarks, selectedFoods, selectedShops]);
             sortedArray.unshift(selectedHotelString);
@@ -344,6 +348,47 @@ export default {
 
     },
     methods: {
+        async fetchPhotoData() {
+            const activities = this.$store.state.tripObject.activities;
+            const landmarks = this.$store.state.tripObject.landmarks;
+            const foods = this.$store.state.tripObject.foods;
+            const shops = this.$store.state.tripObject.shops;
+            const hotels = this.$store.state.tripObject.hotels;
+            // console.log(activities, landmarks, foods, shops, hotels)
+
+            const data = {
+                activities,
+                landmarks,
+                foods,
+                shops,
+                hotels,
+            };
+
+            try {
+                const restaurantResponse = await axios.post('http://localhost:8000/api/restaurant_photo_data', data);
+                console.log("Food Pictures", restaurantResponse.data);
+                this.$store.commit('updateFoodPictures', restaurantResponse.data);
+
+                const activityResponse = await axios.post('http://localhost:8000/api/activity_photo_data', data);
+                console.log("Activity Pictures", activityResponse.data);
+                this.$store.commit('updateActivityPictures', activityResponse.data);
+
+                const landmarkResponse = await axios.post('http://localhost:8000/api/landmark_photo_data', data);
+                console.log("Landmark Pictures", landmarkResponse.data);
+                this.$store.commit('updateLandmarkPictures', landmarkResponse.data);
+
+                const shoppingResponse = await axios.post('http://localhost:8000/api/shopping_photo_data', data);
+                console.log("Shopping Pictures", shoppingResponse.data);
+                this.$store.commit('updateShopPictures', shoppingResponse.data);
+
+                const hotelResponse = await axios.post('http://localhost:8000/api/hotel_photo_data', data);
+                console.log("Hotel Pictures", hotelResponse.data);
+                this.$store.commit('updateHotelPictures', hotelResponse.data);
+            } catch (error) {
+                console.error('Error sending data to Python server:', error);
+            }
+        },
+
         send() {
             // const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
             // console.log(tripObjectCopy);  // Ensure the copy has the expected data
