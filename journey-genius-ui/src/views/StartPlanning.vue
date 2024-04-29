@@ -130,6 +130,9 @@ export default defineComponent({
       selectedLon: null,
       selectededBudget: null,
 
+      // Variable that will store the new city's value
+      // chosenPlace: null
+
       // Variables used after the generation process
       isLoading: false,
       progress: 0,
@@ -230,6 +233,7 @@ export default defineComponent({
         latitude: addressData.latitude,
         longitude: addressData.longitude,
       };
+      
       console.log('Selected Place:', this.selectedPlace);
       this.selectedLat = addressData.latitude; // Store latitude
       this.selectedLon = addressData.longitude; // Store longitude
@@ -341,13 +345,24 @@ export default defineComponent({
       const requestData = {
         target_lat_str: this.selectedLat,
         target_lon_str: this.selectedLon,
-        desired_price_range_str: this.selectedBudget
+        desired_price_range_str: this.selectedBudget,
+        desired_city: this.city,
+        desired_state: this.state
       };
 
-      axios.post('http://localhost:8000/api/scrape_restaurants', requestData)
+      const jwtToken = Cookies.get('login_token');
+      axios.post('http://localhost:8000/api/scrape_restaurants', requestData, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            }
+          })
         .then(response => {
           console.log('scrape_restaurants response:', response.data);
-          return axios.post('http://localhost:8000/api/scrape_activities', requestData);
+          return axios.post('http://localhost:8000/api/scrape_activities', requestData, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            }
+          });
         })
         .then(response => {
           console.log('scrape_activities response', response.data);
@@ -356,16 +371,24 @@ export default defineComponent({
         })
         .then(response => {
           console.log('scape_landmarks response', response.data);
-          return axios.post('http://localhost:8000/api/scrape_shopping', requestData);
+          return axios.post('http://localhost:8000/api/scrape_shopping', requestData, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            }
+          });
         })
         .then(response => {
           console.log('scrape_shopping response', response.data);
-          return axios.post('http://localhost:8000/api/scrape_hotels', requestData);
+          return axios.post('http://localhost:8000/api/scrape_hotels', requestData, {
+            headers: {
+              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+            }
+          });
         })
         .then(response => {
           console.log('scrape_hotels response', response.data);
           this.progress = 10;
-          const jwtToken = Cookies.get('login_token');
+          // const jwtToken = Cookies.get('login_token');
           return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData, { 
             headers: {
               Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
