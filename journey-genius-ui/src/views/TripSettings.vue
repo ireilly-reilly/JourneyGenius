@@ -17,11 +17,7 @@
         <v-row justify="center" class="mt-4">
             <v-col cols="12" md="8" class="text-center">
                 <h2 style="font-size: 2.5rem;" class="headline text-deep-purple-accent-2">Trip Settings</h2>
-                <p>Configure your trip preferences below. Adjust the settings to tailor the trip generation process to
-                    your needs, optimizing the experience for your convenience and satisfaction. By selecting the number
-                    of options you wish to generate, you can control the breadth of choices available. Fewer selections
-                    will result in faster generation times, making the process more efficient, while more selections
-                    will provide a wider range of options at the expense of increased loading times.</p>
+                <p>Configure number of options and details available for your trip. </p>
                 <br>
                 <hr>
             </v-col>
@@ -31,9 +27,9 @@
         <v-row justify="center">
             <v-col cols="12" md="8">
                 <v-card class="pa-4 mb-4">
-                    <h2 class="headline text-deep-purple-accent-2">How many selections?</h2>
+                    <h2 class="headline text-deep-purple-accent-2">How many options?</h2>
                     <p>Choose how many options to generate. The number you select represents how many activities,
-                        landmarks, restaurants, shopping options, and hotels will be generated for each category. Adjust
+                        landmarks, restaurants, shopping options, and hotels will be available for you to choose. More options will result in a longer wait time. Adjust
                         the slider below: </p>
                     <br>
                     <v-slider v-model="sliderValue" :min="5" :max="15" :step="1" :thumb-label="true"
@@ -47,9 +43,8 @@
             <v-col cols="12" md="8">
                 <v-card class="pa-4 mb-4">
                     <h2 class="headline text-deep-purple-accent-2">Description Generation Toggle</h2>
-                    <p>Enable this to use OpenAI to generate descriptions for the selected options. Please note that
-                        these descriptions are crafted to provide a broad overview rather than detailed specifics. This
-                        approach ensures that you receive a general idea of what to expect.</p>
+                    <p>Enable this to use OpenAI to generate descriptions for your selected options. Please note that
+                        these descriptions are crafted to provide a broad overview rather than detailed specifics, so you have a better idea of what to expect. Enabling this will increase wait time.</p>
                     <v-row align="center" justify="center" class="my-3 align-center">
                         <v-col cols="12" class="d-flex justify-center"> <!-- Using d-flex on v-col directly -->
                                 <v-switch v-model="descriptionToggle" color="deep-purple-accent-2" class="centered-text"
@@ -69,9 +64,7 @@
                 <v-card class="pa-4 mb-4 justify-center">
                     <!-- Header aligned to the left -->
                     <h2 class="headline text-deep-purple-accent-2" style="text-align: left;">Estimated Loading Time</h2>
-                    <p>The system calculates the expected loading time based on current settings. Enabling 'Description
-                        Generation' may increase loading times due to the detailed content creation, while the number of
-                        selections generally has less impact unless descriptions are being generated.</p>
+                    <p>Calculate expected loading time based on current settings.</p>
                     <br>
                     <!-- Centralized button and output message layout -->
                     <v-row justify="center" align="center" no-gutters>
