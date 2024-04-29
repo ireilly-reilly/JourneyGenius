@@ -272,6 +272,7 @@ def recommend():
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         print(city + ", " + stateMappings[state])
+        descriptionToggle = data.get('descriptionToggle')
     except Exception as e:
         print("Can't get city:", e)
 
@@ -344,8 +345,18 @@ def recommend():
             print(f"Error processing request: {e}")
             return jsonify({'error': 'An unexpected error occurred'}), 500
 
-    description = descriptionGeneration(all_recommendations)
+    if (descriptionToggle == True):
+        description = descriptionGeneration(all_recommendations)
+        return jsonify({'recommended_places': description})
+    else:
 
-    # Extract place names if you need to use just the names elsewhere
+        return jsonify({'recommended_places': all_recommendations})
 
-    return jsonify({'recommended_places': all_recommendations})
+
+
+
+    # description = descriptionGeneration(all_recommendations)
+
+    # # Extract place names if you need to use just the names elsewhere
+
+    # return jsonify({'recommended_places': all_recommendations})
