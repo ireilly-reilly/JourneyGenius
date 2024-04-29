@@ -157,6 +157,9 @@ export default defineComponent({
       cityErrorMessage: "",
       showCityError: false,
 
+      preferences_flag: true,
+      existingUserData: {},
+
       // Data for budget selection
       budgets: [
         { label: 'Cheap', value: 'cheap', range: '0 - 1000 USD', selected: false, priceRange: ['1'] },
@@ -219,6 +222,8 @@ export default defineComponent({
     // const cityData = JSON.parse(this.$route.query.cityData);
 
     // console.log(amountOfSelections)
+    // console.log(descriptionToggle)
+    this.fetchUserProfiling();
   },
 
   methods: {
@@ -503,6 +508,32 @@ export default defineComponent({
     saveGeneratedDataToTrip(data) {
       //This function saves all the data that is generated for a trip to that trip in the database to pulled later.
 
+    },
+    async fetchUserProfiling(){
+      const jwtToken = Cookies.get('login_token');
+      try {
+
+        const response = await axios.get('http://localhost:8000/api/user_profiling/fetch_user_preferences', {
+          headers: {
+            Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+          }
+        });
+        this.existingUserData = response.data;
+        const { activities, foods, shopping, accommodation } = response.data;
+        if (!activities || activities.length === 0 ||
+          !foods || foods.length === 0 ||
+          !shopping || shopping.length === 0 ||
+          !accommodation) {
+            preferences_flag = false;
+        }
+        console.log("Preferences flag: ", this.preferences_flag);
+
+        // if (response.data.activities = [])
+
+      }
+      catch (error) {
+        console.error('Error fetching user preferences:', error);
+      }
     },
 
 

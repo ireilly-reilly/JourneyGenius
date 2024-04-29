@@ -1,4 +1,17 @@
 <template>
+    <v-dialog v-model="preferencesNotSet" max-width="650">
+            <v-card>
+                <v-card-title class="headline"
+                    style="padding-left: 25px; padding-top: 15px;">Trip Preferences Not Set!</v-card-title>
+                <v-card-text>
+                    To plan a trip, we need to get to know you! Go to the Trip Preferences page to select some preferences for your trips.
+                </v-card-text>
+                <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn color="deep-purple-accent-2" text @click="preferencesNotSet = false">Close</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     <v-container>
         <!-- Header -->
         <v-row justify="center" class="mt-4">
@@ -85,7 +98,7 @@
         <v-row justify="center">
             <v-col cols="12" md="8" class="text-center">
                 <br>
-                <v-btn size="large" class="generate-btn" color="deep-purple-accent-2" @click="startPlanning">
+                <v-btn size="large" class="generate-btn" color="deep-purple-accent-2" @click="checkPreferencesFlag">
                     Start Planning
                 </v-btn>
             </v-col>
@@ -94,8 +107,9 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex';
 
+import Cookies from 'js-cookie'
+import axios from 'axios'
 export default {
     data() {
         return {
@@ -104,7 +118,14 @@ export default {
             estimatedTimeMessage: '', // Initially empty
             selections: '',
 
+            preferences_flag: true,
+            existingUserData: {},
+            preferencesNotSet: false,
+
         };
+    },
+    mounted(){
+        this.fetchUserProfiling();
     },
     methods: {
         estimateTime() {
@@ -120,7 +141,42 @@ export default {
 
             this.$router.push({ name: 'StartPlanning' });
 
-        }
+        },
+        async fetchUserProfiling(){
+            const jwtToken = Cookies.get('login_token');
+            try {
+
+                const response = await axios.get('http://localhost:8000/api/user_profiling/fetch_user_preferences', {
+                headers: {
+                    Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+                }
+                });
+                this.existingUserData = response.data;
+                // const { activities, foods, shopping, accommodation } = response.data;
+                const activities = response.data.activities;
+                const foods = response.data.foods;
+                const shopping = response.data.shopping;
+                if (!activities || activities.length === 0 ||
+                !foods || foods.length === 0 ||
+                !shopping || shopping.length === 0) {
+                    this.preferences_flag = false;
+                }
+                console.log("Preferences flag: ", this.preferences_flag);
+
+             // if (response.data.activities = [])
+
+            }
+            catch (error) {
+                console.error('Error fetching user preferences:', error);
+            }
+        },
+        checkPreferencesFlag(){
+            if (this.preferences_flag === false){
+                this.preferencesNotSet = true;
+            } else{
+                this.startPlanning();
+            }
+        },
     },
 };
 </script>
