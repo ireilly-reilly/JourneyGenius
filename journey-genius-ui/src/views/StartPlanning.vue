@@ -491,14 +491,14 @@ export default defineComponent({
             // Add other relevant data properties if needed
           };
 
-          // Send the trip data to the Flask backend
-          return axios.post('http://localhost:8000/api/save_trip_data_temporarily', tripData);
-        })
-        .catch(error => {
-            this.errorSnackbar = true;
-            console.log("Save data temporarily error, continuing");
-        })
-        .then(() => {
+        //   // Send the trip data to the Flask backend
+        //   return axios.post('http://localhost:8000/api/save_trip_data_temporarily', tripData);
+        // })
+        // .catch(error => {
+        //     this.errorSnackbar = true;
+        //     console.log("Save data temporarily error, continuing");
+        // })
+        // .then(() => {
           this.isLoading = false;
           this.$router.push({
             name: 'Itinerary',
