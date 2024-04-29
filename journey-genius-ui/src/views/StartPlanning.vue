@@ -130,9 +130,6 @@ export default defineComponent({
       selectedLon: null,
       selectededBudget: null,
 
-      // Variable that will store the new city's value
-      // chosenPlace: null
-
       // Variables used after the generation process
       isLoading: false,
       progress: 0,
@@ -159,6 +156,9 @@ export default defineComponent({
       showBudgetError: false,
       cityErrorMessage: "",
       showCityError: false,
+
+      preferences_flag: true,
+      existingUserData: {},
 
       // Data for budget selection
       budgets: [
@@ -213,6 +213,17 @@ export default defineComponent({
       maxDate.setDate(maxDate.getDate() + 7); // Limit to 7 days
       return maxDate.toISOString().substr(0, 10);
     },
+    
+  },
+
+  mounted() {
+    console.log(this.$store.state.sliderValue)
+    console.log(this.$store.state.descriptionToggle)
+    // const cityData = JSON.parse(this.$route.query.cityData);
+
+    // console.log(amountOfSelections)
+    // console.log(descriptionToggle)
+    this.fetchUserProfiling();
   },
 
   methods: {
@@ -226,7 +237,6 @@ export default defineComponent({
         latitude: addressData.latitude,
         longitude: addressData.longitude,
       };
-      
       console.log('Selected Place:', this.selectedPlace);
       this.selectedLat = addressData.latitude; // Store latitude
       this.selectedLon = addressData.longitude; // Store longitude
@@ -340,15 +350,17 @@ export default defineComponent({
         target_lon_str: this.selectedLon,
         desired_price_range_str: this.selectedBudget,
         desired_city: this.city,
-        desired_state: this.state
+        desired_state: this.state,
+        number_of_selections: this.$store.state.sliderValue,
+        descriptionToggle: this.$store.state.descriptionToggle,
       };
 
       const jwtToken = Cookies.get('login_token');
       axios.post('http://localhost:8000/api/scrape_restaurants', requestData, {
-            headers: {
-              Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
-            }
-          })
+        headers: {
+          Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+        }
+      })
         .then(response => {
           console.log('scrape_restaurants response:', response.data);
           return axios.post('http://localhost:8000/api/scrape_activities', requestData, {
@@ -382,7 +394,7 @@ export default defineComponent({
           console.log('scrape_hotels response', response.data);
           this.progress = 10;
           // const jwtToken = Cookies.get('login_token');
-          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData, { 
+          return axios.post('http://localhost:8000/api/run_ML_model_restaurant_recommendations', requestData, {
             headers: {
               Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
             }
@@ -433,6 +445,21 @@ export default defineComponent({
           console.log('run_ML_model_recommendations hotels response:', response.data);
         })
         .then(() => {
+          this.$store.commit('updateGeneratedActivities', this.activityData.recommended_places);
+          this.$store.commit('updateGeneratedFoods', this.restaurantData.recommended_places);
+          this.$store.commit('updateGeneratedLandmarks', this.landmarkData.recommended_places);
+          this.$store.commit('updateGeneratedShops', this.shoppingData.recommended_places);
+          this.$store.commit('updateGeneratedHotels', this.hotelData.recommended_places);
+
+          console.log("Activities stored in Vuex: " + this.$store.state.generated_activities);
+          console.log("Foods stored in Vuex: " + this.$store.state.generated_foods);
+          console.log("Landmarks stored in Vuex: " + this.$store.state.generated_landmarks);
+          console.log("Shops stored in Vuex: " + this.$store.state.generated_shops);
+          console.log("Hotels stored in Vuex: " + this.$store.state.generated_hotels);
+
+
+
+
           // After fetching all recommendations, prepare the data to send to Flask
           const tripData = {
             restaurantData: this.restaurantData.recommended_places,
@@ -441,11 +468,11 @@ export default defineComponent({
             shoppingData: this.shoppingData.recommended_places,
             hotelData: this.hotelData.recommended_places,
             // Add other relevant data properties if needed
-        };
+          };
 
-        // Send the trip data to the Flask backend
-        return axios.post('http://localhost:8000/api/save_trip_data_temporarily', tripData);
-      })
+          // Send the trip data to the Flask backend
+          return axios.post('http://localhost:8000/api/save_trip_data_temporarily', tripData);
+        })
         .then(() => {
           this.isLoading = false;
           this.$router.push({
@@ -463,7 +490,7 @@ export default defineComponent({
               stateData: JSON.stringify(this.state),
             }
 
-            
+
           });
           console.log('----------Generated Data to show to user-----------');
           console.log("Activities: ", this.activityData);
@@ -478,9 +505,35 @@ export default defineComponent({
           console.error(error);
         });
     },
-    saveGeneratedDataToTrip(data){
+    saveGeneratedDataToTrip(data) {
       //This function saves all the data that is generated for a trip to that trip in the database to pulled later.
-     
+
+    },
+    async fetchUserProfiling(){
+      const jwtToken = Cookies.get('login_token');
+      try {
+
+        const response = await axios.get('http://localhost:8000/api/user_profiling/fetch_user_preferences', {
+          headers: {
+            Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+          }
+        });
+        this.existingUserData = response.data;
+        const { activities, foods, shopping, accommodation } = response.data;
+        if (!activities || activities.length === 0 ||
+          !foods || foods.length === 0 ||
+          !shopping || shopping.length === 0 ||
+          !accommodation) {
+            preferences_flag = false;
+        }
+        console.log("Preferences flag: ", this.preferences_flag);
+
+        // if (response.data.activities = [])
+
+      }
+      catch (error) {
+        console.error('Error fetching user preferences:', error);
+      }
     },
 
 

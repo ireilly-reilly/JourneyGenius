@@ -24,6 +24,7 @@
                                 <v-img :src="activity.image" alt="Activity Image" class="activity-img-with-border"
                                     style="object-fit: cover; width: 100%; height: 100%;"></v-img>
                                 <v-card-title>{{ activity.name }}</v-card-title>
+                                <v-card-subtitle class="pb-0">{{ activity.address }}</v-card-subtitle>
                                 <v-card-text class="description-height">{{ activity.description }}</v-card-text>
                             </v-card>
                         </v-col>
@@ -43,7 +44,7 @@
             </v-btn>
 
 
-            <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
+            <!-- <v-btn size="large" color="deep-purple-accent-2" class="white--text mt-6 ml-2" @click="saveTrip"
                 style="min-width: 150px;">
                 Save Trip
             </v-btn>
@@ -51,7 +52,7 @@
             <v-btn size="large" color="#EF5350" class="white--text mt-6 ml-4" style="min-width: 150px;"
                 @click="confirmDiscard">
                 Discard Trip
-            </v-btn>
+            </v-btn> -->
 
             <v-dialog v-model="dialog" persistent max-width="650">
                 <v-card>
@@ -110,11 +111,11 @@ export default {
         const testPictures = ["https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATplDJYUmNgWAmOTRtpdC7sHLEwkiFdfLPKCR5Fw9W4YwZrbVmrdgozfXRzi6QuB1jgB0E71wLF2bWLlKL_OLNX6EYOdYN2_VsBKloPrZSA1Pal1KCXU4eYD62DPn2yfc6Wy_tC5ey2EJeKgSyGeT7l_ZvIQlti3VhDwXl0QQvLYIl53rd_m&key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU", "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATplDJYYREDcSgsgsN-77WDU1UelvGPGhvu_oIm2v-InKEpayljHsgO_Gn7dqxaD7exsEjIM69M0Y0qMakRTa49U6cSAKpynewP9qB1AmLshhvHXwwepngrttGtUVcTPCrfpIAeKKE4K8UM70Jj8ToQjeSrO6BKB5DCK6HdzkEEaWzDtxv9W&key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU", "https://lh3.googleusercontent.com/places/ANXAkqF7I9JwYBza0ii043xaMUvC7meIYOP3RZY_r9nHE-cOlWZrsXw61X3WFec-9S2ZEzDrihcui_DIYP63uAeSg-ziDzJGbWnObOw=s1600-w400", "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATplDJb_UhjMuVaN29dBJG-sfumlelryTQCcKWO49psEldGLBOGXPM3A4geRoTe7VXYjqsXZoZ6fr8w0lSiXZSIIbMSMaMp-wwafhjC-Py_dhQx1cw0XVwO3AzMAy9r14_EusMAmJfMFeRx3AFIrb-dTdzTFg74szLosHgN3hfsBUbp3cuMK&key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU", "https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=ATplDJajxl0i7hpMeVuG_3KtgoKPcCuZH6Xurb2jEJUpnlu0EAuYoVEpHJbCeWk0LPCS2g9_y7lqxNxB0ZEHvFtUYVFox7IKi_2Bw8Gwj1cxAoz3hro8Mjp3HdnvS4ZZyScGZDlizvxTH_MrEl-vk8Z122F5xQb8HX27LEOzbBmELclaGPYy&key=AIzaSyAA5AjIkZ3qqQ-muFfaJoUwFI65kTmotpU"]
         console.log("Test Pictures", testPictures)
 
-        const RestaurantAddress = []
-        const ActivityAddress = []
-        const LandmarkAddress = []
-        const ShoppingAddress = []
-        const HotelAddress = []
+        // const RestaurantAddress = []
+        // const ActivityAddress = []
+        // const LandmarkAddress = []
+        // const ShoppingAddress = []
+        // const HotelAddress = []
 
         const requestData = {
             Activities: this.$store.state.activities,
@@ -126,32 +127,37 @@ export default {
 
         axios.post('http://localhost:8000/api/fetch_restaurant_address', requestData)
             .then(response => {
-                console.log('Address response:', response.data);
-                this.RestaurantAddress = response.data;
-            })
+                // console.log('Address Restaurant response:', response.data);
+                // this.RestaurantAddress = response.data;
+                this.$store.commit('updateFoodAddresses', response.data);
 
+            })
         axios.post('http://localhost:8000/api/fetch_activity_address', requestData)
             .then(response => {
-                console.log('Address response:', response.data);
-                this.ActivitytAddress = response.data;
+                // console.log('Address Activity response:', response.data);
+                this.$store.commit('updateActivityAddresses', response.data);
             })
-
         axios.post('http://localhost:8000/api/fetch_landmark_address', requestData)
             .then(response => {
-                console.log('Address response:', response.data);
-                this.LandmarkAddress = response.data;
+                // console.log('Address response:', response.data);
+                this.$store.commit('updateLandmarkAddresses', response.data);
             })
-
         axios.post('http://localhost:8000/api/fetch_shopping_address', requestData)
             .then(response => {
-                console.log('Address response:', response.data);
-                this.ShoppingAddress = response.data;
+                // console.log('Shopping Address response:', response.data);
+                this.$store.commit('updateShopAddresses', response.data);
             })
         axios.post('http://localhost:8000/api/fetch_hotel_address', requestData)
             .then(response => {
-                console.log('Address response:', response.data);
-                this.HotelAddress = response.data;
+                // console.log('Hotel Address response:', response.data);
+                this.$store.commit('updateHotelAddresses', response.data);
             })
+
+        const ActivityAddress = this.$store.state.activityAddresses;
+        const LandmarkAddress = this.$store.state.landmarkAddresses;
+        const RestaurantAddress = this.$store.state.foodAddresses;
+        const ShoppingAddress = this.$store.state.shopAddresses;
+        const HotelAddress = this.$store.state.hotelAddresses;
 
 
         const selectedHotelString = selectedHotel.join(', '); // Use a comma and a space as the separator
@@ -213,6 +219,13 @@ export default {
         sortedArray.unshift(selectedHotelString);
         console.log("Sorted Array: ", sortedArray);
 
+        // Round robin sort for all of the addresses
+        // console.log("These are the addresses before sorting", ActivityAddress, LandmarkAddress, RestaurantAddress, ShoppingAddress, HotelAddress);
+        const hotelAddressString = HotelAddress.join(', ');
+        const sortedAddresses = getRoundRobinSlice([ActivityAddress, LandmarkAddress, RestaurantAddress, ShoppingAddress]);
+        sortedAddresses.unshift(hotelAddressString);
+        console.log("Sorted Addresses: ", sortedAddresses)
+
         // Round robin sort for all of the pictures
         const sortedPictures = getRoundRobinSlice([activityPictures, landmarkPictures, restaurantPictures, shopPictures]);
         sortedPictures.unshift(hotelPictureString);
@@ -246,6 +259,8 @@ export default {
         // Initialize index outside of the loop
         let currentIndex = -1;
         let photoIndex = -1;
+        let addressIndex = -1;
+
 
         // Loop through each day
         for (let i = 0; i < daysDifference; i++) {
@@ -273,6 +288,7 @@ export default {
                 title: dayTitle,
                 activities: descriptionsForDay.map(description => ({
                     name: combinedTitles[currentIndex += 1],
+                    address: sortedAddresses[addressIndex += 1],
                     description: description,
                     image: sortedPictures[photoIndex += 1]
                     // image: testPictures[photoIndex += 1]
