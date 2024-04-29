@@ -206,12 +206,6 @@ export default {
             const shopTitles = getActivityTitles(selectedShops);
             const hotelTitles = parseTitleFromString(selectedHotelString);
 
-            // Retrieve addresses
-            // const RestaurantAddress = []
-            // const ActivityAddress = []
-            // const LandmarkAddress = []
-            // const ShoppingAddress = []
-            // const HotelAddress = []
             const requestData = {
                 Activities: this.savedTrip.activities,
                 Landmarks: this.savedTrip.landmarks,
