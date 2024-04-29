@@ -174,7 +174,7 @@ def descriptionGeneration(recommended_places):
     # Iterate over recommended_places and generate descriptions
     for place in recommended_places:
         # Compose a prompt using the current place
-        prompt = f"Describe the restaurant {place} regarding its food from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Restaurant Name): (Then description)"
+        prompt = f"Describe the hotel {place} regarding accommodation experience from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Hotel Name): (Then description)Note: do not take score into consideration."
 
 
         # Generate descriptions using OpenAI
@@ -348,4 +348,4 @@ def recommend():
 
     # Extract place names if you need to use just the names elsewhere
 
-    return jsonify({'recommended_places': description})
+    return jsonify({'recommended_places': all_recommendations})
