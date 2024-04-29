@@ -213,11 +213,14 @@ export default defineComponent({
       maxDate.setDate(maxDate.getDate() + 7); // Limit to 7 days
       return maxDate.toISOString().substr(0, 10);
     },
+    
   },
 
   mounted() {
-    const amountOfSelections = JSON.parse(this.$route.query.amountOfSelections);
-    const descriptionToggle = JSON.parse(this.$route.query.descriptionToggle);
+    console.log(this.$store.state.sliderValue)
+    console.log(this.$store.state.descriptionToggle)
+    // const cityData = JSON.parse(this.$route.query.cityData);
+
     // console.log(amountOfSelections)
     // console.log(descriptionToggle)
     this.fetchUserProfiling();
@@ -347,7 +350,9 @@ export default defineComponent({
         target_lon_str: this.selectedLon,
         desired_price_range_str: this.selectedBudget,
         desired_city: this.city,
-        desired_state: this.state
+        desired_state: this.state,
+        number_of_selections: this.$store.state.sliderValue,
+        descriptionToggle: this.$store.state.descriptionToggle,
       };
 
       const jwtToken = Cookies.get('login_token');

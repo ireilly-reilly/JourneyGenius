@@ -38,6 +38,8 @@ const store = createStore({
     shopAddresses: null,
     foodAddresses: null,
     hotelAddresses: null,
+    sliderValue: null,
+    descriptionToggle: false,
     
     tripObject: {
       id: null,
@@ -66,6 +68,15 @@ const store = createStore({
   // directly update the state properties when committed 
   // We currently only use mutations for the Itinerary Page (the checkboxes are stored in vuex using mutation)
   mutations: {
+    updateSelectionAmount(state, amount) {
+      state.sliderValue = amount;
+    },
+    updateDescriptionToggle(state, toggle) {
+      state.descriptionToggle = toggle;
+    },
+    updateSelections(state, payload) {
+      state.selections = payload;
+    },
 
     setCity(state, city) {
       state.city = city;
@@ -192,11 +203,25 @@ const store = createStore({
       state.hotelAddresses = hotelAddresses;
     },
 
-
+    updateSelectionAmount(state,selections){
+      state.sliderValue = selections;
+    },
+    updateDescriptionToggle(state, toggle){
+      state.descriptionToggle = toggle;
+    },
   },
 
   //used to commit the mutations.
   actions: {
+    updateSliderValue({ commit }, value) {
+      commit('setSliderValue', value);
+    },
+    updateDescriptionToggle({ commit }, value) {
+      commit('setDescriptionToggle', value);
+    },
+    updateSelections({ commit }, value) {
+      commit('setSelections', value);
+    },
     // Not needed
     updateCity({ commit }, city) {
       commit("setCity", city);
