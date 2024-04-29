@@ -68,8 +68,78 @@ export default {
     },
 
     created() {
+        const activities = this.$store.state.tripObject.activities;
+        const landmarks = this.$store.state.tripObject.landmarks;
+        const foods = this.$store.state.tripObject.foods;
+        const shops = this.$store.state.tripObject.shops;
+        const hotels = this.$store.state.tripObject.hotels;
+
+        const data = {
+            activities,
+            landmarks,
+            foods,
+            shops,
+            hotels,
+        };
+
+        axios.post('http://localhost:8000/api/restaurant_photo_data', data)
+            .then(response => {
+                console.log("Food Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateFoodPictures', response.data);
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (restaurant):', error);
+            });
+
+        axios.post('http://localhost:8000/api/activity_photo_data', data)
+            .then(response => {
+                console.log("Activity Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateActivityPictures', response.data);
+
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (activity):', error);
+            });
+
+        axios.post('http://localhost:8000/api/landmark_photo_data', data)
+            .then(response => {
+                console.log("Landmark Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateLandmarkPictures', response.data);
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (landmark):', error);
+            });
+
+        axios.post('http://localhost:8000/api/shopping_photo_data', data)
+            .then(response => {
+                console.log("Shopping Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateShopPictures', response.data);
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (shopping):', error);
+            });
+
+        axios.post('http://localhost:8000/api/hotel_photo_data', data)
+            .then(response => {
+                console.log("Hotel Pictures", response.data); // Log response from Python server
+                this.$store.commit('updateHotelPictures', response.data);
+            })
+            .catch(error => {
+                console.error('Error sending data to Python server (hotel):', error);
+            });
+
+
+
+
+
 
         // Retrieve Trip Details
+        const activityPictures = this.$store.state.activityPictures;
+        const landmarkPictures = this.$store.state.landmarkPictures;
+        const restaurantPictures = this.$store.state.foodPictures;
+        const shopPictures = this.$store.state.shopPictures;
+        const hotelPictures = this.$store.state.hotelPictures;
+
         const tripObject = this.$route.params.tripObject;
         const trip_id = this.$store.state.tripObject.id;
         this.fetchSavedTripDetails(trip_id);
@@ -83,9 +153,9 @@ export default {
             const selectedHotel = this.savedTrip.hotels;
             console.log("Saved activities from database from savedItinerary2: ", this.savedTrip.activities);
             console.log("Activities from vuex: ", this.$store.state.tripObject.activities);
-            
-            
-            
+
+
+
             //const selectedActivities = this.$store.state.tripObject.activities;
             //const selectedLandmarks = this.$store.state.tripObject.landmarks;
             //const selectedFoods = this.$store.state.tripObject.foods;
@@ -96,13 +166,14 @@ export default {
             console.log("Trip id from savedItinerary2: ", trip_id);
             // console.log("This is the activities array: " + selectedActivities)
             // console.log("This is the hotel array: " + selectedHotel)
-            
-            
+            const hotelPictureString = hotelPictures.join(', ');
+
+
             // Round robin sorting function
             const getRoundRobinSlice = arrays => {
                 let index = 0;
                 let output = [];
-                
+
                 while (arrays.some(array => array.length > 0)) {
                     for (let i = 0; i < arrays.length; i++) {
                         if (arrays[i].length > 0) {
@@ -110,10 +181,10 @@ export default {
                         }
                     }
                 }
-                
+
                 return output;
             };
-            
+
             // Function used to parse the titles from the descriptions
             const getActivityTitles = (activities) => {
                 return activities.map(activity => {
@@ -121,7 +192,7 @@ export default {
                     return title.trim(); // Remove any leading or trailing whitespace
                 });
             };
-            
+
             // Function to remove titles from each string in the array
             const removeTitles = (array) => {
                 return array.map((item) => {
@@ -131,78 +202,82 @@ export default {
                     return parts.length > 1 ? parts.slice(1).join(':').trim() : item.trim();
                 });
             };
-            
+
             const parseTitleFromString = (str) => {
                 const parts = str.split(':');
                 return parts[0].trim();
             };
-            
+
             // Separating the titles from the descriptions
             const activityTitles = getActivityTitles(selectedActivities);
             const landmarkTitles = getActivityTitles(selectedLandmarks);
             const foodTitles = getActivityTitles(selectedFoods);
             const shopTitles = getActivityTitles(selectedShops);
             const hotelTitles = parseTitleFromString(selectedHotelString);
-            
-            
-            
+
+            // Round robin sort for all of the pictures
+            const sortedPictures = getRoundRobinSlice([activityPictures, landmarkPictures, restaurantPictures, shopPictures]);
+            sortedPictures.unshift(hotelPictureString);
+            console.log("Sorted Pictures: ", sortedPictures);
+
             const sortedArray = getRoundRobinSlice([selectedActivities, selectedLandmarks, selectedFoods, selectedShops]);
             sortedArray.unshift(selectedHotelString);
             console.log(sortedArray);
-            
+
             const combinedArray = removeTitles(sortedArray);
-            
-            
+
+
             const combinedTitles = getRoundRobinSlice([activityTitles, landmarkTitles, foodTitles, shopTitles]);
             combinedTitles.unshift(hotelTitles);
             // console.log("Combined Description: " + combinedArray)
             // console.log("Combined Titles: " + combinedTitles)
             console.log("Sorted array without titles: " + combinedArray);
-            
+
             const dateRangeString = this.$store.state.tripObject.dates;
-            
+
             // Parse date range
             const [startDateString, endDateString] = dateRangeString.split(" - ");
             const startDate = this.parseDateString(startDateString);
             const endDate = this.parseDateString(endDateString);
-            
+
             // Calculate the trip duration
             const daysDifference = this.calculateTripDuration(startDate, endDate);
-            
+
             // Calculate the number of descriptions per day
             let descriptionsPerDay = Math.floor(combinedArray.length / daysDifference);
             let remainingDescriptions = combinedArray.length % daysDifference;
-            
+
             // Initialize index outside of the loop
             let currentIndex = -1;
-            
+            let photoIndex = -1;
+
             // Loop through each day
             for (let i = 0; i < daysDifference; i++) {
                 const currentDate = new Date(startDate);
                 currentDate.setDate(startDate.getDate() + i);
                 const dayTitle = `Day ${i + 1} - ${this.formatDate(currentDate)}`;
-                
+
                 // Calculate the number of descriptions for this day
                 let descriptionsForThisDay = descriptionsPerDay;
                 if (remainingDescriptions > 0) {
                     descriptionsForThisDay++;
                     remainingDescriptions--;
                 }
-                
+
                 // Slice the descriptions for this day
                 const descriptionsForDay = combinedArray.slice(0, descriptionsForThisDay);
-                
+
                 // Remove the sliced descriptions from the combinedArray
                 combinedArray.splice(0, descriptionsForThisDay);
-                
-                
-                
+
+
+
                 const daySection = {
                     title: dayTitle,
                     activities: descriptionsForDay.map(description => ({
                         name: combinedTitles[currentIndex += 1],
                         description: description,
-                        image: require('@/assets/boba2.jpeg') // Add your image logic here
+                        image: sortedPictures[photoIndex += 1]
                     }))
                 };
                 // Update the current index
@@ -253,18 +328,18 @@ export default {
             //console.log(tripObjectCopy);  // Ensure the copy has the expected data
             //console.log("Vuex tripObject: ", this.$store.state.tripObject);
 
-            axios.put(`http://localhost:8000/api/update_trip_selections/${this.$store.state.tripObject.id}`,new_selections)
-            .then(response => {
-                console.log('New selections saved to database.', response.data);
-                console.log('Snackbar', showSelectionChangesSnackbar);
+            axios.put(`http://localhost:8000/api/update_trip_selections/${this.$store.state.tripObject.id}`, new_selections)
+                .then(response => {
+                    console.log('New selections saved to database.', response.data);
+                    console.log('Snackbar', showSelectionChangesSnackbar);
                 })
                 .catch(error => {
                     console.error('Error saving changes to database:', error);
                     // Handle error
                 });
             setTimeout(() => {
-            window.location = '/SavedItinerary'; // Directly navigate to home and refresh
-          }, 1000);
+                window.location = '/SavedItinerary'; // Directly navigate to home and refresh
+            }, 1000);
 
         },
 
@@ -387,16 +462,16 @@ export default {
             // console.log("Token works: " + jwtToken);
             axios.get(`http://localhost:8000/api/fetch_saved_itinerary/${trip_id}`, {
                 headers: {
-                Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
+                    Authorization: `Bearer ${jwtToken}` // Include the JWT token in the Authorization header
                 }
             })
-            .then(response => {
-                this.savedTrip = response.data.savedTrip;
-                console.log('Saved trip from database in savedItinerary2: ', this.savedTrip);
-            })
-            .catch(error => {
-                console.error('Error fetching saved trip:', error);
-            });
+                .then(response => {
+                    this.savedTrip = response.data.savedTrip;
+                    console.log('Saved trip from database in savedItinerary2: ', this.savedTrip);
+                })
+                .catch(error => {
+                    console.error('Error fetching saved trip:', error);
+                });
         },
     },
     computed: {

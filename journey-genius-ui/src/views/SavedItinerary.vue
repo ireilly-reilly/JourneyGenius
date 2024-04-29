@@ -230,7 +230,22 @@ export default {
         sendItinerary2() {
             const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
             console.log(tripObjectCopy);  // Ensure the copy has the expected data
-            this.$router.push({ name: 'SavedItinerary2', params: { tripObject: tripObjectCopy } });
+            this.$router.push({ name: 'SavedItinerary2', params: { tripObject: tripObjectCopy } }).then(() => {
+                // This setTimeout ensures that the push operation completes before the reload
+                setTimeout(() => {
+                    window.location.reload();
+                }, 1); // Adjust timing as needed
+            });;
+
+
+            // this.$router.push({ name: 'GeneratedItinerary' }).catch(err => {
+            //     console.error(err);
+            // }).then(() => {
+            //     // This setTimeout ensures that the push operation completes before the reload
+            //     setTimeout(() => {
+            //         window.location.reload();
+            //     }, 1); // Adjust timing as needed
+            // });
         },
         sendCustomize() {
             const tripObjectCopy = JSON.parse(JSON.stringify(this.$store.state.tripObject));
