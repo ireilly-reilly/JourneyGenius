@@ -9,10 +9,7 @@
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
         <h2 style="font-size: 2.5rem;" class="headline text-deep-purple-accent-2">Plan Your Next Adventure</h2>
-        <p>Our app transforms vacation planning by creating personalized itineraries based on user preferences. Users
-          input their budget, location, stay duration, and interests. Using advanced algorithms, the app scans diverse
-          travel data to find budget-friendly accommodations, local attractions, and outdoor activities, optimizing the
-          itinerary for a cost-effective trip.</p>
+        <p>Enter the destination, dates, and budget of your trip.</p>
         <br>
         <hr>
       </v-col>

@@ -12,12 +12,7 @@
     <v-row justify="center" class="mt-4">
       <v-col cols="12" md="8" class="text-center">
         <h2 style="font-size: 2.5rem;" class="headline text-deep-purple-accent-2">Your Interests</h2>
-        <p>User profiling is integral to our application for several reasons.
-          By understanding the unique preferences, interests, budget constraints,
-          and travel goals of each user, we can tailor the recommendations to
-          match their individual needs. This personalized approach ensures that
-          users receive suggestions aligned with their tastes, making their
-          vacation experience more enjoyable and satisfying.
+        <p>Select your interests so we can curate your trip. 
         </p>
         <br>
         <hr>
