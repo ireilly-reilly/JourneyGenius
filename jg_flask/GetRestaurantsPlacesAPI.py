@@ -80,7 +80,7 @@ def scrape_restaurants():
 
 
     # Desired result count here
-    desired_result_count = 20
+    desired_result_count = 25
     
     # Loop through each category in the list
     for target_category in target_categories:
@@ -162,7 +162,7 @@ def scrape_restaurants():
                         page_token=next_page_token
                     )
                     
-                    chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres', 'Del Taco', 'Taco Bell', 'Panda Express', "Bully's Sports Bar & Grill", "Applebee's Grill + Bar", "The Habit", "Mcdonald's", "Five Guys", "Jack in the Box", "In-N-Out", "Wendy's", "Burger King", "Sonic Drive-In", "Whattaburger"]  # Add more chain names as needed
+                    chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres', 'Del Taco', 'Taco Bell', 'Panda Express', "Bully's Sports Bar & Grill", "Applebee's Grill + Bar", "The Habit", "Mcdonald's", "Five Guys", "Jack in the Box", "In-N-Out", "Wendy's", "Burger King", "Sonic Drive-In", "Whattaburger", "Johnny Rockets", 'Black Bear Diner', 'Bogeys Bar & Grill', 'Timbers Bar & Grill']  # Add more chain names as needed
 
 
                     for place in places_result['results']:

@@ -98,7 +98,7 @@ def scrape_shopping():
         print(f"Current Keyword: {type}")
 
         # Desired result count here
-        desired_result_count = 20
+        desired_result_count = 25
 
         BASE_DIR = os.path.abspath(os.path.dirname(__file__))
         CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')

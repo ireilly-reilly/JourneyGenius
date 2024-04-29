@@ -150,9 +150,9 @@ export default defineComponent({
         { value: 'american', label: 'American', selected: false },
         { value: 'mexican', label: 'Mexican', selected: false },
         { value: 'european_mediterranean', label: 'European & Mediterranean', selected: false },
-        { value: 'east_asian', label: 'Chinese & Vietnamese', selected: false },
-        { value: 'south_asian', label: 'Indian & Thai', selected: false },
-        { value: 'east_asian_2', label: 'Japanese & Korean', selected: false }, // Consider renaming for clarity
+        { value: 'east_asian', label: 'East Asian', selected: false },
+        { value: 'south_asian', label: 'South Asian', selected: false },
+        { value: 'east_asian_2', label: 'East Asian 2', selected: false }, // Consider renaming for clarity
         { value: 'bar', label: 'Bar', selected: false },
         { value: 'specialty', label: 'Specialty Food Types', selected: false },
         { value: 'dietary_focused', label: 'Dietary-Focused', selected: false },

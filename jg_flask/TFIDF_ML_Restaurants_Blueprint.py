@@ -239,7 +239,7 @@ def recommend():
     user = User.query.filter_by(id=current_user_id).first()
 
     target_categories = parse_data(user.fav_foods)
-
+    print("target categories: ", target_categories)
     iteration = 0
 
     # Grab city name from front end
@@ -286,6 +286,7 @@ def recommend():
 
         # print(f"Current Keyword: {keyword}")
         keywords.append(keyword)
+        print(keywords)
 
         try:
             # Try to find a restaurant with the desired price range
@@ -296,7 +297,7 @@ def recommend():
         except IndexError:
             try:
                 # If no restaurants are found with the desired price range, try defaulting to 2
-                first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & (df['Price Range'] == 2) & (df['Category'] == keyword)].iloc[0]
+                first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & (df['Price Range'] == 2) & (df['Types'] == 'restaurant')].iloc[0]
             except IndexError as e:
                 print("No restaurants found for the specified city with the default price range.")
                 # Handle the case where no restaurants are found with the default price range

@@ -281,17 +281,18 @@ def recommend():
         print("keyword:", keywords)
 
         try:
-            # Try to find a restaurant 
-            first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & (df['Category'] == keyword)].iloc[0]
+            first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & df['Category'].str.contains(keyword, case=False, na=False)].iloc[0]
             iteration += 1
-            # print(iteration)
-            # print(" iteration")
         except IndexError:
-            print("No activities found for the specified city")
-            message = {
-                message : "nothing in it bruh"
-            }
-            return jsonify(message)
+            print(f"Trying broader search in {stateMappings[state]} for category '{keyword}'.")
+            try:
+                # If no entry is found, fallback to "point_of_interest" Type
+                first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & df['Types'].str.contains("point_of_interest", case=False, na=False)].iloc[0]
+            except IndexError:
+                print(f"No activities found in the state of {stateMappings[state]} for category '{keyword}' or 'point_of_interest'.")
+                return jsonify({'message': "No activities found for the specified city or state"}), 404
+
+
         # Process the first row found
         if not first_row.empty:
             first_row_with_city = first_row
