@@ -33,6 +33,11 @@ const store = createStore({
     shopPictures: null,
     foodPictures: null,
     hotelPictures: null,
+    activityAddresses: null,
+    landmarkAddresses: null,
+    shopAddresses: null,
+    foodAddresses: null,
+    hotelAddresses: null,
     
     tripObject: {
       id: null,
@@ -169,6 +174,22 @@ const store = createStore({
     },
     updateHotelPictures(state, hotelPictures){
       state.hotelPictures = hotelPictures;
+    },
+
+    updateActivityAddresses(state, activityAddresses){
+      state.activityAddresses = activityAddresses;
+    },
+    updateLandmarkAddresses(state, landmarkAddresses){
+      state.landmarkAddresses = landmarkAddresses;
+    },
+    updateFoodAddresses(state, foodAddresses){
+      state.foodAddresses = foodAddresses;
+    },
+    updateShopAddresses(state, shopAddresses){
+      state.shopAddresses = shopAddresses;
+    },
+    updateHotelAddresses(state, hotelAddresses){
+      state.hotelAddresses = hotelAddresses;
     },
 
 

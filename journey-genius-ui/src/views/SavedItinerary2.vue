@@ -23,6 +23,7 @@
                                 <v-img :src="activity.image" alt="Activity Image" class="activity-img-with-border"
                                     style="object-fit: cover; width: 100%; height: 100%;"></v-img>
                                 <v-card-title>{{ activity.name }}</v-card-title>
+                                <v-card-subtitle class="pb-0">{{ activity.address }}</v-card-subtitle>
                                 <v-card-text class="description-height">{{ activity.description }}</v-card-text>
                             </v-card>
                         </v-col>
@@ -154,20 +155,10 @@ export default {
             console.log("Saved activities from database from savedItinerary2: ", this.savedTrip.activities);
             console.log("Activities from vuex: ", this.$store.state.tripObject.activities);
 
-
-
-            //const selectedActivities = this.$store.state.tripObject.activities;
-            //const selectedLandmarks = this.$store.state.tripObject.landmarks;
-            //const selectedFoods = this.$store.state.tripObject.foods;
-            //const selectedShops = this.$store.state.tripObject.shops;
-            //const selectedHotel = this.$store.state.tripObject.hotels;
+            
             const selectedHotelString = selectedHotel.join(', '); // Use a comma and a space as the separator
-            console.log(selectedHotelString)
-            console.log("Trip id from savedItinerary2: ", trip_id);
-            // console.log("This is the activities array: " + selectedActivities)
-            // console.log("This is the hotel array: " + selectedHotel)
             const hotelPictureString = hotelPictures.join(', ');
-
+            
 
             // Round robin sorting function
             const getRoundRobinSlice = arrays => {
@@ -215,14 +206,69 @@ export default {
             const shopTitles = getActivityTitles(selectedShops);
             const hotelTitles = parseTitleFromString(selectedHotelString);
 
+            // Retrieve addresses
+            // const RestaurantAddress = []
+            // const ActivityAddress = []
+            // const LandmarkAddress = []
+            // const ShoppingAddress = []
+            // const HotelAddress = []
+            const requestData = {
+                Activities: this.savedTrip.activities,
+                Landmarks: this.savedTrip.landmarks,
+                Foods: this.savedTrip.foods,
+                Shops: this.savedTrip.shops,
+                Hotels: this.savedTrip.hotels,
+                State: this.savedTrip.state,
+            };
+            axios.post('http://localhost:8000/api/fetch_restaurant_address', requestData)
+                .then(response => {
+                    // console.log('Address Restaurant response:', response.data);
+                    // this.RestaurantAddress = response.data;
+                    this.$store.commit('updateFoodAddresses', response.data);
+
+                })
+            axios.post('http://localhost:8000/api/fetch_activity_address', requestData)
+                .then(response => {
+                    // console.log('Address Activity response:', response.data);
+                    this.$store.commit('updateActivityAddresses', response.data);
+                })
+            axios.post('http://localhost:8000/api/fetch_landmark_address', requestData)
+                .then(response => {
+                    // console.log('Address response:', response.data);
+                    this.$store.commit('updateLandmarkAddresses', response.data);
+                })
+            axios.post('http://localhost:8000/api/fetch_shopping_address', requestData)
+                .then(response => {
+                    // console.log('Shopping Address response:', response.data);
+                    this.$store.commit('updateShopAddresses', response.data);
+                })
+            axios.post('http://localhost:8000/api/fetch_hotel_address', requestData)
+                .then(response => {
+                    // console.log('Hotel Address response:', response.data);
+                    this.$store.commit('updateHotelAddresses', response.data);
+                })
+
+            const ActivityAddress = this.$store.state.activityAddresses;
+            const LandmarkAddress = this.$store.state.landmarkAddresses;
+            const RestaurantAddress = this.$store.state.foodAddresses;
+            const ShoppingAddress = this.$store.state.shopAddresses;
+            const HotelAddress = this.$store.state.hotelAddresses;
+
             // Round robin sort for all of the pictures
             const sortedPictures = getRoundRobinSlice([activityPictures, landmarkPictures, restaurantPictures, shopPictures]);
             sortedPictures.unshift(hotelPictureString);
             console.log("Sorted Pictures: ", sortedPictures);
 
+            // Round robin sort for all of the addresses
+            // console.log("These are the addresses before sorting", ActivityAddress, LandmarkAddress, RestaurantAddress, ShoppingAddress, HotelAddress);
+            const hotelAddressString = HotelAddress.join(', ');
+            const sortedAddresses = getRoundRobinSlice([ActivityAddress, LandmarkAddress, RestaurantAddress, ShoppingAddress]);
+            sortedAddresses.unshift(hotelAddressString);
+            console.log("Sorted Addresses: ", sortedAddresses )
+
             const sortedArray = getRoundRobinSlice([selectedActivities, selectedLandmarks, selectedFoods, selectedShops]);
             sortedArray.unshift(selectedHotelString);
-            console.log(sortedArray);
+            console.log("Sorted Selections: ", sortedArray);
 
             const combinedArray = removeTitles(sortedArray);
 
@@ -250,6 +296,7 @@ export default {
             // Initialize index outside of the loop
             let currentIndex = -1;
             let photoIndex = -1;
+            let addressIndex = -1;
 
             // Loop through each day
             for (let i = 0; i < daysDifference; i++) {
@@ -276,8 +323,10 @@ export default {
                     title: dayTitle,
                     activities: descriptionsForDay.map(description => ({
                         name: combinedTitles[currentIndex += 1],
+                        address: sortedAddresses[addressIndex += 1],
                         description: description,
-                        image: sortedPictures[photoIndex += 1]
+                        image: sortedPictures[photoIndex += 1],
+
                     }))
                 };
                 // Update the current index
