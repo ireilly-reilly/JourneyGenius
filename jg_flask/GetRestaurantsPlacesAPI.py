@@ -80,7 +80,7 @@ def scrape_restaurants():
 
 
     # Desired result count here
-    desired_result_count = 10
+    desired_result_count = 20
     
     # Loop through each category in the list
     for target_category in target_categories:

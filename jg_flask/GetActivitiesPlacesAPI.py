@@ -81,7 +81,7 @@ def scrape_activities():
     target_categories = parse_data(user.fav_activities)
 
     # Desired result count here
-    desired_result_count = 10
+    desired_result_count = 20
 
     
     # Loop through each category in the list
