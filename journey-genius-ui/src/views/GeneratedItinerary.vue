@@ -38,7 +38,7 @@
                 <!-- Right Section: Image -->
                 <v-col cols="12" md="8" class="image-container align-self-start">
                     <v-img :src="city_photo_url" :alt="this.$store.state.city" class="fill-height align-self-start"
-                        style="object-fit: cover; width: 100%; "></v-img>
+                        style="object-fit: cover; width: 90%; height: 90%; "></v-img>
 
 
                 </v-col>

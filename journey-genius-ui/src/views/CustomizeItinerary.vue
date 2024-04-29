@@ -10,7 +10,7 @@
                     </h2>
                     <h1 style="font-size: 3.5rem;" class="headline text-deep-purple-accent-2">
                         <!-- {{ cityData }}, {{ fullName }} -->
-                        {{ this.$store.state.city }}, {{ this.$store.state.state }}
+                        {{ this.$store.state.city }}, {{ this.$store.state.stateData }}
                     </h1>
                     <h1 style="font-size: 1rem;" class="headline text-deep-purple-accent-2">
                         <!-- Planned for {{ combinedDates }} with a {{ budgetString }} budget trip. -->
@@ -267,15 +267,6 @@ export default defineComponent({
             isLoading: false,
         };
     },
-
-    mounted() {
-        this.selectedActivities = this.$store.state.activities
-        this.selectedLandmarks = this.$store.state.landmarks
-        this.selectedFoods = this.$store.state.foods
-        this.selectedShops = this.$store.state.shops
-        this.selectedHotels = this.$store.state.hotels
-    },
-
     methods: {
         formatDate(date) {
             const options = { month: 'long', day: 'numeric', year: 'numeric' };
@@ -378,6 +369,12 @@ export default defineComponent({
 
     },
     mounted() {
+
+        this.selectedActivities = this.$store.state.tripObject.activities;
+        this.selectedFoods = this.$store.state.tripObject.foods;
+        this.selectedLandmarks = this.$store.state.tripObject.landmarks;
+        this.selectedShops = this.$store.state.tripObject.shops;
+        this.selectedHotels = this.$store.state.tripObject.hotels;
         // const activityData = JSON.parse(this.$route.query.activityData);
         // if (activityData && activityData.recommended_places) {
         //     this.activities = activityData.recommended_places;
