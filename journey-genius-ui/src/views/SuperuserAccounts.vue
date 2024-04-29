@@ -204,7 +204,7 @@
                             <strong>Date Created:</strong>
                         </v-col>
                         <v-col cols="9">
-                            {{ selectedUser.DateCreated }}
+                            {{ selectedUser.date_created }}
                         </v-col>
                     </v-row>
                     <!-- Last Logged In -->
