@@ -460,7 +460,7 @@ export default {
             // Wait for 3 seconds before navigating
             setTimeout(() => {
                 this.$router.push('/SavedTrips');
-            }, 2000);
+            }, 3000);
         },
         // Other methods for itinerary display, if any
     },

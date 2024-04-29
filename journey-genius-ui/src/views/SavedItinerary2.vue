@@ -1,5 +1,7 @@
 <template>
     <v-container fluid class="no-border">
+        <LoadingScreenShort v-if="isLoading" />
+
         <v-snackbar v-model="showSnackbar" color="deep-purple-accent-2" top>
             <span class="text-center">Trip Saved Successfully</span>
         </v-snackbar>
@@ -54,6 +56,8 @@
 </template>
 
 <script>
+import LoadingScreenShort from '@/components/LoadingScreenShort.vue';
+
 import axios from 'axios';
 // import { get } from 'core-js/core/dict';
 import Cookies from 'js-cookie';
@@ -65,6 +69,8 @@ export default {
             showSnackbar: false,
             //trip_id: '',
             savedTrip: [],
+            loading: true, // Initial state for loading is true
+
         };
     },
 
@@ -336,15 +342,20 @@ export default {
     },
 
 
-
+    components: {
+    LoadingScreenShort,
+  },
 
     mounted() {
-        // console.log("HEY!!!")
-        // const tripObject = this.$route.params.tripObject;
+        
         const tripObject = this.$store.state.tripObject;
 
-        // console.log("This is the saved object: " + tripObject)
-        // console.log("activities: " + this.$store.state.tripObject.activities)
+         // Set a timeout to change the loading state after 3 seconds
+         setTimeout(() => {
+            this.loading = false; // This will hide the loader
+        }, 3000); // 3000 milliseconds = 3 seconds
+
+        
 
     },
     methods: {
