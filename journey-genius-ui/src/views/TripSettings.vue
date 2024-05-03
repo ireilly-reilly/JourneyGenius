@@ -28,8 +28,7 @@
             <v-col cols="12" md="8">
                 <v-card class="pa-4 mb-4">
                     <h2 class="headline text-deep-purple-accent-2">How many options?</h2>
-                    <p>Choose how many options to generate. The number you select represents how many activities,
-                        landmarks, restaurants, shopping options, and hotels will be available for you to choose. More options will result in a longer wait time. Adjust
+                    <p>Choose the maximum number of options to generate. If there are fewer matches to your preferences than the number you select, only those matches will display. Adjust
                         the slider below: </p>
                     <br>
                     <v-slider v-model="sliderValue" :min="5" :max="15" :step="1" :thumb-label="true"
@@ -123,7 +122,12 @@ export default {
     methods: {
         estimateTime() {
             // Placeholder function for estimating time based on user selections
-            this.estimatedTimeMessage = 'Estimated wait time is approximately 3 minutes.';
+            if (this.descriptionToggle == false){
+                this.estimatedTimeMessage = 'Estimated wait time is approximately 1 minute.';
+            }
+            else{
+                this.estimatedTimeMessage = 'Estimated wait time is approximately 3 minutes.';
+            }
         },
         startPlanning() {
             this.$store.commit('updateSelectionAmount', this.sliderValue);

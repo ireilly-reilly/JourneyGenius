@@ -149,7 +149,7 @@ export default defineComponent({
       ethnicFoods: [
         { value: 'american', label: 'American', selected: false },
         { value: 'mexican', label: 'Mexican', selected: false },
-        { value: 'european_mediterranean', label: 'European & Mediterranean', selected: false },
+        // { value: 'european_mediterranean', label: 'European & Mediterranean', selected: false },
         { value: 'east_asian', label: 'Chinese & Vietnamese', selected: false },
         { value: 'south_asian', label: 'Thai & Indian', selected: false },
         { value: 'east_asian_2', label: 'Japanese & Korean', selected: false }, // Consider renaming for clarity
