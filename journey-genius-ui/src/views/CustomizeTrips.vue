@@ -426,11 +426,11 @@ export default defineComponent({
     },
     mounted() {
 
-        this.selectedActivities = this.$store.state.tripObject.activities;
-        this.selectedFoods = this.$store.state.tripObject.foods;
-        this.selectedLandmarks = this.$store.state.tripObject.landmarks;
-        this.selectedShops = this.$store.state.tripObject.shops;
-        this.selectedHotels = this.$store.state.tripObject.hotels;
+        this.selectedActivities = this.$store.state.activities;
+        this.selectedFoods = this.$store.state.foods;
+        this.selectedLandmarks = this.$store.state.landmarks;
+        this.selectedShops = this.$store.state.shops;
+        this.selectedHotels = this.$store.state.hotels;
         // console.log('Selected activities from customize trip mounted: ', this.selectedActivities);
         // console.log('Selected foods from customize trip mounted: ', this.selectedFoods);
         // console.log('Selected landmarks from customize trip mounted: ', this.selectedLandmarks);
