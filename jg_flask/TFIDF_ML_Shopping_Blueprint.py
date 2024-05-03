@@ -365,3 +365,4 @@ def recommend():
         place_names = [recommendation['place'] for recommendation in ranked_recommendations]
         print("Place names from ranked recommendations:", place_names)
 
+        return jsonify({'recommended_places': place_names})
