@@ -54,7 +54,7 @@ def RestaurantAddress_bp():
             }
             return jsonify(restaurant_addresses), 200
         else:
-            return jsonify({'message': 'No addresses found'}), 404
+            return jsonify({'message': 'No addresses found'})
 
     except Exception as e:
         print("Error retrieving addresses:", e)
@@ -108,7 +108,7 @@ def ActivityAddress_bp():
             }
             return jsonify(activity_addresses), 200
         else:
-            return jsonify({'message': 'No activities found'}), 404
+            return jsonify({'message': 'No activities found'})
 
     except Exception as e:
         print("Error retrieving addresses:", e)
@@ -160,7 +160,7 @@ def LandmarkAddress_bp():
             }
             return jsonify(landmark_addresses), 200
         else:
-            return jsonify({'message': 'No addresses found'}), 404
+            return jsonify({'message': 'No addresses found'})
 
     except Exception as e:
         print("Error retrieving addresses:", e)
@@ -213,7 +213,7 @@ def ShoppingAddress_bp():
             }
             return jsonify(shop_addresses), 200
         else:
-            return jsonify({'message': 'No addresses found'}), 404
+            return jsonify({'message': 'No addresses found'})
 
     except Exception as e:
         print("Error retrieving addresses:", e)
@@ -266,7 +266,7 @@ def HotelAddress_bp():
             }
             return jsonify(hotel_addresses), 200
         else:
-            return jsonify({'message': 'No addresses found'}), 404
+            return jsonify({'message': 'No addresses found'})
 
     except Exception as e:
         print("Error retrieving addresses:", e)

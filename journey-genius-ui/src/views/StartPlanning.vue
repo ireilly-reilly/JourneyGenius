@@ -2,7 +2,7 @@
   <v-container>
     <!-- Password change snackbar -->
     <v-snackbar v-model="errorSnackbar" color="deep-purple-accent-2" top>
-        <span class="centered-text">Error running recommendations, try updating preferences.</span>
+      <span class="centered-text">Error running recommendations, try updating preferences.</span>
     </v-snackbar>
     <!-- Loading screen overlay -->
     <!-- <LoadingScreen v-if="isLoading" /> -->
@@ -46,16 +46,18 @@
             <v-col cols="12" sm="6">
               <v-text-field v-model="formattedStartDate" label="Start Date" @click="isStartDatePickerVisible = true"
                 readonly hide-details ref="startDate"></v-text-field>
-              <v-date-picker v-model="startDate" @input="isStartDatePickerVisible = false" :max="endDate"
-                v-if="isStartDatePickerVisible" no-title hide-details color="deep-purple-accent-2" scrollable
-                hide-header="" style="width: 1000px; max-width: 100%;"></v-date-picker>
+              <v-date-picker v-model="startDate" @input="isStartDatePickerVisible = false" :min="currentDate"
+                :max="endDate" v-if="isStartDatePickerVisible" no-title hide-details color="deep-purple-accent-2"
+                scrollable hide-header="" style="width: 1000px; max-width: 100%;"></v-date-picker>
+
             </v-col>
             <v-col cols="12" sm="6">
               <v-text-field v-model="formattedEndDate" label="End Date" @click="isEndDatePickerVisible = true" readonly
                 hide-details ref="endDate"></v-text-field>
-              <v-date-picker v-model="endDate" @input="isEndDatePickerVisible = false" :min="startDate"
-                v-if="isEndDatePickerVisible" color="deep-purple-accent-2" scrollable hide-header=""
-                style="width: 1000px; max-width: 100%;"></v-date-picker>
+                <v-date-picker v-model="endDate" @input="isEndDatePickerVisible = false" :min="minEndDate"
+  v-if="isEndDatePickerVisible" color="deep-purple-accent-2" scrollable hide-header=""
+  style="width: 1000px; max-width: 100%;"></v-date-picker>
+
             </v-col>
             <div v-if="showDateError" class="error-message">{{ datesErrorMessage }}</div>
           </v-row>
@@ -216,7 +218,16 @@ export default defineComponent({
       maxDate.setDate(maxDate.getDate() + 7); // Limit to 7 days
       return maxDate.toISOString().substr(0, 10);
     },
-    
+    currentDate() {
+      return new Date().toISOString().substr(0, 10); // Formats today's date as YYYY-MM-DD
+    },
+    minEndDate() {
+      // Determine which date is later: the current date or the start date
+      const current = new Date(this.currentDate);
+      const start = new Date(this.startDate);
+      return start > current ? this.startDate : this.currentDate;
+    }
+
   },
 
   mounted() {
@@ -404,7 +415,7 @@ export default defineComponent({
           });
         })
         .catch(error => {
-            this.errorSnackbar = true;
+          this.errorSnackbar = true;
         })
         .then(response => {
           this.restaurantData = response.data;
@@ -418,7 +429,7 @@ export default defineComponent({
           });
         })
         .catch(error => {
-            this.errorSnackbar = true;
+          this.errorSnackbar = true;
         })
         .then(response => {
           this.activityData = response.data;
@@ -427,7 +438,7 @@ export default defineComponent({
           return axios.post('http://localhost:8000/api/run_ML_model_landmark_recommendations', requestData);
         })
         .catch(error => {
-            this.errorSnackbar = true;
+          this.errorSnackbar = true;
         })
         .then(response => {
           this.landmarkData = response.data;
@@ -441,7 +452,7 @@ export default defineComponent({
           });
         })
         .catch(error => {
-            this.errorSnackbar = true;
+          this.errorSnackbar = true;
         })
         .then(response => {
           this.shoppingData = response.data;
@@ -455,7 +466,7 @@ export default defineComponent({
           })
         })
         .catch(error => {
-            this.errorSnackbar = true;
+          this.errorSnackbar = true;
         })
         .then(response => {
           this.hotelData = response.data;
@@ -463,7 +474,7 @@ export default defineComponent({
           console.log('run_ML_model_recommendations hotels response:', response.data);
         })
         .catch(error => {
-            this.errorSnackbar = true;
+          this.errorSnackbar = true;
         })
         .then(() => {
           this.$store.commit('updateGeneratedActivities', this.activityData.recommended_places);
@@ -491,14 +502,14 @@ export default defineComponent({
             // Add other relevant data properties if needed
           };
 
-        //   // Send the trip data to the Flask backend
-        //   return axios.post('http://localhost:8000/api/save_trip_data_temporarily', tripData);
-        // })
-        // .catch(error => {
-        //     this.errorSnackbar = true;
-        //     console.log("Save data temporarily error, continuing");
-        // })
-        // .then(() => {
+          //   // Send the trip data to the Flask backend
+          //   return axios.post('http://localhost:8000/api/save_trip_data_temporarily', tripData);
+          // })
+          // .catch(error => {
+          //     this.errorSnackbar = true;
+          //     console.log("Save data temporarily error, continuing");
+          // })
+          // .then(() => {
           this.isLoading = false;
           this.$router.push({
             name: 'Itinerary',
@@ -534,7 +545,7 @@ export default defineComponent({
       //This function saves all the data that is generated for a trip to that trip in the database to pulled later.
 
     },
-    async fetchUserProfiling(){
+    async fetchUserProfiling() {
       const jwtToken = Cookies.get('login_token');
       try {
 
@@ -549,7 +560,7 @@ export default defineComponent({
           !foods || foods.length === 0 ||
           !shopping || shopping.length === 0 ||
           !accommodation) {
-            preferences_flag = false;
+          preferences_flag = false;
         }
         console.log("Preferences flag: ", this.preferences_flag);
 
