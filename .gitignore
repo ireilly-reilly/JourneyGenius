@@ -11,3 +11,4 @@ package.json
 *.csv
 venv
 sendgrid.env
+docker-compose.yml
