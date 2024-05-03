@@ -99,10 +99,6 @@ def get_recommendations_with_location_and_price(target_place, input_lat, input_l
     cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
     
     recommendations = []
-    print("Bitch")
-    print("keyword: ", input_keyword)
-    print("STATE FAGGOT: ", State)
-    print("TARGET FUCK: ", target_place)
     print(new_data[-1:])
 
     idx = new_data[(new_data['Place'].str.strip().str.lower() == target_place.lower().strip()) & (new_data['Category'].str.strip().str.lower().str.contains(input_keyword.lower().strip()))].index
@@ -292,17 +288,17 @@ def recommend():
         print("Processing Category:", target_category)
 
         # Custom adjustments based on category
-        if target_category == 'east asian':
+        if target_category == 'chinese & vietnamese':
             keyword = "chinese vietnamese"
-        elif target_category == 'south asian':
+        elif target_category == 'thai & indian':
             keyword = "indian thai"
-        elif target_category == 'east asian 2':
+        elif target_category == 'japanese & korean':
             keyword = "japanese korean"
-        elif target_category == 'specialty food types':
+        elif target_category == 'steakhouse & buffet':
             keyword = "seafood sushi steakhouse buffet"
         elif target_category == 'european & mediterranean':
             keyword = "italian french pizzeria mediterranean"
-        elif target_category == 'dietary-focused':
+        elif target_category == 'vegan & vegetarian':
             keyword = "vegan vegetarian"
         else:
             keyword = target_category  # Default to using the category directly

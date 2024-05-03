@@ -76,6 +76,7 @@ def scrape_restaurants():
 
     #target_foods will looke like: 'Asian' or 'Mexican'
     target_categories = parse_data(user.fav_foods)
+    print("target category: ", target_categories)
     # print("Entire Target Category: " + target_category)
 
 
@@ -89,17 +90,17 @@ def scrape_restaurants():
 
 
         # Custom adjustments based on category
-        if target_category == 'east asian':
+        if target_category == 'chinese & vietnamese':
             keyword = "chinese vietnamese"
-        elif target_category == 'south asian':
+        elif target_category == 'thai & indian':
             keyword = "indian thai"
-        elif target_category == 'east asian 2':
+        elif target_category == 'japanese & korean':
             keyword = "japanese korean"
-        elif target_category == 'specialty food types':
+        elif target_category == 'steakhouse & buffet':
             keyword = "seafood sushi steakhouse buffet"
         elif target_category == 'european & mediterranean':
             keyword = "italian french pizzeria mediterranean"
-        elif target_category == 'dietary-focused':
+        elif target_category == 'vegan & vegetarian':
             keyword = "vegan vegetarian"
         else:
             keyword = target_category  # Default to using the category directly
