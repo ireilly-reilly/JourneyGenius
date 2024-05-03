@@ -313,15 +313,8 @@ def recommend():
         return jsonify({'recommended_places': all_recommendations})
     # description = descriptionGeneration(all_recommendations)
 
-<<<<<<< Updated upstream
-    # # Extract place names if you need to use just the names elsewhere
-
-
-    # return jsonify({'recommended_places': all_recommendations})
-=======
     if (descriptionToggle == True):
         description = descriptionGeneration(all_recommendations)
         return jsonify({'recommended_places': description})
     else:
         return jsonify({'recommended_places': all_recommendations})
->>>>>>> Stashed changes

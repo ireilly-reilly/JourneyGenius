@@ -365,20 +365,6 @@ def recommend():
             # Log the exception for debugging purposes
             print(f"Error processing request: {e}")
             return jsonify({'error': 'An unexpected error occurred'}), 500
-<<<<<<< Updated upstream
-    
-    if (descriptionToggle == True):
-        ranked_recommendations = rank_recommendations(all_recommendations)
-        description = descriptionGeneration(ranked_recommendations)
-        return jsonify({'recommended_places': description})
-    else:
-        # Extract place names if you need to use just the names elsewhere
-        ranked_recommendations = rank_recommendations(all_recommendations)
-        place_names = [recommendation['place'] for recommendation in ranked_recommendations]
-        print("Place names from ranked recommendations:", place_names)
-
-        return jsonify({'recommended_places': place_names})
-=======
 
     if (descriptionToggle == True):
         ranked_recommendations = rank_recommendations(all_recommendations)
@@ -391,4 +377,3 @@ def recommend():
         print("Place names from ranked recommendations:", place_names)
 
         return jsonify({'recommended_places': place_names})
->>>>>>> Stashed changes
