@@ -11,6 +11,7 @@ import pandas as pd
 import os
 from dotenv import load_dotenv
 from typing import Dict
+import time
 
 
 # Load environment variables from .env file
@@ -32,24 +33,6 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
 shopping_csv_file_path = os.path.join(CSV_FOLDER, 'shopping_data.csv')
 
-data = pd.read_csv(shopping_csv_file_path)
-
-# data = pd.read_csv('JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
-
-
-# Preprocess the data and extract relevant features
-data['Types'] = data['Types'].fillna('')
-data['Address'] = data['Address'].fillna('')
-data['Features'] = data['Types'] + ' ' + data['Address'].astype(str)
-# print(data['Types'])
-# print(data['Address'])
-
-# Create a TF-IDF vectorizer to convert text features into numerical vectors
-tfidf_vectorizer = TfidfVectorizer(stop_words='english')
-tfidf_matrix = tfidf_vectorizer.fit_transform(data['Features'])
-
-# Compute the cosine similarity between places based on their feature vectors
-cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
 
 # Function to calculate Haversine distance between two sets of coordinates
 def haversine(lat1, lon1, lat2, lon2):
@@ -72,6 +55,22 @@ def haversine(lat1, lon1, lat2, lon2):
     return distance
 
 
+def find_closest_city(target_lat, target_lon, df, threshold_km):
+    closest_city = None
+    min_distance = float('inf')
+
+    for index, row in df.iterrows():
+        city_lat = row['Latitude']
+        city_lon = row['Longitude']
+        distance = haversine(target_lat, target_lon, city_lat, city_lon)
+        
+        if distance < min_distance and distance <= threshold_km:
+            min_distance = distance
+            closest_city = row['City']
+
+    return closest_city
+
+
 # Calculate semantic similarity between two strings
 def calculate_semantic_similarity(text1, text2):
     doc1 = nlp(text1)
@@ -80,24 +79,44 @@ def calculate_semantic_similarity(text1, text2):
     return similarity_score
 
 
-# Modified code snippet to get recommendations with location 
-def get_recommendations_with_location(target_place, input_lat, input_lon, input_keyword, State):
+# Modified code snippet to get recommendations with location and price
+def get_recommendations_with_location(target_place, input_lat, input_lon, input_keyword, State, new_data):
+
+    # Preprocess the data and extract relevant features
+    new_data['Types'] = new_data['Types'].fillna('')
+    new_data['Address'] = new_data['Address'].fillna('')
+    new_data['Features'] = new_data['Types'] + ' ' + new_data['Address'].astype(str)
+    # print(data['Types'])
+    # print(data['Address'])
+
+    # Create a TF-IDF vectorizer to convert text features into numerical vectors
+    tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+    tfidf_matrix = tfidf_vectorizer.fit_transform(new_data['Features'])
+
+    # Compute the cosine similarity between places based on their feature vectors
+    cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
+    
     recommendations = []
-    idx = data[(data['Place'].str.strip().str.lower() == target_place.lower().strip()) & (data['Category'].str.strip().str.lower().str.contains(input_keyword.lower().strip()))].index
+
+    idx = new_data[(new_data['Place'].str.strip().str.lower() == target_place.lower().strip()) & (new_data['Category'].str.strip().str.lower().str.contains(input_keyword.lower().strip()))].index
+    # idx = data[data['Place'] == target_place].index
+
 
     if idx.empty:
         print(f"No matching places found for {target_place}")
         return []
 
     idx = idx[0]
-    input_lat = data.loc[idx, 'Latitude']
-    input_lon = data.loc[idx, 'Longitude']
 
-    filtered_data = data[(data['Category'] == input_keyword) & (data['State'] == State)]
+    input_lat = new_data.loc[idx, 'Latitude']
+    input_lon = new_data.loc[idx, 'Longitude']
+
+    filtered_data = new_data[(new_data['Category'] == input_keyword) & (new_data['State'] == State)]
+    filtered_data.reset_index(drop=True, inplace=True)
     
     distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(filtered_data['Latitude'], filtered_data['Longitude'])]
     text_similarities = [cosine_sim[idx][i] for i in filtered_data.index]
-    semantic_similarities = [calculate_semantic_similarity(data.loc[i, 'Place'], target_place) for i in filtered_data.index]
+    semantic_similarities = [calculate_semantic_similarity(new_data.loc[i, 'Place'], target_place) for i in filtered_data.index]
 
     max_distance = max(distances) if distances else 1
     max_semantic_sim = max(semantic_similarities) if semantic_similarities else 1
@@ -111,6 +130,7 @@ def get_recommendations_with_location(target_place, input_lat, input_lon, input_
     return recommendations
 
 
+
 def descriptionGeneration(recommended_places):
     # Ensure recommended_places is a list
     if not isinstance(recommended_places, list):
@@ -122,14 +142,13 @@ def descriptionGeneration(recommended_places):
     # Iterate over recommended_places and generate descriptions
     for place in recommended_places:
         # Compose a prompt using the current place
-        prompt = f"Describe the shopping spot {place} regarding its shopping experience from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Shopping spot Name): (Then description). Note: do not take score into consideration."
-
+        prompt = f"Describe the activity, {place} ,regarding the shopping experience from online sources in one or two sentences. Do not response with Im sorry, but as an AI model, I am unable to browse the internet. If this happens then make something up. Answer in this format- (Activity Name): (Then description). Note: do not take score into consideration."
 
         # Generate descriptions using OpenAI
         response = client.chat.completions.create(
             model="gpt-4",
             messages=[
-                {"role": "system", "content": "You are an experienced food critic."},
+                {"role": "system", "content": "You are an experienced shopper."},
                 {"role": "user", "content": prompt}
             ]
         )
@@ -224,12 +243,13 @@ def rank_recommendations(all_recommendations):
 @shoppingRecommendation_bp.route('/run_ML_model_shopping_recommendations', methods=['POST'])
 @jwt_required()
 def recommend():
+
     current_user_id = get_jwt_identity()
     # Get the user from the database
     user = User.query.filter_by(id=current_user_id).first()
 
     target_categories = parse_data(user.fav_shopping)
-
+    print("target categories: ", target_categories)
     iteration = 0
 
     # Grab city name from front end
@@ -239,6 +259,7 @@ def recommend():
         state = str(data.get('desired_state'))
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
+        descriptionToggle = data.get('descriptionToggle')
         print(city + ", " + stateMappings[state])
         descriptionToggle = data.get('descriptionToggle')
     except Exception as e:
@@ -252,6 +273,7 @@ def recommend():
     # Initialize a list to store recommended places
     recommended_places = []
     all_recommendations = []
+    ranked_recommendations = []
 
     df = pd.read_csv(shopping_csv_file_path)
     for target_category in target_categories:
@@ -266,24 +288,24 @@ def recommend():
             keyword = 'electronics_store'
         elif target_category == 'book store':
             keyword = 'book_store'
-        else:
-            keyword = target_category 
 
         # print(f"Current Keyword: {keyword}")
         keywords.append(keyword)
-        print("keyword:", keywords)
+        print(keywords)
 
         try:
-            first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & df['Category'].str.contains(keyword, case=False, na=False)].iloc[0]
+            first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & (df['Category'] == keyword)].iloc[0]
             iteration += 1
         except IndexError:
-            print(f"Trying broader search in {stateMappings[state]} for category '{keyword}'.")
             try:
-                # If no entry is found, fallback to "point_of_interest" Type
-                first_row = df[(df['City'] == city) & (df['State'] == stateMappings[state]) & df['Types'].str.contains("point_of_interest", case=False, na=False)].iloc[0]
-            except IndexError:
-                print(f"No activities found in the state of {stateMappings[state]} for category '{keyword}' or 'point_of_interest'.")
-                return jsonify({'message': "No activities found for the specified city or state"}), 404
+                new_city = find_closest_city(target_lat_str, target_lon_str, data, 15)
+                first_row = df[(df['City'] == new_city) & (df['State'] == stateMappings[state]) (df['Category'] == keyword)].iloc[0]
+            except IndexError as e:
+                print("No shopping spots found for the specified city.")
+                message = {
+                    'message': "nothing in it bruh"
+                }
+                return jsonify(message), 400
         # Process the first row found
         if not first_row.empty:
             first_row_with_city = first_row
@@ -307,14 +329,9 @@ def recommend():
         print(target_food)
         print(keyword)
         try:
-            # print("Target Latitude: ", target_lat_str)
-            # print("Target Longitude: ", target_lon_str)
-
-            # Check if latitude, longitude range are not None
             if None in (target_lat_str, target_lon_str):
-                return jsonify({'error': 'Latitude or longitude is missing or invalid'}), 400
+                return jsonify({'error': 'Latitude or longitude'}), 400
 
-            # Convert latitude, longitude to float and int respectively
             try:
                 target_lat = float(target_lat_str)
                 target_lon = float(target_lon_str)
@@ -323,8 +340,10 @@ def recommend():
                 return jsonify({'error': 'Invalid parameter values'}), 400
             State = stateMappings[state]
             print("before calling function: ", State)
-            recommended_places = get_recommendations_with_location(target_food, target_lat, target_lon, keyword, State)
-
+            print(target_food)
+            recommended_places = get_recommendations_with_location(target_food, target_lat, target_lon, keyword, State, df)
+            print(recommended_places)
+            print("recommended places type:", type(recommended_places))
             # place_names = recommended_places
 
 
@@ -335,6 +354,7 @@ def recommend():
             # Log the exception for debugging purposes
             print(f"Error processing request: {e}")
             return jsonify({'error': 'An unexpected error occurred'}), 500
+<<<<<<< Updated upstream
         
     if (descriptionToggle == True):
         ranked_recommendations = rank_recommendations(all_recommendations)
@@ -346,4 +366,17 @@ def recommend():
         place_names = [recommendation['place'] for recommendation in ranked_recommendations]
         print("Place names from ranked recommendations:", place_names)
 
+=======
+
+    if (descriptionToggle == True):
+        ranked_recommendations = rank_recommendations(all_recommendations)
+        description = descriptionGeneration(ranked_recommendations)
+        return jsonify({'recommended_places': description})
+    else:
+        # Extract place names if you need to use just the names elsewhere
+        ranked_recommendations = rank_recommendations(all_recommendations)
+        place_names = [recommendation['place'] for recommendation in ranked_recommendations]
+        print("Place names from ranked recommendations:", place_names)
+
+>>>>>>> Stashed changes
         return jsonify({'recommended_places': place_names})

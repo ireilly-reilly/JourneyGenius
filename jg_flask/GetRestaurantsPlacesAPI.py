@@ -52,7 +52,7 @@ def scrape_restaurants():
 
     # Define initial search parameters
     #location = '40.730610, -73.935242' # New York City
-    radius = 55000 # 55 km radius
+    radius = 24140.2 # 55 km radius
     open_now = False # Any location - doesn't need to be open
     type = 'restaurant' 
     
@@ -162,7 +162,7 @@ def scrape_restaurants():
                         page_token=next_page_token
                     )
                     
-                    chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres', 'Del Taco', 'Taco Bell', 'Panda Express', "Bully's Sports Bar & Grill", "Applebee's Grill + Bar", "The Habit", "Mcdonald's", "Five Guys", "Jack in the Box", "In-N-Out", "Wendy's", "Burger King", "Sonic Drive-In", "Whattaburger", "Johnny Rockets", 'Black Bear Diner', 'Bogeys Bar & Grill', 'Timbers Bar & Grill']  # Add more chain names as needed
+                    chain_restaurant_names = ['Barnes & Noble', 'Dutch Bros', 'Los Compadres', 'Del Taco', 'Taco Bell', 'Panda Express', "Bully's Sports Bar & Grill", "Applebee's Grill + Bar", "The Habit", "Mcdonald's", "Five Guys", "Jack in the Box", "In-N-Out", "Wendy's", "Burger King", "Sonic Drive-In", "Whattaburger", "Johnny Rockets", 'Black Bear Diner', 'Bogeys Bar & Grill', 'Timbers Bar & Grill', "Applebee's", "Denny's", ]  # Add more chain names as needed
 
 
                     for place in places_result['results']:

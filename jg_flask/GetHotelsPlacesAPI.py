@@ -49,7 +49,7 @@ def scrape_hotels():
 
     # Define initial search parameters
     #location = '40.730610, -73.935242' # New York City
-    radius = 55000 # 55 km radius
+    radius = 24140.2 # 55 km radius
     open_now = False # Any location - doesn't need to be open
     type = 'lodging'
     # can use  'lodging'

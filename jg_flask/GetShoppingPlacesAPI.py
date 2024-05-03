@@ -53,7 +53,7 @@ def scrape_shopping():
 
     # Define initial search parameters
     #location = '40.730610, -73.935242' # New York City
-    radius = 55000 # 55 km radius
+    radius = 24140.2 # 55 km radius
     open_now = False # Any location - doesn't need to be open
     # type = 'shopping_mall'
     # can use  'shopping_mall', 'clothing_store', 'electronics_store', 'book_store'
@@ -150,7 +150,7 @@ def scrape_shopping():
                         page_token=next_page_token
                     )
                     
-                    chain_shopping_names = ['Walmart Supercenter', 'Target', 'Walgreens', 'Best Buy', 'CSV Pharmacy', 'Winco', 'Patagonia Outlet', 'Marshalls', 'Nordstrom Rack', "Macy's", "JCPenny", "Gamestop", "Ross", "T.J. Maxx"]  # Add more chain names as needed
+                    chain_shopping_names = ['Walmart Supercenter', 'Target', 'Walgreens', 'Best Buy', 'CSV Pharmacy', 'Winco', 'Patagonia Outlet', 'Marshalls', 'Nordstrom Rack', "Macy's", "JCPenny", "Gamestop", "Ross", "T.J. Maxx", "Sunglass Hut", 'Vans', "Kohl's", 'Nordstrom', 'Nike', "Gap", 'Old Navy']  # Add more chain names as needed
 
 
                     for place in places_result['results']:

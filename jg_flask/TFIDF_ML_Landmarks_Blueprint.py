@@ -32,25 +32,6 @@ BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 CSV_FOLDER = os.path.join(BASE_DIR, '..', 'journey-genius-data-scraping')
 landmark_csv_file_path = os.path.join(CSV_FOLDER, 'landmark_data.csv')
 
-data = pd.read_csv(landmark_csv_file_path)
-
-# data = pd.read_csv('JouneyGenius/journey-genius-data-scraping/restaurant_data.csv', encoding='utf-8')
-
-
-# Preprocess the data and extract relevant features
-data['Types'] = data['Types'].fillna('')
-data['Address'] = data['Address'].fillna('')
-data['Features'] = data['Types'] + ' ' + data['Address'].astype(str)
-# print(data['Types'])
-# print(data['Address'])
-
-# Create a TF-IDF vectorizer to convert text features into numerical vectors
-tfidf_vectorizer = TfidfVectorizer(stop_words='english')
-tfidf_matrix = tfidf_vectorizer.fit_transform(data['Features'])
-
-# Compute the cosine similarity between places based on their feature vectors
-cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
-
 # Function to calculate Haversine distance between two sets of coordinates
 def haversine(lat1, lon1, lat2, lon2):
     # Radius of the Earth in km
@@ -71,7 +52,21 @@ def haversine(lat1, lon1, lat2, lon2):
 
     return distance
 
+def find_closest_city(target_lat, target_lon, df, threshold_km):
+    closest_city = None
+    min_distance = float('inf')
 
+    for index, row in df.iterrows():
+        city_lat = row['Latitude']
+        city_lon = row['Longitude']
+        distance = haversine(target_lat, target_lon, city_lat, city_lon)
+        
+        if distance < min_distance and distance <= threshold_km:
+            min_distance = distance
+            closest_city = row['City']
+
+    return closest_city
+    
 # Calculate semantic similarity between two strings
 def calculate_semantic_similarity(text1, text2):
     doc1 = nlp(text1)
@@ -81,85 +76,53 @@ def calculate_semantic_similarity(text1, text2):
 
 
 # Modified code snippet to get recommendations with location 
-def get_recommendations_with_location(target_place, input_lat, input_lon, State):
+def get_recommendations_with_location(target_place, input_lat, input_lon, State, new_data):
 
+    # Preprocess the data and extract relevant features
+    new_data['Types'] = new_data['Types'].fillna('')
+    new_data['Address'] = new_data['Address'].fillna('')
+    new_data['Features'] = new_data['Types'] + ' ' + new_data['Address'].astype(str)
+    # print(data['Types'])
+    # print(data['Address'])
 
-    # print("First initial target place that gets passed through: " + target_place)
+    # Create a TF-IDF vectorizer to convert text features into numerical vectors
+    tfidf_vectorizer = TfidfVectorizer(stop_words='english')
+    tfidf_matrix = tfidf_vectorizer.fit_transform(new_data['Features'])
 
+    # Compute the cosine similarity between places based on their feature vectors
+    cosine_sim = linear_kernel(tfidf_matrix, tfidf_matrix)
+    
     recommendations = []
 
-    # for target in target_place:
-        # Get the index of the target place
-    
-    idx = data[(data['Place'].str.strip().str.lower() == target_place.lower().strip())].index
+    idx = new_data[(new_data['Place'].str.strip().str.lower() == target_place.lower().strip())].index
+    # idx = data[data['Place'] == target_place].index
 
 
-    # Check if idx is empty
     if idx.empty:
         print(f"No matching places found for {target_place}")
-        return {'error': f'Place "{target_place}" not found'}, 404
-    if len(idx) == 0:
-        print(f"No matching places found for {target_place}")
-        return {'error': f'Place "{target_place}" not found'}, 404
+        return []
 
+    idx = idx[0]
 
-    # Get the first index if multiple matches exist
-    idx = idx[0]  
-    # idx = idx[0] if isinstance(idx, pd.Series) else idx
+    input_lat = new_data.loc[idx, 'Latitude']
+    input_lon = new_data.loc[idx, 'Longitude']
 
-
-
-    # Extract the latitude, longitude, and category of the target place
-    input_lat = data.loc[idx, 'Latitude']
-    input_lon = data.loc[idx, 'Longitude']
-    fucker = data.loc[idx, 'Place']
-    fuckcategoy = data.loc[idx, 'Category']
-    # print("Function details for target place")
-    # print(fucker)
-    # print(fuckcategoy)
-
-
-    # Filter the data based on the desired category and locked in state
-    filtered_data = data[(data['State'] == State)]
-
-    # Calculate geographical distances and text-based similarities
-    distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(data['Latitude'], data['Longitude'])]
-    text_similarities = cosine_sim[idx]
-
-
-
-
-
-
-    # MOST ACCURATE LOCATION WISE AND KINDA USER PREFERENCE WITHOUT SEMANTIC SIMILARITY
-
-    # composite_scores = [0.1 * (1 - text_sim) + 0.05 * (1 - dist / max(distances))]
-    # composite_scores = [(1 - text_sim) + (1 - dist / max(distances)]
-    #                     for text_sim, dist in zip(text_similarities, distances]
-
-
-
+    filtered_data = new_data[(new_data['State'] == State)]
+    filtered_data.reset_index(drop=True, inplace=True)
     
-    
-    # MOST ACCURATE LOCATION WISE AND KINDA USER PREFERENCE with SEMANTIC SIMILARITY
+    distances = [haversine(input_lat, input_lon, lat, lon) for lat, lon in zip(filtered_data['Latitude'], filtered_data['Longitude'])]
+    text_similarities = [cosine_sim[idx][i] for i in filtered_data.index]
+    semantic_similarities = [calculate_semantic_similarity(new_data.loc[i, 'Place'], target_place) for i in filtered_data.index]
 
-    semantic_similarities = [calculate_semantic_similarity(landmark_csv_file_path, hotel_name) for hotel_name in data['Place']]
-   
-    composite_scores = [(0.01 * (1 - text_sim) + (2 * (1 - dist / max(distances))) + (0.3 * (1 - semantic_sim / max(semantic_similarities))))
+    max_distance = max(distances) if distances else 1
+    max_semantic_sim = max(semantic_similarities) if semantic_similarities else 1
+
+    composite_scores = [(0.01 * (1 - text_sim) + 2 * (1 - dist / max_distance) + 0.3 * (1 - semantic_sim / max_semantic_sim))
                         for text_sim, dist, semantic_sim in zip(text_similarities, distances, semantic_similarities)]
-
-
-    # Sort places by composite similarity score
+    
     sorted_places = [place for _, place in sorted(zip(composite_scores, filtered_data['Place']), reverse=True)]
-
-    # Return the top 10 similar places as a list of dictionaries
-    try:
-        # recommendations = [{'place': place} for place in sorted_places[1:6]]
-        recommendations = [place for place in sorted_places[1:6]]
-
-        return recommendations
-    except Exception as e:
-        print("FUCK YOU: ", e)
+    recommendations = [place for place in sorted_places[1:6]]
+    return recommendations
 
 
 
@@ -270,6 +233,8 @@ def recommend():
         state = str(data.get('desired_state'))
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
+        descriptionToggle = data.get('descriptionToggle')
+
         print(city + ", " + stateMappings[state])
         descriptionToggle = data.get('descriptionToggle')
     except Exception as e:
@@ -284,9 +249,6 @@ def recommend():
     all_recommendations = []
 
     df = pd.read_csv(landmark_csv_file_path)
-
-
-    # print(f"Current Keyword: {keyword}")
 
     try:
         # Try to find a restaurant 
@@ -331,7 +293,7 @@ def recommend():
                 return jsonify({'error': 'Invalid parameter values'}), 400
             State = stateMappings[state]
             print("before calling function: ", State)
-            recommended_places = get_recommendations_with_location(target_food, target_lat, target_lon, State)
+            recommended_places = get_recommendations_with_location(target_food, target_lat, target_lon, State, df)
 
             # place_names = recommended_places
 
@@ -351,7 +313,15 @@ def recommend():
         return jsonify({'recommended_places': all_recommendations})
     # description = descriptionGeneration(all_recommendations)
 
+<<<<<<< Updated upstream
     # # Extract place names if you need to use just the names elsewhere
 
 
     # return jsonify({'recommended_places': all_recommendations})
+=======
+    if (descriptionToggle == True):
+        description = descriptionGeneration(all_recommendations)
+        return jsonify({'recommended_places': description})
+    else:
+        return jsonify({'recommended_places': all_recommendations})
+>>>>>>> Stashed changes
