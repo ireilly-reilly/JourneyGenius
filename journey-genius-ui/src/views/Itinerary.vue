@@ -26,7 +26,7 @@
             <!-- Category: Choose the Activities that Peak Your Interest -->
             <v-row justify="center" class="mt-4">
                 <v-col cols="12" md="8">
-                    <h2 class="headline text-deep-purple-accent-2">Choose the Activities that Peak Your Interest</h2>
+                    <h2 class="headline text-deep-purple-accent-2">Choose the Activities that Pique Your Interest</h2>
                     <br>
                     <v-row dense>
                         <v-col v-for="(activity, index) in activities" :key="index" cols="12">
