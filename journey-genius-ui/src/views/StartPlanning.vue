@@ -367,6 +367,7 @@ export default defineComponent({
         desired_state: this.state,
         number_of_selections: this.$store.state.sliderValue,
         descriptionToggle: this.$store.state.descriptionToggle,
+        sliderValue: this.$store.state.sliderValue,
       };
 
       const jwtToken = Cookies.get('login_token');

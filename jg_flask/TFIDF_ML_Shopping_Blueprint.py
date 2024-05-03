@@ -224,7 +224,7 @@ stateMappings: Dict[str, str] = {
     'WY': 'Wyoming'
 }
 
-def rank_recommendations(all_recommendations):
+def rank_recommendations(all_recommendations, numSelections):
 
     if not all_recommendations:
         print("No recommendations to rank.")
@@ -233,10 +233,10 @@ def rank_recommendations(all_recommendations):
     # Sort the recommendations by the 'score' key in descending order
     sorted_recommendations = sorted(all_recommendations, key=lambda x: x['score'], reverse=True)
 
-    print("Sorted recommendations:", sorted_recommendations[:5])  
+    print("Sorted recommendations:", sorted_recommendations[:numSelections])  
 
     # Return the top 5 recommendations
-    return sorted_recommendations[:5]
+    return sorted_recommendations[:numSelections]
 
 
 
@@ -262,6 +262,7 @@ def recommend():
         descriptionToggle = data.get('descriptionToggle')
         print(city + ", " + stateMappings[state])
         descriptionToggle = data.get('descriptionToggle')
+        numSelections = data.get('sliderValue')
     except Exception as e:
         print("Can't get city:", e)
 
@@ -356,12 +357,12 @@ def recommend():
             return jsonify({'error': 'An unexpected error occurred'}), 500
         
     if (descriptionToggle == True):
-        ranked_recommendations = rank_recommendations(all_recommendations)
+        ranked_recommendations = rank_recommendations(all_recommendations, numSelections)
         description = descriptionGeneration(ranked_recommendations)
         return jsonify({'recommended_places': description})
     else:
         # Extract place names if you need to use just the names elsewhere
-        ranked_recommendations = rank_recommendations(all_recommendations)
+        ranked_recommendations = rank_recommendations(all_recommendations, numSelections)
         place_names = [recommendation['place'] for recommendation in ranked_recommendations]
         print("Place names from ranked recommendations:", place_names)
 

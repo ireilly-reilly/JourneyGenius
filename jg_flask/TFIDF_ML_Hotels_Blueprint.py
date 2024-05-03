@@ -77,7 +77,7 @@ def calculate_semantic_similarity(text1, text2):
 
 
 # Modified code snippet to get recommendations with location 
-def get_recommendations_with_location(target_place, input_lat, input_lon, State, new_data):
+def get_recommendations_with_location(target_place, input_lat, input_lon, State, new_data, numSelections):
 
     # Preprocess the data and extract relevant features
     new_data['Types'] = new_data['Types'].fillna('')
@@ -122,7 +122,7 @@ def get_recommendations_with_location(target_place, input_lat, input_lon, State,
                         for text_sim, dist, semantic_sim in zip(text_similarities, distances, semantic_similarities)]
     
     sorted_places = [place for _, place in sorted(zip(composite_scores, filtered_data['Place']), reverse=True)]
-    recommendations = [place for place in sorted_places[1:6]]
+    recommendations = [place for place in sorted_places[1:numSelections]]
     return recommendations
 
 
@@ -236,6 +236,7 @@ def recommend():
         target_lat_str = data.get('target_lat_str')
         target_lon_str = data.get('target_lon_str')
         descriptionToggle = data.get('descriptionToggle')
+        numSelections = data.get('sliderValue')
 
         print(city + ", " + stateMappings[state])
         descriptionToggle = data.get('descriptionToggle')
@@ -299,7 +300,7 @@ def recommend():
             City = city
             State = stateMappings[state]
             print("before calling function: ", State)
-            recommended_places = get_recommendations_with_location(target_food, target_lat, target_lon, State, df)
+            recommended_places = get_recommendations_with_location(target_food, target_lat, target_lon, State, df, numSelections)
 
             # place_names = recommended_places
 
