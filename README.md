@@ -163,3 +163,21 @@ Apply changes:
 ```
 flask db upgrade
 ```
+
+### Other Dependencies:
+```
+pip3 install openai
+pip3 install googlemaps
+pip3 install googlemaps.exceptions
+pip3 install scikit-learn
+pip3 install spacy
+pip3 install dotenv
+pip3 install typing
+pip3 install flask
+pip3 install flask-cors
+pip3 install flask_jwt_extended
+pip3 install flask_migrate
+pip3 install sendgrid
+pip3 install click
+pip3 install requests 
+
