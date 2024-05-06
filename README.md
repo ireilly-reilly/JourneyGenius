@@ -164,6 +164,36 @@ Apply changes:
 flask db upgrade
 ```
 
+
+
+# journey-genius-ui
+
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run serve
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Lints and fixes files
+```
+npm run lint
+```
+
+### Customize configuration
+See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+
+
 ### Other Dependencies:
 ```
 pip3 install openai
@@ -181,3 +211,4 @@ pip3 install sendgrid
 pip3 install click
 pip3 install requests 
 
+```

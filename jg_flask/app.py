@@ -43,7 +43,8 @@ DB_NAME = os.environ.get("DB_NAME")
 
 #Flask App Initializations
 app = Flask(__name__, static_folder='../journey-genius-ui/dist', static_url_path='')
-app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+# app.config['SQLALCHEMY_DATABASE_URI'] = f"mysql://{DB_USER}:{DB_PASSWORD}@{DB_HOST}/{DB_NAME}"
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql+psycopg2://JourneyGenius@localhost/useraccounts'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['JWT_SECRET_KEY'] = 'thisisasecretkey'
 db = SQLAlchemy(app)
